@@ -1,0 +1,112 @@
+import { Suspense } from "react";
+import type { Metadata } from "next";
+import { ArrowRight, Brain, CalendarDays, Scale, ShieldCheck, Target } from "lucide-react";
+import { Container, Section } from "@/components/layout/container";
+import { StrategyHero } from "@/components/strategy/strategy-hero";
+import { PillarTabs } from "@/components/strategy/pillar-tabs";
+import { ModeActivator } from "@/components/strategy/mode-activator";
+import { OnePillarOptimize } from "@/components/strategy/one/pillar-optimize";
+import { OnePillarNavigate } from "@/components/strategy/one/pillar-navigate";
+import { OnePillarEvaluate } from "@/components/strategy/one/pillar-evaluate";
+import { Button } from "@/components/ui/button";
+import { SectionHeading } from "@/components/ui/misc";
+import { Reveal } from "@/components/ui/reveal";
+import { ONE_STRATEGY } from "@/data/strategy";
+
+export const metadata: Metadata = { title: "ONE Strategy — PRO" };
+
+function FocusVisual() {
+  return (
+    <div className="relative rounded-[28px] bg-white/10 p-6 ring-1 ring-white/20 backdrop-blur">
+      <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/70">Focused growth pipeline</p>
+      <div className="mt-4 space-y-2.5">
+        {ONE_STRATEGY.pillars.map((p, i) => (
+          <div key={p.key} className="flex items-center gap-3 rounded-2xl bg-white/12 p-3 ring-1 ring-white/15" style={{ marginLeft: i * 18, marginRight: i * 18 }}>
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white font-display text-xl font-extrabold text-one">{p.letter}</span>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-bold">{p.name}</p>
+              <p className="truncate text-[11px] text-white/70">{p.program}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 flex flex-col items-center">
+        <span className="h-6 w-px bg-white/40" />
+        <span className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-bold text-one shadow-lift">
+          <Target className="h-4 w-4" /> AI Candidate Interview
+        </span>
+        <span className="mt-3 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-white/75 ring-1 ring-white/15">
+          <CalendarDays className="h-3.5 w-3.5" /> Terang Events · maintenance-only
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export default function OneStrategyPage() {
+  return (
+    <>
+      <StrategyHero
+        variant="one"
+        eyebrow={ONE_STRATEGY.position}
+        title="ONE Strategy"
+        tagline={ONE_STRATEGY.tagline}
+        thesis={ONE_STRATEGY.thesis}
+        mascot="target"
+        visual={<FocusVisual />}
+      >
+        <ModeActivator target="one" />
+      </StrategyHero>
+
+      <Section className="pt-14">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              eyebrow="Optimize → Navigate → Evaluate"
+              title="Tiga pilar, satu fokus produk"
+              description="Pilih pilar untuk menjelajahi fitur, go-to-market, dan gerbang ekspansi ONE Strategy."
+            />
+          </Reveal>
+          <div className="mt-10">
+            <Suspense fallback={<div className="skeleton h-40 rounded-2xl" />}>
+              <PillarTabs
+                variant="one"
+                pillars={ONE_STRATEGY.pillars}
+                panels={{
+                  optimize: <OnePillarOptimize />,
+                  navigate: <OnePillarNavigate />,
+                  evaluate: <OnePillarEvaluate />,
+                }}
+              />
+            </Suspense>
+          </div>
+        </Container>
+      </Section>
+
+      <Section className="pt-0">
+        <Container>
+          <div className="grid gap-4 md:grid-cols-3">
+            {[
+              { icon: Brain, title: "Coba demo Interview", text: "Builder, wawancara kandidat & laporan bukti.", href: "/demo/interview" },
+              { icon: ShieldCheck, title: "Portfolio & Expansion Gate", text: "Lihat KPI & matriks keputusan.", href: "/portfolio" },
+              { icon: Scale, title: "Bandingkan dengan ACE", text: "Asumsi sama, kapasitas sama.", href: "/compare" },
+            ].map((c) => (
+              <Button key={c.href} href={c.href} variant="secondary" className="h-auto justify-between rounded-2xl p-5 text-left">
+                <span className="flex items-center gap-3">
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-soft text-one">
+                    <c.icon className="h-5 w-5" />
+                  </span>
+                  <span>
+                    <span className="block text-sm font-bold text-ink">{c.title}</span>
+                    <span className="block whitespace-normal text-xs font-normal text-muted-strong">{c.text}</span>
+                  </span>
+                </span>
+                <ArrowRight className="h-4 w-4 shrink-0" />
+              </Button>
+            ))}
+          </div>
+        </Container>
+      </Section>
+    </>
+  );
+}
