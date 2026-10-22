@@ -85,7 +85,7 @@ export function EvidenceCard({
                     onClick={() => onOverride(l)}
                     className={cn(
                       "rounded-lg px-2.5 py-1 text-xs font-semibold ring-1 transition",
-                      level === l ? "bg-success-ink text-white ring-[#0b7a5a]" : "bg-card text-muted-strong ring-line hover:ring-[#0b7a5a]/50",
+                      level === l ? "bg-success-ink text-card ring-success-ink" : "bg-card text-muted-strong ring-line hover:ring-success-ink/50",
                     )}
                   >
                     {l} · {LEVEL_LABEL[l]}

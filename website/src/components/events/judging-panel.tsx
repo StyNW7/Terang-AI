@@ -41,7 +41,7 @@ export function JudgingPanel() {
 
   return (
     <div className="space-y-5">
-      <div className="grid gap-5 lg:grid-cols-[1fr_1.6fr]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_1.6fr]">
         <div className="space-y-4">
           <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
             <p className="text-sm font-semibold text-ink">Event</p>
@@ -90,7 +90,7 @@ export function JudgingPanel() {
           ) : (
             <ul className="divide-y divide-line">
               {rows.map((r, i) => (
-                <motion.li layout key={r.id} className="grid gap-3 px-5 py-4 md:grid-cols-[auto_1fr_auto] md:items-center">
+                <motion.li layout key={r.id} className="grid grid-cols-1 gap-3 px-5 py-4 md:grid-cols-[auto_1fr_auto] md:items-center">
                   <span className={`grid h-9 w-9 place-items-center rounded-xl text-sm font-bold ${i < 3 && r.total > 0 ? "bg-ace-gradient text-white" : "bg-surface text-muted-strong ring-1 ring-line"}`}>
                     {i < 3 && r.total > 0 ? <Medal className="h-4 w-4" /> : i + 1}
                   </span>
@@ -99,7 +99,7 @@ export function JudgingPanel() {
                       <p className="font-semibold text-ink">{r.team}</p>
                       <Badge tone={STATUS_TONE[r.status]}>{STATUS_LABEL[r.status]}</Badge>
                     </div>
-                    <p className="truncate text-sm text-muted-strong">{r.title}</p>
+                    <p className="text-sm leading-snug text-muted-strong">{r.title}</p>
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       <Select
                         value={r.reviewer}

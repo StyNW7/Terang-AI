@@ -31,7 +31,7 @@ import { Segmented } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/misc";
 import { PageHeader } from "@/components/dashboard/page-header";
-import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES } from "@/components/charts/chart-kit";
+import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES, tickIDR, noWrap } from "@/components/charts/chart-kit";
 import { Funnel } from "@/components/strategy/funnel";
 import { SourceLabel } from "@/components/shared/source-label";
 import { DecisionGate } from "./decision-gate";
@@ -146,7 +146,7 @@ export function PortfolioDashboard() {
         <KpiCard tone="navy" label="Hasil portofolio" value={r.operatingResult} format="idrCompact" icon={<Gauge className="h-4 w-4" />} />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.6fr_1fr]">
         <ChartFrame
           title="Tren pendapatan per bulan"
           description={`Distribusi ilustratif ${H} bulan dengan ramp-up pelanggan.`}
@@ -171,7 +171,7 @@ export function PortfolioDashboard() {
               </defs>
               <CartesianGrid vertical={false} stroke={SERIES.grid} />
               <XAxis dataKey="month" {...AXIS_PROPS} />
-              <YAxis width={70} tickFormatter={(v: number) => formatIDRCompact(v)} {...AXIS_PROPS} />
+              <YAxis width={86} tickFormatter={tickIDR} {...AXIS_PROPS} />
               <Tooltip content={(p) => <ChartTooltip {...p} format="idrCompact" />} />
               <Area type="monotone" dataKey="events" name="Terang Events" stackId="r" stroke={SERIES.events} strokeWidth={2} fill="url(#pfEv)" />
               <Area type="monotone" dataKey="interview" name="AI Candidate Interview" stackId="r" stroke={SERIES.interview} strokeWidth={2} fill="url(#pfIv)" />
@@ -198,7 +198,7 @@ export function PortfolioDashboard() {
         </ChartFrame>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <ChartFrame
           title="Kontribusi per produk"
           legend={[
@@ -218,7 +218,7 @@ export function PortfolioDashboard() {
             >
               <CartesianGrid vertical={false} stroke={SERIES.grid} />
               <XAxis dataKey="name" {...AXIS_PROPS} />
-              <YAxis width={66} tickFormatter={(v: number) => formatIDRCompact(v)} {...AXIS_PROPS} />
+              <YAxis width={86} tickFormatter={tickIDR} {...AXIS_PROPS} />
               <ReferenceLine y={0} stroke="#94a3b8" />
               <Tooltip cursor={{ fill: "rgba(74,144,226,0.06)" }} content={(p) => <ChartTooltip {...p} format="idrCompact" />} />
               <Bar dataKey="pendapatan" name="Pendapatan" fill="#94a3b8" radius={[4, 4, 0, 0]} maxBarSize={36} />
@@ -242,7 +242,7 @@ export function PortfolioDashboard() {
             >
               <CartesianGrid horizontal={false} stroke={SERIES.grid} />
               <XAxis type="number" domain={[0, 1.2]} tickFormatter={(v: number) => formatPercent(v)} {...AXIS_PROPS} />
-              <YAxis type="category" dataKey="team" width={96} {...AXIS_PROPS} />
+              <YAxis type="category" dataKey="team" width={112} tickFormatter={noWrap} {...AXIS_PROPS} />
               <ReferenceLine x={0.9} stroke="#e2930f" strokeDasharray="4 4" label={{ value: "90%", fontSize: 10, fill: "#9a5b00", position: "top" }} />
               <Tooltip cursor={{ fill: "rgba(74,144,226,0.06)" }} content={(p) => <ChartTooltip {...p} format="percent" />} />
               <Bar dataKey="value" name="Utilisasi" radius={[0, 4, 4, 0]} maxBarSize={26}>
@@ -262,7 +262,7 @@ export function PortfolioDashboard() {
             <BarChart data={presetSens} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
               <CartesianGrid vertical={false} stroke={SERIES.grid} />
               <XAxis dataKey="name" {...AXIS_PROPS} />
-              <YAxis width={66} tickFormatter={(v: number) => formatIDRCompact(v)} {...AXIS_PROPS} />
+              <YAxis width={86} tickFormatter={tickIDR} {...AXIS_PROPS} />
               <ReferenceLine y={0} stroke="#94a3b8" />
               <Tooltip cursor={{ fill: "rgba(74,144,226,0.06)" }} content={(p) => <ChartTooltip {...p} format="idrCompact" />} />
               <Bar dataKey="value" name="Hasil operasional" fill={lens === "one" ? SERIES.one : SERIES.ace} radius={[4, 4, 0, 0]} maxBarSize={44} />
@@ -271,7 +271,7 @@ export function PortfolioDashboard() {
         </ChartFrame>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <p className="text-[15px] font-semibold text-ink">Funnel akuisisi — AI Candidate Interview</p>
           <Funnel
@@ -310,7 +310,7 @@ export function PortfolioDashboard() {
 
       <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
         <p className="text-[15px] font-semibold text-ink">Roadmap kuartalan · lensa {lens.toUpperCase()}</p>
-        <div className="mt-4 grid gap-3 md:grid-cols-4">
+        <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-4">
           {ROADMAP[lens].map((q) => (
             <div key={q.quarter} className="rounded-xl bg-surface p-4 ring-1 ring-line">
               <span className={cn("grid h-8 w-8 place-items-center rounded-lg text-xs font-semibold text-white", lens === "one" ? "bg-one-gradient" : "bg-ace-gradient")}>{q.quarter}</span>
@@ -332,7 +332,7 @@ export function PortfolioDashboard() {
           <h3 className="text-2xl font-semibold text-ink">Scale · Optimize · Limit · Pause / Reassess</h3>
           <p className="text-sm text-muted-strong">Posisi produk berdasarkan KPI simulasi saat ini. Klik produk untuk memeriksa kriterianya di bawah.</p>
         </div>
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
           {DECISIONS.map((d) => {
             const products = (["interview", "events"] as const).filter((p) => evaluations[p].decision === d);
             return (

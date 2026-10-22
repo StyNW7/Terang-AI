@@ -32,7 +32,7 @@ import { useScenarioStore } from "@/store/scenario-store";
 import { SCENARIO_PRESETS } from "@/data/scenarios";
 import { computeBoth, findCrossover, FORMULAS, sensitivity, SENSITIVITY_PARAMS, type SensitivityParam } from "@/lib/finance";
 import { formatIDR, formatIDRCompact, formatNumber, formatPercent } from "@/lib/formatters";
-import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES } from "@/components/charts/chart-kit";
+import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES, tickIDR, noWrap } from "@/components/charts/chart-kit";
 import { AnimatedNumber } from "@/components/ui/animated-number";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -249,7 +249,7 @@ export function StrategySimulator() {
       <AnimatePresence>
         {showFormulas && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
               {FORMULAS.map((f) => (
                 <div key={f.name} className="rounded-2xl border border-line bg-card p-4 shadow-soft">
                   <p className="text-sm font-semibold text-ink">{f.name}</p>
@@ -262,7 +262,7 @@ export function StrategySimulator() {
         )}
       </AnimatePresence>
 
-      <div className="grid gap-6 2xl:grid-cols-[380px_1fr] xl:grid-cols-[340px_1fr]">
+      <div className="grid grid-cols-1 gap-6 2xl:grid-cols-[380px_1fr] xl:grid-cols-[340px_1fr]">
         <aside className="scrollbar-thin h-fit xl:sticky xl:top-20 xl:max-h-[calc(100vh-6rem)] xl:overflow-y-auto xl:pr-1">
           <AssumptionPanel />
         </aside>
@@ -288,12 +288,12 @@ export function StrategySimulator() {
             <SourceLabel type="illustrative-assumption" compact />
           </motion.div>
 
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <StrategyCard r={one} other={ace} variant="one" />
             <StrategyCard r={ace} other={one} variant="ace" />
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <ChartFrame
               title="Perbandingan finansial"
               description={`Horizon ${assumptions.shared.horizonMonths} bulan · IDR.`}
@@ -307,7 +307,7 @@ export function StrategySimulator() {
                 <BarChart data={compareData} margin={{ top: 8, right: 8, left: 8, bottom: 0 }} barGap={2}>
                   <CartesianGrid vertical={false} stroke={SERIES.grid} />
                   <XAxis dataKey="metric" {...AXIS_PROPS} />
-                  <YAxis width={72} tickFormatter={(v: number) => formatIDRCompact(v)} {...AXIS_PROPS} />
+                  <YAxis width={86} tickFormatter={tickIDR} {...AXIS_PROPS} />
                   <ReferenceLine y={0} stroke="#94a3b8" />
                   <Tooltip cursor={{ fill: "rgba(74,144,226,0.06)" }} content={(p) => <ChartTooltip {...p} format="idrCompact" />} />
                   <Bar dataKey="one" name="ONE" fill={SERIES.one} radius={[4, 4, 0, 0]} maxBarSize={36} />
@@ -333,8 +333,8 @@ export function StrategySimulator() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={costData} layout="vertical" margin={{ top: 4, right: 16, left: 4, bottom: 0 }}>
                   <CartesianGrid horizontal={false} stroke={SERIES.grid} />
-                  <XAxis type="number" tickFormatter={(v: number) => formatIDRCompact(v)} {...AXIS_PROPS} />
-                  <YAxis type="category" dataKey="name" width={44} {...AXIS_PROPS} />
+                  <XAxis type="number" tickFormatter={tickIDR} {...AXIS_PROPS} />
+                  <YAxis type="category" dataKey="name" width={44} tickFormatter={noWrap} {...AXIS_PROPS} />
                   <Tooltip cursor={{ fill: "rgba(74,144,226,0.06)" }} content={(p) => <ChartTooltip {...p} format="idrCompact" />} />
                   <Bar dataKey="tetap" name="Biaya tetap" stackId="c" fill={SERIES.navy} stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
                   <Bar dataKey="pengembangan" name="Pengembangan" stackId="c" fill="#2f66e0" stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
@@ -369,7 +369,7 @@ export function StrategySimulator() {
               <LineChart data={sensData} margin={{ top: 16, right: 16, left: 8, bottom: 0 }}>
                 <CartesianGrid vertical={false} stroke={SERIES.grid} />
                 <XAxis dataKey="x" type="number" domain={["dataMin", "dataMax"]} tickFormatter={(v: number) => sensFormat(param, v)} {...AXIS_PROPS} />
-                <YAxis width={72} tickFormatter={(v: number) => formatIDRCompact(v)} {...AXIS_PROPS} />
+                <YAxis width={86} tickFormatter={tickIDR} {...AXIS_PROPS} />
                 <ReferenceLine y={0} stroke="#94a3b8" />
                 <Tooltip content={(p) => <ChartTooltip {...p} format="idrCompact" labelFmt={(l) => sensFormat(param, Number(l))} />} />
                 {crossover !== null && <ReferenceLine x={crossover} stroke="#e2930f" strokeDasharray="4 4" label={{ value: "titik balik", position: "top", fontSize: 11, fill: "#9a5b00" }} />}
@@ -392,7 +392,7 @@ export function StrategySimulator() {
             )}
           </Callout>
 
-          <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
             <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
               <div className="border-b border-line px-5 py-4">
                 <p className="font-semibold text-ink">Bandingkan skenario preset</p>
@@ -443,7 +443,7 @@ export function StrategySimulator() {
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {[one, ace].map((r) => (
               <div key={r.strategy} className="rounded-2xl border border-line bg-card p-5 shadow-soft">
                 <p className="font-semibold text-ink">Beban kerja · {r.strategy.toUpperCase()}</p>

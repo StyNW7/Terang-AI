@@ -68,10 +68,10 @@ export function QuickStart({ id, title, steps, accent = "bg-brand-gradient" }: {
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <ol className="grid gap-3 border-t border-line p-4 sm:grid-cols-2 xl:grid-cols-4">
+            <ol className="grid grid-cols-1 gap-3 border-t border-line p-4 sm:grid-cols-2 xl:grid-cols-4">
               {steps.map((s, i) => (
                 <li key={s.href + s.title}>
-                  <Link href={s.href} className="group flex h-full flex-col rounded-xl bg-subtle p-4 ring-1 ring-line transition hover:-translate-y-0.5 hover:ring-brand/40">
+                  <Link href={s.href} data-spotlight className="group flex h-full flex-col rounded-xl bg-subtle p-4 ring-1 ring-line transition hover:-translate-y-0.5 hover:ring-brand/40">
                     <span className="flex items-center justify-between">
                       <span className="grid h-8 w-8 place-items-center rounded-lg bg-card text-brand-ink ring-1 ring-line">
                         <NavIcon name={s.icon} className="h-4 w-4" />

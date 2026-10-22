@@ -45,7 +45,7 @@ export default function StrategyLabPage() {
             <div className="relative overflow-hidden rounded-[32px] bg-navy-gradient p-8 text-white shadow-lift md:p-12">
               <div className="bg-grid-dark absolute inset-0 opacity-60" />
               <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-sky/25 blur-3xl" />
-              <div className="relative grid items-center gap-8 lg:grid-cols-[auto_1fr]">
+              <div className="relative grid grid-cols-1 items-center gap-8 lg:grid-cols-[auto_1fr]">
                 <span className="grid h-20 w-20 place-items-center rounded-3xl bg-white/10 ring-1 ring-white/20">
                   <HelpCircle className="h-10 w-10 text-sky" />
                 </span>
@@ -84,7 +84,7 @@ export default function StrategyLabPage() {
           <div className="mt-10 grid gap-4">
             {POSITIONING.map((row, i) => (
               <Reveal key={row.label} delay={i * 0.04}>
-                <div className="grid items-stretch gap-3 md:grid-cols-[1fr_auto_1fr]">
+                <div className="grid grid-cols-1 items-stretch gap-3 md:grid-cols-[1fr_auto_1fr]">
                   <div className="rounded-2xl border border-line bg-card p-4 shadow-soft md:text-right">
                     <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-sky-ink md:justify-end">
                       <CalendarDays className="h-3.5 w-3.5" /> Terang Events
@@ -118,7 +118,7 @@ export default function StrategyLabPage() {
               description="Kedua kartu sengaja berukuran sama. Simulator membandingkan keduanya dengan asumsi bersama — hasilnya bergantung pada kondisi pasar."
             />
           </Reveal>
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
             {[
               { s: ONE_STRATEGY, key: "ONE", g: "bg-one-gradient", icon: Target, href: "/strategies/one", mascot: "target" as const, cta: "Jelajahi ONE Strategy" },
               { s: ACE_STRATEGY, key: "ACE", g: "bg-ace-gradient", icon: Layers, href: "/strategies/ace", mascot: "puzzle" as const, cta: "Jelajahi ACE Strategy" },

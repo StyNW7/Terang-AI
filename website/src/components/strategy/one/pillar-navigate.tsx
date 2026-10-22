@@ -83,7 +83,7 @@ export function OnePillarNavigate() {
 
   return (
     <div className="space-y-10">
-      <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.3fr]">
         {/* Persona */}
         <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex items-center justify-between">
@@ -97,7 +97,7 @@ export function OnePillarNavigate() {
               <p className="text-sm text-muted-strong">HR Lead · perusahaan ritel 300+ karyawan</p>
             </div>
           </div>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Tujuan</p>
               <ul className="mt-1.5 space-y-1 text-[13px] text-ink">
@@ -121,7 +121,7 @@ export function OnePillarNavigate() {
         </div>
 
         {/* Campaign concepts */}
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="rounded-3xl border border-line bg-card p-5 shadow-soft">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Konsep posting B2B (mockup)</p>
             <div className="mt-3 rounded-2xl border border-line p-4">
@@ -179,7 +179,7 @@ export function OnePillarNavigate() {
           </div>
           <SourceLabel type="illustrative-assumption" />
         </div>
-        <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+        <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.4fr]">
           <div className="space-y-5">
             <Slider label="Awareness → Qualified Lead" value={rates.leadRate * 100} min={1} max={10} step={0.5} onChange={(v) => setRates((r) => ({ ...r, leadRate: v / 100 }))} display={formatPercent(rates.leadRate, 1)} color="#2251c9" />
             <Slider label="Lead → Demo" value={rates.demoRate * 100} min={10} max={70} onChange={(v) => setRates((r) => ({ ...r, demoRate: v / 100 }))} display={formatPercent(rates.demoRate)} color="#2251c9" />
@@ -260,7 +260,7 @@ export function OnePillarNavigate() {
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* ROI */}
         <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex items-start justify-between gap-2">
@@ -278,7 +278,7 @@ export function OnePillarNavigate() {
             <Slider label="Menit admin dihemat / interview" value={minutesSaved} min={5} max={60} onChange={setMinutesSaved} display={`${minutesSaved} menit`} color="#2251c9" />
             <Slider label="Harga per interview (ilustratif)" value={pricePerInterview} min={20_000} max={150_000} step={5_000} onChange={setPricePerInterview} display={formatIDR(pricePerInterview)} color="#2251c9" />
           </div>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-one-soft p-4">
               <p className="flex items-center gap-1.5 text-xs font-semibold text-one-ink"><Clock className="h-3.5 w-3.5" /> Waktu dihemat / bulan</p>
               <p className="tabular font-display text-2xl font-semibold text-ink">{formatNumber(hoursSaved)} jam</p>

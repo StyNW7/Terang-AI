@@ -223,7 +223,7 @@ export function PresentationMode() {
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-5">
                 {SLIDES.map((s, i) => (
                   <button
                     key={s.id}

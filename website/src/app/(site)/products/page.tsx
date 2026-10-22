@@ -73,7 +73,7 @@ export default function ProductsPage() {
               </div>
               <div className="divide-y divide-line bg-card">
                 {POSITIONING.map((row) => (
-                  <div key={row.label} className="grid gap-2 px-5 py-4 md:grid-cols-[1fr_1.4fr_1.4fr] md:gap-0 md:px-0 md:py-0">
+                  <div key={row.label} className="grid grid-cols-1 gap-2 px-5 py-4 md:grid-cols-[1fr_1.4fr_1.4fr] md:gap-0 md:px-0 md:py-0">
                     <div className="font-semibold text-ink md:px-5 md:py-4">{row.label}</div>
                     <div className="text-sm text-muted-strong md:border-l md:border-line md:px-5 md:py-4">
                       <span className="mr-1 font-semibold text-sky-ink md:hidden">Events:</span>

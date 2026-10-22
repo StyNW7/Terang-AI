@@ -78,7 +78,7 @@ export function ParticipantExperience() {
   const reg = event ? registrations.find((r) => r.eventId === event.id) : undefined;
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_300px]">
+    <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_300px]">
       <div>
         <AnimatePresence mode="wait">
           <motion.div key={view.name + ("id" in view ? view.id : "")} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }}>
@@ -108,7 +108,7 @@ export function ParticipantExperience() {
                 {open.length === 0 ? (
                   <EmptyState icon={<Search className="h-5 w-5" />} title="Tidak ada event terbuka" description="Coba kategori lain atau publikasikan event baru dari mode Organizer." />
                 ) : (
-                  <div className="grid gap-4 md:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {open.map((e, i) => {
                       const registered = registrations.some((r) => r.eventId === e.id);
                       return (
@@ -250,7 +250,7 @@ function EventDetail({ event, registered, onBack, onRegister, onWorkspace }: { e
           <p className="mt-1 text-white/85">{event.organizer}</p>
         </div>
       </div>
-      <div className="grid gap-6 p-7 lg:grid-cols-[1.4fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 p-7 lg:grid-cols-[1.4fr_1fr]">
         <div>
           <p className="leading-relaxed text-muted-strong">{event.description}</p>
           <p className="mt-6 text-sm font-semibold text-ink">Timeline</p>
@@ -324,7 +324,7 @@ function RegisterForm({ event, onBack, onDone }: { event: EventItem; onBack: () 
       </button>
       <h3 className="text-2xl font-semibold text-ink">Registrasi — {event.name}</h3>
       <p className="mt-1 text-sm text-muted-strong">Gunakan data fiktif. Tidak ada data yang dikirim ke server.</p>
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field>
           <Label htmlFor="r-name" required>Nama lengkap</Label>
           <Input id="r-name" aria-invalid={!!errors.name} placeholder="mis. Peserta Demo" {...field("name")} />
@@ -404,7 +404,7 @@ function Workspace({ event, onBack }: { event: EventItem; onBack: () => void }) 
       </button>
       <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky-ink">Status timeline</p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-4">
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-4">
           {steps.map((s, i) => (
             <div key={s.label} className={cn("rounded-2xl p-3 ring-1", s.done ? "bg-success-soft ring-current/15" : "bg-surface ring-line")}>
               <span className={cn("grid h-7 w-7 place-items-center rounded-full text-xs font-semibold", s.done ? "bg-success text-white" : "bg-card text-muted ring-1 ring-line")}>

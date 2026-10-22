@@ -53,7 +53,7 @@ export function PageHero({
         <div className="bg-grid absolute inset-0 -z-10 mask-fade-b" />
         <div className="absolute -right-40 -top-20 -z-10 h-[460px] w-[460px] rounded-full bg-sky/20 blur-[110px]" />
         <div className="absolute -left-40 bottom-0 -z-10 h-[360px] w-[360px] rounded-full bg-royal/10 blur-[110px]" />
-        <Container className="grid items-center gap-12 py-16 lg:grid-cols-[1.35fr_1fr] lg:py-20">
+        <Container className="grid grid-cols-1 items-center gap-12 py-16 lg:grid-cols-[1.35fr_1fr] lg:py-20">
           <div>
             <div className="eyebrow mb-5 inline-flex items-center gap-2 rounded-full border border-brand/20 bg-card/70 px-3 py-1.5 text-brand-ink shadow-soft backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-sky" />

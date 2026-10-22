@@ -31,19 +31,27 @@ export function Funnel({
         return (
           <div key={s.label} className="grid grid-cols-[110px_1fr] items-center gap-3 sm:grid-cols-[140px_1fr]">
             <div className="min-w-0">
-              <p className={cn("truncate font-semibold text-ink", compact ? "text-xs" : "text-[13px]")}>{s.label}</p>
+              <p className={cn("font-semibold leading-tight text-ink", compact ? "text-xs" : "text-[13px]")}>{s.label}</p>
               {conv !== null && <p className="text-[11px] text-muted">{formatPercent(conv, 1)} dari tahap sebelumnya</p>}
             </div>
             <div className="relative h-9 rounded-xl bg-neutral-soft">
               <motion.div
-                className="flex h-full items-center justify-end rounded-xl px-3 text-xs font-semibold text-white shadow-soft"
+                className="h-full rounded-xl shadow-soft"
                 style={{ backgroundImage: color }}
                 initial={{ width: 0 }}
                 animate={{ width: `${width}%` }}
                 transition={{ type: "spring", stiffness: 110, damping: 20, delay: i * 0.05 }}
+              />
+              {/* Value sits inside wide bars and just after narrow ones so it is never clipped. */}
+              <span
+                className={cn(
+                  "tabular pointer-events-none absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-xs font-semibold",
+                  width >= 26 ? "text-white" : "text-ink",
+                )}
+                style={width >= 26 ? { right: `calc(${100 - width}% + 12px)` } : { left: `calc(${width}% + 8px)` }}
               >
-                <span className="tabular whitespace-nowrap">{formatNumber(s.value)}</span>
-              </motion.div>
+                {formatNumber(s.value)}
+              </span>
             </div>
           </div>
         );

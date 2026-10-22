@@ -10,6 +10,8 @@ import { useInterviewStore } from "@/store/interview-store";
 import { useOperationsStore } from "@/store/operations-store";
 import { ModeTransition } from "@/components/navigation/strategy-mode-switcher";
 import { useTheme } from "@/lib/theme";
+import { CommandPalette } from "@/components/navigation/command-palette";
+import { SpotlightTracker } from "@/components/ui/spotlight";
 
 /** Rehydrate persisted demo stores after mount to keep SSR markup identical. */
 function StoreHydrator() {
@@ -42,6 +44,8 @@ export function Providers({ children }: { children: ReactNode }) {
       <StoreHydrator />
       {children}
       <ModeTransition />
+      <CommandPalette />
+      <SpotlightTracker />
       <ThemedToaster />
     </MotionConfig>
   );

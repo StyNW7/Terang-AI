@@ -33,7 +33,7 @@ export function PillarTabs({
 
   return (
     <div>
-      <div className="relative grid gap-3 md:grid-cols-3">
+      <div className="relative grid grid-cols-1 gap-3 md:grid-cols-3">
         {pillars.map((p, i) => {
           const isActive = p.key === active;
           return (

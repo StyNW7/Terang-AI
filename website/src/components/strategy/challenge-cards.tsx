@@ -12,7 +12,7 @@ const ICONS = { users: Users, target: Target, layers: Layers };
 export function ChallengeCards() {
   const [open, setOpen] = useState<string | null>("capacity");
   return (
-    <div className="grid gap-5 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
       {CHALLENGES.map((c, i) => {
         const Icon = ICONS[c.icon];
         const isOpen = open === c.id;

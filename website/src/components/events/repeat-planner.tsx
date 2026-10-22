@@ -62,7 +62,7 @@ export function RepeatPlanner({ preselect, onDone }: { preselect?: string; onDon
 
   return (
     <div className="space-y-5">
-      <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1fr]">
         <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <p className="text-sm font-semibold text-ink">1. Pilih event sumber</p>
           <Select className="mt-3" value={sourceId} onChange={(e) => setSourceId(e.target.value)} aria-label="Event sumber">

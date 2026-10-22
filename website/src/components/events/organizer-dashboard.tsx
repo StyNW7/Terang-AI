@@ -51,7 +51,7 @@ export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void 
           </button>
         ))}
       </div>
-      <div className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.6fr_1fr]">
         <ChartFrame
           title="Kinerja event — 7 minggu terakhir"
           description="Registrasi & submisi mingguan di seluruh event."
@@ -95,8 +95,8 @@ export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void 
                   <span className="text-base font-semibold leading-none text-ink">{formatDate(d.date).split(" ")[0]}</span>
                 </span>
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-ink">{d.name}</p>
-                  <p className="truncate text-xs text-muted">{d.event}</p>
+                  <p className="text-sm font-semibold leading-snug text-ink">{d.name}</p>
+                  <p className="text-xs leading-snug text-muted">{d.event}</p>
                 </div>
               </li>
             ))}
@@ -107,7 +107,7 @@ export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void 
         <p className="flex items-center gap-2 text-[15px] font-semibold text-ink">
           <Trophy className="h-4 w-4 text-sky-ink" /> Progres registrasi & submisi
         </p>
-        <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
           {activeWithSubs.map((e) => (
             <div key={e.id} className="rounded-xl bg-surface p-4 ring-1 ring-line">
               <div className="flex items-start justify-between gap-3">

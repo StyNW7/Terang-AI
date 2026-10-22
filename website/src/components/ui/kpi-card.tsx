@@ -41,7 +41,7 @@ export function KpiCard({
     navy: "bg-neutral-soft text-ink",
   };
   return (
-    <div className={cn("group relative overflow-hidden rounded-2xl border border-line bg-card p-4 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card", className)}>
+    <div data-spotlight className={cn("group relative overflow-hidden rounded-2xl border border-line bg-card p-4 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card", className)}>
       <div className={cn("absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r opacity-80", accents[tone])} />
       <div className="flex items-start justify-between gap-3">
         <p className="text-[13px] font-medium leading-snug text-muted-strong">{label}</p>

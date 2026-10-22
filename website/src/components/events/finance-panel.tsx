@@ -12,6 +12,7 @@ import { SourceLabel } from "@/components/shared/source-label";
 import { formatDate, formatIDR, formatIDRCompact } from "@/lib/formatters";
 
 const TX_TONE = { berhasil: "success", menunggu: "warning", refund: "danger" } as const;
+const TX_LABEL = { berhasil: "Berhasil", menunggu: "Menunggu", refund: "Refund" } as const;
 
 export function FinancePanel() {
   const events = useEventsStore((s) => s.events);
@@ -53,11 +54,11 @@ export function FinancePanel() {
         <KpiCard label="Refund" value={summary.refunds} format="idrCompact" icon={<RotateCcw className="h-4 w-4" />} tone="navy" />
         <KpiCard label="Estimasi diterima organizer" value={summary.gross * (1 - PLATFORM_FEE_RATE)} format="idrCompact" icon={<Receipt className="h-4 w-4" />} tone="sky" />
       </div>
-      <div className="grid gap-5 xl:grid-cols-[1fr_1.4fr]">
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_1.4fr]">
         <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <div className="flex items-center justify-between">
             <p className="flex items-center gap-2 text-[15px] font-semibold text-ink">
-              <Calculator className="h-4 w-4 text-sky-ink" /> Fee calculation preview
+              <Calculator className="h-4 w-4 text-sky-ink" /> Simulasi biaya &amp; dana diterima
             </p>
             <SourceLabel type="illustrative-assumption" compact />
           </div>
@@ -125,11 +126,11 @@ export function FinancePanel() {
                       <p className="font-semibold text-ink">{t.payer}</p>
                       <p className="text-[11px] text-muted">{formatDate(t.date)}</p>
                     </td>
-                    <td className="max-w-[180px] truncate px-4 py-2.5 text-muted-strong">{eventName(t.eventId)}</td>
+                    <td className="min-w-[180px] max-w-[240px] px-4 py-2.5 leading-snug text-muted-strong">{eventName(t.eventId)}</td>
                     <td className="px-4 py-2.5 text-muted-strong">{t.method}</td>
                     <td className="tabular px-4 py-2.5 text-right font-semibold text-ink">{formatIDR(t.amount)}</td>
                     <td className="px-4 py-2.5">
-                      <Badge tone={TX_TONE[t.status]}>{t.status}</Badge>
+                      <Badge tone={TX_TONE[t.status]} dot>{TX_LABEL[t.status]}</Badge>
                     </td>
                   </tr>
                 ))}

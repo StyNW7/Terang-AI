@@ -22,7 +22,7 @@ import { useScenarioStore } from "@/store/scenario-store";
 import { computeStrategy, sensitivity } from "@/lib/finance";
 import { DECISION_META, evaluateProduct } from "@/lib/portfolio-engine";
 import { formatIDRCompact, formatPercent } from "@/lib/formatters";
-import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES } from "@/components/charts/chart-kit";
+import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES, tickIDR } from "@/components/charts/chart-kit";
 import { DecisionGate } from "@/components/portfolio/decision-gate";
 import { Slider } from "@/components/ui/slider";
 import { Segmented } from "@/components/ui/tabs";
@@ -95,7 +95,7 @@ export function AcePillarEvolve() {
       </div>
 
       {/* Health */}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {(["events", "interview"] as const).map((p) => {
           const h = health[p];
           const meta = DECISION_META[h.decision];
@@ -133,7 +133,7 @@ export function AcePillarEvolve() {
         })}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <ChartFrame
           title="Perbandingan finansial per produk"
           description={`Dalam ACE (${assumptions.shared.horizonMonths} bulan).`}
@@ -147,7 +147,7 @@ export function AcePillarEvolve() {
             <BarChart data={finData} margin={{ top: 8, right: 8, left: 8, bottom: 0 }} barGap={2}>
               <CartesianGrid vertical={false} stroke={SERIES.grid} />
               <XAxis dataKey="name" {...AXIS_PROPS} />
-              <YAxis {...AXIS_PROPS} width={70} tickFormatter={(v: number) => formatIDRCompact(v)} />
+              <YAxis {...AXIS_PROPS} width={86} tickFormatter={tickIDR} />
               <Tooltip cursor={{ fill: "rgba(74,144,226,0.06)" }} content={(p) => <ChartTooltip {...p} format="idrCompact" />} />
               <Bar dataKey="events" name="Terang Events" fill={SERIES.events} radius={[4, 4, 0, 0]} maxBarSize={40} />
               <Bar dataKey="interview" name="AI Candidate Interview" fill={SERIES.interview} radius={[4, 4, 0, 0]} maxBarSize={40} />
@@ -167,7 +167,7 @@ export function AcePillarEvolve() {
             <ScatterChart margin={{ top: 16, right: 24, left: 8, bottom: 8 }}>
               <CartesianGrid stroke={SERIES.grid} />
               <XAxis type="number" dataKey="x" name="Porsi kapasitas" unit="%" domain={[0, 100]} {...AXIS_PROPS} />
-              <YAxis type="number" dataKey="y" name="Kontribusi" width={70} tickFormatter={(v: number) => formatIDRCompact(v)} {...AXIS_PROPS} />
+              <YAxis type="number" dataKey="y" name="Kontribusi" width={86} tickFormatter={tickIDR} {...AXIS_PROPS} />
               <ZAxis type="number" dataKey="z" range={[220, 900]} />
               <Tooltip
                 cursor={{ strokeDasharray: "3 3" }}
@@ -193,7 +193,7 @@ export function AcePillarEvolve() {
 
       {/* Reallocation simulator */}
       <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
-        <div className="grid gap-8 lg:grid-cols-[1fr_1.5fr]">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.5fr]">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Resource reallocation simulator</p>
             <h3 className="mt-1 text-xl font-semibold text-ink">Geser porsi kapasitas ACE</h3>
@@ -237,7 +237,7 @@ export function AcePillarEvolve() {
               <LineChart data={sens} margin={{ top: 10, right: 12, left: 8, bottom: 0 }}>
                 <CartesianGrid vertical={false} stroke={SERIES.grid} />
                 <XAxis dataKey="share" unit="%" {...AXIS_PROPS} />
-                <YAxis width={70} tickFormatter={(v: number) => formatIDRCompact(v)} {...AXIS_PROPS} />
+                <YAxis width={86} tickFormatter={tickIDR} {...AXIS_PROPS} />
                 <Tooltip content={(p) => <ChartTooltip {...p} format="idrCompact" labelFmt={(l) => `Porsi Interview ${String(l)}%`} />} />
                 <ReferenceLine x={Math.round(share * 100)} stroke="#0c9fd8" strokeDasharray="4 4" label={{ value: "saat ini", fontSize: 11, fill: "#56677f", position: "top" }} />
                 <Line type="monotone" dataKey="ace" name="ACE" stroke={SERIES.ace} strokeWidth={2.5} dot={{ r: 4, strokeWidth: 2, stroke: "#fff" }} />
@@ -253,7 +253,7 @@ export function AcePillarEvolve() {
         <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-sky">
           <Lightbulb className="h-4 w-4" /> Rekomendasi berbasis aturan (bukan AI)
         </p>
-        <ul className="mt-4 grid gap-3 md:grid-cols-2">
+        <ul className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
           {recs.map((rec) => (
             <li key={rec.text} className="flex gap-3 rounded-2xl bg-white/8 p-4 text-sm ring-1 ring-white/12">
               <span className={cn("mt-1 h-2 w-2 shrink-0 rounded-full", rec.tone === "warning" ? "bg-warning" : rec.tone === "success" ? "bg-success" : "bg-sky")} />

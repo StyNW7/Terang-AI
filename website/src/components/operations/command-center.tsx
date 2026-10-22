@@ -75,7 +75,7 @@ export function CommandCenter() {
         <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-sky">
           <Lightbulb className="h-4 w-4" /> Rekomendasi manajemen (berbasis aturan, bukan AI)
         </p>
-        <ul className="mt-4 grid gap-3 md:grid-cols-2">
+        <ul className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
           {recs.map((r) => (
             <li key={r.text} className="flex gap-3 rounded-2xl bg-white/8 p-4 text-sm ring-1 ring-white/12">
               {r.tone === "success" ? (

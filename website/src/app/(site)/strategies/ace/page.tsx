@@ -39,7 +39,7 @@ function DualTrackVisual() {
         <p className="flex items-center justify-center gap-2 font-display text-lg font-semibold">
           <Gauge className="h-5 w-5" /> ACE Command Center
         </p>
-        <p className="text-xs text-muted-strong">Kapasitas · anggaran · WIP · risiko</p>
+        <p className="text-xs text-[#475a72]">Kapasitas · anggaran · WIP · risiko</p>
       </div>
       <div className="mt-3 flex flex-wrap justify-center gap-1.5">
         {ACE_STRATEGY.pillars.map((p) => (
@@ -99,7 +99,7 @@ export default function AceStrategyPage() {
 
       <Section className="pt-0">
         <Container>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {[
               { icon: CalendarDays, title: "Coba Smart Templates", text: "Demo Terang Events dengan usulan ACE.", href: "/dashboard/events" },
               { icon: Gauge, title: "Atur Alokasi Sumber Daya", text: "ACE Command Center untuk 7 personel.", href: "/dashboard/operations" },

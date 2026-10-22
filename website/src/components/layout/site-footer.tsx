@@ -69,7 +69,7 @@ export function SiteFooter() {
         </div>
 
         {/* Links */}
-        <div className="grid gap-12 py-14 lg:grid-cols-[1.2fr_2fr]">
+        <div className="grid grid-cols-1 gap-12 py-14 lg:grid-cols-[1.2fr_2fr]">
           <div>
             <Logo height={30} />
             <p className="mt-6 max-w-sm text-[15px] leading-relaxed text-white/65">{COMPANY.idea}</p>

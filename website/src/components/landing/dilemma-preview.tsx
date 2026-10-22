@@ -29,7 +29,7 @@ export function DilemmaPreview() {
   const peopleInterview = (share / 100) * productPeople;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_1fr]">
       <div className="rounded-3xl border border-line bg-card p-6 shadow-card sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="text-sm font-semibold text-ink">Geser alokasi kapasitas tim Product & Ops</p>

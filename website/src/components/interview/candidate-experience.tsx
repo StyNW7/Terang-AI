@@ -117,7 +117,7 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
         <motion.div key={step + (step === "interview" ? index : "")} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
           {step === "welcome" && (
             <div className="overflow-hidden rounded-3xl border border-line bg-card shadow-card">
-              <div className="grid items-center gap-6 bg-one-gradient p-8 text-white md:grid-cols-[1fr_auto]">
+              <div className="grid grid-cols-1 items-center gap-6 bg-one-gradient p-8 text-white md:grid-cols-[1fr_auto]">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/75">{RECRUITER_COMPANY}</p>
                   <h3 className="mt-2 text-3xl font-bold">Selamat datang di wawancara terstruktur</h3>
@@ -125,7 +125,7 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
                 </div>
                 <Mascot name="interview" size={150} className="mx-auto" />
               </div>
-              <div className="grid gap-4 p-8 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 p-8 sm:grid-cols-2">
                 <Field>
                   <Label htmlFor="cand-name" required>Nama Anda (fiktif)</Label>
                   <Input id="cand-name" value={name} onChange={(e) => setName(e.target.value)} />
@@ -184,7 +184,7 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
           {step === "instructions" && (
             <div className="rounded-3xl border border-line bg-card p-8 shadow-card">
               <h3 className="text-2xl font-semibold text-ink">Instruksi wawancara</h3>
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
                 {[
                   { icon: MessageSquareText, t: `${questions.length} pertanyaan inti`, d: "Diajukan berurutan, sama untuk semua kandidat pada posisi ini." },
                   { icon: Lightbulb, t: "Gunakan contoh nyata", d: "Ceritakan situasi, tindakan Anda, dan hasilnya (metode STAR)." },
@@ -218,7 +218,7 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
               <h3 className="mt-1 text-2xl font-semibold text-ink">{job.title}</h3>
               <p className="mt-2 text-muted-strong">{job.description}</p>
               <p className="mt-5 text-sm font-semibold text-ink">Kompetensi yang ditanyakan</p>
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {job.competencies.map((c) => (
                   <div key={c.id} className="rounded-xl bg-surface p-3 ring-1 ring-line">
                     <p className="font-semibold text-ink">{COMPETENCY_MAP[c.id]?.name}</p>

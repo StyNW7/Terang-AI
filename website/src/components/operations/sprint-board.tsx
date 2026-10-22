@@ -196,7 +196,7 @@ export function RoadmapTimeline() {
           </div>
           {TIMELINE.map((t, i) => (
             <div key={t.name + i} className="grid grid-cols-[200px_repeat(12,1fr)] items-center border-t border-line/70">
-              <span className="truncate py-2 pr-2 text-[13px] text-ink">{t.name}</span>
+              <span className="py-2 pr-2 text-[13px] leading-snug text-ink">{t.name}</span>
               <div className="relative col-span-12 h-8">
                 <div className="absolute inset-0 grid grid-cols-12">
                   {MONTHS.map((m) => (

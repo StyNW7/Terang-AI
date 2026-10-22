@@ -76,7 +76,7 @@ export function EvolutionTimeline({ variant = "horizontal" }: { variant?: "horiz
           className="h-full origin-left rounded-full bg-brand-gradient"
         />
       </div>
-      <ol className="grid gap-5 lg:grid-cols-4">
+      <ol className="grid grid-cols-1 gap-5 lg:grid-cols-4">
         {EVOLUTION.map((step, i) => {
           const Icon = ICONS[i];
           const last = i === EVOLUTION.length - 1;

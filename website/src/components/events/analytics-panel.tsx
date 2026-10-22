@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useEventsStore } from "@/store/events-store";
 import { REPEAT_COMPARISON, SOURCE_CONVERSION, WEEKLY_ACTIVITY } from "@/data/events.mock";
-import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES } from "@/components/charts/chart-kit";
+import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES, noWrap } from "@/components/charts/chart-kit";
 import { Funnel } from "@/components/strategy/funnel";
 import { Select } from "@/components/ui/form";
 import { formatPercent } from "@/lib/formatters";
@@ -33,7 +33,7 @@ export function AnalyticsPanel() {
 
   return (
     <div className="space-y-5">
-      <div className="grid gap-5 xl:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
         <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <p className="text-[15px] font-semibold text-ink">Funnel registrasi</p>
@@ -56,7 +56,7 @@ export function AnalyticsPanel() {
             <BarChart data={sourceData} layout="vertical" margin={{ top: 4, right: 16, left: 8, bottom: 0 }}>
               <CartesianGrid horizontal={false} stroke={SERIES.grid} />
               <XAxis type="number" {...AXIS_PROPS} tickFormatter={(v: number) => formatPercent(v)} />
-              <YAxis type="category" dataKey="source" {...AXIS_PROPS} width={70} />
+              <YAxis type="category" dataKey="source" {...AXIS_PROPS} width={70} tickFormatter={noWrap} />
               <Tooltip cursor={{ fill: "rgba(57,183,255,0.08)" }} content={(p) => <ChartTooltip {...p} format="percent1" />} />
               <Bar dataKey="rate" name="Konversi" fill={SERIES.events} radius={[0, 4, 4, 0]} maxBarSize={22} />
             </BarChart>

@@ -34,7 +34,7 @@ export function TeamOverview({ rules }: { rules: StrategyMode }) {
   const hours = useScenarioStore((s) => s.assumptions.shared.productiveHoursPerPerson);
   const issues = useMemo(() => validateAllocation(allocation, rules), [allocation, rules]);
   return (
-    <div className="grid gap-4 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
       {(Object.keys(POOLS) as PoolKey[]).map((pool) => {
         const total = poolTotal(allocation, pool);
         const available = poolHours(pool, hours);
@@ -121,7 +121,7 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
         {preset === "custom" && <Badge tone="brand">Kustom</Badge>}
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
         {(Object.keys(POOLS) as PoolKey[]).map((pool) => {
           const total = poolTotal(allocation, pool);
           return (
@@ -154,7 +154,7 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
         })}
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_1.4fr]">
+      <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1.4fr]">
         <div className="rounded-2xl bg-navy-gradient p-5 text-white">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">Hasil alokasi per produk (jam/bulan)</p>
           {(["interview", "events"] as const).map((p) => {

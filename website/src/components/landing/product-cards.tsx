@@ -29,10 +29,10 @@ export function ProductCards() {
     },
   ];
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       {cards.map((c, i) => (
         <Reveal key={c.p.key} delay={i * 0.1}>
-          <article className={`group relative h-full overflow-hidden rounded-3xl border border-line bg-gradient-to-br ${c.gradient} p-7 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-lift`}>
+          <article data-spotlight className={`group relative h-full overflow-hidden rounded-3xl border border-line bg-gradient-to-br ${c.gradient} p-7 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-lift`}>
             <div className={`absolute -right-16 -top-16 h-56 w-56 rounded-full ${c.glow} blur-3xl transition group-hover:scale-125`} />
             <div className="relative flex items-start justify-between gap-4">
               <div>
@@ -46,7 +46,7 @@ export function ProductCards() {
               </div>
               <Mascot name={c.mascot} size={128} className="-mr-2 -mt-2 hidden shrink-0 sm:block" />
             </div>
-            <div className="relative mt-6 grid gap-4 sm:grid-cols-2">
+            <div className="relative mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Pelanggan</p>
                 <ul className="space-y-1.5">

@@ -48,13 +48,13 @@ export function PositioningMap() {
   const [active, setActive] = useState("interview");
   const current = POINTS.find((p) => p.id === active) ?? POINTS[0];
   return (
-    <div className="grid gap-6 lg:grid-cols-[1.25fr_1fr]">
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-line bg-card shadow-card">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.25fr_1fr]">
+      <div className="relative aspect-square w-full overflow-hidden rounded-3xl border border-line bg-card shadow-card sm:aspect-[4/3]">
         <div className="bg-dots absolute inset-0 opacity-60" />
         <div className="absolute inset-x-10 top-1/2 h-px bg-line" />
         <div className="absolute inset-y-10 left-1/2 w-px bg-line" />
-        <span className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[11px] font-semibold text-muted">
-          Pola penggunaan: episodik → berulang
+        <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap text-[11px] font-semibold text-muted">
+          Penggunaan: episodik → berulang
         </span>
         <span
           className="absolute left-3 top-1/2 -translate-y-1/2 rotate-180 whitespace-nowrap text-[11px] font-semibold text-muted"
@@ -62,9 +62,9 @@ export function PositioningMap() {
         >
           Pembeli: institusi → perusahaan
         </span>
-        <span className="absolute left-12 top-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted/80">Institusi · berulang</span>
-        <span className="absolute right-6 top-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted/80">Korporat · berulang</span>
-        <span className="absolute bottom-9 left-12 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted/80">Institusi · episodik</span>
+        <span className="absolute left-12 top-4 hidden text-[11px] sm:block font-semibold uppercase tracking-[0.12em] text-muted">Institusi · berulang</span>
+        <span className="absolute right-6 top-4 hidden text-[11px] sm:block font-semibold uppercase tracking-[0.12em] text-muted">Korporat · berulang</span>
+        <span className="absolute bottom-9 left-12 hidden text-[11px] sm:block font-semibold uppercase tracking-[0.12em] text-muted">Institusi · episodik</span>
         {POINTS.map((p, i) => {
           const Icon = p.icon;
           const isActive = p.id === active;

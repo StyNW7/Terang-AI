@@ -6,7 +6,7 @@ import { Briefcase, ClipboardCheck, History, Hourglass, Send } from "lucide-reac
 import { useInterviewStore } from "@/store/interview-store";
 import { KpiCard } from "@/components/ui/kpi-card";
 import { Button } from "@/components/ui/button";
-import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES } from "@/components/charts/chart-kit";
+import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES, noWrap } from "@/components/charts/chart-kit";
 import { formatDateTime } from "@/lib/formatters";
 import { CandidateStatusBadge, displayName } from "./shared";
 
@@ -50,7 +50,7 @@ export function HrOverview({ onOpenReport, onCandidates }: { onOpenReport: (id: 
         <KpiCard tone="one" label="Interview selesai" value={stats.completed} icon={<ClipboardCheck className="h-4 w-4" />} delta={0.24} deltaLabel="vs bulan lalu" />
         <KpiCard tone="navy" label="Menunggu tinjauan manusia" value={stats.awaiting} icon={<Hourglass className="h-4 w-4" />} />
       </div>
-      <div className="grid gap-6 xl:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
         <ChartFrame
           title="Aktivitas interview"
           description="Interview selesai vs ditinjau recruiter per minggu (ilustratif)."
@@ -83,7 +83,7 @@ export function HrOverview({ onOpenReport, onCandidates }: { onOpenReport: (id: 
             <BarChart data={workload} layout="vertical" margin={{ top: 4, right: 12, left: 8, bottom: 0 }}>
               <CartesianGrid horizontal={false} stroke={SERIES.grid} />
               <XAxis type="number" allowDecimals={false} {...AXIS_PROPS} />
-              <YAxis type="category" dataKey="job" width={120} {...AXIS_PROPS} />
+              <YAxis type="category" dataKey="job" width={120} tickFormatter={noWrap} {...AXIS_PROPS} />
               <Tooltip cursor={{ fill: "rgba(47,102,224,0.06)" }} content={(p) => <ChartTooltip {...p} />} />
               <Bar dataKey="menunggu" name="Menunggu" stackId="a" fill={SERIES.shared} maxBarSize={22} />
               <Bar dataKey="ditinjau" name="Ditinjau" stackId="a" fill={SERIES.interview} radius={[0, 4, 4, 0]} maxBarSize={22} />
@@ -91,7 +91,7 @@ export function HrOverview({ onOpenReport, onCandidates }: { onOpenReport: (id: 
           </ResponsiveContainer>
         </ChartFrame>
       </div>
-      <div className="grid gap-6 xl:grid-cols-[1.3fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.3fr_1fr]">
         <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <div className="flex items-center justify-between">
             <p className="text-[15px] font-semibold text-ink">Perlu perhatian recruiter</p>

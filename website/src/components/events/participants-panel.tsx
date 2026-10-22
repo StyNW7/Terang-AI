@@ -115,7 +115,7 @@ export function ParticipantsPanel() {
                         </div>
                       </div>
                     </td>
-                    <td className="max-w-[220px] truncate px-4 py-3 text-muted-strong">{eventName(p.eventId)}</td>
+                    <td className="min-w-[200px] max-w-[260px] px-4 py-3 leading-snug text-muted-strong">{eventName(p.eventId)}</td>
                     <td className="px-4 py-3 text-muted-strong">{p.source}</td>
                     <td className="px-4 py-3 text-muted-strong">{formatDate(p.registeredAt)}</td>
                     <td className="px-4 py-3">

@@ -50,7 +50,7 @@ export function ReportViewer({ candidateId, onSelect }: { candidateId?: string; 
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
+    <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_340px]">
       <div className="space-y-5">
         <div className="flex flex-col gap-4 rounded-2xl border border-line bg-card p-5 shadow-soft md:flex-row md:items-center md:justify-between">
           <div>
@@ -76,7 +76,7 @@ export function ReportViewer({ candidateId, onSelect }: { candidateId?: string; 
           </Select>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-[1fr_1.4fr]">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_1.4fr]">
           <div className="rounded-2xl bg-one-gradient p-5 text-white shadow-card">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/75">Ringkasan rubrik</p>

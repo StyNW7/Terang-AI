@@ -61,7 +61,7 @@ export default function HomePage() {
 
       {/* 1 — Company overview */}
       <Section id="tentang" className="scroll-mt-16">
-        <Container className="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+        <Container className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <Reveal>
             <SectionHeading
               eyebrow="Tentang Terang AI"
@@ -115,7 +115,7 @@ export default function HomePage() {
                   <span className="h-px flex-1 bg-gradient-to-r from-transparent via-sky/60 to-transparent" />
                 </div>
                 <p className="eyebrow text-sky">Menuju solusi bisnis B2B</p>
-                <div className="mt-4 grid gap-2.5 sm:grid-cols-3">
+                <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
                   {["AI Learning Management", "Terang Events", "AI Candidate Interview"].map((n, i) => (
                     <div key={n} className={i > 0 ? "rounded-xl bg-white p-3 text-navy shadow-soft" : "rounded-xl bg-white/[0.07] p-3 ring-1 ring-white/12"}>
                       <p className="text-sm font-semibold">{n}</p>
@@ -176,7 +176,7 @@ export default function HomePage() {
       {/* 4 — Dilemma preview */}
       <Section className="relative overflow-hidden border-y border-line bg-subtle">
         <Container>
-          <div className="grid items-end gap-8 lg:grid-cols-[1fr_auto]">
+          <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-[1fr_auto]">
             <Reveal>
               <SectionHeading
                 eyebrow="Dilema Strategis"
@@ -190,7 +190,7 @@ export default function HomePage() {
             </Reveal>
             <Mascot name="think" size={140} className="mx-auto hidden lg:block" />
           </div>
-          <div className="mt-8 grid gap-3 md:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
             {CHALLENGES.map((c, i) => (
               <Reveal key={c.id} delay={i * 0.08}>
                 <div className="flex h-full items-center gap-4 rounded-2xl border border-line bg-card p-4 shadow-soft">
@@ -236,11 +236,12 @@ export default function HomePage() {
               description="Super Admin mengendalikan strategi; setiap produk punya dashboard sendiri yang lengkap."
             />
           </Reveal>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
             {DASHBOARDS.map((d, i) => (
               <Reveal key={d.href} delay={i * 0.08}>
                 <Link
                   href={d.href}
+                  data-spotlight
                   className="group flex h-full flex-col rounded-3xl border border-line bg-card p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-lift"
                 >
                   <div className="flex items-center justify-between">
@@ -272,7 +273,7 @@ export default function HomePage() {
             <div className="relative overflow-hidden rounded-[32px] bg-navy-gradient px-6 py-12 text-white shadow-lift sm:px-12">
               <div className="bg-grid-dark absolute inset-0 opacity-70" />
               <div className="absolute -left-16 bottom-0 h-72 w-72 rounded-full bg-sky/25 blur-3xl" />
-              <div className="relative grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
+              <div className="relative grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
                 <div>
                   <p className="eyebrow inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-sky ring-1 ring-white/15">
                     <Sparkles className="h-3.5 w-3.5" /> Guided Experience

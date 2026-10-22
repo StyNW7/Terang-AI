@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { Table2, BarChart3 } from "lucide-react";
 import { formatValue, type NumberFormat } from "@/components/ui/animated-number";
+import { formatIDRCompact } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 
 /** Validated series colors (dataviz validator: CVD ΔE ≥ 18 for each pair). */
@@ -23,6 +24,10 @@ export const AXIS_PROPS = {
   tickLine: false,
   axisLine: false,
 } as const;
+
+/** Axis tick labels must never wrap (wrapped SVG lines overlap) — join words with non-breaking spaces. */
+export const noWrap = (v: unknown) => String(v).replace(/\s+/g, "\u00a0");
+export const tickIDR = (v: number) => noWrap(formatIDRCompact(v));
 
 interface TooltipEntry {
   name?: string | number;
@@ -110,7 +115,7 @@ export function ChartFrame({
 }) {
   const [view, setView] = useState<"chart" | "table">("chart");
   return (
-    <figure className={cn("rounded-2xl border border-line bg-card p-5 shadow-soft", className)} aria-label={summary}>
+    <figure data-spotlight className={cn("rounded-2xl border border-line bg-card p-5 shadow-soft", className)} aria-label={summary}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <figcaption className="text-[15px] font-semibold text-ink">{title}</figcaption>

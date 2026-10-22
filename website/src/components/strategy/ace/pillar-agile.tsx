@@ -123,7 +123,7 @@ export function AcePillarAgile() {
       </div>
 
       <LayoutGroup>
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {columns.map(({ product, list }) => {
             const isEvents = product === "events";
             const active = committed.filter((id) => items.find((x) => x.id === id)?.product === product).length;

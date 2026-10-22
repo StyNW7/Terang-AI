@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export function Card({ className, ...props }: ComponentProps<"div">) {
-  return <div className={cn("rounded-2xl border border-line bg-card shadow-soft", className)} {...props} />;
+  return <div data-spotlight className={cn("rounded-2xl border border-line bg-card shadow-soft", className)} {...props} />;
 }
 
 export function CardHeader({

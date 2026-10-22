@@ -24,8 +24,8 @@ function FocusVisual() {
           <div key={p.key} className="flex items-center gap-3 rounded-2xl bg-white/12 p-3 ring-1 ring-white/15" style={{ marginLeft: i * 18, marginRight: i * 18 }}>
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white font-display text-xl font-semibold text-[#2251c9]">{p.letter}</span>
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">{p.name}</p>
-              <p className="truncate text-[11px] text-white/70">{p.program}</p>
+              <p className="text-sm font-semibold leading-snug">{p.name}</p>
+              <p className="text-[11px] leading-snug text-white/70">{p.program}</p>
             </div>
           </div>
         ))}
@@ -85,7 +85,7 @@ export default function OneStrategyPage() {
 
       <Section className="pt-0">
         <Container>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {[
               { icon: Brain, title: "Coba demo Interview", text: "Builder, wawancara kandidat & laporan bukti.", href: "/dashboard/interview" },
               { icon: ShieldCheck, title: "Portfolio & Expansion Gate", text: "Lihat KPI & matriks keputusan.", href: "/dashboard/portfolio" },

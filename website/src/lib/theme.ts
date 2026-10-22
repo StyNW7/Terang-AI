@@ -124,5 +124,8 @@ export function useSidebarCollapsed() {
     write(SIDEBAR_KEY, next ? "collapsed" : "expanded");
   }, []);
 
-  return { collapsed, setCollapsed, toggle: () => setCollapsed(!collapsed) };
+  // Reads the live attribute so the callback stays stable (used by keyboard shortcuts).
+  const toggle = useCallback(() => setCollapsed(document.documentElement.getAttribute("data-sidebar") !== "collapsed"), [setCollapsed]);
+
+  return { collapsed, setCollapsed, toggle };
 }

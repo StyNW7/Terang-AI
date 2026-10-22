@@ -96,11 +96,11 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
           <Plus className="h-4 w-4" /> Buat lowongan
         </Button>
       </div>
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {jobs.map((j) => {
           const count = candidates.filter((c) => c.jobId === j.id).length;
           return (
-            <div key={j.id} className="flex flex-col rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:shadow-card">
+            <div key={j.id} data-spotlight className="flex flex-col rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:shadow-card">
               <div className="flex items-start justify-between gap-2">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-soft text-one-ink">
                   <Briefcase className="h-5 w-5" />
@@ -152,10 +152,10 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
           </>
         }
       >
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field className="sm:col-span-2">
             <Label>Template jabatan</Label>
-            <div className="grid gap-2 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               {(Object.keys(ROLE_TEMPLATES) as RoleKey[]).map((r) => (
                 <button
                   key={r}
@@ -212,7 +212,7 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
                 );
               })}
             </div>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {draft.competencies.map((c) => (
                 <Slider
                   key={c.id}

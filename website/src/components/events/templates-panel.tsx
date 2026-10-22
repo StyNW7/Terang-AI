@@ -13,11 +13,11 @@ const ICONS = { trophy: Trophy, presentation: Presentation, wrench: Wrench, mic:
 export function TemplatesPanel({ onUse }: { onUse: (t: EventTemplate) => void }) {
   return (
     <div className="space-y-5">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {EVENT_TEMPLATES.map((t) => {
           const Icon = ICONS[t.icon];
           return (
-            <div key={t.id} className="group flex flex-col rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
+            <div key={t.id} data-spotlight className="group flex flex-col rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
               <div className="flex items-start justify-between gap-3">
                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-sky-soft text-sky-ink transition group-hover:bg-ace-gradient group-hover:text-white">
                   <Icon className="h-6 w-6" />

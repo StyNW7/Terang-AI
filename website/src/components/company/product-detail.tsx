@@ -88,7 +88,7 @@ export function ProductDetail({ product }: { product: ProductKey }) {
       </Container>
 
       <Section className="pt-14">
-        <Container className="grid gap-6 lg:grid-cols-2">
+        <Container className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <Reveal>
             <div className="h-full rounded-3xl border border-line bg-card p-7 shadow-soft">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-ink">Target pelanggan</p>
@@ -131,7 +131,7 @@ export function ProductDetail({ product }: { product: ProductKey }) {
               description="Label menunjukkan mana yang sudah menjadi fondasi publik dan mana yang merupakan usulan prototype."
             />
           </Reveal>
-          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+          <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-6">
             {WORKFLOWS[product].map((w, i) => (
               <Reveal key={w.step} delay={i * 0.06}>
                 <div className="relative h-full rounded-2xl border border-line bg-surface p-4">
@@ -150,7 +150,7 @@ export function ProductDetail({ product }: { product: ProductKey }) {
       </Section>
 
       <Section>
-        <Container className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
+        <Container className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.3fr]">
           <Reveal>
             <div className="h-full rounded-3xl bg-navy-gradient p-7 text-white shadow-lift">
               <SourceLabel type="public-source" dark />
@@ -169,10 +169,10 @@ export function ProductDetail({ product }: { product: ProductKey }) {
               )}
             </div>
           </Reveal>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {p.proposals.map((f, i) => (
               <Reveal key={f.name} delay={i * 0.06}>
-                <div className="flex h-full flex-col rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
+                <div data-spotlight className="flex h-full flex-col rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
                   <div className="flex items-center justify-between gap-2">
                     <span className="grid h-9 w-9 place-items-center rounded-xl bg-soft text-brand-ink">
                       <Sparkles className="h-4 w-4" />

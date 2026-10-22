@@ -28,7 +28,7 @@ export function StrategyHero({
         <div className="bg-grid-dark absolute inset-0 opacity-60 mask-fade-b" />
         <div className="absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full bg-white/15 blur-[90px]" />
         <div className="absolute -bottom-40 left-10 h-[360px] w-[360px] rounded-full bg-navy/40 blur-[90px]" />
-        <Container className="relative grid items-center gap-12 py-16 lg:grid-cols-[1.25fr_1fr] lg:py-20">
+        <Container className="relative grid grid-cols-1 items-center gap-12 py-16 lg:grid-cols-[1.25fr_1fr] lg:py-20">
           <div>
             <p className="eyebrow inline-flex items-center gap-2 rounded-full bg-white/12 px-3 py-1.5 ring-1 ring-white/20">
               {eyebrow}

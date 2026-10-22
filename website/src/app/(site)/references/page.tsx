@@ -46,7 +46,7 @@ export default function ReferencesPage() {
           <Reveal>
             <SectionHeading eyebrow="Evidence Classification" title="Lima label sumber yang dipakai di seluruh website" />
           </Reveal>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {(Object.keys(EVIDENCE_META) as EvidenceClassification[]).map((k, i) => (
               <Reveal key={k} delay={i * 0.05}>
                 <div className="h-full rounded-2xl border border-line bg-card p-5 shadow-soft">
@@ -64,7 +64,7 @@ export default function ReferencesPage() {
           <Reveal>
             <SectionHeading eyebrow="Public Research Sources" title="Sumber riset publik" />
           </Reveal>
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
             {PUBLIC_SOURCES.map((s, i) => (
               <Reveal key={s.id} delay={i * 0.04}>
                 <a
@@ -88,14 +88,14 @@ export default function ReferencesPage() {
       </Section>
 
       <Section>
-        <Container className="grid gap-10 lg:grid-cols-2">
+        <Container className="grid grid-cols-1 gap-10 lg:grid-cols-2">
           <div>
             <Reveal>
               <SectionHeading eyebrow="Glossary" title="Glosarium istilah" />
             </Reveal>
             <dl className="mt-8 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-card">
               {STRATEGY_GLOSSARY.map((g) => (
-                <div key={g.term} className="grid gap-1 p-4 sm:grid-cols-[170px_1fr]">
+                <div key={g.term} className="grid grid-cols-1 gap-1 p-4 sm:grid-cols-[170px_1fr]">
                   <dt className="font-semibold text-ink">{g.term}</dt>
                   <dd className="text-sm text-muted-strong">{g.meaning}</dd>
                 </div>
@@ -126,7 +126,7 @@ export default function ReferencesPage() {
           <Reveal>
             <SectionHeading eyebrow="Financial Formulas" title="Rumus simulasi finansial" description="Semua angka pada simulator dihitung dengan rumus berikut menggunakan asumsi ilustratif yang sama untuk ONE dan ACE." />
           </Reveal>
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
             {FORMULAS.map((f) => (
               <div key={f.name} className="rounded-2xl border border-line bg-surface p-5">
                 <p className="flex items-center gap-2 font-semibold text-ink">

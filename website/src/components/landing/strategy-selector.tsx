@@ -15,7 +15,7 @@ export function StrategySelector() {
     { key: "ace" as const, s: ACE_STRATEGY, icon: Layers, mascot: "puzzle" as const, gradient: "bg-ace-gradient", href: "/strategies/ace", cta: "Jelajahi ACE Strategy", subtitle: "Coordinated Dual-Product Growth" },
   ];
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       {cards.map(({ key, s, icon: Icon, mascot, gradient, href, cta, subtitle }) => {
         const selected = mode === key;
         return (
@@ -56,7 +56,7 @@ export function StrategySelector() {
                       <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg font-display text-lg font-semibold text-white", gradient)}>{p.letter}</span>
                       <div className="min-w-0">
                         <p className="text-sm font-semibold text-ink">{p.name}</p>
-                        <p className="truncate text-xs text-muted">{p.program}</p>
+                        <p className="text-xs leading-snug text-muted">{p.program}</p>
                       </div>
                     </div>
                   ))}

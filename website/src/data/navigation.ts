@@ -93,20 +93,20 @@ export const WORKSPACES: Workspace[] = [
       {
         group: "Kelola",
         links: [
-          { label: "Ringkasan", href: "/dashboard/events", icon: "dashboard" },
-          { label: "Daftar Event", href: "/dashboard/events/list", icon: "calendar" },
-          { label: "Buat Event", href: "/dashboard/events/create", icon: "plus" },
-          { label: "Template", href: "/dashboard/events/templates", icon: "sparkles", tag: "ACE" },
-          { label: "Repeat Planner", href: "/dashboard/events/repeat", icon: "repeat", tag: "ACE" },
+          { label: "Ringkasan", href: "/dashboard/events", icon: "dashboard", description: "KPI event, tenggat & progres" },
+          { label: "Daftar Event", href: "/dashboard/events/list", icon: "calendar", description: "Cari, edit & duplikasi event" },
+          { label: "Buat Event", href: "/dashboard/events/create", icon: "plus", description: "Wizard 6 langkah membuat event baru" },
+          { label: "Template", href: "/dashboard/events/templates", icon: "sparkles", tag: "ACE", description: "Smart Event Templates siap pakai" },
+          { label: "Repeat Planner", href: "/dashboard/events/repeat", icon: "repeat", tag: "ACE", description: "Ulangi event lama untuk edisi baru" },
         ],
       },
       {
         group: "Operasional",
         links: [
-          { label: "Peserta", href: "/dashboard/events/participants", icon: "users" },
-          { label: "Penjurian", href: "/dashboard/events/judging", icon: "gavel" },
-          { label: "Analitik", href: "/dashboard/events/analytics", icon: "barchart", tag: "ACE" },
-          { label: "Keuangan", href: "/dashboard/events/finance", icon: "wallet" },
+          { label: "Peserta", href: "/dashboard/events/participants", icon: "users", description: "Verifikasi pendaftar & status bayar" },
+          { label: "Penjurian", href: "/dashboard/events/judging", icon: "gavel", description: "Nilai submisi dengan rubrik & lihat peringkat juri" },
+          { label: "Analitik", href: "/dashboard/events/analytics", icon: "barchart", tag: "ACE", description: "Funnel registrasi & sumber konversi" },
+          { label: "Keuangan", href: "/dashboard/events/finance", icon: "wallet", description: "Transaksi, refund & dana diterima" },
         ],
       },
       {
@@ -127,16 +127,16 @@ export const WORKSPACES: Workspace[] = [
       {
         group: "Rekrutmen",
         links: [
-          { label: "Ringkasan", href: "/dashboard/interview", icon: "dashboard" },
-          { label: "Lowongan", href: "/dashboard/interview/jobs", icon: "briefcase" },
-          { label: "Interview Builder", href: "/dashboard/interview/builder", icon: "wand" },
-          { label: "Kandidat", href: "/dashboard/interview/candidates", icon: "users" },
-          { label: "Laporan Bukti", href: "/dashboard/interview/reports", icon: "filesearch" },
+          { label: "Ringkasan", href: "/dashboard/interview", icon: "dashboard", description: "Lowongan, tinjauan tertunda & audit" },
+          { label: "Lowongan", href: "/dashboard/interview/jobs", icon: "briefcase", description: "Posisi & bobot kompetensi" },
+          { label: "Interview Builder", href: "/dashboard/interview/builder", icon: "wand", description: "Susun & publikasikan pertanyaan wawancara" },
+          { label: "Kandidat", href: "/dashboard/interview/candidates", icon: "users", description: "Undang & pantau kandidat" },
+          { label: "Laporan Bukti", href: "/dashboard/interview/reports", icon: "filesearch", description: "Nilai rubrik + kutipan jawaban kandidat" },
         ],
       },
       {
         group: "Tata Kelola",
-        links: [{ label: "Responsible AI", href: "/dashboard/interview/responsible-ai", icon: "shieldcheck" }],
+        links: [{ label: "Responsible AI", href: "/dashboard/interview/responsible-ai", icon: "shieldcheck", description: "Tinjauan manusia, privasi & audit trail" }],
       },
       {
         group: "Pratinjau",

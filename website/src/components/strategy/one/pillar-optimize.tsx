@@ -65,7 +65,7 @@ export function OnePillarOptimize() {
           </div>
           <SourceLabel type="strategic-proposal" />
         </div>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {PRODUCTS.interview.proposals.map((f, i) => {
             const Icon = FEATURE_ICONS[i];
             return (
@@ -100,7 +100,7 @@ export function OnePillarOptimize() {
             onChange={setFlow}
           />
         </div>
-        <div className="mt-5 grid gap-2 md:grid-cols-5">
+        <div className="mt-5 grid grid-cols-1 gap-2 md:grid-cols-5">
           {(flow === "before" ? BEFORE : AFTER).map((t, i) => (
             <motion.div
               key={flow + t}
@@ -119,7 +119,7 @@ export function OnePillarOptimize() {
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Builder preview */}
         <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex items-start justify-between gap-2">
@@ -188,11 +188,11 @@ export function OnePillarOptimize() {
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
         {/* Roadmap */}
         <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <h3 className="text-lg font-semibold text-ink">Roadmap produk (usulan, 4 kuartal)</h3>
-          <div className="mt-5 grid gap-3 sm:grid-cols-4">
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-4">
             {ROADMAP.one.map((q, i) => (
               <div key={q.quarter} className="relative rounded-2xl bg-surface p-4 ring-1 ring-line">
                 <span className="grid h-8 w-8 place-items-center rounded-lg bg-one-gradient text-xs font-semibold text-white">{q.quarter}</span>

@@ -206,7 +206,7 @@ export function EventWizard({
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr]">
       <aside className="h-fit rounded-2xl border border-line bg-card p-4 shadow-soft lg:sticky lg:top-24">
         <div className="mb-3 flex items-center justify-between">
           <p className="text-sm font-semibold text-ink">Buat event</p>
@@ -279,7 +279,7 @@ export function EventWizard({
               </div>
             )}
             {step === 1 && (
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field className="sm:col-span-2">
                   <Label required>Kategori</Label>
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -320,7 +320,7 @@ export function EventWizard({
               </div>
             )}
             {step === 2 && (
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field>
                   <Label htmlFor="fee" required hint="0 = gratis">Biaya registrasi (Rp)</Label>
                   <Input id="fee" type="number" min={0} step={5000} aria-invalid={!!errors.fee} {...register("fee", { valueAsNumber: true })} />
@@ -338,7 +338,7 @@ export function EventWizard({
               </div>
             )}
             {step === 3 && (
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <Field>
                   <Label htmlFor="registrationClose" required>Registrasi ditutup</Label>
                   <Input id="registrationClose" type="date" aria-invalid={!!errors.registrationClose} {...register("registrationClose")} />
@@ -367,7 +367,7 @@ export function EventWizard({
                   </div>
                   <div className="space-y-2">
                     {stages.fields.map((f, i) => (
-                      <div key={f.id} className="grid gap-2 rounded-xl bg-surface p-3 ring-1 ring-line sm:grid-cols-[1.4fr_1fr_1fr_auto]">
+                      <div key={f.id} className="grid grid-cols-1 gap-2 rounded-xl bg-surface p-3 ring-1 ring-line sm:grid-cols-[1.4fr_1fr_1fr_auto]">
                         <div>
                           <Input aria-label={`Nama tahap ${i + 1}`} aria-invalid={!!errors.stages?.[i]?.name} placeholder="Nama tahap" {...register(`stages.${i}.name`)} />
                           <FieldError message={errors.stages?.[i]?.name?.message} />
@@ -410,7 +410,7 @@ export function EventWizard({
                   ) : (
                     <div className="space-y-2">
                       {criteria.fields.map((f, i) => (
-                        <div key={f.id} className="grid gap-2 rounded-xl bg-surface p-3 ring-1 ring-line sm:grid-cols-[1.5fr_110px_auto]">
+                        <div key={f.id} className="grid grid-cols-1 gap-2 rounded-xl bg-surface p-3 ring-1 ring-line sm:grid-cols-[1.5fr_110px_auto]">
                           <div>
                             <Input placeholder="Nama kriteria" aria-label={`Kriteria ${i + 1}`} {...register(`criteria.${i}.name`)} />
                             <FieldError message={errors.criteria?.[i]?.name?.message} />
@@ -438,7 +438,7 @@ export function EventWizard({
                     <h4 className="mt-3 text-2xl font-semibold">{values.name}</h4>
                     <p className="text-sm text-white/85">{values.organizer}</p>
                   </div>
-                  <div className="grid gap-4 p-5 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2">
                     <p className="text-sm text-muted-strong sm:col-span-2">{values.description}</p>
                     {[
                       ["Tanggal", `${formatDate(values.startDate)} – ${formatDate(values.endDate)}`],

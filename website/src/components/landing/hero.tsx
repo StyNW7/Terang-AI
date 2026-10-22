@@ -226,7 +226,7 @@ export function Hero() {
       <div className="absolute -left-40 top-10 -z-10 h-[460px] w-[460px] rounded-full bg-sky/20 blur-[100px]" />
       <div className="absolute -right-32 top-40 -z-10 h-[420px] w-[420px] rounded-full bg-royal/15 blur-[110px]" />
 
-      <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 pb-24 pt-12 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:px-8 lg:py-16">
+      <div className="mx-auto grid grid-cols-1 w-full max-w-7xl items-center gap-12 px-4 pb-24 pt-12 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:px-8 lg:py-16">
         <motion.div initial="hidden" animate="show">
           <motion.div
             custom={0}

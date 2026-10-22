@@ -10,6 +10,7 @@ import { WORKSPACES, activeLink, workspaceFor, type Workspace } from "@/data/nav
 import { Logo, LogoMark } from "@/components/shared/brand";
 import { NavIcon } from "@/components/navigation/nav-icon";
 import { ThemeToggle } from "@/components/navigation/theme-toggle";
+import { CommandTrigger } from "@/components/navigation/command-palette";
 import { Tooltip } from "@/components/ui/tooltip";
 import { MODE_META, useStrategyMode } from "@/hooks/use-strategy-mode";
 import { useSidebarCollapsed } from "@/lib/theme";
@@ -151,6 +152,7 @@ function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; o
             onClick={toggle}
             className="grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-neutral-soft hover:text-ink sidebar-collapsed:hidden"
             aria-label="Kecilkan sidebar"
+            title="Kecilkan sidebar  ["
           >
             <PanelLeftClose className="h-[18px] w-[18px]" />
           </button>
@@ -231,7 +233,7 @@ function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; o
             onClick={toggle}
             className="hidden w-full place-items-center rounded-xl py-2 text-muted transition hover:bg-neutral-soft hover:text-ink sidebar-collapsed:grid"
             aria-label="Perbesar sidebar"
-            title="Perbesar sidebar"
+            title="Perbesar sidebar  ["
           >
             <PanelLeftOpen className="h-[18px] w-[18px]" />
           </button>
@@ -246,6 +248,19 @@ function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; o
 ------------------------------------------------------------------- */
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() ?? "";
+  const { toggle: toggleSidebar } = useSidebarCollapsed();
+
+  // "[" toggles the sidebar (ignored while typing).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (e.key !== "[" || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (t && (["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName) || t.isContentEditable)) return;
+      toggleSidebar();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [toggleSidebar]);
   const [mobileOpen, setMobileOpen] = useState(false);
   const ws = workspaceFor(pathname);
   const current = activeLink(pathname, ws);
@@ -325,6 +340,8 @@ export function AppShell({ children }: { children: ReactNode }) {
               </nav>
             </div>
             <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+              <CommandTrigger className="hidden lg:inline-flex" />
+              <CommandTrigger compact className="lg:hidden" />
               <Tooltip content="Mode strategi aktif — ubah di Kontrol Strategi (Super Admin)" side="bottom">
                 <Link
                   href="/dashboard/strategy"

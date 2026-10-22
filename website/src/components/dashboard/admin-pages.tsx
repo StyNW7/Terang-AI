@@ -198,9 +198,9 @@ export function AdminOverviewPage() {
       </motion.div>
 
       {/* Products */}
-      <div className="mt-6 grid gap-5 lg:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-2">
         {products.map((p) => (
-          <div key={p.key} className="group flex flex-col rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:shadow-card">
+          <div key={p.key} data-spotlight className="group flex flex-col rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:shadow-card">
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
                 <span className={cn("grid h-11 w-11 place-items-center rounded-xl text-white shadow-soft", p.accent)}>
@@ -231,7 +231,7 @@ export function AdminOverviewPage() {
         ))}
       </div>
 
-      <div className="mt-6 grid gap-5 xl:grid-cols-[1.25fr_1fr]">
+      <div className="mt-6 grid grid-cols-1 gap-5 xl:grid-cols-[1.25fr_1fr]">
         <StrategySnapshot />
         <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <p className="text-[15px] font-semibold text-ink">Alur kerja yang disarankan</p>
@@ -303,7 +303,7 @@ export function StrategyControlPage() {
         }
       />
 
-      <div role="radiogroup" aria-label="Mode strategi" className="grid gap-4 md:grid-cols-3">
+      <div role="radiogroup" aria-label="Mode strategi" className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {options.map((o) => {
           const active = mode === o.id;
           const Icon = MODE_ICON[o.id];
@@ -352,7 +352,7 @@ export function StrategyControlPage() {
         })}
       </div>
 
-      <div className="mt-6 grid gap-5 xl:grid-cols-[1.2fr_1fr]">
+      <div className="mt-6 grid grid-cols-1 gap-5 xl:grid-cols-[1.2fr_1fr]">
         {strategy ? (
           <motion.div key={mode} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-line bg-card p-5 shadow-soft">
             <div className="flex flex-wrap items-start justify-between gap-3">
@@ -381,7 +381,7 @@ export function StrategyControlPage() {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-sm font-semibold text-ink">{p.name}</span>
-                    <span className="block truncate text-[13px] text-muted-strong">{p.program}</span>
+                    <span className="block text-[13px] leading-snug text-muted-strong">{p.program}</span>
                   </span>
                   <ArrowRight className="h-4 w-4 shrink-0 text-muted transition group-hover:translate-x-0.5 group-hover:text-ink" />
                 </Link>
@@ -414,7 +414,7 @@ function CapacityBars() {
     { key: "ACE", value: ace.capacity.productUtilization, ops: ace.capacity.opsUtilization },
   ];
   return (
-    <div className="mt-4 grid gap-4 md:grid-cols-2">
+    <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
       {rows.map((r) => (
         <div key={r.key} className="rounded-xl bg-subtle p-4 ring-1 ring-line">
           <p className="text-sm font-semibold text-ink">{r.key}</p>

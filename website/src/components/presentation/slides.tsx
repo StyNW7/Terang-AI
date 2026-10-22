@@ -61,7 +61,7 @@ const card = "rounded-3xl bg-white/[0.07] p-6 ring-1 ring-white/12 backdrop-blur
 
 function PillarRow({ pillars, step, accent }: { pillars: { letter: string; name: string; program: string }[]; step: number; accent: "one" | "ace" }) {
   return (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
       {pillars.map((p, i) => (
         <Step key={p.letter} at={i + 1} step={step} className={card}>
           <span className={cn("grid h-14 w-14 place-items-center rounded-2xl font-display text-3xl font-bold text-white", accent === "one" ? "bg-one-gradient" : "bg-ace-gradient")}>{p.letter}</span>
@@ -85,7 +85,7 @@ export const SLIDES: SlideDef[] = [
     notes:
       "Buka dengan konteks: Terang AI adalah startup EdTech Indonesia (PT Terang Inovasi Indonesia) yang diperkenalkan 2024. Mulai dari B2C — UTBK, CPNS, beasiswa, simulasi wawancara AI — lalu bergerak ke B2B. Tegaskan bahwa ini prototype akademik tidak resmi.",
     render: (step) => (
-      <div className="grid items-center gap-10 lg:grid-cols-[1.3fr_1fr]">
+      <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.3fr_1fr]">
         <div>
           <Logo height={48} href={null} />
           <h1 className="mt-8 text-6xl font-bold leading-[1.02] xl:text-7xl">
@@ -123,7 +123,7 @@ export const SLIDES: SlideDef[] = [
     render: (step) => (
       <div>
         <h2 className="text-5xl font-bold">Dua produk B2B, dua pasar berbeda.</h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {[PRODUCTS.events, PRODUCTS.interview].map((p, i) => (
             <Step key={p.key} at={i + 1} step={step} className={cn(card, "relative overflow-hidden")}>
               <Mascot name={i === 0 ? "events" : "interview"} size={130} className="absolute -bottom-4 -right-2" />
@@ -147,7 +147,7 @@ export const SLIDES: SlideDef[] = [
     render: (step) => (
       <div>
         <h2 className="text-5xl font-bold">Masalah nyata di dua segmen.</h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {[
             { icon: GraduationCap, t: "Penyelenggara acara & institusi", items: PRODUCTS.events.problems.slice(0, 4) },
             { icon: Users, t: "Tim HR & talent acquisition", items: PRODUCTS.interview.problems.slice(0, 4) },
@@ -207,7 +207,7 @@ export const SLIDES: SlideDef[] = [
           ))}
           <span className="ml-3 text-lg text-white/70">7 personel (konteks studi kasus)</span>
         </Step>
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
           {CHALLENGES.map((c, i) => (
             <Step key={c.id} at={i + 2} step={step} className={card}>
               <p className="font-display text-5xl font-bold text-sky/60">{c.number}</p>
@@ -250,7 +250,7 @@ export const SLIDES: SlideDef[] = [
     render: (step) => (
       <div>
         <h2 className="text-5xl font-bold">From generic scores to evidence-based recruiter insights.</h2>
-        <div className="mt-10 grid gap-4 md:grid-cols-5">
+        <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-5">
           {PRODUCTS.interview.proposals.map((f, i) => (
             <Step key={f.name} at={i < 3 ? 1 : 2} step={step} className={card}>
               <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-gradient text-lg font-semibold">{i + 1}</span>
@@ -314,7 +314,7 @@ export const SLIDES: SlideDef[] = [
     render: (step) => (
       <div>
         <h2 className="text-5xl font-bold">ONE Growth Intelligence & Expansion Gate</h2>
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
           {[
             { icon: Rocket, t: "Scale", d: "Kualitas, permintaan, ekonomi, kapasitas & keamanan lulus.", c: "from-[#12a37a] to-[#0b7a5a]" },
             { icon: Wrench, t: "Improve", d: "Beberapa target meleset, perbaikan masih layak.", c: "from-[#4a90e2] to-[#2251c9]" },
@@ -364,7 +364,7 @@ export const SLIDES: SlideDef[] = [
     render: (step) => (
       <div>
         <h2 className="text-5xl font-bold">ACE Dual-Product Innovation Sprint</h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {[
             { icon: CalendarDays, t: "Terang Events", items: PRODUCTS.events.proposals.map((p) => p.name) },
             { icon: Brain, t: "AI Candidate Interview", items: ["Role-Based Interview Builder", "Evidence-Linked Assessment", "Recruiter Review Dashboard", "Responsible AI Controls"] },
@@ -398,7 +398,7 @@ export const SLIDES: SlideDef[] = [
       <div>
         <h2 className="text-5xl font-bold">ACE Command Center</h2>
         <p className="mt-3 text-xl text-white/70">Kapasitas · anggaran · WIP · risiko — dalam satu layar.</p>
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
           {[
             { t: "Product (3)", v: [["Interview", 37], ["Events", 25], ["QA", 13], ["Maint.", 10], ["Buffer", 15]] },
             { t: "Strategy & Ops (2)", v: [["Interview", 40], ["Events", 30], ["Koordinasi", 15], ["Buffer", 15]] },
@@ -441,7 +441,7 @@ export const SLIDES: SlideDef[] = [
     render: (step) => (
       <div>
         <h2 className="text-5xl font-bold">Evaluate & Evolve Portfolio</h2>
-        <div className="mt-10 grid gap-5 md:grid-cols-4">
+        <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-4">
           {[
             { icon: Rocket, t: "Invest more", d: "Traksi kuat & ekonomi berkelanjutan", c: "from-[#12a37a] to-[#0b7a5a]" },
             { icon: Wrench, t: "Improve", d: "Potensi ada, KPI tertentu perlu diperbaiki", c: "from-[#4a90e2] to-[#2251c9]" },
@@ -476,7 +476,7 @@ export const SLIDES: SlideDef[] = [
       return (
         <div>
           <h2 className="text-5xl font-bold">Two Strategies. One Resource Reality.</h2>
-          <Step at={1} step={step} className="mt-10 grid gap-6 md:grid-cols-2">
+          <Step at={1} step={step} className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
             {[
               { k: "ONE", r: one, g: "bg-one-gradient", icon: Target },
               { k: "ACE", r: ace, g: "bg-ace-gradient", icon: Layers },
@@ -525,7 +525,7 @@ export const SLIDES: SlideDef[] = [
     render: (step) => (
       <div>
         <h2 className="text-5xl font-bold">Kapan masing-masing strategi lebih menarik?</h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           <Step at={1} step={step} className="rounded-3xl bg-one-gradient p-6">
             <p className="flex items-center gap-2 text-3xl font-bold">
               <Target className="h-7 w-7" /> ONE unggul bila…

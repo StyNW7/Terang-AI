@@ -11,7 +11,7 @@ import { KpiCard } from "@/components/ui/kpi-card";
 import { Callout, Progress } from "@/components/ui/misc";
 import { InfoTip } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES } from "@/components/charts/chart-kit";
+import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES, tickIDR } from "@/components/charts/chart-kit";
 import { DecisionGate } from "@/components/portfolio/decision-gate";
 import { SourceLabel } from "@/components/shared/source-label";
 
@@ -55,7 +55,7 @@ export function OnePillarEvaluate() {
         <KpiCard tone="navy" label="Utilisasi tim Product" value={r.capacity.productUtilization} format="percent" icon={<Wrench className="h-4 w-4" />} />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.3fr_1fr]">
         <ChartFrame
           title="Unit economics per interview"
           description="Dari pendapatan bersih ke kontribusi per interview berbayar."
@@ -67,7 +67,7 @@ export function OnePillarEvaluate() {
             <BarChart data={unitData} margin={{ top: 10, right: 8, left: 8, bottom: 0 }}>
               <CartesianGrid vertical={false} stroke={SERIES.grid} />
               <XAxis dataKey="name" {...AXIS_PROPS} />
-              <YAxis {...AXIS_PROPS} tickFormatter={(v: number) => formatIDRCompact(v)} width={70} />
+              <YAxis {...AXIS_PROPS} tickFormatter={tickIDR} width={86} />
               <Tooltip cursor={{ fill: "rgba(74,144,226,0.06)" }} content={(p) => <ChartTooltip {...p} format="idr" />} />
               <Bar dataKey="value" name="Rp / interview" radius={[4, 4, 0, 0]} maxBarSize={56}>
                 {unitData.map((d) => (

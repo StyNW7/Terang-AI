@@ -34,7 +34,7 @@ export function BudgetPlanner() {
         </div>
         <SourceLabel type="illustrative-assumption" compact />
       </div>
-      <div className="mt-5 grid gap-6 lg:grid-cols-[1.3fr_1fr]">
+      <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-[1.3fr_1fr]">
         <div className="space-y-4">
           {budget.map((b) => (
             <Slider

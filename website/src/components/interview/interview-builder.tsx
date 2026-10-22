@@ -70,7 +70,7 @@ export function InterviewBuilder({ jobId, onJobChange }: { jobId: string; onJobC
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
+    <div className="grid grid-cols-1 gap-6 xl:grid-cols-[320px_1fr]">
       <aside className="h-fit space-y-4 rounded-2xl border border-line bg-card p-5 shadow-soft xl:sticky xl:top-24">
         <div>
           <p className="text-sm font-semibold text-ink">Lowongan</p>

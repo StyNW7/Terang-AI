@@ -20,7 +20,7 @@ type StageId = (typeof STAGES)[number]["id"];
 function StagePanel({ id }: { id: StageId }) {
   if (id === "products") {
     return (
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {[
           { name: "Terang Events", cat: "EventTech", icon: CalendarDays, color: "bg-sky-soft text-sky-ink", text: "Penyelenggara acara & kompetisi — registrasi, pembayaran, penjurian." },
           { name: "AI Candidate Interview", cat: "HRTech", icon: Brain, color: "bg-one-soft text-one-ink", text: "Tim HR — wawancara terstruktur & evaluasi kandidat berbasis bukti." },
@@ -49,7 +49,7 @@ function StagePanel({ id }: { id: StageId }) {
           <p className="text-sm font-semibold text-ink">7 personel melayani dua peluang sekaligus</p>
           <SourceLabel type="internal-restricted-context" compact />
         </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
           {pools.map((pool) => (
             <div key={pool.label} className="rounded-2xl border border-line bg-card p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">{pool.label}</p>
@@ -83,7 +83,7 @@ function StagePanel({ id }: { id: StageId }) {
   }
   if (id === "challenges") {
     return (
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         {CHALLENGES.map((c, i) => (
           <motion.div
             key={c.id}
@@ -101,7 +101,7 @@ function StagePanel({ id }: { id: StageId }) {
     );
   }
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {[
         { k: "ONE", t: "Focus to Grow", d: "Prioritaskan AI Candidate Interview; Events maintenance-only.", icon: Target, g: "bg-one-gradient" },
         { k: "ACE", t: "Coordinate to Grow", d: "Kembangkan dua produk dengan alokasi terkendali & evaluasi portofolio.", icon: Layers, g: "bg-ace-gradient" },

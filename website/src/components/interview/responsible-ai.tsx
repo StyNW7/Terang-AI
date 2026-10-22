@@ -30,7 +30,7 @@ export function ResponsibleAi() {
   return (
     <div className="space-y-6">
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <div className="flex items-start justify-between gap-3">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-success-soft text-success">
@@ -86,7 +86,7 @@ export function ResponsibleAi() {
         </div>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.3fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.3fr_1fr]">
         <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
           <div className="flex items-center gap-2 border-b border-line px-5 py-4">
             <KeyRound className="h-4 w-4 text-one-ink" />
@@ -138,7 +138,7 @@ export function ResponsibleAi() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Callout tone="info" icon={<Lock className="h-[18px] w-[18px]" />} title="Pemberitahuan privasi kandidat (contoh)">
           Jawaban Anda diproses untuk membantu recruiter meninjau kesesuaian dengan kompetensi jabatan. Tidak ada analisis wajah, suara, emosi,
           atau kepribadian. Anda dapat meminta akses atau penghapusan data. Data disimpan {retention} hari setelah keputusan.

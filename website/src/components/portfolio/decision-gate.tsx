@@ -40,7 +40,7 @@ export function DecisionGate({
   const isInterview = product === "interview";
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.1fr]">
       <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
         <h3 className="text-lg font-semibold text-ink">{title ?? "Input KPI"}</h3>
         <p className="text-sm text-muted-strong">Geser KPI untuk melihat bagaimana keputusan berubah. Semua ambang batas terlihat.</p>

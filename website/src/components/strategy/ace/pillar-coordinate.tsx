@@ -77,7 +77,7 @@ export function AcePillarCoordinate() {
       </div>
 
       {/* Campaigns */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {[
           {
             title: "Host Smarter with Terang.",
@@ -146,7 +146,7 @@ export function AcePillarCoordinate() {
       </div>
 
       {/* Shared CRM + joint experiment */}
-      <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.5fr_1fr]">
         <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -219,7 +219,7 @@ export function AcePillarCoordinate() {
       </div>
 
       {/* Budget + capacity */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <h3 className="text-lg font-semibold text-ink">Budget monitoring — pemasaran & overhead</h3>
           <p className="text-sm text-muted-strong">Total {formatIDRCompact(marketingTotal)} untuk {assumptions.shared.horizonMonths} bulan (dari simulator).</p>

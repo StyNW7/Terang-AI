@@ -56,7 +56,7 @@ export default function CompanyPage() {
           <Reveal>
             <SectionHeading eyebrow="Company Identity" title="Identitas perusahaan" description="Ringkasan identitas berdasarkan informasi publik Terang AI." action={<SourceLabel type="public-source" />} />
           </Reveal>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {identity.map(({ icon: Icon, label, value }, i) => (
               <Reveal key={label} delay={i * 0.05}>
                 <div className="flex h-full gap-4 rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
@@ -88,7 +88,7 @@ export default function CompanyPage() {
 
       {/* Evolution */}
       <Section className="bg-card">
-        <Container className="grid gap-12 lg:grid-cols-[1.3fr_1fr]">
+        <Container className="grid grid-cols-1 gap-12 lg:grid-cols-[1.3fr_1fr]">
           <div>
             <Reveal>
               <SectionHeading
@@ -157,7 +157,7 @@ export default function CompanyPage() {
           <Reveal>
             <SectionHeading eyebrow="Source Information" title="Apa yang publik, apa yang diusulkan?" />
           </Reveal>
-          <div className="mt-8 grid gap-6 md:grid-cols-2">
+          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
             <Reveal>
               <div className="h-full rounded-3xl border border-line bg-card p-6 shadow-soft">
                 <SourceLabel type="public-source" />

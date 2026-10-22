@@ -28,7 +28,7 @@
   --color-card: #ffffff;
   --color-ink: #0f2540;
   --color-muted-strong: #475a72;
-  --color-muted: #64748b;
+  --color-muted: #5b6b80;
   --color-line: #e2eaf3;
   --color-line-strong: #cdd9e6;
   --color-soft: #eaf4ff;
@@ -37,8 +37,8 @@
   --color-neutral-soft: #eef2f7;
 
   /* Ink variants for text on light surfaces */
-  --color-brand-ink: #2f6fc0;
-  --color-sky-ink: #0877b8;
+  --color-brand-ink: #2b66b3;
+  --color-sky-ink: #066a9f;
   --color-sky-soft: #e5f6ff;
 
   /* Strategy accents */
@@ -46,12 +46,12 @@
   --color-one-ink: #2251c9;
   --color-one-soft: #e8eefc;
   --color-ace: #0c9fd8;
-  --color-ace-ink: #0a7aa6;
+  --color-ace-ink: #086d95;
   --color-ace-soft: #e3f6fd;
 
   /* Product accents */
   --color-events: #39b7ff;
-  --color-events-ink: #0a7cbf;
+  --color-events-ink: #076ca6;
   --color-interview: #2f66e0;
   --color-interview-ink: #2450b8;
 
@@ -70,7 +70,7 @@
 
   /* Charts */
   --color-grid: #e6eef7;
-  --color-axis: #64748b;
+  --color-axis: #5b6b80;
   --color-series-navy: #17395e;
   --color-series-muted: #94a3b8;
 
@@ -422,6 +422,29 @@ html[data-theme-vt]::view-transition-old(root) {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+/* ---------- Spotlight hover (cursor-following glow) ---------- */
+[data-spotlight] {
+  position: relative;
+  isolation: isolate;
+}
+[data-spotlight]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(57 183 255 / 0.12), transparent 45%);
+}
+[data-spotlight]:hover::after {
+  opacity: 1;
+}
+[data-theme="dark"] [data-spotlight]::after {
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(57 183 255 / 0.1), transparent 45%);
 }
 
 /* ---------- Range slider ---------- */

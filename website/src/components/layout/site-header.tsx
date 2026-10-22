@@ -9,6 +9,7 @@ import { MAIN_NAV, WORKSPACES } from "@/data/navigation";
 import { Logo } from "@/components/shared/brand";
 import { NavIcon } from "@/components/navigation/nav-icon";
 import { ThemeToggle } from "@/components/navigation/theme-toggle";
+import { CommandTrigger } from "@/components/navigation/command-palette";
 import { Tooltip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
@@ -68,6 +69,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState<string | null>(null);
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hovered, setHovered] = useState<string | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -111,20 +113,36 @@ export function SiteHeader() {
       <div ref={navRef} className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <Logo height={24} preload />
-          <nav aria-label="Navigasi utama" className="hidden items-center gap-0.5 lg:flex" onMouseLeave={() => setOpen(null)}>
+          <nav
+            aria-label="Navigasi utama"
+            className="hidden items-center gap-0.5 lg:flex"
+            onMouseLeave={() => {
+              setOpen(null);
+              setHovered(null);
+            }}
+          >
             {MAIN_NAV.map((item) => {
               const active = isActive(pathname, item.href) || item.children?.some((c) => isActive(pathname, c.href));
+              const pill = hovered === item.label && (
+                <motion.span
+                  layoutId="nav-hover-pill"
+                  className="absolute inset-0 -z-10 rounded-lg bg-neutral-soft"
+                  transition={{ type: "spring", stiffness: 500, damping: 38 }}
+                />
+              );
               if (!item.children) {
                 return (
                   <Link
                     key={item.label}
                     href={item.href!}
                     aria-current={active ? "page" : undefined}
+                    onMouseEnter={() => setHovered(item.label)}
                     className={cn(
-                      "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                      "relative isolate rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                       active ? "text-ink" : "text-muted-strong hover:text-ink",
                     )}
                   >
+                    {pill}
                     {item.label}
                     {active && <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-brand-gradient" />}
                   </Link>
@@ -132,16 +150,24 @@ export function SiteHeader() {
               }
               const isOpen = open === item.label;
               return (
-                <div key={item.label} className="relative" onMouseEnter={() => setOpen(item.label)}>
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => {
+                    setOpen(item.label);
+                    setHovered(item.label);
+                  }}
+                >
                   <button
                     type="button"
                     aria-expanded={isOpen}
                     onClick={() => setOpen(isOpen ? null : item.label)}
                     className={cn(
-                      "relative flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                      "relative isolate flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                       active || isOpen ? "text-ink" : "text-muted-strong hover:text-ink",
                     )}
                   >
+                    {pill}
                     {item.label}
                     <ChevronDown className={cn("h-3.5 w-3.5 text-muted transition-transform", isOpen && "rotate-180")} />
                     {active && <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-brand-gradient" />}
@@ -158,6 +184,8 @@ export function SiteHeader() {
         </div>
 
         <div className="flex items-center gap-2">
+          <CommandTrigger className="hidden xl:inline-flex" />
+          <CommandTrigger compact className="xl:hidden" />
           <Tooltip content="Mode presentasi" side="bottom">
             <Link
               href="/presentation"

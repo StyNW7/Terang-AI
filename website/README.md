@@ -44,6 +44,8 @@ Route lama (`/demo/events`, `/demo/interview`, `/operations`, `/portfolio`, `/co
 - Tema terang & gelap (tombol matahari/bulan di header). Default mengikuti pengaturan OS; pilihan disimpan di localStorage.
 - Sidebar dashboard bisa dikecilkan (ikon saja, dengan tooltip); status disimpan di localStorage.
 - Smooth scrolling (Lenis) di situs publik, otomatis nonaktif bila `prefers-reduced-motion`.
+- Pencarian cepat **Ctrl/⌘ + K** untuk membuka halaman, fitur dashboard, mengganti tema, atau mode strategi.
+- Tombol **[** membuka/menutup sidebar dashboard.
 
 ## Yang disimulasikan
 Generator pertanyaan, follow-up, dan penilaian kandidat adalah **aturan deterministik** (bukan AI).
