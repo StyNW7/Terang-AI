@@ -33,10 +33,10 @@ export function Slider({
   return (
     <div className={cn("min-w-0", className)}>
       <div className="mb-2 flex items-baseline justify-between gap-3">
-        <label htmlFor={id} className="text-[13px] font-semibold text-ink">
+        <label htmlFor={id} className="text-[13px] font-medium text-ink">
           {label}
         </label>
-        <span className="tabular shrink-0 text-[13px] font-bold text-navy">{display ?? value}</span>
+        <span className="tabular shrink-0 text-[13px] font-semibold text-ink">{display ?? value}</span>
       </div>
       <input
         id={id}

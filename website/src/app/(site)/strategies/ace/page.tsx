@@ -18,7 +18,7 @@ export const metadata: Metadata = { title: "ACE Strategy — KONTRA" };
 function DualTrackVisual() {
   return (
     <div className="relative rounded-[28px] bg-white/10 p-6 ring-1 ring-white/20 backdrop-blur">
-      <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/75">Two tracks · one resource system</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/75">Two tracks · one resource system</p>
       <div className="mt-4 grid grid-cols-2 gap-3">
         {[
           { icon: CalendarDays, name: "Terang Events", sub: "Host Smarter" },
@@ -26,7 +26,7 @@ function DualTrackVisual() {
         ].map((t) => (
           <div key={t.name} className="rounded-2xl bg-white/12 p-3 text-center ring-1 ring-white/15">
             <t.icon className="mx-auto h-6 w-6" />
-            <p className="mt-2 text-sm font-bold">{t.name}</p>
+            <p className="mt-2 text-sm font-semibold">{t.name}</p>
             <p className="text-[11px] text-white/70">{t.sub}</p>
           </div>
         ))}
@@ -35,8 +35,8 @@ function DualTrackVisual() {
         <path d="M75 0 C 75 35, 150 25, 150 60" stroke="white" strokeOpacity="0.6" strokeWidth="2" strokeDasharray="5 5" className="animate-dash" />
         <path d="M225 0 C 225 35, 150 25, 150 60" stroke="white" strokeOpacity="0.6" strokeWidth="2" strokeDasharray="5 5" className="animate-dash" />
       </svg>
-      <div className="rounded-2xl bg-white p-4 text-center text-ace shadow-lift">
-        <p className="flex items-center justify-center gap-2 font-display text-lg font-extrabold">
+      <div className="rounded-2xl bg-white p-4 text-center text-[#0a7aa6] shadow-lift">
+        <p className="flex items-center justify-center gap-2 font-display text-lg font-semibold">
           <Gauge className="h-5 w-5" /> ACE Command Center
         </p>
         <p className="text-xs text-muted-strong">Kapasitas · anggaran · WIP · risiko</p>
@@ -101,17 +101,17 @@ export default function AceStrategyPage() {
         <Container>
           <div className="grid gap-4 md:grid-cols-3">
             {[
-              { icon: CalendarDays, title: "Coba Smart Templates", text: "Demo Terang Events dengan usulan ACE.", href: "/demo/events" },
-              { icon: Gauge, title: "Atur Alokasi Sumber Daya", text: "ACE Command Center untuk 7 personel.", href: "/operations" },
-              { icon: Scale, title: "Bandingkan dengan ONE", text: "Asumsi sama, kapasitas sama.", href: "/compare" },
+              { icon: CalendarDays, title: "Coba Smart Templates", text: "Demo Terang Events dengan usulan ACE.", href: "/dashboard/events" },
+              { icon: Gauge, title: "Atur Alokasi Sumber Daya", text: "ACE Command Center untuk 7 personel.", href: "/dashboard/operations" },
+              { icon: Scale, title: "Bandingkan dengan ONE", text: "Asumsi sama, kapasitas sama.", href: "/dashboard/simulator" },
             ].map((c) => (
               <Button key={c.href} href={c.href} variant="secondary" className="h-auto justify-between rounded-2xl p-5 text-left">
                 <span className="flex items-center gap-3">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-ace-soft text-[#0a7aa6]">
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-ace-soft text-ace-ink">
                     <c.icon className="h-5 w-5" />
                   </span>
                   <span>
-                    <span className="block text-sm font-bold text-ink">{c.title}</span>
+                    <span className="block text-sm font-semibold text-ink">{c.title}</span>
                     <span className="block whitespace-normal text-xs font-normal text-muted-strong">{c.text}</span>
                   </span>
                 </span>

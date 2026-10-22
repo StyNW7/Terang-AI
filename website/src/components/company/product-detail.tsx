@@ -50,7 +50,7 @@ export function ProductDetail({ product }: { product: ProductKey }) {
         }
       >
         <div className="flex flex-wrap gap-3">
-          <Button href={isEvents ? "/demo/events" : "/demo/interview"} size="lg">
+          <Button href={isEvents ? "/dashboard/events" : "/dashboard/interview"} size="lg">
             <Play className="h-4 w-4" /> Coba Simulasi Produk
           </Button>
           <Button href="/products" variant="secondary" size="lg">
@@ -77,8 +77,8 @@ export function ProductDetail({ product }: { product: ProductKey }) {
       <Section className="pt-14">
         <Container className="grid gap-6 lg:grid-cols-2">
           <Reveal>
-            <div className="h-full rounded-3xl border border-line bg-white p-7 shadow-soft">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-ink">Target pelanggan</p>
+            <div className="h-full rounded-3xl border border-line bg-card p-7 shadow-soft">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-ink">Target pelanggan</p>
               <ul className="mt-4 space-y-3">
                 {p.targetCustomers.map((t) => (
                   <li key={t} className="flex items-start gap-3 text-[15px] text-ink">
@@ -92,8 +92,8 @@ export function ProductDetail({ product }: { product: ProductKey }) {
             </div>
           </Reveal>
           <Reveal delay={0.08}>
-            <div className="h-full rounded-3xl border border-line bg-white p-7 shadow-soft">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-danger-ink">Masalah pelanggan</p>
+            <div className="h-full rounded-3xl border border-line bg-card p-7 shadow-soft">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-danger-ink">Masalah pelanggan</p>
               <ul className="mt-4 space-y-3">
                 {p.problems.map((t) => (
                   <li key={t} className="flex items-start gap-3 text-[15px] text-ink">
@@ -109,7 +109,7 @@ export function ProductDetail({ product }: { product: ProductKey }) {
         </Container>
       </Section>
 
-      <Section className="bg-white">
+      <Section className="bg-card">
         <Container>
           <Reveal>
             <SectionHeading
@@ -122,13 +122,13 @@ export function ProductDetail({ product }: { product: ProductKey }) {
             {WORKFLOWS[product].map((w, i) => (
               <Reveal key={w.step} delay={i * 0.06}>
                 <div className="relative h-full rounded-2xl border border-line bg-surface p-4">
-                  <span className="font-display text-3xl font-extrabold text-gradient">{String(i + 1).padStart(2, "0")}</span>
-                  <p className="mt-2 font-bold text-ink">{w.step}</p>
+                  <span className="font-display text-3xl font-bold text-gradient">{String(i + 1).padStart(2, "0")}</span>
+                  <p className="mt-2 font-semibold text-ink">{w.step}</p>
                   <p className="mt-1 text-xs leading-relaxed text-muted-strong">{w.detail}</p>
                   <div className="mt-3">
                     <SourceLabel type={w.status === "existing" ? "public-source" : "strategic-proposal"} compact />
                   </div>
-                  {i < 5 && <ArrowRight className="absolute -right-3 top-1/2 z-10 hidden h-5 w-5 -translate-y-1/2 rounded-full bg-white p-0.5 text-brand shadow-soft lg:block" />}
+                  {i < 5 && <ArrowRight className="absolute -right-3 top-1/2 z-10 hidden h-5 w-5 -translate-y-1/2 rounded-full bg-card p-0.5 text-brand shadow-soft lg:block" />}
                 </div>
               </Reveal>
             ))}
@@ -141,7 +141,7 @@ export function ProductDetail({ product }: { product: ProductKey }) {
           <Reveal>
             <div className="h-full rounded-3xl bg-navy-gradient p-7 text-white shadow-lift">
               <SourceLabel type="public-source" dark />
-              <h3 className="mt-4 text-2xl font-extrabold">{isEvents ? "Fondasi produk yang sudah ada" : "Fondasi teknologi yang sudah ada"}</h3>
+              <h3 className="mt-4 text-2xl font-semibold">{isEvents ? "Fondasi produk yang sudah ada" : "Fondasi teknologi yang sudah ada"}</h3>
               <ul className="mt-5 space-y-2.5">
                 {p.existing.map((e) => (
                   <li key={e} className="flex items-start gap-2.5 text-sm text-white/85">
@@ -159,14 +159,14 @@ export function ProductDetail({ product }: { product: ProductKey }) {
           <div className="grid gap-4 sm:grid-cols-2">
             {p.proposals.map((f, i) => (
               <Reveal key={f.name} delay={i * 0.06}>
-                <div className="h-full rounded-2xl border border-line bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
+                <div className="h-full rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
                   <div className="flex items-center justify-between gap-2">
                     <span className="grid h-9 w-9 place-items-center rounded-xl bg-soft text-brand-ink">
                       <Sparkles className="h-4 w-4" />
                     </span>
                     <Badge tone={f.status === "later" ? "warning" : "brand"}>{f.status === "later" ? "Prioritas berikutnya" : "Usulan"}</Badge>
                   </div>
-                  <p className="mt-3 font-bold text-ink">{f.name}</p>
+                  <p className="mt-3 font-semibold text-ink">{f.name}</p>
                   <p className="mt-1 text-sm leading-relaxed text-muted-strong">{f.description}</p>
                 </div>
               </Reveal>
@@ -186,12 +186,12 @@ export function ProductDetail({ product }: { product: ProductKey }) {
       )}
 
       <Container className="mt-10">
-        <div className="flex flex-col items-start justify-between gap-4 rounded-3xl border border-line bg-white p-6 shadow-soft sm:flex-row sm:items-center">
+        <div className="flex flex-col items-start justify-between gap-4 rounded-3xl border border-line bg-card p-6 shadow-soft sm:flex-row sm:items-center">
           <div>
-            <p className="font-bold text-ink">Siap mencoba alurnya?</p>
+            <p className="font-semibold text-ink">Siap mencoba alurnya?</p>
             <p className="text-sm text-muted-strong">Demo berjalan sepenuhnya di browser dengan data fiktif.</p>
           </div>
-          <Button href={isEvents ? "/demo/events" : "/demo/interview"}>
+          <Button href={isEvents ? "/dashboard/events" : "/dashboard/interview"}>
             Buka demo {p.name} <ArrowRight className="h-4 w-4" />
           </Button>
         </div>

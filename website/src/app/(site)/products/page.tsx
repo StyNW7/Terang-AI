@@ -31,10 +31,10 @@ export default function ProductsPage() {
         }
       >
         <div className="flex flex-wrap gap-3">
-          <Button href="/demo/events" variant="secondary">
+          <Button href="/dashboard/events" variant="secondary">
             <CalendarDays className="h-4 w-4" /> Demo Terang Events
           </Button>
-          <Button href="/demo/interview" variant="secondary">
+          <Button href="/dashboard/interview" variant="secondary">
             <Brain className="h-4 w-4" /> Demo AI Interview
           </Button>
         </div>
@@ -50,7 +50,7 @@ export default function ProductsPage() {
         </Container>
       </Section>
 
-      <Section className="bg-white">
+      <Section className="bg-card">
         <Container>
           <Reveal>
             <SectionHeading
@@ -62,7 +62,7 @@ export default function ProductsPage() {
           </Reveal>
           <Reveal>
             <div className="mt-10 overflow-hidden rounded-3xl border border-line shadow-soft">
-              <div className="hidden grid-cols-[1fr_1.4fr_1.4fr] bg-surface text-xs font-bold uppercase tracking-[0.12em] text-muted md:grid">
+              <div className="hidden grid-cols-[1fr_1.4fr_1.4fr] bg-surface text-xs font-semibold uppercase tracking-[0.12em] text-muted md:grid">
                 <div className="px-5 py-3">Dimensi</div>
                 <div className="flex items-center gap-2 px-5 py-3 text-sky-ink">
                   <CalendarDays className="h-4 w-4" /> Terang Events
@@ -71,10 +71,10 @@ export default function ProductsPage() {
                   <Brain className="h-4 w-4" /> AI Candidate Interview
                 </div>
               </div>
-              <div className="divide-y divide-line bg-white">
+              <div className="divide-y divide-line bg-card">
                 {POSITIONING.map((row) => (
                   <div key={row.label} className="grid gap-2 px-5 py-4 md:grid-cols-[1fr_1.4fr_1.4fr] md:gap-0 md:px-0 md:py-0">
-                    <div className="font-bold text-ink md:px-5 md:py-4">{row.label}</div>
+                    <div className="font-semibold text-ink md:px-5 md:py-4">{row.label}</div>
                     <div className="text-sm text-muted-strong md:border-l md:border-line md:px-5 md:py-4">
                       <span className="mr-1 font-semibold text-sky-ink md:hidden">Events:</span>
                       {row.events}

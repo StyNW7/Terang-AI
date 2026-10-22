@@ -49,7 +49,7 @@ export function PositioningMap() {
   const current = POINTS.find((p) => p.id === active) ?? POINTS[0];
   return (
     <div className="grid gap-6 lg:grid-cols-[1.25fr_1fr]">
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-line bg-white shadow-card">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-line bg-card shadow-card">
         <div className="bg-dots absolute inset-0 opacity-60" />
         <div className="absolute inset-x-10 top-1/2 h-px bg-line" />
         <div className="absolute inset-y-10 left-1/2 w-px bg-line" />
@@ -62,9 +62,9 @@ export function PositioningMap() {
         >
           Pembeli: institusi → perusahaan
         </span>
-        <span className="absolute left-12 top-4 text-[10px] font-bold uppercase tracking-[0.14em] text-muted/80">Institusi · berulang</span>
-        <span className="absolute right-6 top-4 text-[10px] font-bold uppercase tracking-[0.14em] text-muted/80">Korporat · berulang</span>
-        <span className="absolute bottom-9 left-12 text-[10px] font-bold uppercase tracking-[0.14em] text-muted/80">Institusi · episodik</span>
+        <span className="absolute left-12 top-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted/80">Institusi · berulang</span>
+        <span className="absolute right-6 top-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted/80">Korporat · berulang</span>
+        <span className="absolute bottom-9 left-12 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted/80">Institusi · episodik</span>
         {POINTS.map((p, i) => {
           const Icon = p.icon;
           const isActive = p.id === active;
@@ -90,13 +90,13 @@ export function PositioningMap() {
               <span
                 className={cn(
                   "relative grid place-items-center rounded-full text-white ring-4 transition-transform duration-300",
-                  isActive ? "scale-110 ring-white" : "ring-white/70",
+                  isActive ? "scale-110 ring-card" : "ring-white/70",
                 )}
                 style={{ width: p.r * 1.4, height: p.r * 1.4, background: p.color }}
               >
                 <Icon className="h-6 w-6" />
               </span>
-              <span className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white px-2.5 py-1 text-xs font-bold text-ink shadow-soft ring-1 ring-line">
+              <span className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full bg-card px-2.5 py-1 text-xs font-semibold text-ink shadow-soft ring-1 ring-line">
                 {p.label}
               </span>
             </motion.button>
@@ -107,21 +107,21 @@ export function PositioningMap() {
         key={current.id}
         initial={{ opacity: 0, x: 12 }}
         animate={{ opacity: 1, x: 0 }}
-        className="flex flex-col justify-center rounded-3xl border border-line bg-white p-7 shadow-card"
+        className="flex flex-col justify-center rounded-3xl border border-line bg-card p-7 shadow-card"
       >
         <span className="h-1.5 w-12 rounded-full" style={{ background: current.color }} />
-        <h3 className="mt-4 text-2xl font-extrabold text-ink">{current.label}</h3>
+        <h3 className="mt-4 text-2xl font-semibold text-ink">{current.label}</h3>
         <dl className="mt-5 space-y-4 text-sm">
           <div>
-            <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted">Pembeli</dt>
+            <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Pembeli</dt>
             <dd className="mt-1 font-semibold text-ink">{current.buyer}</dd>
           </div>
           <div>
-            <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted">Workflow</dt>
+            <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Workflow</dt>
             <dd className="mt-1 font-semibold text-ink">{current.workflow}</dd>
           </div>
           <div>
-            <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted">Catatan</dt>
+            <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Catatan</dt>
             <dd className="mt-1 text-muted-strong">{current.note}</dd>
           </div>
         </dl>

@@ -67,11 +67,11 @@ export function SprintBoard() {
   const wipWarnings = (["events", "interview"] as const).filter((p) => majorInProgress(tasks, p) > 1);
 
   return (
-    <div className="rounded-2xl border border-line bg-white p-6 shadow-soft">
+    <div className="rounded-2xl border border-line bg-card p-6 shadow-soft">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-ace">Section E</p>
-          <h3 className="text-xl font-extrabold text-ink">Sprint Board</h3>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Section E</p>
+          <h3 className="text-xl font-semibold text-ink">Sprint Board</h3>
           <p className="text-sm text-muted-strong">Seret kartu antar kolom atau gunakan tombol panah. Batas WIP: 1 inisiatif besar per produk.</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -82,7 +82,7 @@ export function SprintBoard() {
             <option value="shared">Bersama</option>
           </Select>
           <label className="flex items-center gap-1.5 text-xs font-semibold text-muted-strong">
-            <input type="checkbox" checked={form.major} onChange={(e) => setForm({ ...form, major: e.target.checked })} className="accent-[#2563d6]" /> Besar
+            <input type="checkbox" checked={form.major} onChange={(e) => setForm({ ...form, major: e.target.checked })} className="accent-primary" /> Besar
           </label>
           <Button size="sm" variant="ace" onClick={add}>
             <Plus className="h-3.5 w-3.5" /> Tambah
@@ -90,7 +90,7 @@ export function SprintBoard() {
         </div>
       </div>
       {wipWarnings.length > 0 && (
-        <p className="mt-4 flex items-center gap-2 rounded-xl bg-warning-soft p-3 text-sm font-semibold text-[#6f4200]">
+        <p className="mt-4 flex items-center gap-2 rounded-xl bg-warning-soft p-3 text-sm font-semibold text-warning-ink">
           <AlertTriangle className="h-4 w-4" /> WIP terlampaui pada: {wipWarnings.map((p) => PRODUCT_META[p].label).join(", ")} — tunda inisiatif besar lain.
         </p>
       )}
@@ -115,8 +115,8 @@ export function SprintBoard() {
                 className={cn("min-h-[260px] rounded-2xl p-3 ring-1 transition", over === col.id ? "bg-ace-soft ring-ace/50" : "bg-surface ring-line")}
               >
                 <div className="mb-3 flex items-center justify-between px-1">
-                  <p className="text-sm font-bold text-ink">{col.label}</p>
-                  <span className="tabular rounded-full bg-white px-2 py-0.5 text-xs font-bold text-muted-strong ring-1 ring-line">{list.length}</span>
+                  <p className="text-sm font-semibold text-ink">{col.label}</p>
+                  <span className="tabular rounded-full bg-card px-2 py-0.5 text-xs font-semibold text-muted-strong ring-1 ring-line">{list.length}</span>
                 </div>
                 <div className="space-y-2">
                   {list.map((t) => (
@@ -127,7 +127,7 @@ export function SprintBoard() {
                       draggable
                       onDragStart={() => setDragging(t.id)}
                       onDragEnd={() => setDragging(null)}
-                      className={cn("group cursor-grab rounded-xl border bg-white p-3 shadow-soft active:cursor-grabbing", dragging === t.id ? "opacity-50" : "", t.major ? "border-ace/30" : "border-line")}
+                      className={cn("group cursor-grab rounded-xl border bg-card p-3 shadow-soft active:cursor-grabbing", dragging === t.id ? "opacity-50" : "", t.major ? "border-ace/30" : "border-line")}
                     >
                       <div className="flex items-start gap-2">
                         <GripVertical className="mt-0.5 h-4 w-4 shrink-0 text-muted/60" />
@@ -179,9 +179,9 @@ const BAR = { events: "bg-[linear-gradient(90deg,#7fd3ff,#39b7ff)]", interview: 
 
 export function RoadmapTimeline() {
   return (
-    <div className="rounded-2xl border border-line bg-white p-6 shadow-soft">
+    <div className="rounded-2xl border border-line bg-card p-6 shadow-soft">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 className="text-lg font-extrabold text-ink">Timeline 12 bulan (Gantt ringan)</h3>
+        <h3 className="text-lg font-semibold text-ink">Timeline 12 bulan (Gantt ringan)</h3>
         <p className="text-xs text-muted">Kuartal: {ROADMAP.ace.map((q) => q.quarter).join(" · ")}</p>
       </div>
       <div className="scrollbar-thin mt-4 overflow-x-auto">

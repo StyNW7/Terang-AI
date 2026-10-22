@@ -60,8 +60,8 @@ export function OnePillarOptimize() {
       <div>
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-one">Flagship Program</p>
-            <h3 className="text-2xl font-extrabold text-ink">AI Interview Intelligence Suite</h3>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-one-ink">Flagship Program</p>
+            <h3 className="text-2xl font-semibold text-ink">AI Interview Intelligence Suite</h3>
           </div>
           <SourceLabel type="strategic-proposal" />
         </div>
@@ -74,12 +74,12 @@ export function OnePillarOptimize() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
-                className="rounded-2xl border border-line bg-white p-4 shadow-soft transition hover:-translate-y-1 hover:shadow-card"
+                className="rounded-2xl border border-line bg-card p-4 shadow-soft transition hover:-translate-y-1 hover:shadow-card"
               >
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-gradient text-white">
                   <Icon className="h-5 w-5" />
                 </span>
-                <p className="mt-3 text-sm font-bold text-ink">{f.name}</p>
+                <p className="mt-3 text-sm font-semibold text-ink">{f.name}</p>
                 <p className="mt-1 text-xs leading-relaxed text-muted-strong">{f.description}</p>
               </motion.div>
             );
@@ -88,9 +88,9 @@ export function OnePillarOptimize() {
       </div>
 
       {/* Before / after */}
-      <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
+      <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h3 className="text-lg font-bold text-ink">Workflow wawancara: sebelum vs sesudah</h3>
+          <h3 className="text-lg font-semibold text-ink">Workflow wawancara: sebelum vs sesudah</h3>
           <Segmented
             items={[
               { id: "before", label: "Sebelum" },
@@ -109,7 +109,7 @@ export function OnePillarOptimize() {
               transition={{ delay: i * 0.07 }}
               className={cn(
                 "flex items-start gap-2 rounded-xl p-3 text-[13px] font-medium",
-                flow === "before" ? "bg-danger-soft text-[#8a1c20]" : "bg-success-soft text-[#0b5b44]",
+                flow === "before" ? "bg-danger-soft text-danger-ink" : "bg-success-soft text-success-ink",
               )}
             >
               {flow === "before" ? <X className="mt-0.5 h-4 w-4 shrink-0" /> : <Check className="mt-0.5 h-4 w-4 shrink-0" />}
@@ -121,10 +121,10 @@ export function OnePillarOptimize() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Builder preview */}
-        <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
+        <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <h3 className="text-lg font-bold text-ink">Interview Builder — preview</h3>
+              <h3 className="text-lg font-semibold text-ink">Interview Builder — preview</h3>
               <p className="text-sm text-muted-strong">Pilih jabatan untuk melihat set pertanyaan berbeda.</p>
             </div>
             <SourceLabel type="synthetic-demo" compact />
@@ -140,7 +140,7 @@ export function OnePillarOptimize() {
                 }}
                 className={cn(
                   "rounded-xl px-3 py-1.5 text-xs font-semibold ring-1 transition",
-                  role === r ? "bg-one text-white ring-one" : "bg-white text-muted-strong ring-line hover:ring-one/40",
+                  role === r ? "bg-one text-white ring-one" : "bg-card text-muted-strong ring-line hover:ring-one/40",
                 )}
               >
                 {ROLE_TEMPLATES[r].label}
@@ -156,7 +156,7 @@ export function OnePillarOptimize() {
                 transition={{ delay: i * 0.05 }}
                 className="rounded-xl bg-surface p-3 ring-1 ring-line"
               >
-                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-one">{COMPETENCY_MAP[q.competencyId]?.name}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-one-ink">{COMPETENCY_MAP[q.competencyId]?.name}</p>
                 <p className="mt-0.5 text-[13px] text-ink">{q.text}</p>
               </motion.li>
             ))}
@@ -165,7 +165,7 @@ export function OnePillarOptimize() {
             <Button size="sm" variant="secondary" onClick={() => setVariant((v) => v + 1)}>
               <RefreshCw className="h-3.5 w-3.5" /> Buat variasi lain
             </Button>
-            <Button size="sm" href="/demo/interview">
+            <Button size="sm" href="/dashboard/interview">
               Buka builder lengkap <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </div>
@@ -175,7 +175,7 @@ export function OnePillarOptimize() {
         {/* Assessment example */}
         <div>
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-lg font-bold text-ink">Contoh laporan berbasis bukti</h3>
+            <h3 className="text-lg font-semibold text-ink">Contoh laporan berbasis bukti</h3>
             <SourceLabel type="synthetic-demo" compact />
           </div>
           <EvidenceCard
@@ -184,18 +184,18 @@ export function OnePillarOptimize() {
             compact
             reviewerNote="Contoh konkret dan ada konfirmasi pemahaman. Setuju dengan level sinyal; lanjutkan ke wawancara user. — Recruiter Demo"
           />
-          <p className="mt-3 text-center text-sm font-semibold text-one">From Generic Interview Scores to Evidence-Based Recruiter Insights.</p>
+          <p className="mt-3 text-center text-sm font-semibold text-one-ink">From Generic Interview Scores to Evidence-Based Recruiter Insights.</p>
         </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         {/* Roadmap */}
-        <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
-          <h3 className="text-lg font-bold text-ink">Roadmap produk (usulan, 4 kuartal)</h3>
+        <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
+          <h3 className="text-lg font-semibold text-ink">Roadmap produk (usulan, 4 kuartal)</h3>
           <div className="mt-5 grid gap-3 sm:grid-cols-4">
             {ROADMAP.one.map((q, i) => (
               <div key={q.quarter} className="relative rounded-2xl bg-surface p-4 ring-1 ring-line">
-                <span className="grid h-8 w-8 place-items-center rounded-lg bg-one-gradient text-xs font-bold text-white">{q.quarter}</span>
+                <span className="grid h-8 w-8 place-items-center rounded-lg bg-one-gradient text-xs font-semibold text-white">{q.quarter}</span>
                 <ul className="mt-3 space-y-1.5">
                   {q.items.map((it) => (
                     <li key={it} className="text-[12.5px] leading-snug text-ink">
@@ -203,18 +203,18 @@ export function OnePillarOptimize() {
                     </li>
                   ))}
                 </ul>
-                {i < 3 && <ArrowRight className="absolute -right-3 top-5 z-10 hidden h-5 w-5 rounded-full bg-white p-0.5 text-one shadow-soft sm:block" />}
+                {i < 3 && <ArrowRight className="absolute -right-3 top-5 z-10 hidden h-5 w-5 rounded-full bg-card p-0.5 text-one-ink shadow-soft sm:block" />}
               </div>
             ))}
           </div>
         </div>
         {/* Readiness checklist */}
-        <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
+        <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-lg font-bold text-ink">
-              <ClipboardList className="h-5 w-5 text-one" /> Product readiness
+            <h3 className="flex items-center gap-2 text-lg font-semibold text-ink">
+              <ClipboardList className="h-5 w-5 text-one-ink" /> Product readiness
             </h3>
-            <span className="tabular text-sm font-bold text-one">
+            <span className="tabular text-sm font-semibold text-one-ink">
               {checked.length}/{CHECKLIST.length}
             </span>
           </div>
@@ -230,7 +230,7 @@ export function OnePillarOptimize() {
                   className="flex w-full items-center gap-2.5 rounded-xl px-2 py-1.5 text-left text-[13px] transition hover:bg-surface"
                   aria-pressed={on}
                 >
-                  <span className={cn("grid h-5 w-5 shrink-0 place-items-center rounded-md ring-1", on ? "bg-one text-white ring-one" : "bg-white ring-line")}>
+                  <span className={cn("grid h-5 w-5 shrink-0 place-items-center rounded-md ring-1", on ? "bg-one text-white ring-one" : "bg-card ring-line")}>
                     {on && <Check className="h-3.5 w-3.5" />}
                   </span>
                   <span className={on ? "text-ink" : "text-muted-strong"}>{c.label}</span>

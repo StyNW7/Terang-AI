@@ -37,8 +37,8 @@ export function Tabs<T extends string>({
               aria-selected={active}
               onClick={() => onChange(item.id)}
               className={cn(
-                "relative flex items-center gap-2 px-3 py-3 text-sm font-semibold transition-colors",
-                active ? "text-brand-ink" : "text-muted hover:text-ink",
+                "relative flex items-center gap-2 px-3 py-3 text-sm font-medium transition-colors",
+                active ? "text-brand-ink" : "text-muted-strong hover:text-ink",
               )}
             >
               {item.icon}
@@ -81,7 +81,7 @@ export function Segmented<T extends string>({
       role="tablist"
       className={cn(
         "inline-flex items-center gap-1 rounded-xl p-1",
-        dark ? "bg-white/10 ring-1 ring-white/15" : "bg-[#eef4fb] ring-1 ring-line",
+        dark ? "bg-white/10 ring-1 ring-white/15" : "bg-neutral-soft ring-1 ring-line",
         className,
       )}
     >
@@ -95,15 +95,15 @@ export function Segmented<T extends string>({
             aria-selected={active}
             onClick={() => onChange(item.id)}
             className={cn(
-              "relative flex items-center gap-1.5 rounded-lg font-semibold transition-colors",
+              "relative flex items-center gap-1.5 rounded-lg font-medium transition-colors",
               size === "sm" ? "px-2.5 py-1 text-xs" : "px-3.5 py-1.5 text-[13px]",
-              active ? (dark ? "text-navy" : "text-ink") : dark ? "text-white/75 hover:text-white" : "text-muted hover:text-ink",
+              active ? (dark ? "text-navy" : "text-ink") : dark ? "text-white/75 hover:text-white" : "text-muted-strong hover:text-ink",
             )}
           >
             {active && (
               <motion.span
                 layoutId={`seg-${layoutId}`}
-                className={cn("absolute inset-0 rounded-lg shadow-soft", dark ? "bg-white" : "bg-white")}
+                className={cn("absolute inset-0 rounded-lg shadow-soft", dark ? "bg-white" : "bg-card ring-1 ring-line")}
                 transition={{ type: "spring", stiffness: 500, damping: 38 }}
               />
             )}

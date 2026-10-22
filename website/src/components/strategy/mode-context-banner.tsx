@@ -49,8 +49,8 @@ export function ModeContextBanner({ product, className }: { product: ProductKey 
               <Icon className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/70">Strategy Mode · {MODE_META[mode].label}</p>
-              <p className="font-bold">{copy.title}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/70">Strategy Mode · {MODE_META[mode].label}</p>
+              <p className="font-semibold">{copy.title}</p>
               <p className="mt-0.5 text-sm text-white/85">{copy.text}</p>
             </div>
           </div>

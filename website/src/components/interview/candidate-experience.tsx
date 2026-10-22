@@ -102,7 +102,7 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
             <span
               className={cn(
                 "flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold",
-                i < stepIndex ? "bg-success-soft text-[#0b7a5a]" : i === stepIndex ? "bg-one text-white" : "bg-white text-muted ring-1 ring-line",
+                i < stepIndex ? "bg-success-soft text-success-ink" : i === stepIndex ? "bg-one text-white" : "bg-card text-muted ring-1 ring-line",
               )}
             >
               {i < stepIndex ? <CheckCircle2 className="h-3.5 w-3.5" /> : <span className="tabular">{i + 1}</span>}
@@ -116,11 +116,11 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
       <AnimatePresence mode="wait">
         <motion.div key={step + (step === "interview" ? index : "")} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
           {step === "welcome" && (
-            <div className="overflow-hidden rounded-3xl border border-line bg-white shadow-card">
+            <div className="overflow-hidden rounded-3xl border border-line bg-card shadow-card">
               <div className="grid items-center gap-6 bg-one-gradient p-8 text-white md:grid-cols-[1fr_auto]">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/75">{RECRUITER_COMPANY}</p>
-                  <h3 className="mt-2 text-3xl font-extrabold">Selamat datang di wawancara terstruktur</h3>
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/75">{RECRUITER_COMPANY}</p>
+                  <h3 className="mt-2 text-3xl font-bold">Selamat datang di wawancara terstruktur</h3>
                   <p className="mt-2 text-white/85">Wawancara ini membantu recruiter memahami pengalaman Anda. Keputusan akhir selalu dibuat oleh manusia.</p>
                 </div>
                 <Mascot name="interview" size={150} className="mx-auto" />
@@ -150,11 +150,11 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
           )}
 
           {step === "notice" && (
-            <div className="rounded-3xl border border-line bg-white p-8 shadow-card">
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-one-soft text-one">
+            <div className="rounded-3xl border border-line bg-card p-8 shadow-card">
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-one-soft text-one-ink">
                 <Lock className="h-6 w-6" />
               </span>
-              <h3 className="mt-4 text-2xl font-extrabold text-ink">Pemberitahuan pemrosesan data</h3>
+              <h3 className="mt-4 text-2xl font-semibold text-ink">Pemberitahuan pemrosesan data</h3>
               <ul className="mt-4 space-y-2 text-sm text-muted-strong">
                 {[
                   "Hanya jawaban teks Anda yang diproses — tidak ada kamera, analisis wajah, suara, atau emosi.",
@@ -182,8 +182,8 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
           )}
 
           {step === "instructions" && (
-            <div className="rounded-3xl border border-line bg-white p-8 shadow-card">
-              <h3 className="text-2xl font-extrabold text-ink">Instruksi wawancara</h3>
+            <div className="rounded-3xl border border-line bg-card p-8 shadow-card">
+              <h3 className="text-2xl font-semibold text-ink">Instruksi wawancara</h3>
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
                 {[
                   { icon: MessageSquareText, t: `${questions.length} pertanyaan inti`, d: "Diajukan berurutan, sama untuk semua kandidat pada posisi ini." },
@@ -191,8 +191,8 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
                   { icon: Clock, t: `± ${job.durationMinutes} menit`, d: "Tidak ada batas waktu ketat dalam demo ini." },
                 ].map(({ icon: Icon, t, d }) => (
                   <div key={t} className="rounded-2xl bg-surface p-4 ring-1 ring-line">
-                    <Icon className="h-5 w-5 text-one" />
-                    <p className="mt-2 font-bold text-ink">{t}</p>
+                    <Icon className="h-5 w-5 text-one-ink" />
+                    <p className="mt-2 font-semibold text-ink">{t}</p>
                     <p className="mt-1 text-sm text-muted-strong">{d}</p>
                   </div>
                 ))}
@@ -213,11 +213,11 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
           )}
 
           {step === "overview" && (
-            <div className="rounded-3xl border border-line bg-white p-8 shadow-card">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-one">Ringkasan peran</p>
-              <h3 className="mt-1 text-2xl font-extrabold text-ink">{job.title}</h3>
+            <div className="rounded-3xl border border-line bg-card p-8 shadow-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-one-ink">Ringkasan peran</p>
+              <h3 className="mt-1 text-2xl font-semibold text-ink">{job.title}</h3>
               <p className="mt-2 text-muted-strong">{job.description}</p>
-              <p className="mt-5 text-sm font-bold text-ink">Kompetensi yang ditanyakan</p>
+              <p className="mt-5 text-sm font-semibold text-ink">Kompetensi yang ditanyakan</p>
               <div className="mt-3 grid gap-2 sm:grid-cols-2">
                 {job.competencies.map((c) => (
                   <div key={c.id} className="rounded-xl bg-surface p-3 ring-1 ring-line">
@@ -238,7 +238,7 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
           )}
 
           {step === "interview" && questions[index] && (
-            <div className="rounded-3xl border border-line bg-white p-6 shadow-card sm:p-8">
+            <div className="rounded-3xl border border-line bg-card p-6 shadow-card sm:p-8">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-sm font-semibold text-muted-strong">
                   Pertanyaan {index + 1} dari {questions.length}
@@ -246,13 +246,13 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
                 <button
                   type="button"
                   onClick={() => setVoice((v) => !v)}
-                  className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ring-1 transition", voice ? "bg-one text-white ring-one" : "bg-white text-muted-strong ring-line")}
+                  className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ring-1 transition", voice ? "bg-one text-white ring-one" : "bg-card text-muted-strong ring-line")}
                   aria-pressed={voice}
                 >
                   <Mic className="h-3.5 w-3.5" /> Mode suara (visual simulasi)
                 </button>
               </div>
-              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#e6eef7]">
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-track">
                 <motion.div className="h-full bg-one-gradient" animate={{ width: `${((index + (followUp ? 0.5 : 0)) / questions.length) * 100}%` }} />
               </div>
               <div className="mt-6 flex gap-4">
@@ -260,17 +260,17 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
                   <Bot className="h-5 w-5" />
                 </span>
                 <div className="rounded-2xl rounded-tl-sm bg-surface p-4 ring-1 ring-line">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-one">{COMPETENCY_MAP[questions[index].competencyId]?.name}</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-one-ink">{COMPETENCY_MAP[questions[index].competencyId]?.name}</p>
                   <p className="mt-1 text-[15px] leading-relaxed text-ink">{questions[index].text}</p>
                 </div>
               </div>
               {followUp && (
                 <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 flex gap-4">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[#e5f6ff] text-sky-ink">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-sky-soft text-sky-ink">
                     <MessageSquareText className="h-5 w-5" />
                   </span>
-                  <div className="rounded-2xl rounded-tl-sm bg-[#eef8ff] p-4 ring-1 ring-[#c4eaff]">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-sky-ink">Follow-up (aturan deterministik)</p>
+                  <div className="rounded-2xl rounded-tl-sm bg-soft p-4 ring-1 ring-current/15">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-sky-ink">Follow-up (aturan deterministik)</p>
                     <p className="mt-1 text-[15px] text-ink">{followUp}</p>
                     <p className="mt-1 text-xs text-muted">Tambahkan detail pada jawaban Anda di bawah, lalu kirim.</p>
                   </div>
@@ -286,7 +286,7 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
                       transition={{ duration: 1 + (i % 5) * 0.15, repeat: Infinity, ease: "easeInOut" }}
                     />
                   ))}
-                  <span className="ml-3 flex items-center gap-1 text-xs font-semibold text-one">
+                  <span className="ml-3 flex items-center gap-1 text-xs font-semibold text-one-ink">
                     <AudioLines className="h-4 w-4" /> Visual saja — mikrofon tidak diakses
                   </span>
                 </div>
@@ -310,11 +310,11 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
 
           {step === "done" && (
             <div className="space-y-5">
-              <div className="rounded-3xl border border-line bg-white p-8 text-center shadow-card">
+              <div className="rounded-3xl border border-line bg-card p-8 text-center shadow-card">
                 <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-success-soft text-success">
                   <FileCheck className="h-8 w-8" />
                 </span>
-                <h3 className="mt-4 text-2xl font-extrabold text-ink">Terima kasih, {name}!</h3>
+                <h3 className="mt-4 text-2xl font-semibold text-ink">Terima kasih, {name}!</h3>
                 <p className="mx-auto mt-2 max-w-lg text-muted-strong">
                   Jawaban Anda telah dikirim. Di bawah ini adalah <strong>artefak tinjauan ilustratif</strong> yang akan diterima recruiter — status:
                   menunggu tinjauan manusia.

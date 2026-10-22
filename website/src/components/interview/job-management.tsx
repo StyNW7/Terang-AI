@@ -82,10 +82,9 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h3 className="text-lg font-extrabold text-ink">Manajemen posisi</h3>
-          <p className="text-sm text-muted-strong">Setiap posisi memiliki kompetensi berbobot yang menjadi dasar rubrik penilaian.</p>
-        </div>
+        <p className="text-sm text-muted-strong">
+          <span className="font-semibold text-ink">{jobs.length} posisi</span> · kompetensi berbobot menjadi dasar rubrik penilaian.
+        </p>
         <Button
           variant="one"
           onClick={() => {
@@ -101,14 +100,14 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
         {jobs.map((j) => {
           const count = candidates.filter((c) => c.jobId === j.id).length;
           return (
-            <div key={j.id} className="flex flex-col rounded-2xl border border-line bg-white p-5 shadow-soft transition hover:shadow-card">
+            <div key={j.id} className="flex flex-col rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:shadow-card">
               <div className="flex items-start justify-between gap-2">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-soft text-one">
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-soft text-one-ink">
                   <Briefcase className="h-5 w-5" />
                 </span>
                 <Badge tone={j.status === "aktif" ? "success" : j.status === "draft" ? "warning" : "neutral"}>{j.status}</Badge>
               </div>
-              <p className="mt-3 font-bold text-ink">{j.title}</p>
+              <p className="mt-3 font-semibold text-ink">{j.title}</p>
               <p className="flex flex-wrap items-center gap-x-3 text-xs text-muted">
                 <span>{j.department}</span>
                 <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {j.location}</span>
@@ -119,7 +118,7 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
                   <div key={c.id}>
                     <div className="flex justify-between text-xs">
                       <span className="text-ink">{COMPETENCY_MAP[c.id]?.name}</span>
-                      <span className="tabular font-bold text-one">{c.weight}%</span>
+                      <span className="tabular font-semibold text-one-ink">{c.weight}%</span>
                     </div>
                     <Progress value={c.weight / 100} tone="one" height="h-1.5" className="mt-1" />
                   </div>
@@ -164,7 +163,7 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
                   onClick={() => setDraft(fromRole(r))}
                   className={cn(
                     "rounded-xl border p-3 text-left text-sm font-semibold transition",
-                    draft.role === r ? "border-one bg-one-soft text-one" : "border-line text-muted-strong hover:border-one/40",
+                    draft.role === r ? "border-one bg-one-soft text-one-ink" : "border-line text-muted-strong hover:border-one/40",
                   )}
                 >
                   {ROLE_TEMPLATES[r].label}
@@ -191,7 +190,7 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
             <FieldError message={errors.description} />
           </Field>
           <Field className="sm:col-span-2">
-            <Label required hint={<span className={weightTotal === 100 ? "font-bold text-[#0b7a5a]" : "font-bold text-warning-ink"}>Total {weightTotal}%</span>}>
+            <Label required hint={<span className={weightTotal === 100 ? "font-semibold text-success-ink" : "font-semibold text-warning-ink"}>Total {weightTotal}%</span>}>
               Kompetensi wajib & bobot
             </Label>
             <div className="flex flex-wrap gap-1.5">
@@ -204,7 +203,7 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
                     onClick={() => toggleCompetency(c.id)}
                     className={cn(
                       "rounded-lg px-2.5 py-1.5 text-xs font-semibold ring-1 transition",
-                      on ? "bg-one text-white ring-one" : "bg-white text-muted-strong ring-line hover:ring-one/40",
+                      on ? "bg-one text-white ring-one" : "bg-card text-muted-strong ring-line hover:ring-one/40",
                     )}
                     aria-pressed={on}
                   >

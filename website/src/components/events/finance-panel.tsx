@@ -54,9 +54,9 @@ export function FinancePanel() {
         <KpiCard label="Estimasi diterima organizer" value={summary.gross * (1 - PLATFORM_FEE_RATE)} format="idrCompact" icon={<Receipt className="h-4 w-4" />} tone="sky" />
       </div>
       <div className="grid gap-5 xl:grid-cols-[1fr_1.4fr]">
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <div className="flex items-center justify-between">
-            <p className="flex items-center gap-2 text-[15px] font-bold text-ink">
+            <p className="flex items-center gap-2 text-[15px] font-semibold text-ink">
               <Calculator className="h-4 w-4 text-sky-ink" /> Fee calculation preview
             </p>
             <SourceLabel type="illustrative-assumption" compact />
@@ -95,14 +95,14 @@ export function FinancePanel() {
               </div>
             ))}
             <div className="flex justify-between border-t border-line pt-2">
-              <dt className="font-bold text-ink">Estimasi diterima organizer</dt>
-              <dd className="tabular font-display text-lg font-extrabold text-ink">{formatIDR(net)}</dd>
+              <dt className="font-semibold text-ink">Estimasi diterima organizer</dt>
+              <dd className="tabular font-display text-lg font-semibold text-ink">{formatIDR(net)}</dd>
             </div>
           </dl>
         </div>
-        <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+        <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
-            <p className="text-[15px] font-bold text-ink">Riwayat transaksi (fiktif)</p>
+            <p className="text-[15px] font-semibold text-ink">Riwayat transaksi (fiktif)</p>
             <span className="text-xs text-muted">Total {formatIDRCompact(summary.gross + summary.pending + summary.refunds)}</span>
           </div>
           <div className="scrollbar-thin max-h-[420px] overflow-auto">

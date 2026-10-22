@@ -35,19 +35,19 @@ export function KpiCard({
   };
   const iconTone = {
     brand: "bg-soft text-brand-ink",
-    sky: "bg-[#e5f6ff] text-sky-ink",
-    one: "bg-one-soft text-one",
-    ace: "bg-ace-soft text-[#0a7aa6]",
-    navy: "bg-[#e8edf4] text-navy",
+    sky: "bg-sky-soft text-sky-ink",
+    one: "bg-one-soft text-one-ink",
+    ace: "bg-ace-soft text-ace-ink",
+    navy: "bg-neutral-soft text-ink",
   };
   return (
-    <div className={cn("group relative overflow-hidden rounded-2xl border border-line bg-white p-4 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card", className)}>
+    <div className={cn("group relative overflow-hidden rounded-2xl border border-line bg-card p-4 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card", className)}>
       <div className={cn("absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r opacity-80", accents[tone])} />
       <div className="flex items-start justify-between gap-3">
-        <p className="text-[12.5px] font-semibold leading-snug text-muted-strong">{label}</p>
+        <p className="text-[13px] font-medium leading-snug text-muted-strong">{label}</p>
         {icon && <div className={cn("grid h-8 w-8 shrink-0 place-items-center rounded-lg", iconTone[tone])}>{icon}</div>}
       </div>
-      <p className="tabular mt-2 font-display text-[1.6rem] font-extrabold leading-none tracking-tight text-ink">
+      <p className="tabular mt-2 font-display text-[1.6rem] font-semibold leading-none tracking-tight text-ink">
         <AnimatedNumber value={value} format={format} />
       </p>
       {(delta !== undefined || hint) && (
@@ -56,7 +56,7 @@ export function KpiCard({
             <span
               className={cn(
                 "inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 font-semibold",
-                delta >= 0 ? "bg-success-soft text-[#0b7a5a]" : "bg-danger-soft text-danger-ink",
+                delta >= 0 ? "bg-success-soft text-success-ink" : "bg-danger-soft text-danger-ink",
               )}
             >
               {delta >= 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}

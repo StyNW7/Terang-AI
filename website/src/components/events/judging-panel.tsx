@@ -43,8 +43,8 @@ export function JudgingPanel() {
     <div className="space-y-5">
       <div className="grid gap-5 lg:grid-cols-[1fr_1.6fr]">
         <div className="space-y-4">
-          <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-            <p className="text-sm font-bold text-ink">Event</p>
+          <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+            <p className="text-sm font-semibold text-ink">Event</p>
             <Select className="mt-2" value={event.id} onChange={(e) => setEventId(e.target.value)} aria-label="Pilih event penjurian">
               {judged.map((e) => (
                 <option key={e.id} value={e.id}>
@@ -55,13 +55,13 @@ export function JudgingPanel() {
             <div className="mt-4">
               <div className="flex justify-between text-xs">
                 <span className="text-muted-strong">Progres penilaian</span>
-                <span className="tabular font-bold text-ink">{Math.round(progress * 100)}%</span>
+                <span className="tabular font-semibold text-ink">{Math.round(progress * 100)}%</span>
               </div>
               <Progress value={progress} tone="sky" className="mt-1" />
             </div>
           </div>
-          <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-            <p className="flex items-center gap-2 text-sm font-bold text-ink">
+          <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+            <p className="flex items-center gap-2 text-sm font-semibold text-ink">
               <Scale className="h-4 w-4 text-sky-ink" /> Rubrik berbobot
             </p>
             <div className="mt-3 space-y-3">
@@ -69,7 +69,7 @@ export function JudgingPanel() {
                 <div key={c.id}>
                   <div className="flex justify-between text-sm">
                     <span className="font-semibold text-ink">{c.name}</span>
-                    <span className="tabular font-bold text-sky-ink">{c.weight}%</span>
+                    <span className="tabular font-semibold text-sky-ink">{c.weight}%</span>
                   </div>
                   <p className="text-xs text-muted">{c.description}</p>
                   <Progress value={c.weight / 100} tone="sky" className="mt-1" height="h-1.5" />
@@ -78,9 +78,9 @@ export function JudgingPanel() {
             </div>
           </div>
         </div>
-        <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+        <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
-            <p className="flex items-center gap-2 font-bold text-ink">
+            <p className="flex items-center gap-2 font-semibold text-ink">
               <Gavel className="h-4 w-4 text-sky-ink" /> Submisi & peringkat
             </p>
             <span className="text-xs text-muted">{rows.length} submisi</span>
@@ -120,7 +120,7 @@ export function JudgingPanel() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3 md:flex-col md:items-end">
-                    <p className="tabular font-display text-2xl font-extrabold text-ink">{r.total ? r.total.toFixed(1) : "—"}</p>
+                    <p className="tabular font-display text-2xl font-semibold text-ink">{r.total ? r.total.toFixed(1) : "—"}</p>
                     <div className="flex gap-1.5">
                       <Button size="sm" variant="soft" onClick={() => setScoring(r.id)} disabled={r.status === "final"}>
                         Nilai
@@ -189,8 +189,8 @@ function ScoreForm({
         />
       ))}
       <div className="flex items-center justify-between rounded-xl bg-ace-soft p-4">
-        <span className="text-sm font-semibold text-[#0a7aa6]">Skor berbobot otomatis</span>
-        <span className="tabular font-display text-2xl font-extrabold text-ink">{weightedScore(submission.scores, criteria).toFixed(1)}</span>
+        <span className="text-sm font-semibold text-ace-ink">Skor berbobot otomatis</span>
+        <span className="tabular font-display text-2xl font-semibold text-ink">{weightedScore(submission.scores, criteria).toFixed(1)}</span>
       </div>
     </div>
   );

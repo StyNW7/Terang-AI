@@ -51,16 +51,16 @@ export function ParticipantsPanel() {
             key={s}
             type="button"
             onClick={() => setStatusFilter(status === s ? "all" : s)}
-            className={`rounded-2xl border bg-white p-4 text-left shadow-soft transition hover:shadow-card ${status === s ? "border-brand ring-2 ring-brand/20" : "border-line"}`}
+            className={`rounded-2xl border bg-card p-4 text-left shadow-soft transition hover:shadow-card ${status === s ? "border-brand ring-2 ring-brand/20" : "border-line"}`}
           >
             <Badge tone={STATUS[s].tone} dot>
               {STATUS[s].label}
             </Badge>
-            <p className="tabular mt-2 font-display text-2xl font-extrabold text-ink">{n}</p>
+            <p className="tabular mt-2 font-display text-2xl font-semibold text-ink">{n}</p>
           </button>
         ))}
       </div>
-      <div className="flex flex-col gap-2 rounded-2xl border border-line bg-white p-4 shadow-soft sm:flex-row">
+      <div className="flex flex-col gap-2 rounded-2xl border border-line bg-card p-4 shadow-soft sm:flex-row">
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Cari nama atau institusi…" className="pl-9" aria-label="Cari peserta" />
@@ -85,7 +85,7 @@ export function ParticipantsPanel() {
       {filtered.length === 0 ? (
         <EmptyState icon={<Users className="h-5 w-5" />} title="Belum ada peserta yang cocok" description="Ubah filter atau kata kunci pencarian." />
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+        <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-left text-sm">
               <thead className="bg-surface text-xs text-muted">
@@ -102,7 +102,7 @@ export function ParticipantsPanel() {
                   <tr key={p.id} onClick={() => setSelected(p)} className="cursor-pointer transition hover:bg-surface/70">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#e5f6ff] text-xs font-bold text-sky-ink">{initials(p.name)}</span>
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-sky-soft text-xs font-semibold text-sky-ink">{initials(p.name)}</span>
                         <div>
                           <p className="font-semibold text-ink">{p.name}</p>
                           <p className="text-xs text-muted">{p.institution}</p>
@@ -127,7 +127,7 @@ export function ParticipantsPanel() {
         {current && (
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-[#e5f6ff] text-lg font-bold text-sky-ink">{initials(current.name)}</span>
+              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-sky-soft text-lg font-semibold text-sky-ink">{initials(current.name)}</span>
               <div className="space-y-1 text-sm">
                 <p className="flex items-center gap-2 text-muted-strong">
                   <School className="h-4 w-4" /> {current.institution}

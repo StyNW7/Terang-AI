@@ -50,7 +50,7 @@ export function CandidatesPanel({ onOpenReport }: { onOpenReport: (id: string) =
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-2 rounded-2xl border border-line bg-white p-4 shadow-soft lg:flex-row lg:items-center">
+      <div className="flex flex-col gap-2 rounded-2xl border border-line bg-card p-4 shadow-soft lg:flex-row lg:items-center">
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Cari kandidat…" className="pl-9" aria-label="Cari kandidat" />
@@ -79,7 +79,7 @@ export function CandidatesPanel({ onOpenReport }: { onOpenReport: (id: string) =
       {filtered.length === 0 ? (
         <EmptyState icon={<Users className="h-5 w-5" />} title="Tidak ada kandidat yang cocok" description="Ubah filter, atau undang kandidat baru." />
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+        <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[780px] text-left text-sm">
               <thead className="bg-surface text-xs text-muted">
@@ -97,7 +97,7 @@ export function CandidatesPanel({ onOpenReport }: { onOpenReport: (id: string) =
                   <tr key={c.id} className="transition hover:bg-surface/70">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-one-soft text-xs font-bold text-one">
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-one-soft text-xs font-semibold text-one-ink">
                           {mask ? "#" : initials(c.name)}
                         </span>
                         <div>

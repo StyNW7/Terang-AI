@@ -26,9 +26,9 @@ export function StrategySelector() {
               "relative overflow-hidden rounded-[28px] p-[1.5px] transition-shadow",
               selected ? "shadow-lift" : "shadow-card",
             )}
-            style={{ backgroundImage: selected ? "linear-gradient(135deg,#39b7ff,#2251c9)" : "linear-gradient(135deg,#dde8f3,#dde8f3)" }}
+            style={{ backgroundImage: selected ? "linear-gradient(135deg,#39b7ff,#2251c9)" : "linear-gradient(135deg,var(--color-line),var(--color-line))" }}
           >
-            <div className="relative h-full overflow-hidden rounded-[27px] bg-white">
+            <div className="relative h-full overflow-hidden rounded-[27px] bg-card">
               <div className={cn("relative overflow-hidden p-7 text-white", gradient)}>
                 <div className="bg-grid-dark absolute inset-0 opacity-50" />
                 <div className="relative flex items-start justify-between gap-4">
@@ -37,13 +37,13 @@ export function StrategySelector() {
                       <span className="grid h-9 w-9 place-items-center rounded-xl bg-white/15 ring-1 ring-white/25">
                         <Icon className="h-5 w-5" />
                       </span>
-                      <span className="rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-bold ring-1 ring-white/25">
+                      <span className="rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold ring-1 ring-white/25">
                         {key === "one" ? "PRO" : "KONTRA"}
                       </span>
                     </div>
-                    <h3 className="mt-4 font-display text-4xl font-extrabold tracking-tight">{key.toUpperCase()}</h3>
+                    <h3 className="mt-4 font-display text-4xl font-bold tracking-tight">{key.toUpperCase()}</h3>
                     <p className="mt-1 text-sm font-semibold text-white/85">{subtitle}</p>
-                    <p className="mt-3 text-lg font-bold">“{s.tagline}”</p>
+                    <p className="mt-3 text-lg font-semibold">“{s.tagline}”</p>
                   </div>
                   <Mascot name={mascot} size={120} className="-mr-3 -mt-2 hidden shrink-0 sm:block" />
                 </div>
@@ -53,9 +53,9 @@ export function StrategySelector() {
                 <div className="mt-5 grid gap-2">
                   {s.pillars.map((p) => (
                     <div key={p.key} className="flex items-center gap-3 rounded-xl bg-surface p-2.5 ring-1 ring-line">
-                      <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg font-display text-lg font-extrabold text-white", gradient)}>{p.letter}</span>
+                      <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg font-display text-lg font-semibold text-white", gradient)}>{p.letter}</span>
                       <div className="min-w-0">
-                        <p className="text-sm font-bold text-ink">{p.name}</p>
+                        <p className="text-sm font-semibold text-ink">{p.name}</p>
                         <p className="truncate text-xs text-muted">{p.program}</p>
                       </div>
                     </div>

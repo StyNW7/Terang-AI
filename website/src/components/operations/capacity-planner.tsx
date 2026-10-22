@@ -22,7 +22,7 @@ export const ALLOC_COLORS: Record<AllocationKey, string> = {
   events: "#39b7ff",
   qa: "#7c8fb0",
   maintenance: "#a9b8cc",
-  buffer: "#d5dfeb",
+  buffer: "var(--color-line-strong)",
   governance: "#17395e",
   coordination: "#0c9fd8",
 };
@@ -41,10 +41,10 @@ export function TeamOverview({ rules }: { rules: StrategyMode }) {
         const planned = (available * total) / 100;
         const poolIssues = issues.filter((i) => i.pool === pool && i.severity !== "info");
         return (
-          <div key={pool} className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+          <div key={pool} className="rounded-2xl border border-line bg-card p-5 shadow-soft">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="font-bold text-ink">{POOLS[pool].label}</p>
+                <p className="font-semibold text-ink">{POOLS[pool].label}</p>
                 <p className="text-xs text-muted">{POOLS[pool].description}</p>
               </div>
               {poolIssues.some((i) => i.severity === "critical") ? (
@@ -55,9 +55,9 @@ export function TeamOverview({ rules }: { rules: StrategyMode }) {
                 <Badge tone="success">Sehat</Badge>
               )}
             </div>
-            <div className="mt-4 flex -space-x-2">
+            <div className="mt-4 flex gap-1.5">
               {TEAM.filter((t) => t.pool === pool).map((m) => (
-                <span key={m.id} title={m.title} className={cn("grid h-10 w-10 place-items-center rounded-full text-[11px] font-bold text-white ring-4 ring-white", POOL_ICON_BG[pool])}>
+                <span key={m.id} title={m.title} className={cn("grid h-10 w-10 place-items-center rounded-full text-[11px] font-semibold text-white shadow-soft", POOL_ICON_BG[pool])}>
                   {m.role === "CEO" || m.role === "CPO" ? m.role : m.initials}
                 </span>
               ))}
@@ -65,13 +65,13 @@ export function TeamOverview({ rules }: { rules: StrategyMode }) {
             <div className="mt-4 flex items-end justify-between">
               <div>
                 <p className="text-xs text-muted">Direncanakan / tersedia</p>
-                <p className="tabular font-display text-xl font-extrabold text-ink">
+                <p className="tabular font-display text-xl font-semibold text-ink">
                   {formatNumber(planned)} <span className="text-sm font-semibold text-muted">/ {formatNumber(available)} jam/bln</span>
                 </p>
               </div>
-              <span className={cn("tabular text-sm font-bold", total > 100 ? "text-danger-ink" : total > 90 ? "text-warning-ink" : "text-[#0b7a5a]")}>{total}%</span>
+              <span className={cn("tabular text-sm font-semibold", total > 100 ? "text-danger-ink" : total > 90 ? "text-warning-ink" : "text-success-ink")}>{total}%</span>
             </div>
-            <div className="mt-2 flex h-3 overflow-hidden rounded-full bg-[#e6eef7]">
+            <div className="mt-2 flex h-3 overflow-hidden rounded-full bg-track">
               {POOLS[pool].keys.map((k) => {
                 const v = allocation[pool]?.[k] ?? 0;
                 return <motion.span key={k} className="h-full border-r border-white last:border-0" style={{ background: ALLOC_COLORS[k] }} animate={{ width: `${Math.min(100, v)}%` }} title={`${ALLOCATION_LABELS[k]}: ${v}%`} />;
@@ -99,11 +99,11 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
   const ph = productHours(allocation, hours);
 
   return (
-    <div className="rounded-2xl border border-line bg-white p-6 shadow-soft">
+    <div className="rounded-2xl border border-line bg-card p-6 shadow-soft">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-ace">Section C</p>
-          <h3 className="text-xl font-extrabold text-ink">Interactive Resource Planner</h3>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Section C</p>
+          <h3 className="text-xl font-semibold text-ink">Interactive Resource Planner</h3>
           <p className="text-sm text-muted-strong">Atur persentase waktu tiap kelompok. Validasi berjalan langsung terhadap aturan strategi.</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -125,12 +125,12 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
         {(Object.keys(POOLS) as PoolKey[]).map((pool) => {
           const total = poolTotal(allocation, pool);
           return (
-            <div key={pool} className={cn("rounded-2xl p-4 ring-1", total > 100 ? "bg-danger-soft/50 ring-[#f8cfd0]" : "bg-surface ring-line")}>
+            <div key={pool} className={cn("rounded-2xl p-4 ring-1", total > 100 ? "bg-danger-soft/50 ring-current/15" : "bg-surface ring-line")}>
               <div className="mb-3 flex items-center justify-between">
-                <p className="flex items-center gap-2 text-sm font-bold text-ink">
+                <p className="flex items-center gap-2 text-sm font-semibold text-ink">
                   <Users className="h-4 w-4 text-muted" /> {POOLS[pool].label}
                 </p>
-                <span className={cn("tabular rounded-full px-2 py-0.5 text-xs font-bold", total > 100 ? "bg-danger text-white" : total >= 90 ? "bg-warning-soft text-warning-ink" : "bg-white text-ink ring-1 ring-line")}>
+                <span className={cn("tabular rounded-full px-2 py-0.5 text-xs font-semibold", total > 100 ? "bg-danger text-white" : total >= 90 ? "bg-warning-soft text-warning-ink" : "bg-card text-ink ring-1 ring-line")}>
                   {total}%
                 </span>
               </div>
@@ -156,7 +156,7 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
 
       <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_1.4fr]">
         <div className="rounded-2xl bg-navy-gradient p-5 text-white">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky">Section B · Product allocation (jam/bulan)</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">Section B · Product allocation (jam/bulan)</p>
           {(["interview", "events"] as const).map((p) => {
             const h = ph[p];
             const total = h.product + h.ops;
@@ -164,7 +164,7 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
               <div key={p} className="mt-4">
                 <div className="flex justify-between text-sm">
                   <span className="font-semibold">{p === "interview" ? "AI Candidate Interview" : "Terang Events"}</span>
-                  <span className="tabular font-bold">{formatNumber(total)} jam</span>
+                  <span className="tabular font-semibold">{formatNumber(total)} jam</span>
                 </div>
                 <p className="text-xs text-white/65">
                   Product {formatNumber(h.product)} j · Ops {formatNumber(h.ops)} j
@@ -188,7 +188,7 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
                 animate={{ opacity: 1, x: 0 }}
                 className={cn(
                   "flex items-start gap-3 rounded-xl p-3 text-sm ring-1",
-                  i.severity === "critical" ? "bg-danger-soft text-[#8a1c20] ring-[#f8cfd0]" : i.severity === "warning" ? "bg-warning-soft text-[#6f4200] ring-[#fbe2b3]" : "bg-soft/60 text-navy ring-[#cfe6fb]",
+                  i.severity === "critical" ? "bg-danger-soft text-danger-ink ring-current/15" : i.severity === "warning" ? "bg-warning-soft text-warning-ink ring-current/15" : "bg-soft/60 text-ink ring-current/15",
                 )}
               >
                 <Icon className="mt-0.5 h-4 w-4 shrink-0" />
@@ -200,7 +200,7 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
             );
           })}
           {!issues.some((i) => i.severity !== "info") && (
-            <p className="flex items-center gap-2 rounded-xl bg-success-soft p-3 text-sm font-semibold text-[#0b5b44]">
+            <p className="flex items-center gap-2 rounded-xl bg-success-soft p-3 text-sm font-semibold text-success-ink">
               <CheckCircle2 className="h-4 w-4" /> Semua batasan kapasitas terpenuhi.
             </p>
           )}

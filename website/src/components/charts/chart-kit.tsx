@@ -12,8 +12,9 @@ export const SERIES = {
   one: "#2251c9",
   ace: "#0c9fd8",
   shared: "#94a3b8",
-  grid: "#e6eef7",
-  axis: "#73849b",
+  navy: "var(--color-series-navy)",
+  grid: "var(--color-grid)",
+  axis: "var(--color-axis)",
 };
 
 export const AXIS_PROPS = {
@@ -46,9 +47,9 @@ export function ChartTooltip({
 }) {
   if (!active || !payload || payload.length === 0) return null;
   return (
-    <div className="min-w-[160px] rounded-xl border border-line bg-white/95 px-3 py-2.5 text-xs shadow-lift backdrop-blur">
+    <div className="min-w-[160px] rounded-xl border border-line bg-card/95 px-3 py-2.5 text-xs shadow-lift backdrop-blur">
       {label !== undefined && label !== "" && (
-        <p className="mb-1.5 font-bold text-ink">{labelFmt ? labelFmt(label) : String(label)}</p>
+        <p className="mb-1.5 font-semibold text-ink">{labelFmt ? labelFmt(label) : String(label)}</p>
       )}
       <div className="space-y-1">
         {payload.map((p, i) => (
@@ -57,7 +58,7 @@ export function ChartTooltip({
               <span className="h-2.5 w-2.5 rounded-sm" style={{ background: p.color }} />
               {String(p.name)}
             </span>
-            <span className="tabular font-bold text-ink">{typeof p.value === "number" ? formatValue(p.value, format) : String(p.value)}</span>
+            <span className="tabular font-semibold text-ink">{typeof p.value === "number" ? formatValue(p.value, format) : String(p.value)}</span>
           </div>
         ))}
       </div>
@@ -109,10 +110,10 @@ export function ChartFrame({
 }) {
   const [view, setView] = useState<"chart" | "table">("chart");
   return (
-    <figure className={cn("rounded-2xl border border-line bg-white p-5 shadow-soft", className)} aria-label={summary}>
+    <figure className={cn("rounded-2xl border border-line bg-card p-5 shadow-soft", className)} aria-label={summary}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <figcaption className="text-[15px] font-bold text-ink">{title}</figcaption>
+          <figcaption className="text-[15px] font-semibold text-ink">{title}</figcaption>
           {description && <p className="mt-0.5 text-[12.5px] leading-relaxed text-muted-strong">{description}</p>}
         </div>
         <div className="flex items-center gap-2">

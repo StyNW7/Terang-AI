@@ -85,21 +85,21 @@ export function OnePillarNavigate() {
     <div className="space-y-10">
       <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
         {/* Persona */}
-        <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
+        <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-one">Target customer persona</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-one-ink">Target customer persona</p>
             <SourceLabel type="illustrative-assumption" compact />
           </div>
           <div className="mt-4 flex items-center gap-4">
-            <span className="grid h-16 w-16 place-items-center rounded-2xl bg-one-gradient font-display text-xl font-extrabold text-white">SH</span>
+            <span className="grid h-16 w-16 place-items-center rounded-2xl bg-one-gradient font-display text-xl font-semibold text-white">SH</span>
             <div>
-              <p className="text-lg font-bold text-ink">Sinta Hapsari (fiktif)</p>
+              <p className="text-lg font-semibold text-ink">Sinta Hapsari (fiktif)</p>
               <p className="text-sm text-muted-strong">HR Lead · perusahaan ritel 300+ karyawan</p>
             </div>
           </div>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted">Tujuan</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Tujuan</p>
               <ul className="mt-1.5 space-y-1 text-[13px] text-ink">
                 <li>• Rekrut 40+ staf toko per kuartal</li>
                 <li>• Standar wawancara konsisten</li>
@@ -107,7 +107,7 @@ export function OnePillarNavigate() {
               </ul>
             </div>
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted">Hambatan</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Hambatan</p>
               <ul className="mt-1.5 space-y-1 text-[13px] text-ink">
                 <li>• Tim HR hanya 3 orang</li>
                 <li>• Screening memakan 60% waktu</li>
@@ -115,20 +115,20 @@ export function OnePillarNavigate() {
               </ul>
             </div>
           </div>
-          <p className="mt-4 rounded-xl bg-one-soft p-3 text-[13px] text-one">
+          <p className="mt-4 rounded-xl bg-one-soft p-3 text-[13px] text-one-ink">
             <strong>Kriteria membeli:</strong> bukti penghematan waktu, kontrol manusia, kepatuhan data, harga yang dapat diprediksi.
           </p>
         </div>
 
         {/* Campaign concepts */}
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-3xl border border-line bg-white p-5 shadow-soft">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted">Konsep posting B2B (mockup)</p>
+          <div className="rounded-3xl border border-line bg-card p-5 shadow-soft">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Konsep posting B2B (mockup)</p>
             <div className="mt-3 rounded-2xl border border-line p-4">
               <div className="flex items-center gap-2">
                 <LogoMark size={32} />
                 <div>
-                  <p className="text-sm font-bold text-ink">Terang AI for Business</p>
+                  <p className="text-sm font-semibold text-ink">Terang AI for Business</p>
                   <p className="flex items-center gap-1 text-[11px] text-muted">
                     Promosi · <Globe className="h-3 w-3" />
                   </p>
@@ -139,8 +139,8 @@ export function OnePillarNavigate() {
                 tetap di tangan recruiter. <strong>Daftar pilot 30 hari →</strong>
               </p>
               <div className="mt-3 rounded-xl bg-one-gradient p-4 text-white">
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/75">Hire Smarter with Terang</p>
-                <p className="font-display text-lg font-extrabold">Dari skor generik ke insight berbasis bukti.</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/75">Hire Smarter with Terang</p>
+                <p className="font-display text-lg font-semibold">Dari skor generik ke insight berbasis bukti.</p>
               </div>
               <div className="mt-3 flex justify-between text-[11px] font-semibold text-muted">
                 <span className="flex items-center gap-1"><ThumbsUp className="h-3.5 w-3.5" /> Suka</span>
@@ -151,8 +151,8 @@ export function OnePillarNavigate() {
             </div>
           </div>
           <div className="flex flex-col rounded-3xl bg-navy-gradient p-5 text-white shadow-card">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky">Webinar series</p>
-            <p className="mt-2 font-display text-2xl font-extrabold leading-tight">HR Efficiency Clinic</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">Webinar series</p>
+            <p className="mt-2 font-display text-2xl font-semibold leading-tight">HR Efficiency Clinic</p>
             <p className="mt-2 text-sm text-white/75">Sesi 60 menit untuk HR Lead: membangun rubrik wawancara, mengurangi bias, dan menghitung waktu screening.</p>
             <div className="mt-4 space-y-2 text-[13px]">
               <p className="flex items-center gap-2"><CalendarClock className="h-4 w-4 text-sky" /> Kamis bulanan · 15.00 WIB</p>
@@ -168,11 +168,11 @@ export function OnePillarNavigate() {
       </div>
 
       {/* Funnel */}
-      <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
+      <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-one">Pilot-to-Paid Growth Engine</p>
-            <h3 className="text-xl font-extrabold text-ink">Awareness → Lead → Demo → Pilot → Paid → Renewal</h3>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-one-ink">Pilot-to-Paid Growth Engine</p>
+            <h3 className="text-xl font-semibold text-ink">Awareness → Lead → Demo → Pilot → Paid → Renewal</h3>
             <p className="mt-1 text-sm text-muted-strong">
               Pilot, konversi & renewal terhubung ke asumsi simulator (satu sumber data). Ubah di sini dan halaman Compare ikut berubah.
             </p>
@@ -184,8 +184,8 @@ export function OnePillarNavigate() {
             <Slider label="Awareness → Qualified Lead" value={rates.leadRate * 100} min={1} max={10} step={0.5} onChange={(v) => setRates((r) => ({ ...r, leadRate: v / 100 }))} display={formatPercent(rates.leadRate, 1)} color="#2251c9" />
             <Slider label="Lead → Demo" value={rates.demoRate * 100} min={10} max={70} onChange={(v) => setRates((r) => ({ ...r, demoRate: v / 100 }))} display={formatPercent(rates.demoRate)} color="#2251c9" />
             <Slider label="Demo → Pilot" value={rates.pilotRate * 100} min={15} max={80} onChange={(v) => setRates((r) => ({ ...r, pilotRate: v / 100 }))} display={formatPercent(rates.pilotRate)} color="#2251c9" />
-            <div className="rounded-2xl bg-one-soft/60 p-4 ring-1 ring-[#cddaf8]">
-              <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.12em] text-one">Asumsi simulator bersama</p>
+            <div className="rounded-2xl bg-one-soft/60 p-4 ring-1 ring-current/15">
+              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-one-ink">Asumsi simulator bersama</p>
               <div className="space-y-4">
                 <Slider label="Kapasitas pilot (fokus penuh)" value={assumptions.shared.salesCapacityPilots} min={10} max={80} onChange={(v) => update("shared", "salesCapacityPilots", v)} display={`${assumptions.shared.salesCapacityPilots} pilot`} color="#2251c9" />
                 <Slider label="Konversi pilot → berbayar (dasar)" value={Math.round(assumptions.interview.pilotConversion * 100)} min={5} max={80} onChange={(v) => update("interview", "pilotConversion", v / 100)} display={formatPercent(assumptions.interview.pilotConversion)} color="#2251c9" hint={`+ uplift fokus ONE ${formatPercent(assumptions.one.conversionUpliftPp)} (asumsi eksplisit)`} />
@@ -203,7 +203,7 @@ export function OnePillarNavigate() {
               ].map((m) => (
                 <div key={m.k} className="rounded-xl bg-surface p-3 ring-1 ring-line">
                   <p className="text-[11px] text-muted">{m.k}</p>
-                  <p className="tabular font-display text-lg font-extrabold text-ink">{m.v}</p>
+                  <p className="tabular font-display text-lg font-semibold text-ink">{m.v}</p>
                 </div>
               ))}
             </div>
@@ -212,9 +212,9 @@ export function OnePillarNavigate() {
       </div>
 
       {/* Pipeline */}
-      <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
+      <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h3 className="text-lg font-bold text-ink">Contoh lead pipeline</h3>
+          <h3 className="text-lg font-semibold text-ink">Contoh lead pipeline</h3>
           <div className="flex flex-wrap gap-1.5">
             {STAGES.map((s) => (
               <button
@@ -223,7 +223,7 @@ export function OnePillarNavigate() {
                 onClick={() => setStageFilter(s)}
                 className={cn(
                   "rounded-lg px-2.5 py-1 text-xs font-semibold ring-1 transition",
-                  stageFilter === s ? "bg-one text-white ring-one" : "bg-white text-muted-strong ring-line hover:ring-one/40",
+                  stageFilter === s ? "bg-one text-white ring-one" : "bg-card text-muted-strong ring-line hover:ring-one/40",
                 )}
               >
                 {s}
@@ -262,10 +262,10 @@ export function OnePillarNavigate() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* ROI */}
-        <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
+        <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <h3 className="text-lg font-bold text-ink">Pilot ROI estimator</h3>
+              <h3 className="text-lg font-semibold text-ink">Pilot ROI estimator</h3>
               <p className="text-sm text-muted-strong">Waktu administrasi yang dihemat dipisahkan dari nilai uang.</p>
             </div>
             <InfoTip align="right">
@@ -280,13 +280,13 @@ export function OnePillarNavigate() {
           </div>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-one-soft p-4">
-              <p className="flex items-center gap-1.5 text-xs font-semibold text-one"><Clock className="h-3.5 w-3.5" /> Waktu dihemat / bulan</p>
-              <p className="tabular font-display text-2xl font-extrabold text-ink">{formatNumber(hoursSaved)} jam</p>
+              <p className="flex items-center gap-1.5 text-xs font-semibold text-one-ink"><Clock className="h-3.5 w-3.5" /> Waktu dihemat / bulan</p>
+              <p className="tabular font-display text-2xl font-semibold text-ink">{formatNumber(hoursSaved)} jam</p>
               <p className="text-[11px] text-muted">≈ {formatNumber(hoursSaved / 8)} hari kerja HR</p>
             </div>
             <div className="rounded-2xl bg-surface p-4 ring-1 ring-line">
               <p className="flex items-center gap-1.5 text-xs font-semibold text-muted-strong"><Wallet className="h-3.5 w-3.5" /> Biaya layanan / bulan</p>
-              <p className="tabular font-display text-2xl font-extrabold text-ink">{formatIDRCompact(toolCost)}</p>
+              <p className="tabular font-display text-2xl font-semibold text-ink">{formatIDRCompact(toolCost)}</p>
               <p className="text-[11px] text-muted">{formatNumber(interviews)} × {formatIDR(pricePerInterview)}</p>
             </div>
           </div>
@@ -300,7 +300,7 @@ export function OnePillarNavigate() {
                 <Slider className="mt-4" label="Asumsi biaya HR per jam" value={hourlyCost} min={30_000} max={250_000} step={5_000} onChange={setHourlyCost} display={formatIDR(hourlyCost)} color="#2251c9" />
                 <p className="mt-3 text-sm text-ink">
                   Nilai waktu setara: <strong className="tabular">{formatIDRCompact(moneyEquivalent)}</strong> / bulan →{" "}
-                  <strong className={moneyEquivalent >= toolCost ? "text-[#0b7a5a]" : "text-danger-ink"}>
+                  <strong className={moneyEquivalent >= toolCost ? "text-success-ink" : "text-danger-ink"}>
                     {moneyEquivalent >= toolCost ? "melebihi" : "di bawah"} biaya layanan
                   </strong>
                   . Ini estimasi nilai kapasitas, bukan penghematan kas aktual.
@@ -311,10 +311,10 @@ export function OnePillarNavigate() {
         </div>
 
         {/* Pricing */}
-        <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
+        <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <h3 className="text-lg font-bold text-ink">Eksplorasi model harga</h3>
+              <h3 className="text-lg font-semibold text-ink">Eksplorasi model harga</h3>
               <p className="text-sm text-muted-strong">Bukan harga resmi Terang AI — format usulan untuk diuji saat pilot.</p>
             </div>
             <SourceLabel type="illustrative-assumption" compact />
@@ -335,11 +335,11 @@ export function OnePillarNavigate() {
                   )}
                 >
                   <div>
-                    <p className="font-bold">{t.name}</p>
+                    <p className="font-semibold">{t.name}</p>
                     <p className={cn("text-xs", isBest ? "text-white/80" : "text-muted-strong")}>{t.desc} · {t.note}</p>
                   </div>
                   <div className="text-right">
-                    <p className="tabular font-display text-lg font-extrabold">{available ? formatIDRCompact(t.value) : "—"}</p>
+                    <p className="tabular font-display text-lg font-semibold">{available ? formatIDRCompact(t.value) : "—"}</p>
                     <p className={cn("text-[11px]", isBest ? "text-white/80" : "text-muted")}>
                       {available ? `${formatIDR(t.value / volume)} / interview` : "melebihi kuota pilot"}
                     </p>

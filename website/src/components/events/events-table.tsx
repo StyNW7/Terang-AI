@@ -54,7 +54,7 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 rounded-2xl border border-line bg-white p-4 shadow-soft lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-3 rounded-2xl border border-line bg-card p-4 shadow-soft lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-1 flex-col gap-2 sm:flex-row">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
@@ -102,7 +102,7 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
           }
         />
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+        <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[820px] text-left text-sm">
               <thead className="bg-surface text-xs text-muted">
@@ -189,11 +189,11 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
               })}
             </div>
             <div>
-              <p className="mb-2 text-sm font-bold text-ink">Tahapan</p>
+              <p className="mb-2 text-sm font-semibold text-ink">Tahapan</p>
               <ol className="relative space-y-3 border-l-2 border-line pl-5">
                 {detail.stages.map((s) => (
                   <li key={s.id} className="relative">
-                    <span className="absolute -left-[27px] top-1 h-3 w-3 rounded-full bg-sky ring-4 ring-white" />
+                    <span className="absolute -left-[27px] top-1 h-3 w-3 rounded-full bg-sky ring-4 ring-card" />
                     <p className="text-sm font-semibold text-ink">{s.name}</p>
                     <p className="text-xs text-muted">{formatDate(s.date)}</p>
                   </li>
@@ -202,12 +202,12 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
             </div>
             {detail.criteria.length > 0 && (
               <div>
-                <p className="mb-2 text-sm font-bold text-ink">Rubrik penjurian</p>
+                <p className="mb-2 text-sm font-semibold text-ink">Rubrik penjurian</p>
                 <div className="space-y-1.5">
                   {detail.criteria.map((c) => (
                     <div key={c.id} className="flex items-center justify-between rounded-lg bg-surface px-3 py-2 text-sm ring-1 ring-line">
                       <span className="text-ink">{c.name}</span>
-                      <span className="tabular font-bold text-sky-ink">{c.weight}%</span>
+                      <span className="tabular font-semibold text-sky-ink">{c.weight}%</span>
                     </div>
                   ))}
                 </div>

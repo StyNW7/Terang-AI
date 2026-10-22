@@ -7,16 +7,16 @@ type Size = "sm" | "md" | "lg" | "icon";
 
 const variants: Record<Variant, string> = {
   primary:
-    "text-white bg-[linear-gradient(135deg,#2a86e2_0%,#2563d6_55%,#1f4fc4_100%)] shadow-[0_10px_30px_-12px_rgba(37,99,214,0.7)] hover:shadow-[0_14px_36px_-12px_rgba(37,99,214,0.85)] hover:brightness-110",
-  secondary: "bg-white text-ink border border-line shadow-soft hover:border-brand/50 hover:text-brand-ink",
-  soft: "bg-soft text-brand-ink hover:bg-[#dcefff]",
-  ghost: "text-muted-strong hover:text-ink hover:bg-soft/70",
-  dark: "bg-navy text-white hover:bg-[#1d4674] shadow-soft",
-  light: "bg-white text-navy hover:bg-soft shadow-[0_10px_30px_-14px_rgba(0,0,0,0.45)]",
+    "text-white bg-[linear-gradient(135deg,#2a86e2_0%,#2563d6_55%,#1f4fc4_100%)] shadow-[0_8px_24px_-12px_rgba(37,99,214,0.75)] hover:shadow-[0_12px_30px_-12px_rgba(37,99,214,0.9)] hover:brightness-110",
+  secondary: "bg-card text-ink border border-line shadow-soft hover:border-brand/45 hover:text-brand-ink",
+  soft: "bg-soft text-brand-ink hover:bg-soft-strong",
+  ghost: "text-muted-strong hover:text-ink hover:bg-neutral-soft",
+  dark: "bg-ink text-card shadow-soft hover:opacity-90",
+  light: "bg-white text-navy hover:bg-white/90 shadow-[0_10px_30px_-14px_rgba(0,0,0,0.45)]",
   glass: "bg-white/10 text-white border border-white/25 backdrop-blur hover:bg-white/20",
   one: "text-white bg-one-gradient shadow-[0_10px_30px_-14px_rgba(34,81,201,0.8)] hover:brightness-110",
   ace: "text-white bg-[linear-gradient(135deg,#0a8fc4_0%,#2563d6_100%)] shadow-[0_10px_30px_-14px_rgba(12,159,216,0.8)] hover:brightness-110",
-  danger: "bg-danger-soft text-danger-ink hover:bg-[#fbdcdc]",
+  danger: "bg-danger-soft text-danger-ink hover:bg-danger-soft/70",
 };
 
 const sizes: Record<Size, string> = {
@@ -27,7 +27,7 @@ const sizes: Record<Size, string> = {
 };
 
 const base =
-  "inline-flex items-center justify-center font-semibold whitespace-nowrap transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none";
+  "inline-flex items-center justify-center font-medium whitespace-nowrap transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
 interface CommonProps {
   variant?: Variant;

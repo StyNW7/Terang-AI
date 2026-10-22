@@ -1,17 +1,18 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, Menu, Presentation, RotateCcw, X } from "lucide-react";
+import { ArrowUpRight, Check, ChevronRight, ChevronsUpDown, Globe, Menu, PanelLeftClose, PanelLeftOpen, Presentation, RotateCcw, X } from "lucide-react";
 import { toast } from "sonner";
-import { APP_NAV } from "@/data/navigation";
-import { Logo, Mascot } from "@/components/shared/brand";
+import { WORKSPACES, activeLink, workspaceFor, type Workspace } from "@/data/navigation";
+import { Logo, LogoMark } from "@/components/shared/brand";
 import { NavIcon } from "@/components/navigation/nav-icon";
-import { StrategyModeSwitcher } from "@/components/navigation/strategy-mode-switcher";
-import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/navigation/theme-toggle";
+import { Tooltip } from "@/components/ui/tooltip";
 import { MODE_META, useStrategyMode } from "@/hooks/use-strategy-mode";
+import { useSidebarCollapsed } from "@/lib/theme";
 import { useEventsStore } from "@/store/events-store";
 import { useInterviewStore } from "@/store/interview-store";
 import { useOperationsStore } from "@/store/operations-store";
@@ -19,166 +20,349 @@ import { useScenarioStore } from "@/store/scenario-store";
 import { cn } from "@/lib/utils";
 
 const TAG_STYLE: Record<string, string> = {
-  ONE: "bg-one-soft text-one",
-  ACE: "bg-ace-soft text-[#0a7aa6]",
+  ONE: "bg-one-soft text-one-ink",
+  ACE: "bg-ace-soft text-ace-ink",
+  Usulan: "bg-soft text-brand-ink",
+  Demo: "bg-success-soft text-success-ink",
 };
 
-const TITLES: Record<string, { title: string; crumb: string }> = {
-  "/demo/events": { title: "Terang Events", crumb: "Product Experience" },
-  "/demo/interview": { title: "AI Candidate Interview", crumb: "Product Experience" },
-  "/operations": { title: "ACE Command Center", crumb: "Operations & Analytics" },
-  "/portfolio": { title: "Portfolio Intelligence", crumb: "Operations & Analytics" },
-  "/compare": { title: "ONE vs ACE Strategy Simulator", crumb: "Operations & Analytics" },
-};
+/* ------------------------------------------------------------------
+   Workspace switcher — jumps between the three dashboards
+------------------------------------------------------------------- */
+function WorkspaceSwitcher({ current, onNavigate, compact }: { current: Workspace; onNavigate?: () => void; compact: boolean }) {
+  const [open, setOpen] = useState(false);
+  const { collapsed } = useSidebarCollapsed();
+  const ref = useRef<HTMLDivElement>(null);
 
-function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => ref.current && !ref.current.contains(e.target as Node) && setOpen(false);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  const trigger = (
+    <button
+      type="button"
+      aria-haspopup="menu"
+      aria-expanded={open}
+      onClick={() => setOpen((v) => !v)}
+      className={cn(
+        "flex w-full items-center gap-3 rounded-xl border border-line bg-card p-2 text-left shadow-soft transition hover:border-brand/40",
+        compact && "sidebar-collapsed:justify-center sidebar-collapsed:border-transparent sidebar-collapsed:bg-transparent sidebar-collapsed:p-1 sidebar-collapsed:shadow-none",
+      )}
+    >
+      <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg", current.accent)}>
+        <NavIcon name={current.icon} className="h-[18px] w-[18px]" />
+      </span>
+      <span className={cn("min-w-0 flex-1", compact && "sidebar-collapsed:hidden")}>
+        <span className="block text-[11px] font-medium uppercase tracking-[0.1em] text-muted">Dashboard</span>
+        <span className="block truncate text-sm font-semibold text-ink">{current.short}</span>
+      </span>
+      <ChevronsUpDown className={cn("h-4 w-4 shrink-0 text-muted", compact && "sidebar-collapsed:hidden")} />
+    </button>
+  );
+
+  return (
+    <div ref={ref} className="relative">
+      {compact ? (
+        <Tooltip content={`Dashboard: ${current.label}`} side="right" className="w-full" disabled={!collapsed || open}>
+          {trigger}
+        </Tooltip>
+      ) : (
+        trigger
+      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            role="menu"
+            initial={{ opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.98 }}
+            transition={{ duration: 0.15 }}
+            className={cn(
+              "absolute left-0 top-[calc(100%+6px)] z-50 w-[272px] rounded-2xl border border-line bg-card p-1.5 shadow-lift",
+              compact && "sidebar-collapsed:left-[calc(100%+10px)] sidebar-collapsed:top-0",
+            )}
+          >
+            <p className="px-2.5 pb-1 pt-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-muted">Pilih dashboard</p>
+            {WORKSPACES.map((ws) => {
+              const active = ws.id === current.id;
+              return (
+                <Link
+                  key={ws.id}
+                  role="menuitem"
+                  href={ws.base}
+                  onClick={() => {
+                    setOpen(false);
+                    onNavigate?.();
+                  }}
+                  className={cn("flex items-center gap-3 rounded-xl p-2.5 transition hover:bg-neutral-soft", active && "bg-neutral-soft")}
+                >
+                  <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg", ws.accent)}>
+                    <NavIcon name={ws.icon} className="h-[18px] w-[18px]" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-semibold text-ink">{ws.label}</span>
+                    <span className="block truncate text-xs text-muted">{ws.description}</span>
+                  </span>
+                  {active && <Check className="h-4 w-4 shrink-0 text-brand-ink" />}
+                </Link>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------
+   Sidebar
+------------------------------------------------------------------- */
+function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; onNavigate?: () => void; compact: boolean }) {
+  const ws = workspaceFor(pathname);
+  const current = activeLink(pathname, ws);
   const { mode } = useStrategyMode();
+  const { toggle, collapsed } = useSidebarCollapsed();
+  const hide = compact ? "sidebar-collapsed:hidden" : "";
+
   return (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center px-5">
-        <Logo height={24} />
-      </div>
-      <div className="px-4">
-        <Link
-          href="/"
-          onClick={onNavigate}
-          className="flex items-center gap-2 rounded-xl px-2 py-2 text-xs font-semibold text-muted transition hover:text-ink"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" /> Kembali ke situs utama
+      <div className={cn("flex h-16 shrink-0 items-center justify-between gap-2 px-4", compact && "sidebar-collapsed:justify-center sidebar-collapsed:px-0")}>
+        <Link href="/" onClick={onNavigate} aria-label="Terang AI — Beranda" className="flex items-center">
+          <span className={hide}>
+            <Logo height={22} href={null} />
+          </span>
+          {compact && (
+            <span className="hidden sidebar-collapsed:block">
+              <LogoMark size={30} />
+            </span>
+          )}
         </Link>
+        {compact && (
+          <button
+            type="button"
+            onClick={toggle}
+            className="grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-neutral-soft hover:text-ink sidebar-collapsed:hidden"
+            aria-label="Kecilkan sidebar"
+          >
+            <PanelLeftClose className="h-[18px] w-[18px]" />
+          </button>
+        )}
       </div>
-      <nav className="scrollbar-thin mt-2 flex-1 space-y-6 overflow-y-auto px-4 pb-6">
-        {APP_NAV.map((group) => (
+
+      <div className={cn("px-3", compact && "sidebar-collapsed:px-2")}>
+        <WorkspaceSwitcher current={ws} onNavigate={onNavigate} compact={compact} />
+      </div>
+
+      <nav aria-label={`Navigasi ${ws.label}`} data-lenis-prevent className={cn("scrollbar-thin mt-4 flex-1 space-y-5 overflow-y-auto overflow-x-hidden px-3 pb-4", compact && "sidebar-collapsed:px-2")}>
+        {ws.groups.map((group) => (
           <div key={group.group}>
-            <p className="mb-2 px-2 text-[10.5px] font-bold uppercase tracking-[0.16em] text-muted">{group.group}</p>
+            <p className={cn("mb-1.5 px-2.5 text-[11px] font-medium uppercase tracking-[0.1em] text-muted", hide)}>{group.group}</p>
+            {compact && <div className="mx-auto mb-2 hidden h-px w-6 bg-line sidebar-collapsed:block" />}
             <div className="space-y-0.5">
               {group.links.map((link) => {
-                const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
-                return (
+                const active = current?.href === link.href;
+                const item = (
                   <Link
-                    key={link.href}
                     href={link.href}
                     onClick={onNavigate}
+                    aria-current={active ? "page" : undefined}
                     className={cn(
-                      "group relative flex items-center gap-3 rounded-xl px-2.5 py-2 text-[13.5px] font-semibold transition",
-                      active ? "bg-white text-ink shadow-soft ring-1 ring-line" : "text-muted-strong hover:bg-white/70 hover:text-ink",
+                      "group relative flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-sm font-medium transition-colors",
+                      compact && "sidebar-collapsed:justify-center sidebar-collapsed:px-0",
+                      active ? "bg-card text-ink shadow-soft ring-1 ring-line" : "text-muted-strong hover:bg-neutral-soft hover:text-ink",
                     )}
                   >
-                    {active && <span className="absolute -left-4 top-2 h-5 w-1 rounded-r-full bg-brand-gradient" />}
-                    <span
-                      className={cn(
-                        "grid h-8 w-8 place-items-center rounded-lg transition",
-                        active ? "bg-brand-gradient text-white" : "bg-white text-brand-ink ring-1 ring-line group-hover:ring-brand/30",
-                      )}
-                    >
-                      <NavIcon name={link.icon} className="h-4 w-4" />
-                    </span>
-                    <span className="min-w-0 flex-1 truncate">{link.label}</span>
-                    {link.tag && <span className={cn("rounded-full px-1.5 py-0.5 text-[10px] font-bold", TAG_STYLE[link.tag])}>{link.tag}</span>}
+                    {active && (
+                      <motion.span
+                        layoutId={`sidebar-active-${compact ? "d" : "m"}`}
+                        className={cn("absolute -left-3 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-brand-gradient", compact && "sidebar-collapsed:-left-2")}
+                        transition={{ type: "spring", stiffness: 500, damping: 40 }}
+                      />
+                    )}
+                    <NavIcon name={link.icon} className={cn("h-[18px] w-[18px] shrink-0", active ? "text-brand-ink" : "text-muted group-hover:text-ink")} />
+                    <span className={cn("min-w-0 flex-1 truncate", hide)}>{link.label}</span>
+                    {link.tag && <span className={cn("rounded-full px-1.5 py-0.5 text-[11px] font-semibold leading-none", TAG_STYLE[link.tag], hide)}>{link.tag}</span>}
                   </Link>
+                );
+                return compact ? (
+                  <Tooltip key={link.href} content={link.label} side="right" className="flex w-full" disabled={!collapsed}>
+                    {item}
+                  </Tooltip>
+                ) : (
+                  <div key={link.href}>{item}</div>
                 );
               })}
             </div>
           </div>
         ))}
       </nav>
-      <div className="m-4 overflow-hidden rounded-2xl p-4 text-white" style={{ backgroundImage: MODE_META[mode].gradient }}>
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/70">Strategy Mode</p>
-            <p className="font-display text-lg font-extrabold">{MODE_META[mode].label}</p>
-          </div>
-          <Mascot name={mode === "one" ? "target" : mode === "ace" ? "puzzle" : "sparkle"} size={52} float={false} className="-mr-1 -mt-1" />
-        </div>
-        <p className="mt-1 text-[11.5px] leading-relaxed text-white/80">{MODE_META[mode].description}</p>
+
+      <div className={cn("shrink-0 space-y-2 border-t border-line p-3", compact && "sidebar-collapsed:px-2")}>
+        <Link
+          href="/dashboard/strategy"
+          onClick={onNavigate}
+          className={cn(
+            "group flex items-center gap-3 rounded-xl p-2.5 text-white shadow-soft transition hover:brightness-110",
+            compact && "sidebar-collapsed:justify-center sidebar-collapsed:p-2",
+          )}
+          style={{ backgroundImage: MODE_META[mode].gradient }}
+          title={compact && collapsed ? `Mode strategi: ${MODE_META[mode].label}` : undefined}
+        >
+          <span className="relative grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/15 ring-1 ring-white/25">
+            <span className="h-2 w-2 rounded-full bg-white" />
+          </span>
+          <span className={cn("min-w-0 flex-1", hide)}>
+            <span className="block text-[11px] font-medium uppercase tracking-[0.1em] text-white/75">Mode strategi</span>
+            <span className="block truncate text-sm font-semibold">{MODE_META[mode].label}</span>
+          </span>
+          <ChevronRight className={cn("h-4 w-4 shrink-0 text-white/80 transition group-hover:translate-x-0.5", hide)} />
+        </Link>
+        {compact && (
+          <button
+            type="button"
+            onClick={toggle}
+            className="hidden w-full place-items-center rounded-xl py-2 text-muted transition hover:bg-neutral-soft hover:text-ink sidebar-collapsed:grid"
+            aria-label="Perbesar sidebar"
+            title="Perbesar sidebar"
+          >
+            <PanelLeftOpen className="h-[18px] w-[18px]" />
+          </button>
+        )}
       </div>
     </div>
   );
 }
 
+/* ------------------------------------------------------------------
+   Shell
+------------------------------------------------------------------- */
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() ?? "";
   const [mobileOpen, setMobileOpen] = useState(false);
-  const meta = TITLES[pathname] ?? { title: "Workspace", crumb: "Terang AI" };
+  const ws = workspaceFor(pathname);
+  const current = activeLink(pathname, ws);
+  const { mode } = useStrategyMode();
   const resetEvents = useEventsStore((s) => s.reset);
   const resetInterview = useInterviewStore((s) => s.reset);
   const resetOps = useOperationsStore((s) => s.reset);
   const resetScenario = useScenarioStore((s) => s.reset);
 
+  const [lastPath, setLastPath] = useState(pathname);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    setMobileOpen(false);
+  }
+
   const resetDemo = () => {
-    if (pathname.startsWith("/demo/events")) resetEvents();
-    else if (pathname.startsWith("/demo/interview")) resetInterview();
-    else if (pathname.startsWith("/operations")) resetOps();
-    else if (pathname.startsWith("/compare")) resetScenario();
+    if (ws.id === "events") resetEvents();
+    else if (ws.id === "interview") resetInterview();
     else {
-      resetEvents();
-      resetInterview();
       resetOps();
       resetScenario();
     }
-    toast.success("Data demo halaman ini telah direset ke kondisi awal.");
+    toast.success(`Data demo ${ws.label} dikembalikan ke kondisi awal.`);
   };
 
   return (
-    <div className="min-h-screen bg-[#f3f8fd]">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[264px] border-r border-line bg-gradient-to-b from-[#f7fbff] to-[#eef5fd] lg:block">
-        <SidebarContent pathname={pathname} />
+    <div className="min-h-screen bg-surface">
+      {/* Desktop sidebar */}
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[264px] border-r border-line bg-subtle transition-[width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:block sidebar-collapsed:w-[76px]">
+        <SidebarContent pathname={pathname} compact />
       </aside>
 
+      {/* Mobile drawer */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div className="fixed inset-0 z-[70] lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <div className="absolute inset-0 bg-navy-deep/40 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+            <div className="absolute inset-0 bg-navy-deep/50 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
             <motion.aside
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 340, damping: 34 }}
-              className="absolute inset-y-0 left-0 w-[284px] bg-[#f3f8fd] shadow-lift"
+              className="absolute inset-y-0 left-0 w-[288px] max-w-[85vw] border-r border-line bg-subtle shadow-lift"
             >
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-xl text-muted hover:bg-white"
+                className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-xl text-muted hover:bg-neutral-soft"
                 aria-label="Tutup navigasi"
               >
                 <X className="h-5 w-5" />
               </button>
-              <SidebarContent pathname={pathname} onNavigate={() => setMobileOpen(false)} />
+              <SidebarContent pathname={pathname} onNavigate={() => setMobileOpen(false)} compact={false} />
             </motion.aside>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="lg:pl-[264px]">
-        <header className="sticky top-0 z-30 border-b border-line/80 bg-white/80 backdrop-blur-xl">
+      <div className="transition-[padding] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:pl-[264px] lg:sidebar-collapsed:pl-[76px]">
+        <header className="sticky top-0 z-30 border-b border-line bg-surface/80 backdrop-blur-xl">
           <div className="flex h-16 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
             <div className="flex min-w-0 items-center gap-3">
               <button
                 type="button"
                 onClick={() => setMobileOpen(true)}
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-white text-ink lg:hidden"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-card text-ink lg:hidden"
                 aria-label="Buka navigasi"
               >
                 <Menu className="h-5 w-5" />
               </button>
-              <div className="min-w-0">
-                <p className="truncate text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">{meta.crumb}</p>
-                <h1 className="truncate font-display text-[17px] font-extrabold text-ink">{meta.title}</h1>
-              </div>
+              <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1.5 text-sm">
+                <Link href={ws.base} className="hidden shrink-0 font-medium text-muted transition hover:text-ink sm:inline">
+                  {ws.label}
+                </Link>
+                <ChevronRight className="hidden h-3.5 w-3.5 shrink-0 text-muted sm:block" />
+                <span className="truncate font-semibold text-ink">{current?.label ?? "Ringkasan"}</span>
+              </nav>
             </div>
-            <div className="flex items-center gap-2">
-              <StrategyModeSwitcher compact className="hidden xl:inline-flex" />
-              <Button variant="ghost" size="sm" onClick={resetDemo} title="Reset data demo halaman ini">
-                <RotateCcw className="h-4 w-4" /> <span className="hidden sm:inline">Reset demo</span>
-              </Button>
-              <Button href="/presentation" variant="secondary" size="sm" className="hidden md:inline-flex">
-                <Presentation className="h-4 w-4" /> Presentasi
-              </Button>
+            <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+              <Tooltip content="Mode strategi aktif — ubah di Kontrol Strategi (Super Admin)" side="bottom">
+                <Link
+                  href="/dashboard/strategy"
+                  className="hidden items-center gap-2 rounded-xl border border-line bg-card px-3 py-1.5 text-xs font-medium text-muted-strong shadow-soft transition hover:border-brand/40 hover:text-ink md:inline-flex"
+                >
+                  <span className="h-2 w-2 rounded-full" style={{ background: MODE_META[mode].color }} />
+                  Mode: <span className="font-semibold text-ink">{MODE_META[mode].short}</span>
+                </Link>
+              </Tooltip>
+              <Tooltip content="Kembalikan data demo dashboard ini ke kondisi awal" side="bottom">
+                <button
+                  type="button"
+                  onClick={resetDemo}
+                  className="inline-flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-[13px] font-medium text-muted-strong transition hover:bg-neutral-soft hover:text-ink"
+                >
+                  <RotateCcw className="h-4 w-4" /> <span className="hidden xl:inline">Reset demo</span>
+                </button>
+              </Tooltip>
+              <Tooltip content="Mode presentasi" side="bottom">
+                <Link
+                  href="/presentation"
+                  className="hidden h-9 w-9 place-items-center rounded-xl text-muted-strong transition hover:bg-neutral-soft hover:text-ink sm:grid"
+                  aria-label="Mode presentasi"
+                >
+                  <Presentation className="h-[18px] w-[18px]" />
+                </Link>
+              </Tooltip>
+              <ThemeToggle />
+              <Link
+                href="/"
+                className="hidden h-9 items-center gap-1.5 rounded-xl border border-line bg-card px-3 text-[13px] font-medium text-ink shadow-soft transition hover:border-brand/40 sm:inline-flex"
+              >
+                <Globe className="h-4 w-4 text-muted" /> Situs <ArrowUpRight className="h-3.5 w-3.5 text-muted" />
+              </Link>
             </div>
           </div>
         </header>
-        <main className="px-4 pb-32 pt-6 sm:px-6 lg:px-8">{children}</main>
+        <main className="mx-auto w-full max-w-[1440px] px-4 pb-24 pt-6 sm:px-6 lg:px-8 lg:pt-8">{children}</main>
       </div>
     </div>
   );

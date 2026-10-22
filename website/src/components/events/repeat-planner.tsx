@@ -8,7 +8,6 @@ import { useEventsStore } from "@/store/events-store";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Label, Select, Checkbox } from "@/components/ui/form";
 import { Callout } from "@/components/ui/misc";
-import { SourceLabel } from "@/components/shared/source-label";
 import { addDays, formatDate, formatNumber } from "@/lib/formatters";
 import { EventStatusBadge } from "./shared";
 
@@ -60,18 +59,10 @@ export function RepeatPlanner({ preselect, onDone }: { preselect?: string; onDon
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col gap-3 rounded-2xl bg-ace-gradient p-6 text-white shadow-card sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/80">ACE Proposal · Retention</p>
-          <h3 className="mt-1 text-2xl font-extrabold">Repeat Event Planner</h3>
-          <p className="mt-1 max-w-xl text-sm text-white/85">Duplikasi konfigurasi event sebelumnya dalam hitungan detik — tanpa menyalin data peserta yang sensitif.</p>
-        </div>
-        <SourceLabel type="strategic-proposal" dark />
-      </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-          <p className="text-sm font-bold text-ink">1. Pilih event sumber</p>
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+          <p className="text-sm font-semibold text-ink">1. Pilih event sumber</p>
           <Select className="mt-3" value={sourceId} onChange={(e) => setSourceId(e.target.value)} aria-label="Event sumber">
             {events.map((e) => (
               <option key={e.id} value={e.id}>
@@ -91,7 +82,7 @@ export function RepeatPlanner({ preselect, onDone }: { preselect?: string; onDon
               <p className="text-muted-strong">Peserta: <span className="font-semibold text-ink">{formatNumber(source.registered)}</span></p>
             </div>
           </div>
-          <p className="mt-5 text-sm font-bold text-ink">2. Apa yang disalin?</p>
+          <p className="mt-5 text-sm font-semibold text-ink">2. Apa yang disalin?</p>
           <div className="mt-3 space-y-2">
             <Checkbox id="copy-stages" checked={copyStages} onChange={setCopyStages} label="Tahapan & jadwal (digeser otomatis)" />
             <Checkbox id="copy-rubric" checked={copyRubric} onChange={setCopyRubric} label="Rubrik & workflow penjurian" />
@@ -105,8 +96,8 @@ export function RepeatPlanner({ preselect, onDone }: { preselect?: string; onDon
           </div>
         </div>
 
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-          <p className="text-sm font-bold text-ink">3. Atur edisi baru</p>
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+          <p className="text-sm font-semibold text-ink">3. Atur edisi baru</p>
           <div className="mt-3 grid gap-4">
             <Field>
               <Label htmlFor="repeat-name" required>Nama edisi baru</Label>
@@ -121,7 +112,7 @@ export function RepeatPlanner({ preselect, onDone }: { preselect?: string; onDon
               </Select>
             </Field>
           </div>
-          <p className="mt-5 flex items-center gap-1.5 text-sm font-bold text-ink">
+          <p className="mt-5 flex items-center gap-1.5 text-sm font-semibold text-ink">
             <CalendarRange className="h-4 w-4 text-sky-ink" /> Pratinjau jadwal
           </p>
           <ol className="mt-3 space-y-2">

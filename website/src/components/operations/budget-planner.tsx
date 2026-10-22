@@ -25,11 +25,11 @@ export function BudgetPlanner() {
   ];
 
   return (
-    <div className="rounded-2xl border border-line bg-white p-6 shadow-soft">
+    <div className="rounded-2xl border border-line bg-card p-6 shadow-soft">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-ace">Section D</p>
-          <h3 className="text-xl font-extrabold text-ink">Budget Planner (per bulan)</h3>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Section D</p>
+          <h3 className="text-xl font-semibold text-ink">Budget Planner (per bulan)</h3>
           <p className="text-sm text-muted-strong">Anggaran diskresioner di luar gaji tetap: {formatIDR(MONTHLY_DISCRETIONARY_BUDGET)}.</p>
         </div>
         <SourceLabel type="illustrative-assumption" compact />
@@ -52,17 +52,17 @@ export function BudgetPlanner() {
         </div>
         <div className="space-y-4">
           <div className={cn("rounded-2xl p-5 text-white", remaining < 0 ? "bg-[linear-gradient(135deg,#e0484d,#a82025)]" : "bg-navy-gradient")}>
-            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-white/75">
+            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/75">
               <Wallet className="h-4 w-4" /> Sisa anggaran
             </p>
-            <p className="tabular mt-1 font-display text-3xl font-extrabold">{formatIDRCompact(remaining)}</p>
+            <p className="tabular mt-1 font-display text-3xl font-bold">{formatIDRCompact(remaining)}</p>
             <p className="text-sm text-white/80">
               Terpakai {formatIDRCompact(total)} ({formatPercent(safeDivide(total, MONTHLY_DISCRETIONARY_BUDGET))})
             </p>
             {remaining < 0 && <p className="mt-2 text-sm font-semibold">Anggaran tidak mencukupi untuk skenario ini.</p>}
           </div>
           <div className="rounded-2xl bg-surface p-4 ring-1 ring-line">
-            <p className="text-sm font-bold text-ink">Alokasi per produk</p>
+            <p className="text-sm font-semibold text-ink">Alokasi per produk</p>
             <div className="mt-3 flex h-3 overflow-hidden rounded-full">
               {byProduct.map(({ p, v }) => (
                 <motion.span key={p} className="h-full border-r-2 border-white last:border-0" style={{ background: PRODUCT_COLOR[p] }} animate={{ width: `${safeDivide(v, total) * 100}%` }} />
@@ -81,7 +81,7 @@ export function BudgetPlanner() {
             </div>
           </div>
           <div className="rounded-2xl bg-surface p-4 ring-1 ring-line">
-            <p className="text-sm font-bold text-ink">Sensitivitas perubahan alokasi</p>
+            <p className="text-sm font-semibold text-ink">Sensitivitas perubahan alokasi</p>
             <ul className="mt-2 space-y-1.5 text-sm">
               {sensitivity.map((s) => {
                 const after = remaining - s.delta;

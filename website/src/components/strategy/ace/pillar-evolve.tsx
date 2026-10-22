@@ -88,8 +88,8 @@ export function AcePillarEvolve() {
     <div className="space-y-10">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-ace">Flagship Program</p>
-          <h3 className="text-2xl font-extrabold text-ink">ACE Portfolio Intelligence</h3>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Flagship Program</p>
+          <h3 className="text-2xl font-semibold text-ink">ACE Portfolio Intelligence</h3>
         </div>
         <SourceLabel type="illustrative-assumption" />
       </div>
@@ -102,14 +102,14 @@ export function AcePillarEvolve() {
           const res = r[p];
           const isEvents = p === "events";
           return (
-            <div key={p} className="rounded-3xl border border-line bg-white p-6 shadow-soft">
+            <div key={p} className="rounded-3xl border border-line bg-card p-6 shadow-soft">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <span className={cn("grid h-11 w-11 place-items-center rounded-xl", isEvents ? "bg-[#e5f6ff] text-sky-ink" : "bg-one-soft text-one")}>
+                  <span className={cn("grid h-11 w-11 place-items-center rounded-xl", isEvents ? "bg-sky-soft text-sky-ink" : "bg-one-soft text-one-ink")}>
                     {isEvents ? <CalendarDays className="h-5 w-5" /> : <Brain className="h-5 w-5" />}
                   </span>
                   <div>
-                    <p className="font-bold text-ink">{isEvents ? "Terang Events" : "AI Candidate Interview"}</p>
+                    <p className="font-semibold text-ink">{isEvents ? "Terang Events" : "AI Candidate Interview"}</p>
                     <p className="text-xs text-muted">{h.passed}/{h.total} kriteria komersial terpenuhi</p>
                   </div>
                 </div>
@@ -123,7 +123,7 @@ export function AcePillarEvolve() {
                 ].map(([k, v]) => (
                   <div key={k} className="rounded-xl bg-surface p-3 ring-1 ring-line">
                     <p className="text-[11px] text-muted">{k}</p>
-                    <p className="tabular font-display text-lg font-extrabold text-ink">{v}</p>
+                    <p className="tabular font-display text-lg font-semibold text-ink">{v}</p>
                   </div>
                 ))}
               </div>
@@ -175,16 +175,16 @@ export function AcePillarEvolve() {
                   const d = payload?.[0]?.payload as (typeof scatter)[number] | undefined;
                   if (!active || !d) return null;
                   return (
-                    <div className="rounded-xl border border-line bg-white px-3 py-2 text-xs shadow-lift">
-                      <p className="font-bold text-ink">{d.name}</p>
+                    <div className="rounded-xl border border-line bg-card px-3 py-2 text-xs shadow-lift">
+                      <p className="font-semibold text-ink">{d.name}</p>
                       <p className="text-muted-strong">Kapasitas {d.x}% · Kontribusi {formatIDRCompact(d.y)}</p>
                     </div>
                   );
                 }}
               />
-              <Scatter data={scatter.filter((s) => s.product === "events")} fill={SERIES.events} stroke="#fff" strokeWidth={2} name="Terang Events">
+              <Scatter data={scatter.filter((s) => s.product === "events")} fill={SERIES.events} stroke="var(--color-card)" strokeWidth={2} name="Terang Events">
               </Scatter>
-              <Scatter data={scatter.filter((s) => s.product === "interview")} fill={SERIES.interview} stroke="#fff" strokeWidth={2} name="AI Candidate Interview">
+              <Scatter data={scatter.filter((s) => s.product === "interview")} fill={SERIES.interview} stroke="var(--color-card)" strokeWidth={2} name="AI Candidate Interview">
               </Scatter>
             </ScatterChart>
           </ResponsiveContainer>
@@ -192,11 +192,11 @@ export function AcePillarEvolve() {
       </div>
 
       {/* Reallocation simulator */}
-      <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
+      <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
         <div className="grid gap-8 lg:grid-cols-[1fr_1.5fr]">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-ace">Resource reallocation simulator</p>
-            <h3 className="mt-1 text-xl font-extrabold text-ink">Geser porsi kapasitas ACE</h3>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Resource reallocation simulator</p>
+            <h3 className="mt-1 text-xl font-semibold text-ink">Geser porsi kapasitas ACE</h3>
             <p className="mt-1 text-sm text-muted-strong">ACE tidak harus 50:50. Nilai ini tersimpan di simulator bersama.</p>
             <Slider
               className="mt-6"
@@ -218,7 +218,7 @@ export function AcePillarEvolve() {
               ].map(([k, v]) => (
                 <div key={k} className="rounded-xl bg-surface p-3 ring-1 ring-line">
                   <p className="text-[11px] text-muted">{k}</p>
-                  <p className="tabular font-display text-lg font-extrabold text-ink">{v}</p>
+                  <p className="tabular font-display text-lg font-semibold text-ink">{v}</p>
                 </div>
               ))}
             </div>
@@ -250,7 +250,7 @@ export function AcePillarEvolve() {
 
       {/* Recommendations */}
       <div className="rounded-3xl bg-navy-gradient p-6 text-white shadow-lift">
-        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-sky">
+        <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-sky">
           <Lightbulb className="h-4 w-4" /> Rekomendasi berbasis aturan (bukan AI)
         </p>
         <ul className="mt-4 grid gap-3 md:grid-cols-2">
@@ -267,8 +267,8 @@ export function AcePillarEvolve() {
       <div>
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-ace">Decision outcomes</p>
-            <h3 className="text-2xl font-extrabold text-ink">Invest more · Improve · Reduce scope · Pause</h3>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Decision outcomes</p>
+            <h3 className="text-2xl font-semibold text-ink">Invest more · Improve · Reduce scope · Pause</h3>
           </div>
           <Segmented
             value={gateProduct}

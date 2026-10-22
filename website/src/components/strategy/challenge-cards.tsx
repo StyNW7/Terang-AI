@@ -24,17 +24,17 @@ export function ChallengeCards() {
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
             className={cn(
-              "flex flex-col overflow-hidden rounded-3xl border bg-white shadow-soft transition",
+              "flex flex-col overflow-hidden rounded-3xl border bg-card shadow-soft transition",
               isOpen ? "border-brand/40 shadow-card" : "border-line",
             )}
           >
             <div className="relative overflow-hidden bg-navy-gradient p-6 text-white">
-              <span className="absolute -right-2 -top-6 font-display text-[110px] font-extrabold leading-none text-white/[0.07]">{c.number}</span>
+              <span className="absolute -right-2 -top-6 font-display text-[110px] font-semibold leading-none text-white/[0.07]">{c.number}</span>
               <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/12 ring-1 ring-white/20">
                 <Icon className="h-5 w-5 text-sky" />
               </span>
-              <p className="mt-4 text-xs font-bold uppercase tracking-[0.16em] text-sky">Challenge {c.number}</p>
-              <h3 className="mt-1 text-xl font-extrabold">{c.english}</h3>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-sky">Challenge {c.number}</p>
+              <h3 className="mt-1 text-xl font-semibold">{c.english}</h3>
               <p className="text-sm text-white/70">{c.title}</p>
             </div>
             <div className="flex flex-1 flex-col p-6">
@@ -58,7 +58,7 @@ export function ChallengeCards() {
                   >
                     <div className="mt-4 space-y-4">
                       <div>
-                        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted">Driver</p>
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Driver</p>
                         <ul className="mt-2 space-y-1.5 text-[13px] text-ink">
                           {c.drivers.map((d) => (
                             <li key={d} className="flex gap-2">
@@ -68,7 +68,7 @@ export function ChallengeCards() {
                         </ul>
                       </div>
                       <div>
-                        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted">Implikasi</p>
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Implikasi</p>
                         <ul className="mt-2 space-y-1.5 text-[13px] text-ink">
                           {c.implications.map((d) => (
                             <li key={d} className="flex gap-2">

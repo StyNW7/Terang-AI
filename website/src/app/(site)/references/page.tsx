@@ -49,7 +49,7 @@ export default function ReferencesPage() {
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {(Object.keys(EVIDENCE_META) as EvidenceClassification[]).map((k, i) => (
               <Reveal key={k} delay={i * 0.05}>
-                <div className="h-full rounded-2xl border border-line bg-white p-5 shadow-soft">
+                <div className="h-full rounded-2xl border border-line bg-card p-5 shadow-soft">
                   <SourceLabel type={k} />
                   <p className="mt-3 text-sm leading-relaxed text-muted-strong">{EVIDENCE_META[k].description}</p>
                 </div>
@@ -59,7 +59,7 @@ export default function ReferencesPage() {
         </Container>
       </Section>
 
-      <Section className="bg-white">
+      <Section className="bg-card">
         <Container>
           <Reveal>
             <SectionHeading eyebrow="Public Research Sources" title="Sumber riset publik" />
@@ -71,11 +71,11 @@ export default function ReferencesPage() {
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex h-full items-start justify-between gap-4 rounded-2xl border border-line bg-surface p-5 transition hover:border-brand/40 hover:bg-white hover:shadow-card"
+                  className="group flex h-full items-start justify-between gap-4 rounded-2xl border border-line bg-surface p-5 transition hover:border-brand/40 hover:bg-card hover:shadow-card"
                 >
                   <div>
                     <p className="text-xs font-semibold text-muted">{s.publisher}</p>
-                    <p className="mt-0.5 font-bold text-ink group-hover:text-brand-ink">{s.title}</p>
+                    <p className="mt-0.5 font-semibold text-ink group-hover:text-brand-ink">{s.title}</p>
                     <p className="mt-1 break-all text-xs text-brand-ink">{s.url}</p>
                     <p className="mt-2 text-sm text-muted-strong">{s.usedFor}</p>
                   </div>
@@ -93,10 +93,10 @@ export default function ReferencesPage() {
             <Reveal>
               <SectionHeading eyebrow="Glossary" title="Glosarium istilah" />
             </Reveal>
-            <dl className="mt-8 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-white">
+            <dl className="mt-8 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-card">
               {STRATEGY_GLOSSARY.map((g) => (
                 <div key={g.term} className="grid gap-1 p-4 sm:grid-cols-[170px_1fr]">
-                  <dt className="font-bold text-ink">{g.term}</dt>
+                  <dt className="font-semibold text-ink">{g.term}</dt>
                   <dd className="text-sm text-muted-strong">{g.meaning}</dd>
                 </div>
               ))}
@@ -106,7 +106,7 @@ export default function ReferencesPage() {
             <Reveal>
               <SectionHeading eyebrow="What is simulated" title="Apa yang disimulasikan?" />
             </Reveal>
-            <div className="mt-8 overflow-hidden rounded-2xl border border-line bg-white">
+            <div className="mt-8 overflow-hidden rounded-2xl border border-line bg-card">
               {SIMULATED.map((s) => (
                 <div key={s.feature} className="border-b border-line p-4 last:border-0">
                   <div className="flex items-start justify-between gap-3">
@@ -121,7 +121,7 @@ export default function ReferencesPage() {
         </Container>
       </Section>
 
-      <Section className="bg-white">
+      <Section className="bg-card">
         <Container>
           <Reveal>
             <SectionHeading eyebrow="Financial Formulas" title="Rumus simulasi finansial" description="Semua angka pada simulator dihitung dengan rumus berikut menggunakan asumsi ilustratif yang sama untuk ONE dan ACE." />
@@ -129,7 +129,7 @@ export default function ReferencesPage() {
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {FORMULAS.map((f) => (
               <div key={f.name} className="rounded-2xl border border-line bg-surface p-5">
-                <p className="flex items-center gap-2 font-bold text-ink">
+                <p className="flex items-center gap-2 font-semibold text-ink">
                   <Sigma className="h-4 w-4 text-brand-ink" /> {f.name}
                 </p>
                 <code className="mt-2 block rounded-lg bg-navy px-3 py-2 text-[12.5px] text-sky">{f.formula}</code>

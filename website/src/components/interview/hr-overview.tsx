@@ -92,9 +92,9 @@ export function HrOverview({ onOpenReport, onCandidates }: { onOpenReport: (id: 
         </ChartFrame>
       </div>
       <div className="grid gap-6 xl:grid-cols-[1.3fr_1fr]">
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <div className="flex items-center justify-between">
-            <p className="text-[15px] font-bold text-ink">Perlu perhatian recruiter</p>
+            <p className="text-[15px] font-semibold text-ink">Perlu perhatian recruiter</p>
             <Button size="sm" variant="ghost" onClick={onCandidates}>
               Semua kandidat
             </Button>
@@ -118,9 +118,9 @@ export function HrOverview({ onOpenReport, onCandidates }: { onOpenReport: (id: 
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-          <p className="flex items-center gap-2 text-[15px] font-bold text-ink">
-            <History className="h-4 w-4 text-one" /> Audit trail terbaru
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+          <p className="flex items-center gap-2 text-[15px] font-semibold text-ink">
+            <History className="h-4 w-4 text-one-ink" /> Audit trail terbaru
           </p>
           <ul className="mt-3 space-y-2.5">
             {audit.slice(0, 5).map((a) => (

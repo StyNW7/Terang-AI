@@ -22,15 +22,15 @@ function StagePanel({ id }: { id: StageId }) {
     return (
       <div className="grid gap-4 sm:grid-cols-2">
         {[
-          { name: "Terang Events", cat: "EventTech", icon: CalendarDays, color: "bg-[#e5f6ff] text-sky-ink", text: "Penyelenggara acara & kompetisi — registrasi, pembayaran, penjurian." },
-          { name: "AI Candidate Interview", cat: "HRTech", icon: Brain, color: "bg-one-soft text-one", text: "Tim HR — wawancara terstruktur & evaluasi kandidat berbasis bukti." },
+          { name: "Terang Events", cat: "EventTech", icon: CalendarDays, color: "bg-sky-soft text-sky-ink", text: "Penyelenggara acara & kompetisi — registrasi, pembayaran, penjurian." },
+          { name: "AI Candidate Interview", cat: "HRTech", icon: Brain, color: "bg-one-soft text-one-ink", text: "Tim HR — wawancara terstruktur & evaluasi kandidat berbasis bukti." },
         ].map((p) => (
-          <div key={p.name} className="rounded-2xl border border-line bg-white p-5">
+          <div key={p.name} className="rounded-2xl border border-line bg-card p-5">
             <span className={cn("grid h-10 w-10 place-items-center rounded-xl", p.color)}>
               <p.icon className="h-5 w-5" />
             </span>
-            <p className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-muted">{p.cat}</p>
-            <p className="text-lg font-bold text-ink">{p.name}</p>
+            <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-muted">{p.cat}</p>
+            <p className="text-lg font-semibold text-ink">{p.name}</p>
             <p className="mt-1 text-sm text-muted-strong">{p.text}</p>
           </div>
         ))}
@@ -51,8 +51,8 @@ function StagePanel({ id }: { id: StageId }) {
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {pools.map((pool) => (
-            <div key={pool.label} className="rounded-2xl border border-line bg-white p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{pool.label}</p>
+            <div key={pool.label} className="rounded-2xl border border-line bg-card p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">{pool.label}</p>
               <div className="mt-3 flex -space-x-2">
                 {pool.members.map((m, i) => (
                   <motion.span
@@ -61,7 +61,7 @@ function StagePanel({ id }: { id: StageId }) {
                     animate={{ scale: 1 }}
                     transition={{ delay: i * 0.08, type: "spring" }}
                     title={m.title}
-                    className={cn("grid h-11 w-11 place-items-center rounded-full text-xs font-bold text-white ring-4 ring-white", pool.color)}
+                    className={cn("grid h-11 w-11 place-items-center rounded-full text-xs font-semibold text-white ring-4 ring-card", pool.color)}
                   >
                     {m.role === "Product" || m.role === "Strategy & Ops" ? m.initials : m.role}
                   </motion.span>
@@ -90,10 +90,10 @@ function StagePanel({ id }: { id: StageId }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="rounded-2xl border border-line bg-white p-4"
+            className="rounded-2xl border border-line bg-card p-4"
           >
-            <span className="font-display text-2xl font-extrabold text-gradient">{c.number}</span>
-            <p className="mt-1 font-bold text-ink">{c.english}</p>
+            <span className="font-display text-2xl font-semibold text-gradient">{c.number}</span>
+            <p className="mt-1 font-semibold text-ink">{c.english}</p>
             <p className="mt-1 text-[13px] text-muted-strong">{c.summary}</p>
           </motion.div>
         ))}
@@ -108,7 +108,7 @@ function StagePanel({ id }: { id: StageId }) {
       ].map((s) => (
         <div key={s.k} className={cn("rounded-2xl p-5 text-white", s.g)}>
           <s.icon className="h-6 w-6" />
-          <p className="mt-3 font-display text-3xl font-extrabold">{s.k}</p>
+          <p className="mt-3 font-display text-3xl font-bold">{s.k}</p>
           <p className="font-semibold">{s.t}</p>
           <p className="mt-1 text-sm text-white/85">{s.d}</p>
         </div>
@@ -128,20 +128,20 @@ export function DilemmaFlow() {
   }, [playing]);
 
   return (
-    <div className="rounded-[28px] border border-line bg-gradient-to-br from-white to-[#f1f8ff] p-5 shadow-card sm:p-8">
+    <div className="rounded-[28px] border border-line bg-gradient-to-br from-card to-subtle p-5 shadow-card sm:p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm font-bold text-ink">Alur dilema — klik setiap tahap</p>
+        <p className="text-sm font-semibold text-ink">Alur dilema — klik setiap tahap</p>
         <button
           type="button"
           onClick={() => setPlaying((p) => !p)}
-          className="inline-flex items-center gap-2 rounded-xl bg-navy px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#1d4674]"
+          className="inline-flex items-center gap-2 rounded-xl bg-ink px-3 py-1.5 text-xs font-semibold text-card transition hover:opacity-90"
         >
           {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
           {playing ? "Jeda" : "Putar alur otomatis"}
         </button>
       </div>
       <div className="relative mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-        <div className="absolute left-[12.5%] right-[12.5%] top-7 hidden h-[3px] rounded-full bg-[#dfeaf6] md:block">
+        <div className="absolute left-[12.5%] right-[12.5%] top-7 hidden h-[3px] rounded-full bg-track md:block">
           <motion.div
             className="h-full rounded-full bg-brand-gradient"
             animate={{ width: `${(active / (STAGES.length - 1)) * 100}%` }}
@@ -164,16 +164,16 @@ export function DilemmaFlow() {
               <motion.span
                 animate={{ scale: i === active ? 1.08 : 1 }}
                 className={cn(
-                  "relative z-10 grid h-14 w-14 place-items-center rounded-2xl ring-[6px] ring-white transition-colors",
-                  done ? "bg-brand-gradient text-white shadow-glow" : "bg-white text-muted shadow-soft",
+                  "relative z-10 grid h-14 w-14 place-items-center rounded-2xl ring-[6px] ring-card transition-colors",
+                  done ? "bg-brand-gradient text-white shadow-glow" : "bg-card text-muted shadow-soft",
                 )}
               >
                 <s.icon className="h-6 w-6" />
               </motion.span>
-              <span className={cn("mt-3 text-[11px] font-bold uppercase tracking-[0.12em]", done ? "text-brand-ink" : "text-muted")}>
+              <span className={cn("mt-3 text-[11px] font-semibold uppercase tracking-[0.12em]", done ? "text-brand-ink" : "text-muted")}>
                 Tahap {i + 1}
               </span>
-              <span className={cn("text-sm font-bold", i === active ? "text-ink" : "text-muted-strong")}>{s.label}</span>
+              <span className={cn("text-sm font-semibold", i === active ? "text-ink" : "text-muted-strong")}>{s.label}</span>
             </button>
           );
         })}

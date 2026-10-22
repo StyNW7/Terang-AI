@@ -179,11 +179,11 @@ export function EventWizard({
 
   if (published) {
     return (
-      <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} className="rounded-3xl border border-line bg-white p-10 text-center shadow-card">
+      <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} className="rounded-3xl border border-line bg-card p-10 text-center shadow-card">
         <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-success-soft text-success">
           <PartyPopper className="h-8 w-8" />
         </span>
-        <h3 className="mt-5 text-2xl font-extrabold text-ink">Event berhasil dipublikasikan!</h3>
+        <h3 className="mt-5 text-2xl font-semibold text-ink">Event berhasil dipublikasikan!</h3>
         <p className="mx-auto mt-2 max-w-md text-muted-strong">
           <strong className="text-ink">{published.name}</strong> kini tampil di daftar event dan katalog peserta. Tidak ada data yang dikirim ke
           server — semuanya tersimpan lokal di browser Anda.
@@ -207,13 +207,13 @@ export function EventWizard({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-      <aside className="h-fit rounded-2xl border border-line bg-white p-4 shadow-soft lg:sticky lg:top-24">
+      <aside className="h-fit rounded-2xl border border-line bg-card p-4 shadow-soft lg:sticky lg:top-24">
         <div className="mb-3 flex items-center justify-between">
-          <p className="text-sm font-bold text-ink">Buat event</p>
+          <p className="text-sm font-semibold text-ink">Buat event</p>
           {source === "template" ? <Badge tone="ace">Template</Badge> : <Badge tone="neutral">Manual</Badge>}
         </div>
         {templateName && (
-          <p className="mb-3 flex items-center gap-1.5 rounded-lg bg-ace-soft px-2.5 py-1.5 text-xs font-semibold text-[#0a7aa6]">
+          <p className="mb-3 flex items-center gap-1.5 rounded-lg bg-ace-soft px-2.5 py-1.5 text-xs font-semibold text-ace-ink">
             <Sparkles className="h-3.5 w-3.5" /> {templateName}
           </p>
         )}
@@ -226,13 +226,13 @@ export function EventWizard({
                 disabled={i > step}
                 className={cn(
                   "flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left text-sm transition",
-                  i === step ? "bg-soft font-bold text-brand-ink" : i < step ? "font-semibold text-ink hover:bg-surface" : "text-muted",
+                  i === step ? "bg-soft font-semibold text-brand-ink" : i < step ? "font-semibold text-ink hover:bg-surface" : "text-muted",
                 )}
               >
                 <span
                   className={cn(
-                    "grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold",
-                    i < step ? "bg-success text-white" : i === step ? "bg-brand-gradient text-white" : "bg-[#e6eef7] text-muted",
+                    "grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-semibold",
+                    i < step ? "bg-success text-white" : i === step ? "bg-brand-gradient text-white" : "bg-track text-muted",
                   )}
                 >
                   {i < step ? <Check className="h-3.5 w-3.5" /> : i + 1}
@@ -242,7 +242,7 @@ export function EventWizard({
             </li>
           ))}
         </ol>
-        <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[#e6eef7]">
+        <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-track">
           <motion.div className="h-full bg-brand-gradient" animate={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
         </div>
         <p className="mt-2 text-xs text-muted">
@@ -250,9 +250,9 @@ export function EventWizard({
         </p>
       </aside>
 
-      <form onSubmit={(e) => e.preventDefault()} className="rounded-2xl border border-line bg-white p-6 shadow-soft" noValidate>
+      <form onSubmit={(e) => e.preventDefault()} className="rounded-2xl border border-line bg-card p-6 shadow-soft" noValidate>
         <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
-          <h3 className="text-lg font-extrabold text-ink">
+          <h3 className="text-lg font-semibold text-ink">
             {step + 1}. {STEPS[step].title}
           </h3>
           <SourceLabel type="synthetic-demo" compact />
@@ -311,7 +311,7 @@ export function EventWizard({
                   <FieldError message={errors.location?.message} />
                 </Field>
                 <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-line p-3.5 sm:col-span-2">
-                  <input type="checkbox" className="h-4 w-4 accent-[#2563d6]" {...register("teamBased")} />
+                  <input type="checkbox" className="h-4 w-4 accent-primary" {...register("teamBased")} />
                   <span>
                     <span className="block text-sm font-semibold text-ink">Pendaftaran berbasis tim</span>
                     <span className="text-xs text-muted">Peserta mendaftar sebagai tim (mis. kompetisi studi kasus).</span>
@@ -360,7 +360,7 @@ export function EventWizard({
               <div className="space-y-6">
                 <div>
                   <div className="mb-2 flex items-center justify-between">
-                    <p className="text-sm font-bold text-ink">Tahapan event</p>
+                    <p className="text-sm font-semibold text-ink">Tahapan event</p>
                     <Button size="sm" variant="soft" onClick={() => stages.append({ name: "", type: "submisi", date: values.startDate || "2026-12-01" })}>
                       <Plus className="h-3.5 w-3.5" /> Tahap
                     </Button>
@@ -393,11 +393,11 @@ export function EventWizard({
                 </div>
                 <div>
                   <div className="mb-2 flex items-center justify-between">
-                    <p className="text-sm font-bold text-ink">
+                    <p className="text-sm font-semibold text-ink">
                       Rubrik penjurian <span className="font-normal text-muted">(opsional)</span>
                     </p>
                     <div className="flex items-center gap-2">
-                      <span className={cn("tabular rounded-full px-2 py-0.5 text-xs font-bold", criteria.fields.length === 0 ? "bg-surface text-muted" : weightTotal === 100 ? "bg-success-soft text-[#0b7a5a]" : "bg-warning-soft text-warning-ink")}>
+                      <span className={cn("tabular rounded-full px-2 py-0.5 text-xs font-semibold", criteria.fields.length === 0 ? "bg-surface text-muted" : weightTotal === 100 ? "bg-success-soft text-success-ink" : "bg-warning-soft text-warning-ink")}>
                         Total {weightTotal}%
                       </span>
                       <Button size="sm" variant="soft" onClick={() => criteria.append({ name: "", weight: 10, description: "" })}>
@@ -435,7 +435,7 @@ export function EventWizard({
                 <div className="overflow-hidden rounded-2xl border border-line">
                   <div className="bg-[linear-gradient(135deg,#5fd0ff,#2f66e0)] p-6 text-white">
                     <Badge tone="navy">{CATEGORY_LABEL[values.category]}</Badge>
-                    <h4 className="mt-3 text-2xl font-extrabold">{values.name}</h4>
+                    <h4 className="mt-3 text-2xl font-semibold">{values.name}</h4>
                     <p className="text-sm text-white/85">{values.organizer}</p>
                   </div>
                   <div className="grid gap-4 p-5 sm:grid-cols-2">

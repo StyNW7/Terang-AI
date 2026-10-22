@@ -2,18 +2,17 @@
 
 import { useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { CalendarClock, CalendarDays, FileText, Plus, Trophy, Users, Wallet } from "lucide-react";
+import { CalendarClock, CalendarDays, FileText, Trophy, Users, Wallet } from "lucide-react";
 import { useEventsStore } from "@/store/events-store";
 import { WEEKLY_ACTIVITY, STATUS_LABEL } from "@/data/events.mock";
 import { KpiCard } from "@/components/ui/kpi-card";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/misc";
 import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES } from "@/components/charts/chart-kit";
 import { formatDate, formatNumber, formatPercent } from "@/lib/formatters";
 import { DEMO_TODAY, EventStatusBadge } from "./shared";
 import { safeDivide } from "@/lib/utils";
 
-export function OrganizerDashboard({ onCreate, onOpenEvents }: { onCreate: () => void; onOpenEvents: () => void }) {
+export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void }) {
   const events = useEventsStore((s) => s.events);
   const totals = useMemo(() => {
     const registered = events.reduce((a, e) => a + e.registered, 0);
@@ -32,15 +31,6 @@ export function OrganizerDashboard({ onCreate, onOpenEvents }: { onCreate: () =>
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h2 className="text-xl font-extrabold text-ink">Selamat datang, Organizer Demo</h2>
-          <p className="text-sm text-muted-strong">Ringkasan seluruh event Anda (data fiktif).</p>
-        </div>
-        <Button onClick={onCreate}>
-          <Plus className="h-4 w-4" /> Buat event
-        </Button>
-      </div>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <KpiCard label="Total event" value={events.length} icon={<CalendarDays className="h-4 w-4" />} tone="sky" />
         <KpiCard label="Peserta terdaftar" value={totals.registered} icon={<Users className="h-4 w-4" />} tone="sky" delta={0.18} deltaLabel="vs bulan lalu" />
@@ -53,10 +43,10 @@ export function OrganizerDashboard({ onCreate, onOpenEvents }: { onCreate: () =>
             key={s.status}
             type="button"
             onClick={onOpenEvents}
-            className="rounded-2xl border border-line bg-white p-4 text-left shadow-soft transition hover:-translate-y-0.5 hover:shadow-card"
+            className="rounded-2xl border border-line bg-card p-4 text-left shadow-soft transition hover:-translate-y-0.5 hover:shadow-card"
           >
             <EventStatusBadge status={s.status} />
-            <p className="tabular mt-3 font-display text-2xl font-extrabold text-ink">{s.n}</p>
+            <p className="tabular mt-3 font-display text-2xl font-semibold text-ink">{s.n}</p>
             <p className="text-xs text-muted">event</p>
           </button>
         ))}
@@ -93,16 +83,16 @@ export function OrganizerDashboard({ onCreate, onOpenEvents }: { onCreate: () =>
             </AreaChart>
           </ResponsiveContainer>
         </ChartFrame>
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-          <p className="flex items-center gap-2 text-[15px] font-bold text-ink">
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+          <p className="flex items-center gap-2 text-[15px] font-semibold text-ink">
             <CalendarClock className="h-4 w-4 text-sky-ink" /> Tenggat terdekat
           </p>
           <ul className="mt-4 space-y-2.5">
             {totals.deadlines.map((d) => (
               <li key={d.eventId + d.id} className="flex items-center gap-3 rounded-xl bg-surface p-3 ring-1 ring-line">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-center ring-1 ring-line">
-                  <span className="text-[10px] font-bold uppercase leading-none text-sky-ink">{formatDate(d.date).split(" ")[1]}</span>
-                  <span className="text-base font-extrabold leading-none text-ink">{formatDate(d.date).split(" ")[0]}</span>
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-card text-center ring-1 ring-line">
+                  <span className="text-[11px] font-semibold uppercase leading-none text-sky-ink">{formatDate(d.date).split(" ")[1]}</span>
+                  <span className="text-base font-semibold leading-none text-ink">{formatDate(d.date).split(" ")[0]}</span>
                 </span>
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-ink">{d.name}</p>
@@ -113,8 +103,8 @@ export function OrganizerDashboard({ onCreate, onOpenEvents }: { onCreate: () =>
           </ul>
         </div>
       </div>
-      <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-        <p className="flex items-center gap-2 text-[15px] font-bold text-ink">
+      <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+        <p className="flex items-center gap-2 text-[15px] font-semibold text-ink">
           <Trophy className="h-4 w-4 text-sky-ink" /> Progres registrasi & submisi
         </p>
         <div className="mt-4 grid gap-4 md:grid-cols-2">

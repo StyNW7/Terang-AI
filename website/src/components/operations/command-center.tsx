@@ -9,7 +9,8 @@ import { MONTHLY_DISCRETIONARY_BUDGET } from "@/data/team";
 import { computeStrategy } from "@/lib/finance";
 import { validateAllocation, hasCriticalIssue } from "@/lib/resource-planner";
 import { formatIDRCompact, formatPercent } from "@/lib/formatters";
-import { Mascot } from "@/components/shared/brand";
+import { Badge } from "@/components/ui/badge";
+import { PageHeader } from "@/components/dashboard/page-header";
 import { SourceLabel } from "@/components/shared/source-label";
 import { TeamOverview, CapacityPlanner } from "./capacity-planner";
 import { BudgetPlanner } from "./budget-planner";
@@ -50,26 +51,19 @@ export function CommandCenter() {
 
   return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-3xl bg-ace-gradient p-6 text-white shadow-card sm:p-8">
-        <div className="bg-grid-dark absolute inset-0 opacity-50" />
-        <Mascot name="puzzle" size={150} className="absolute -bottom-6 right-4 hidden md:block" />
-        <div className="relative max-w-2xl">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] ring-1 ring-white/25">
-              <Gauge className="h-3.5 w-3.5" /> ACE · Coordinate Markets & Capacity
-            </span>
-            <SourceLabel type="strategic-proposal" dark />
-          </div>
-          <h2 className="mt-3 text-3xl font-extrabold">ACE Command Center</h2>
-          <p className="mt-1 text-white/85">
-            Dashboard manajemen ringan untuk 7 personel: kapasitas, anggaran, sprint, dan risiko — agar dua produk tetap terkendali. Gunakan
-            aturan ONE untuk membandingkan.
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow={
+          <>
+            <Badge tone="ace" icon={<Gauge className="h-3 w-3" />}>ACE · Coordinate Markets &amp; Capacity</Badge>
+            <SourceLabel type="strategic-proposal" compact />
+          </>
+        }
+        title="Kapasitas & Operasional"
+        description="Kendali ringan untuk tim 7 orang: kapasitas, anggaran, sprint, dan risiko — agar dua produk tetap terkendali."
+      />
 
       <section>
-        <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-ace">Section A · Team overview</p>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Section A · Team overview</p>
         <TeamOverview rules={rules} />
       </section>
       <CapacityPlanner rules={rules} onRulesChange={setRulesOverride} />
@@ -78,7 +72,7 @@ export function CommandCenter() {
       <RoadmapTimeline />
 
       <section className="rounded-3xl bg-navy-gradient p-6 text-white shadow-lift">
-        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-sky">
+        <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-sky">
           <Lightbulb className="h-4 w-4" /> Section F · Management recommendations (berbasis aturan, bukan AI)
         </p>
         <ul className="mt-4 grid gap-3 md:grid-cols-2">

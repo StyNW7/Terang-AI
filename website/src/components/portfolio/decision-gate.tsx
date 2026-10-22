@@ -41,8 +41,8 @@ export function DecisionGate({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
-      <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
-        <h3 className="text-lg font-bold text-ink">{title ?? "Input KPI"}</h3>
+      <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
+        <h3 className="text-lg font-semibold text-ink">{title ?? "Input KPI"}</h3>
         <p className="text-sm text-muted-strong">Geser KPI untuk melihat bagaimana keputusan berubah. Semua ambang batas terlihat.</p>
         <div className="mt-5 space-y-4">
           <Slider label="Skor kualitas produk" value={input.qualityScore} min={40} max={100} onChange={(v) => set("qualityScore", v)} display={`${input.qualityScore} / 100`} color={color} hint={`Target ≥ ${t.quality}`} />
@@ -53,7 +53,7 @@ export function DecisionGate({
           <Slider label="Milestone terlewat berturut-turut" value={input.milestoneMisses} min={0} max={4} onChange={(v) => set("milestoneMisses", v)} display={String(input.milestoneMisses)} color={color} />
         </div>
         <div className="mt-5 space-y-2 rounded-2xl bg-surface p-4 ring-1 ring-line">
-          <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.12em] text-muted">
+          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-muted">
             <Lock className="h-3.5 w-3.5" /> Hard gates
           </p>
           {(isInterview
@@ -88,10 +88,10 @@ export function DecisionGate({
                 <Icon className="h-7 w-7" />
               </span>
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/75">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/75">
                   {lens === "one" ? "ONE Expansion Gate" : "ACE Portfolio Decision"} · {result.passed}/{result.total} kriteria komersial
                 </p>
-                <p className="font-display text-3xl font-extrabold">{lens === "one" ? meta.one : meta.ace}</p>
+                <p className="font-display text-3xl font-bold">{lens === "one" ? meta.one : meta.ace}</p>
                 <p className="mt-1 text-sm text-white/85">{meta.description}</p>
               </div>
             </div>
@@ -104,18 +104,18 @@ export function DecisionGate({
             </ul>
           </motion.div>
         </AnimatePresence>
-        <div className="overflow-hidden rounded-3xl border border-line bg-white shadow-soft">
-          <div className="border-b border-line px-5 py-3 text-sm font-bold text-ink">Mengapa keputusan ini muncul?</div>
+        <div className="overflow-hidden rounded-3xl border border-line bg-card shadow-soft">
+          <div className="border-b border-line px-5 py-3 text-sm font-semibold text-ink">Mengapa keputusan ini muncul?</div>
           <ul className="divide-y divide-line">
             {result.criteria.map((c) => (
               <li key={c.id} className="flex items-center justify-between gap-3 px-5 py-2.5 text-sm">
                 <span className="flex items-center gap-2">
                   {c.pass ? <CheckCircle2 className="h-4 w-4 text-success" /> : <CircleX className="h-4 w-4 text-danger" />}
                   <span className="text-ink">{c.label}</span>
-                  {c.hard && <span className="rounded-full bg-navy px-1.5 py-0.5 text-[9.5px] font-bold uppercase text-white">Hard gate</span>}
+                  {c.hard && <span className="rounded-full bg-navy px-1.5 py-0.5 text-[11px] font-semibold uppercase text-white">Hard gate</span>}
                 </span>
                 <span className="tabular shrink-0 text-xs">
-                  <span className={cn("font-bold", c.pass ? "text-ink" : "text-danger-ink")}>{c.value}</span>
+                  <span className={cn("font-semibold", c.pass ? "text-ink" : "text-danger-ink")}>{c.value}</span>
                   <span className="text-muted"> · {c.target}</span>
                 </span>
               </li>

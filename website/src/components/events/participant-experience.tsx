@@ -84,7 +84,7 @@ export function ParticipantExperience() {
           <motion.div key={view.name + ("id" in view ? view.id : "")} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }}>
             {view.name === "browse" && (
               <div className="space-y-4">
-                <div className="flex flex-col gap-2 rounded-2xl border border-line bg-white p-4 shadow-soft sm:flex-row">
+                <div className="flex flex-col gap-2 rounded-2xl border border-line bg-card p-4 shadow-soft sm:flex-row">
                   <div className="relative flex-1">
                     <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
                     <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Cari event…" className="pl-9" aria-label="Cari event" />
@@ -97,7 +97,7 @@ export function ParticipantExperience() {
                         onClick={() => setCategory(c)}
                         className={cn(
                           "rounded-xl px-3 py-2 text-xs font-semibold ring-1 transition",
-                          category === c ? "bg-brand-gradient text-white ring-transparent" : "bg-white text-muted-strong ring-line hover:ring-brand/40",
+                          category === c ? "bg-brand-gradient text-white ring-transparent" : "bg-card text-muted-strong ring-line hover:ring-brand/40",
                         )}
                       >
                         {c === "all" ? "Semua" : CATEGORY_LABEL[c]}
@@ -119,14 +119,14 @@ export function ParticipantExperience() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: i * 0.04 }}
                           onClick={() => setView({ name: "detail", id: e.id })}
-                          className="group overflow-hidden rounded-2xl border border-line bg-white text-left shadow-soft transition hover:-translate-y-1 hover:shadow-card"
+                          className="group overflow-hidden rounded-2xl border border-line bg-card text-left shadow-soft transition hover:-translate-y-1 hover:shadow-card"
                         >
                           <div className={cn("relative h-28 p-4 text-white", GRADIENTS[e.category])}>
                             <div className="bg-grid-dark absolute inset-0 opacity-50" />
                             <div className="relative flex items-start justify-between">
                               <Badge tone="navy">{CATEGORY_LABEL[e.category]}</Badge>
                               {registered && (
-                                <span className="flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[11px] font-bold text-[#0b7a5a]">
+                                <span className="flex items-center gap-1 rounded-full bg-card px-2 py-0.5 text-[11px] font-semibold text-success-ink">
                                   <Check className="h-3 w-3" /> Terdaftar
                                 </span>
                               )}
@@ -134,13 +134,13 @@ export function ParticipantExperience() {
                             <p className="relative mt-5 text-xs font-semibold text-white/85">{e.organizer}</p>
                           </div>
                           <div className="p-4">
-                            <p className="font-bold text-ink group-hover:text-brand-ink">{e.name}</p>
+                            <p className="font-semibold text-ink group-hover:text-brand-ink">{e.name}</p>
                             <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-strong">
                               <span className="flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(e.startDate)}</span>
                               <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" /> {e.location}</span>
                             </div>
                             <div className="mt-3 flex items-center justify-between">
-                              <span className="font-bold text-ink">{e.fee ? formatIDR(e.fee) : "Gratis"}</span>
+                              <span className="font-semibold text-ink">{e.fee ? formatIDR(e.fee) : "Gratis"}</span>
                               <span className="text-xs text-muted">{formatNumber(Math.max(0, e.quota - e.registered))} kursi tersisa</span>
                             </div>
                           </div>
@@ -165,19 +165,19 @@ export function ParticipantExperience() {
               <RegisterForm event={event} onBack={() => setView({ name: "detail", id: event.id })} onDone={() => setView({ name: "confirm", id: event.id })} />
             )}
             {view.name === "confirm" && event && reg && (
-              <div className="rounded-3xl border border-line bg-white p-8 text-center shadow-card">
+              <div className="rounded-3xl border border-line bg-card p-8 text-center shadow-card">
                 <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 14 }} className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-success-soft text-success">
                   <CheckCircle2 className="h-8 w-8" />
                 </motion.span>
-                <h3 className="mt-4 text-2xl font-extrabold text-ink">Registrasi berhasil!</h3>
+                <h3 className="mt-4 text-2xl font-semibold text-ink">Registrasi berhasil!</h3>
                 <p className="mx-auto mt-2 max-w-md text-muted-strong">
                   Konfirmasi (simulasi) untuk <strong className="text-ink">{reg.name}</strong> — tidak ada email yang benar-benar dikirim.
                 </p>
                 <div className="mx-auto mt-6 max-w-sm rounded-2xl border border-dashed border-brand/40 bg-soft/50 p-5 text-left">
-                  <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-brand-ink">
+                  <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-ink">
                     <Ticket className="h-4 w-4" /> E-ticket demo
                   </p>
-                  <p className="mt-2 font-bold text-ink">{event.name}</p>
+                  <p className="mt-2 font-semibold text-ink">{event.name}</p>
                   <p className="text-sm text-muted-strong">{formatDate(event.startDate)} · {event.location}</p>
                   <p className="mt-2 font-mono text-xs text-muted">ID: TRG-{event.id.slice(-4).toUpperCase()}-{reg.name.length}{reg.email.length}</p>
                   {event.fee > 0 && <Badge tone="success" className="mt-2">Pembayaran {formatIDR(event.fee)} disimulasikan lunas</Badge>}
@@ -200,8 +200,8 @@ export function ParticipantExperience() {
         </AnimatePresence>
       </div>
 
-      <aside className="h-fit rounded-2xl border border-line bg-white p-5 shadow-soft xl:sticky xl:top-24">
-        <p className="flex items-center gap-2 text-sm font-bold text-ink">
+      <aside className="h-fit rounded-2xl border border-line bg-card p-5 shadow-soft xl:sticky xl:top-24">
+        <p className="flex items-center gap-2 text-sm font-semibold text-ink">
           <Ticket className="h-4 w-4 text-sky-ink" /> Event saya
         </p>
         {registrations.length === 0 ? (
@@ -238,7 +238,7 @@ function EventDetail({ event, registered, onBack, onRegister, onWorkspace }: { e
   const full = event.registered >= event.quota;
   const closed = event.registrationClose < DEMO_TODAY;
   return (
-    <div className="overflow-hidden rounded-3xl border border-line bg-white shadow-card">
+    <div className="overflow-hidden rounded-3xl border border-line bg-card shadow-card">
       <div className={cn("relative p-7 text-white", GRADIENTS[event.category])}>
         <div className="bg-grid-dark absolute inset-0 opacity-50" />
         <div className="relative">
@@ -246,20 +246,20 @@ function EventDetail({ event, registered, onBack, onRegister, onWorkspace }: { e
             <ArrowLeft className="h-4 w-4" /> Kembali
           </button>
           <Badge tone="navy">{CATEGORY_LABEL[event.category]}</Badge>
-          <h3 className="mt-3 text-3xl font-extrabold">{event.name}</h3>
+          <h3 className="mt-3 text-3xl font-bold">{event.name}</h3>
           <p className="mt-1 text-white/85">{event.organizer}</p>
         </div>
       </div>
       <div className="grid gap-6 p-7 lg:grid-cols-[1.4fr_1fr]">
         <div>
           <p className="leading-relaxed text-muted-strong">{event.description}</p>
-          <p className="mt-6 text-sm font-bold text-ink">Timeline</p>
+          <p className="mt-6 text-sm font-semibold text-ink">Timeline</p>
           <ol className="relative mt-3 space-y-4 border-l-2 border-line pl-6">
             {event.stages.map((s) => {
               const done = s.date < DEMO_TODAY;
               return (
                 <li key={s.id} className="relative">
-                  <span className={cn("absolute -left-[33px] top-0.5 grid h-5 w-5 place-items-center rounded-full ring-4 ring-white", done ? "bg-success text-white" : "bg-sky/20")}>
+                  <span className={cn("absolute -left-[33px] top-0.5 grid h-5 w-5 place-items-center rounded-full ring-4 ring-card", done ? "bg-success text-white" : "bg-sky/20")}>
                     {done && <Check className="h-3 w-3" />}
                   </span>
                   <p className="text-sm font-semibold text-ink">{s.name}</p>
@@ -285,7 +285,7 @@ function EventDetail({ event, registered, onBack, onRegister, onWorkspace }: { e
           })}
           <div className="rounded-2xl bg-navy p-4 text-white">
             <p className="text-xs text-white/70">Biaya registrasi</p>
-            <p className="font-display text-2xl font-extrabold">{event.fee ? formatIDR(event.fee) : "Gratis"}</p>
+            <p className="font-display text-2xl font-semibold">{event.fee ? formatIDR(event.fee) : "Gratis"}</p>
             {registered ? (
               <Button variant="light" className="mt-3 w-full" onClick={onWorkspace}>
                 <FileUp className="h-4 w-4" /> Buka workspace
@@ -318,11 +318,11 @@ function RegisterForm({ event, onBack, onDone }: { event: EventItem; onBack: () 
   });
 
   return (
-    <form onSubmit={submit} noValidate className="rounded-3xl border border-line bg-white p-7 shadow-card">
+    <form onSubmit={submit} noValidate className="rounded-3xl border border-line bg-card p-7 shadow-card">
       <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-ink">
         <ArrowLeft className="h-4 w-4" /> Kembali ke detail
       </button>
-      <h3 className="text-2xl font-extrabold text-ink">Registrasi — {event.name}</h3>
+      <h3 className="text-2xl font-semibold text-ink">Registrasi — {event.name}</h3>
       <p className="mt-1 text-sm text-muted-strong">Gunakan data fiktif. Tidak ada data yang dikirim ke server.</p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <Field>
@@ -347,7 +347,7 @@ function RegisterForm({ event, onBack, onDone }: { event: EventItem; onBack: () 
           </Field>
         )}
         <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-line p-3.5 sm:col-span-2">
-          <input type="checkbox" className="mt-0.5 h-4 w-4 accent-[#2563d6]" {...field("agree")} />
+          <input type="checkbox" className="mt-0.5 h-4 w-4 accent-primary" {...field("agree")} />
           <span className="text-sm text-ink">Saya memahami bahwa ini adalah demo dan data yang saya masukkan bersifat fiktif.</span>
         </label>
         <FieldError message={errors.agree?.message} />
@@ -402,21 +402,21 @@ function Workspace({ event, onBack }: { event: EventItem; onBack: () => void }) 
       <button type="button" onClick={onBack} className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-ink">
         <ArrowLeft className="h-4 w-4" /> Kembali ke detail event
       </button>
-      <div className="rounded-3xl border border-line bg-white p-6 shadow-soft">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-ink">Status timeline</p>
+      <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
+        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky-ink">Status timeline</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-4">
           {steps.map((s, i) => (
-            <div key={s.label} className={cn("rounded-2xl p-3 ring-1", s.done ? "bg-success-soft ring-[#c6eedf]" : "bg-surface ring-line")}>
-              <span className={cn("grid h-7 w-7 place-items-center rounded-full text-xs font-bold", s.done ? "bg-success text-white" : "bg-white text-muted ring-1 ring-line")}>
+            <div key={s.label} className={cn("rounded-2xl p-3 ring-1", s.done ? "bg-success-soft ring-current/15" : "bg-surface ring-line")}>
+              <span className={cn("grid h-7 w-7 place-items-center rounded-full text-xs font-semibold", s.done ? "bg-success text-white" : "bg-card text-muted ring-1 ring-line")}>
                 {s.done ? <Check className="h-4 w-4" /> : i + 1}
               </span>
-              <p className={cn("mt-2 text-sm font-semibold", s.done ? "text-[#0b5b44]" : "text-muted-strong")}>{s.label}</p>
+              <p className={cn("mt-2 text-sm font-semibold", s.done ? "text-success-ink" : "text-muted-strong")}>{s.label}</p>
             </div>
           ))}
         </div>
       </div>
-      <form onSubmit={submit} noValidate className="rounded-3xl border border-line bg-white p-6 shadow-soft">
-        <h3 className="text-xl font-extrabold text-ink">Workspace submisi</h3>
+      <form onSubmit={submit} noValidate className="rounded-3xl border border-line bg-card p-6 shadow-soft">
+        <h3 className="text-xl font-semibold text-ink">Workspace submisi</h3>
         <p className="text-sm text-muted-strong">{event.name}</p>
         <div className="mt-5 grid gap-4">
           <Field>
@@ -444,18 +444,18 @@ function Workspace({ event, onBack }: { event: EventItem; onBack: () => void }) 
         </div>
       </form>
       <Modal open={cert} onClose={() => setCert(false)} title="Pratinjau sertifikat (contoh)" size="lg">
-        <div className="relative overflow-hidden rounded-2xl border-[6px] border-double border-[#cfe6fb] bg-gradient-to-br from-white via-[#f5fbff] to-[#eaf6ff] p-8 text-center">
+        <div className="relative overflow-hidden rounded-2xl border-[6px] border-double border-current/15 bg-gradient-to-br from-card via-card to-soft p-8 text-center">
           <div className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-sky/20 blur-2xl" />
           <div className="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-royal/15 blur-2xl" />
           <div className="relative">
             <div className="flex justify-center"><LogoMark size={44} /></div>
-            <p className="mt-3 text-xs font-bold uppercase tracking-[0.3em] text-brand-ink">Sertifikat Partisipasi</p>
+            <p className="mt-3 text-xs font-semibold uppercase tracking-[0.3em] text-brand-ink">Sertifikat Partisipasi</p>
             <p className="mt-4 text-sm text-muted-strong">Diberikan kepada</p>
-            <p className="mt-1 font-display text-3xl font-extrabold text-ink">{reg?.name ?? "Peserta Demo"}</p>
+            <p className="mt-1 font-display text-3xl font-bold text-ink">{reg?.name ?? "Peserta Demo"}</p>
             <p className="mt-3 text-sm text-muted-strong">atas partisipasi dalam</p>
-            <p className="mt-1 text-lg font-bold text-navy">{event.name}</p>
+            <p className="mt-1 text-lg font-semibold text-ink">{event.name}</p>
             <p className="mt-1 text-sm text-muted">{formatDate(event.startDate)} · {event.organizer}</p>
-            <p className="mt-6 inline-block rounded-full bg-warning-soft px-3 py-1 text-[11px] font-bold text-warning-ink">CONTOH — tidak berlaku sebagai sertifikat resmi</p>
+            <p className="mt-6 inline-block rounded-full bg-warning-soft px-3 py-1 text-[11px] font-semibold text-warning-ink">CONTOH — tidak berlaku sebagai sertifikat resmi</p>
           </div>
         </div>
       </Modal>

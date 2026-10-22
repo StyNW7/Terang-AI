@@ -70,10 +70,10 @@ export function InterviewBuilder({ jobId, onJobChange }: { jobId: string; onJobC
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[300px_1fr]">
-      <aside className="h-fit space-y-4 rounded-2xl border border-line bg-white p-5 shadow-soft xl:sticky xl:top-24">
+    <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
+      <aside className="h-fit space-y-4 rounded-2xl border border-line bg-card p-5 shadow-soft xl:sticky xl:top-24">
         <div>
-          <p className="text-sm font-bold text-ink">Lowongan</p>
+          <p className="text-sm font-semibold text-ink">Lowongan</p>
           <Select className="mt-2" value={job.id} onChange={(e) => onJobChange(e.target.value)} aria-label="Pilih lowongan">
             {jobs.map((j) => (
               <option key={j.id} value={j.id}>
@@ -83,12 +83,12 @@ export function InterviewBuilder({ jobId, onJobChange }: { jobId: string; onJobC
           </Select>
         </div>
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Kompetensi</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Kompetensi</p>
           <ul className="mt-2 space-y-1.5">
             {job.competencies.map((c) => (
               <li key={c.id} className="flex justify-between text-sm">
                 <span className="text-ink">{COMPETENCY_MAP[c.id]?.name}</span>
-                <span className="tabular font-bold text-one">{c.weight}%</span>
+                <span className="tabular font-semibold text-one-ink">{c.weight}%</span>
               </li>
             ))}
           </ul>
@@ -106,7 +106,7 @@ export function InterviewBuilder({ jobId, onJobChange }: { jobId: string; onJobC
       <div className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h3 className="text-lg font-extrabold text-ink">Role-Based Interview Builder</h3>
+            <h3 className="text-lg font-semibold text-ink">Role-Based Interview Builder</h3>
             <p className="text-sm text-muted-strong">Pertanyaan inti terstandar + follow-up kontekstual. HR dapat mengedit atau mengganti setiap pertanyaan.</p>
           </div>
           <Badge tone={job.status === "aktif" ? "success" : "warning"}>{job.status === "aktif" ? "Dipublikasikan" : "Draft"}</Badge>
@@ -122,12 +122,12 @@ export function InterviewBuilder({ jobId, onJobChange }: { jobId: string; onJobC
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="rounded-2xl border border-line bg-white p-5 shadow-soft"
+                  className="rounded-2xl border border-line bg-card p-5 shadow-soft"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="grid h-7 w-7 place-items-center rounded-lg bg-one-gradient text-xs font-bold text-white">{i + 1}</span>
-                      <span className="text-xs font-bold uppercase tracking-[0.1em] text-one">{COMPETENCY_MAP[q.competencyId]?.name}</span>
+                      <span className="grid h-7 w-7 place-items-center rounded-lg bg-one-gradient text-xs font-semibold text-white">{i + 1}</span>
+                      <span className="text-xs font-semibold uppercase tracking-[0.1em] text-one-ink">{COMPETENCY_MAP[q.competencyId]?.name}</span>
                       {q.edited && <Badge tone="success">Diedit HR</Badge>}
                     </div>
                     <div className="flex gap-1">
@@ -153,7 +153,7 @@ export function InterviewBuilder({ jobId, onJobChange }: { jobId: string; onJobC
                     <p className="mt-3 text-[15px] leading-relaxed text-ink">{q.text}</p>
                   )}
                   <p className="mt-3 flex items-start gap-2 rounded-xl bg-surface p-3 text-[13px] text-muted-strong ring-1 ring-line">
-                    <MessageSquareText className="mt-0.5 h-4 w-4 shrink-0 text-one" />
+                    <MessageSquareText className="mt-0.5 h-4 w-4 shrink-0 text-one-ink" />
                     <span>
                       <strong className="text-ink">Follow-up kontekstual:</strong> {q.followUp}
                     </span>
@@ -161,7 +161,7 @@ export function InterviewBuilder({ jobId, onJobChange }: { jobId: string; onJobC
                 </motion.div>
               ))}
         </AnimatePresence>
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <Checkbox
             id="reviewed"
             checked={reviewed}

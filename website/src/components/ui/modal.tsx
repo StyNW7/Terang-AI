@@ -94,13 +94,13 @@ export function Modal({
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 380, damping: 32 }}
             className={cn(
-              "relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-lift outline-none sm:rounded-3xl",
+              "relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl bg-card shadow-lift outline-none sm:rounded-3xl",
               widths[size],
             )}
           >
             <div className="flex items-start justify-between gap-4 border-b border-line px-6 py-5">
               <div>
-                <h2 className="text-lg font-bold text-ink">{title}</h2>
+                <h2 className="text-lg font-semibold text-ink">{title}</h2>
                 {description && <p className="mt-1 text-sm text-muted-strong">{description}</p>}
               </div>
               <button
@@ -162,11 +162,11 @@ export function Drawer({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 340, damping: 36 }}
-            className={cn("absolute right-0 top-0 flex h-full w-full flex-col bg-white shadow-lift outline-none", width)}
+            className={cn("absolute right-0 top-0 flex h-full w-full flex-col bg-card shadow-lift outline-none", width)}
           >
             <div className="flex items-start justify-between gap-4 border-b border-line px-6 py-5">
               <div className="min-w-0">
-                <h2 className="text-lg font-bold text-ink">{title}</h2>
+                <h2 className="text-lg font-semibold text-ink">{title}</h2>
                 {description && <p className="mt-1 text-sm text-muted-strong">{description}</p>}
               </div>
               <button

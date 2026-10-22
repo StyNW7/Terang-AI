@@ -11,21 +11,21 @@ export function ProductCards() {
       p: PRODUCTS.events,
       icon: <CalendarDays className="h-5 w-5" />,
       mascot: "events" as const,
-      gradient: "from-[#e5f6ff] via-white to-white",
-      accent: "bg-[#e5f6ff] text-sky-ink",
+      gradient: "from-sky-soft via-card to-card",
+      accent: "bg-sky-soft text-sky-ink",
       glow: "bg-sky/25",
       overview: "/products/events",
-      demo: "/demo/events",
+      demo: "/dashboard/events",
     },
     {
       p: PRODUCTS.interview,
       icon: <Brain className="h-5 w-5" />,
       mascot: "interview" as const,
-      gradient: "from-one-soft via-white to-white",
-      accent: "bg-one-soft text-one",
+      gradient: "from-one-soft via-card to-card",
+      accent: "bg-one-soft text-one-ink",
       glow: "bg-royal/20",
       overview: "/products/interview",
-      demo: "/demo/interview",
+      demo: "/dashboard/interview",
     },
   ];
   return (
@@ -38,9 +38,9 @@ export function ProductCards() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className={`grid h-10 w-10 place-items-center rounded-xl ${c.accent}`}>{c.icon}</span>
-                  <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-navy ring-1 ring-line">{c.p.category}</span>
+                  <span className="rounded-full bg-card px-2.5 py-1 text-[11px] font-semibold text-ink ring-1 ring-line">{c.p.category}</span>
                 </div>
-                <h3 className="mt-4 text-2xl font-extrabold text-ink">{c.p.name}</h3>
+                <h3 className="mt-4 text-2xl font-semibold text-ink">{c.p.name}</h3>
                 <p className="mt-1 text-sm font-semibold text-brand-ink">{c.p.categoryLong}</p>
                 <p className="mt-3 max-w-sm text-[15px] leading-relaxed text-muted-strong">{c.p.tagline}</p>
               </div>
@@ -48,7 +48,7 @@ export function ProductCards() {
             </div>
             <div className="relative mt-6 grid gap-4 sm:grid-cols-2">
               <div>
-                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-muted">Pelanggan</p>
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Pelanggan</p>
                 <ul className="space-y-1.5">
                   {c.p.targetCustomers.slice(0, 3).map((t) => (
                     <li key={t} className="flex items-start gap-2 text-[13px] text-ink">
@@ -58,7 +58,7 @@ export function ProductCards() {
                 </ul>
               </div>
               <div>
-                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-muted">Fondasi publik</p>
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Fondasi publik</p>
                 <ul className="space-y-1.5">
                   {c.p.existing.slice(0, 3).map((t) => (
                     <li key={t} className="flex items-start gap-2 text-[13px] text-ink">

@@ -114,7 +114,7 @@ export const ONE_STRATEGY = {
         "Recruiter Review Dashboard",
         "Responsible AI Controls",
       ],
-      cta: { label: "Coba Simulasi Produk", href: "/demo/interview" },
+      cta: { label: "Coba Simulasi Produk", href: "/dashboard/interview" },
     },
     {
       letter: "N",
@@ -182,7 +182,7 @@ export const ACE_STRATEGY = {
         "Eksperimen career fair institusional",
         "ACE Command Center",
       ],
-      cta: { label: "Buka ACE Command Center", href: "/operations" },
+      cta: { label: "Buka ACE Command Center", href: "/dashboard/operations" },
     },
     {
       letter: "E",
@@ -191,7 +191,7 @@ export const ACE_STRATEGY = {
       purpose: "Mengevaluasi setiap produk secara independen dan di level portofolio, lalu merealokasi sumber daya.",
       program: "ACE Portfolio Intelligence",
       highlights: ["KPI per produk", "KPI portofolio", "Simulator realokasi", "Invest · Improve · Reduce · Pause"],
-      cta: { label: "Lihat Hasil Evaluasi", href: "/portfolio" },
+      cta: { label: "Lihat Hasil Evaluasi", href: "/dashboard/portfolio" },
     },
   ] satisfies Pillar[],
 };

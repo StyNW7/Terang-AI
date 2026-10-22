@@ -34,9 +34,9 @@ export function Funnel({
               <p className={cn("truncate font-semibold text-ink", compact ? "text-xs" : "text-[13px]")}>{s.label}</p>
               {conv !== null && <p className="text-[11px] text-muted">{formatPercent(conv, 1)} dari tahap sebelumnya</p>}
             </div>
-            <div className="relative h-9 rounded-xl bg-[#eef4fb]">
+            <div className="relative h-9 rounded-xl bg-neutral-soft">
               <motion.div
-                className="flex h-full items-center justify-end rounded-xl px-3 text-xs font-bold text-white shadow-soft"
+                className="flex h-full items-center justify-end rounded-xl px-3 text-xs font-semibold text-white shadow-soft"
                 style={{ backgroundImage: color }}
                 initial={{ width: 0 }}
                 animate={{ width: `${width}%` }}

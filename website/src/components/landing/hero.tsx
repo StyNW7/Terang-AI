@@ -1,9 +1,10 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import { ArrowRight, BadgeCheck, CalendarDays, Play, Scale, Sparkles, Trophy, Users } from "lucide-react";
+import { ArrowRight, BadgeCheck, CalendarDays, LayoutDashboard, Play, Sparkles, Trophy, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LogoMark, Mascot } from "@/components/shared/brand";
+import { ScrollCue } from "@/components/layout/container";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 22 },
@@ -13,18 +14,18 @@ const fadeUp = {
 function EventsPreview() {
   const bars = [38, 52, 46, 68, 74, 88, 80];
   return (
-    <div className="w-[270px] rounded-2xl border border-white/70 bg-white/90 p-4 shadow-lift backdrop-blur-xl">
+    <div className="w-[270px] rounded-2xl border border-white/70 bg-card/90 p-4 shadow-lift backdrop-blur-xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-[#e5f6ff] text-sky-ink">
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-sky-soft text-sky-ink">
             <CalendarDays className="h-4 w-4" />
           </span>
           <div>
             <p className="text-[11px] font-semibold text-muted">Terang Events</p>
-            <p className="text-[13px] font-bold text-ink">Organizer Dashboard</p>
+            <p className="text-[13px] font-semibold text-ink">Organizer Dashboard</p>
           </div>
         </div>
-        <span className="rounded-full bg-success-soft px-2 py-0.5 text-[10px] font-bold text-[#0b7a5a]">Live</span>
+        <span className="rounded-full bg-success-soft px-2 py-0.5 text-[11px] font-semibold text-success-ink">Live</span>
       </div>
       <div className="mt-3 grid grid-cols-3 gap-2">
         {[
@@ -33,8 +34,8 @@ function EventsPreview() {
           ["Juri", "18"],
         ].map(([k, v]) => (
           <div key={k} className="rounded-xl bg-surface px-2 py-2">
-            <p className="text-[10px] text-muted">{k}</p>
-            <p className="tabular text-sm font-extrabold text-ink">{v}</p>
+            <p className="text-[11px] text-muted">{k}</p>
+            <p className="tabular text-sm font-semibold text-ink">{v}</p>
           </div>
         ))}
       </div>
@@ -63,15 +64,15 @@ function InterviewPreview() {
     ["Pemecahan masalah", 66],
   ] as const;
   return (
-    <div className="w-[280px] rounded-2xl border border-white/70 bg-white/90 p-4 shadow-lift backdrop-blur-xl">
+    <div className="w-[280px] rounded-2xl border border-white/70 bg-card/90 p-4 shadow-lift backdrop-blur-xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-one-soft text-one">
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-one-soft text-one-ink">
             <Users className="h-4 w-4" />
           </span>
           <div>
             <p className="text-[11px] font-semibold text-muted">AI Candidate Interview</p>
-            <p className="text-[13px] font-bold text-ink">Evidence Report</p>
+            <p className="text-[13px] font-semibold text-ink">Evidence Report</p>
           </div>
         </div>
       </div>
@@ -82,7 +83,7 @@ function InterviewPreview() {
               <span className="font-semibold text-ink">{label}</span>
               <span className="text-muted">Rubrik</span>
             </div>
-            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#e6eef7]">
+            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-track">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${v}%` }}
@@ -96,7 +97,7 @@ function InterviewPreview() {
       <p className="mt-3 rounded-xl border border-line bg-surface px-2.5 py-2 text-[11px] italic leading-snug text-muted-strong">
         “…saya memecah langkah jadi tiga bagian, lalu meminta beliau mengulang untuk konfirmasi.”
       </p>
-      <div className="mt-2.5 flex items-center gap-1.5 text-[11px] font-bold text-[#0b7a5a]">
+      <div className="mt-2.5 flex items-center gap-1.5 text-[11px] font-semibold text-success-ink">
         <BadgeCheck className="h-3.5 w-3.5" /> Ditinjau manusia — bukan keputusan otomatis
       </div>
     </div>
@@ -116,9 +117,9 @@ function HeroVisual() {
   const coreY = useTransform(sy, (v) => v * 6);
 
   return (
-    <div className="relative mx-auto h-[400px] w-full max-w-[560px] sm:h-[580px]">
+    <div className="relative mx-auto h-[400px] w-full max-w-[560px] sm:h-[580px] lg:h-[500px] xl:h-[580px]">
       <div
-        className="absolute left-1/2 top-0 h-[580px] w-[560px] origin-top -translate-x-1/2 scale-[0.68] sm:scale-100"
+        className="absolute left-1/2 top-0 h-[580px] w-[560px] origin-top -translate-x-1/2 scale-[0.68] sm:scale-100 lg:scale-[0.86] xl:scale-100"
         onMouseMove={(e) => {
           const r = e.currentTarget.getBoundingClientRect();
           mx.set((e.clientX - r.left) / r.width - 0.5);
@@ -161,7 +162,7 @@ function HeroVisual() {
                 initial={{ scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.3, type: "spring", stiffness: 160, damping: 16 }}
-                className="relative grid h-32 w-32 place-items-center rounded-full bg-white shadow-glow ring-8 ring-white/60"
+                className="relative grid h-32 w-32 place-items-center rounded-full bg-card shadow-glow ring-8 ring-white/60"
               >
                 <LogoMark size={88} />
               </motion.div>
@@ -208,7 +209,7 @@ function HeroVisual() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.2 }}
-          className="absolute left-2 top-[300px] flex items-center gap-2 rounded-full border border-white/70 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-navy shadow-soft backdrop-blur"
+          className="absolute left-2 top-[300px] flex items-center gap-2 rounded-full border border-white/70 bg-card/85 px-3 py-1.5 text-[11px] font-semibold text-ink shadow-soft backdrop-blur"
         >
           <Sparkles className="h-3.5 w-3.5 text-sky" /> 2 produk · 2 strategi · 1 keputusan
         </motion.div>
@@ -219,65 +220,66 @@ function HeroVisual() {
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#eaf6ff] via-[#f5faff] to-surface" />
+    <section className="relative isolate flex min-h-hero items-center overflow-hidden">
+      <div className="bg-page-gradient absolute inset-0 -z-10" />
       <div className="bg-grid absolute inset-0 -z-10 mask-fade-b" />
-      <div className="absolute -left-40 top-10 -z-10 h-[460px] w-[460px] rounded-full bg-sky/25 blur-[90px]" />
-      <div className="absolute -right-32 top-40 -z-10 h-[420px] w-[420px] rounded-full bg-royal/15 blur-[100px]" />
+      <div className="absolute -left-40 top-10 -z-10 h-[460px] w-[460px] rounded-full bg-sky/20 blur-[100px]" />
+      <div className="absolute -right-32 top-40 -z-10 h-[420px] w-[420px] rounded-full bg-royal/15 blur-[110px]" />
 
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:px-8 lg:pb-24 lg:pt-16">
+      <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 pb-24 pt-12 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:px-8 lg:py-16">
         <motion.div initial="hidden" animate="show">
           <motion.div
             custom={0}
             variants={fadeUp}
-            className="inline-flex items-center gap-2 rounded-full border border-[#cfe6fb] bg-white/80 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-brand-ink shadow-soft backdrop-blur"
+            className="eyebrow inline-flex items-center gap-2 rounded-full border border-brand/20 bg-card/70 px-3 py-1.5 text-brand-ink shadow-soft backdrop-blur"
           >
             <Sparkles className="h-3.5 w-3.5 text-sky" /> AI-Powered Business Innovation
           </motion.div>
           <motion.h1
             custom={1}
             variants={fadeUp}
-            className="mt-6 text-[2.75rem] font-extrabold leading-[1.04] text-ink sm:text-6xl lg:text-[4.3rem]"
+            className="mt-6 text-[2.75rem] font-bold leading-[1.03] tracking-[-0.035em] text-ink sm:text-6xl lg:text-[4.25rem]"
           >
             Smarter Solutions,
             <br />
             <span className="text-gradient">Brighter Futures.</span>
           </motion.h1>
           <motion.p custom={2} variants={fadeUp} className="mt-6 max-w-xl text-lg leading-relaxed text-muted-strong">
-            Explore how Terang AI&apos;s B2B technologies can transform event management and recruitment — and discover the strategic
-            decisions behind sustainable growth.
+            Kenali dua produk B2B Terang AI, pahami dilema pertumbuhannya, lalu uji strategi <strong className="font-semibold text-ink">ONE</strong> dan{" "}
+            <strong className="font-semibold text-ink">ACE</strong> secara interaktif.
           </motion.p>
           <motion.div custom={3} variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
-            <Button href="/company" size="lg">
-              Explore the Experience <ArrowRight className="h-4 w-4" />
+            <Button href="/dashboard" size="lg">
+              <LayoutDashboard className="h-4 w-4" /> Buka Dashboard
             </Button>
-            <Button href="/compare" size="lg" variant="secondary">
-              <Scale className="h-4 w-4" /> Compare Growth Strategies
+            <Button href="#tentang" size="lg" variant="secondary">
+              Mulai jelajah <ArrowRight className="h-4 w-4" />
             </Button>
           </motion.div>
-          <motion.div custom={4} variants={fadeUp} className="mt-5">
+          <motion.div custom={4} variants={fadeUp} className="mt-4">
             <Button href="/presentation" variant="ghost" className="-ml-3">
               <span className="grid h-7 w-7 place-items-center rounded-full bg-brand-gradient text-white shadow-glow">
-                <Play className="h-3.5 w-3.5 fill-current" />
+                <Play className="h-3 w-3 fill-current" />
               </span>
-              Start Guided Experience
+              Mode presentasi untuk juri
             </Button>
           </motion.div>
           <motion.dl custom={5} variants={fadeUp} className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-line pt-6">
             {[
               ["2024", "Diperkenalkan"],
-              ["2", "Produk B2B fokus"],
-              ["ONE · ACE", "Alternatif strategi"],
+              ["2", "Produk B2B"],
+              ["ONE · ACE", "Strategi diuji"],
             ].map(([v, k]) => (
               <div key={k}>
-                <dt className="font-display text-xl font-extrabold text-navy">{v}</dt>
-                <dd className="mt-0.5 text-xs text-muted">{k}</dd>
+                <dt className="font-display text-xl font-semibold text-ink">{v}</dt>
+                <dd className="mt-0.5 text-[13px] text-muted">{k}</dd>
               </div>
             ))}
           </motion.dl>
         </motion.div>
         <HeroVisual />
       </div>
+      <ScrollCue href="#tentang" />
     </section>
   );
 }

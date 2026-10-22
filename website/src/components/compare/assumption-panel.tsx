@@ -67,9 +67,9 @@ const ACE: Def<"ace">[] = [
 function Group({ title, icon, children, defaultOpen, accent }: { title: string; icon: ReactNode; children: ReactNode; defaultOpen?: boolean; accent?: string }) {
   const [open, setOpen] = useState(!!defaultOpen);
   return (
-    <div className="rounded-2xl border border-line bg-white">
+    <div className="rounded-2xl border border-line bg-card">
       <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left">
-        <span className="flex items-center gap-2 text-sm font-bold text-ink">
+        <span className="flex items-center gap-2 text-sm font-semibold text-ink">
           <span className={cn("grid h-7 w-7 place-items-center rounded-lg", accent ?? "bg-soft text-brand-ink")}>{icon}</span>
           {title}
         </span>
@@ -126,7 +126,7 @@ export function AssumptionPanel() {
                 key={h}
                 type="button"
                 onClick={() => update("shared", "horizonMonths", h)}
-                className={cn("rounded-lg py-1.5 text-xs font-bold ring-1 transition", horizon === h ? "bg-navy text-white ring-navy" : "bg-white text-muted-strong ring-line hover:ring-brand/40")}
+                className={cn("rounded-lg py-1.5 text-xs font-semibold ring-1 transition", horizon === h ? "bg-navy text-white ring-navy" : "bg-card text-muted-strong ring-line hover:ring-brand/40")}
               >
                 {h} bln
               </button>
@@ -135,16 +135,16 @@ export function AssumptionPanel() {
         </div>
         <Fields section="shared" defs={SHARED} color="#4a90e2" />
       </Group>
-      <Group title="Terang Events" icon={<CalendarDays className="h-4 w-4" />} accent="bg-[#e5f6ff] text-sky-ink">
+      <Group title="Terang Events" icon={<CalendarDays className="h-4 w-4" />} accent="bg-sky-soft text-sky-ink">
         <Fields section="events" defs={EVENTS} color="#39b7ff" />
       </Group>
-      <Group title="AI Candidate Interview" icon={<Brain className="h-4 w-4" />} accent="bg-one-soft text-one">
+      <Group title="AI Candidate Interview" icon={<Brain className="h-4 w-4" />} accent="bg-one-soft text-one-ink">
         <Fields section="interview" defs={INTERVIEW} color="#2f66e0" />
       </Group>
-      <Group title="Khusus ONE" icon={<Target className="h-4 w-4" />} accent="bg-one-soft text-one">
+      <Group title="Khusus ONE" icon={<Target className="h-4 w-4" />} accent="bg-one-soft text-one-ink">
         <Fields section="one" defs={ONE} color="#2251c9" />
       </Group>
-      <Group title="Khusus ACE" icon={<Layers className="h-4 w-4" />} accent="bg-ace-soft text-[#0a7aa6]">
+      <Group title="Khusus ACE" icon={<Layers className="h-4 w-4" />} accent="bg-ace-soft text-ace-ink">
         <Fields section="ace" defs={ACE} color="#0c9fd8" />
       </Group>
     </div>

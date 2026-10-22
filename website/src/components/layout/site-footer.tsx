@@ -18,17 +18,17 @@ const COLUMNS = [
     links: [
       { label: "ONE Strategy (PRO)", href: "/strategies/one" },
       { label: "ACE Strategy (KONTRA)", href: "/strategies/ace" },
-      { label: "ONE vs ACE Simulator", href: "/compare" },
+      { label: "Simulator ONE vs ACE", href: "/dashboard/simulator" },
       { label: "Mode Presentasi", href: "/presentation" },
     ],
   },
   {
-    title: "Demo & Analitik",
+    title: "Dashboard",
     links: [
-      { label: "Demo Terang Events", href: "/demo/events" },
-      { label: "Demo AI Candidate Interview", href: "/demo/interview" },
-      { label: "ACE Command Center", href: "/operations" },
-      { label: "Portfolio Intelligence", href: "/portfolio" },
+      { label: "Super Admin", href: "/dashboard" },
+      { label: "Terang Events", href: "/dashboard/events" },
+      { label: "AI Candidate Interview", href: "/dashboard/interview" },
+      { label: "Kapasitas & Operasional", href: "/dashboard/operations" },
     ],
   },
 ];
@@ -38,12 +38,12 @@ export function SiteFooter() {
     <footer className="relative mt-24 overflow-hidden bg-navy-gradient text-white">
       <div className="bg-grid-dark absolute inset-0 opacity-60 mask-fade-b" />
       <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-sky/25 blur-3xl" />
-      <div className="relative mx-auto max-w-7xl px-4 pb-28 pt-16 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 pb-10 pt-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.3fr_2fr]">
           <div>
             <Logo height={28} tone="white" />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/70">{COMPANY.idea}</p>
-            <p className="mt-4 font-display text-lg font-bold text-gradient-light">{COMPANY.tagline}</p>
+            <p className="mt-4 font-display text-lg font-semibold text-gradient-light">{COMPANY.tagline}</p>
             <div className="mt-6 flex items-end gap-3">
               <Mascot name="wave" size={84} />
               <p className="mb-3 max-w-[220px] text-xs leading-relaxed text-white/60">
@@ -54,7 +54,7 @@ export function SiteFooter() {
           <div className="grid gap-8 sm:grid-cols-3">
             {COLUMNS.map((col) => (
               <div key={col.title}>
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky">{col.title}</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">{col.title}</p>
                 <ul className="mt-4 space-y-2.5">
                   {col.links.map((l) => (
                     <li key={l.href + l.label}>

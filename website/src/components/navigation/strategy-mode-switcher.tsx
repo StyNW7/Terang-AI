@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { Compass, Layers, Target } from "lucide-react";
 import type { StrategyMode } from "@/types/common";
@@ -24,7 +23,7 @@ export function StrategyModeSwitcher({ className, dark, compact }: { className?:
       aria-label="Mode strategi global"
       className={cn(
         "relative inline-flex items-center gap-1 rounded-2xl p-1",
-        dark ? "bg-white/10 ring-1 ring-white/15" : "bg-white/90 ring-1 ring-line",
+        dark ? "bg-white/10 ring-1 ring-white/15" : "bg-card/90 ring-1 ring-line",
         className,
       )}
     >
@@ -59,53 +58,6 @@ export function StrategyModeSwitcher({ className, dark, compact }: { className?:
           </button>
         );
       })}
-    </div>
-  );
-}
-
-/** Floating dock: the global strategy mode is reachable from every page. */
-export function StrategyModeDock() {
-  const pathname = usePathname();
-  const { mode } = useStrategyMode();
-  const [collapsed, setCollapsed] = useState(false);
-  if (pathname?.startsWith("/presentation")) return null;
-  const isWorkspace = ["/demo", "/operations", "/portfolio", "/compare"].some((p) => pathname?.startsWith(p));
-  return (
-    <div className={cn("pointer-events-none fixed inset-x-0 bottom-4 z-[60] flex justify-center px-3", isWorkspace && "lg:pl-[264px] xl:hidden")}>
-      <motion.div
-        initial={{ y: 40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.6, type: "spring", stiffness: 260, damping: 26 }}
-        className="pointer-events-auto flex items-center gap-2 rounded-[20px] border border-white/60 bg-white/80 p-1.5 shadow-[0_18px_50px_-18px_rgba(23,57,94,0.45)] backdrop-blur-xl"
-      >
-        <button
-          type="button"
-          onClick={() => setCollapsed((c) => !c)}
-          className="hidden items-center gap-2 rounded-xl px-2.5 py-1.5 text-left sm:flex"
-          aria-label={collapsed ? "Tampilkan pilihan mode" : "Ringkas dock"}
-        >
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ background: MODE_META[mode].color }} />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full" style={{ background: MODE_META[mode].color }} />
-          </span>
-          <span className="leading-tight">
-            <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-muted">Strategy Mode</span>
-            <span className="block text-xs font-bold text-ink">{MODE_META[mode].label}</span>
-          </span>
-        </button>
-        <AnimatePresence initial={false}>
-          {!collapsed && (
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: "auto", opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              className="overflow-hidden"
-            >
-              <StrategyModeSwitcher compact className="bg-transparent ring-0" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
     </div>
   );
 }
@@ -157,8 +109,8 @@ export function ModeTransition() {
             className="rounded-3xl px-8 py-5 text-center text-white shadow-lift"
             style={{ backgroundImage: MODE_META[visible.mode].gradient }}
           >
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/75">Strategy Mode</p>
-            <p className="font-display text-2xl font-extrabold">{MODE_META[visible.mode].label}</p>
+            <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-white/75">Mode strategi</p>
+            <p className="font-display text-2xl font-semibold">{MODE_META[visible.mode].label}</p>
             <p className="mt-1 max-w-xs text-xs text-white/80">{MODE_META[visible.mode].description}</p>
           </motion.div>
         </motion.div>

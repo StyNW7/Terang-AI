@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { useInterviewStore } from "@/store/interview-store";
 import { Select, Switch } from "@/components/ui/form";
 import { Callout } from "@/components/ui/misc";
-import { SourceLabel } from "@/components/shared/source-label";
 import { formatDateTime } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 
@@ -30,16 +29,9 @@ export function ResponsibleAi() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 rounded-2xl bg-navy-gradient p-6 text-white shadow-card sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky">Responsible AI Controls</p>
-          <h3 className="mt-1 text-2xl font-extrabold">AI sebagai pendukung keputusan, bukan otoritas perekrutan.</h3>
-        </div>
-        <SourceLabel type="strategic-proposal" dark />
-      </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <div className="flex items-start justify-between gap-3">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-success-soft text-success">
               <UserCheck className="h-5 w-5" />
@@ -57,24 +49,24 @@ export function ResponsibleAi() {
               }}
             />
           </div>
-          <p className="mt-3 font-bold text-ink">Wajib tinjauan manusia</p>
+          <p className="mt-3 font-semibold text-ink">Wajib tinjauan manusia</p>
           <p className="mt-1 text-sm text-muted-strong">Setiap laporan harus ditinjau recruiter sebelum digunakan dalam keputusan.</p>
         </div>
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <div className="flex items-start justify-between gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-soft text-one">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-soft text-one-ink">
               <EyeOff className="h-5 w-5" />
             </span>
             <Switch checked={mask} onChange={(v) => { setMask(v); toast.success(v ? "Identitas kandidat disamarkan." : "Identitas kandidat ditampilkan."); }} label="Samarkan identitas" />
           </div>
-          <p className="mt-3 font-bold text-ink">Samarkan identitas kandidat</p>
+          <p className="mt-3 font-semibold text-ink">Samarkan identitas kandidat</p>
           <p className="mt-1 text-sm text-muted-strong">Mengurangi bias saat meninjau bukti — nama & email diganti ID anonim.</p>
         </div>
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <span className="grid h-10 w-10 place-items-center rounded-xl bg-warning-soft text-warning-ink">
             <Trash2 className="h-5 w-5" />
           </span>
-          <p className="mt-3 font-bold text-ink">Retensi data (simulasi)</p>
+          <p className="mt-3 font-semibold text-ink">Retensi data (simulasi)</p>
           <Select
             className="mt-2"
             value={retention}
@@ -95,10 +87,10 @@ export function ResponsibleAi() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1.3fr_1fr]">
-        <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+        <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
           <div className="flex items-center gap-2 border-b border-line px-5 py-4">
-            <KeyRound className="h-4 w-4 text-one" />
-            <p className="font-bold text-ink">Kontrol akses berbasis peran</p>
+            <KeyRound className="h-4 w-4 text-one-ink" />
+            <p className="font-semibold text-ink">Kontrol akses berbasis peran</p>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] text-sm">
@@ -118,7 +110,7 @@ export function ResponsibleAi() {
                     <td className="px-4 py-2.5 text-ink">{p.label}</td>
                     {p.allowed.map((a, i) => (
                       <td key={i} className="px-3 py-2.5 text-center">
-                        <span className={cn("inline-grid h-6 w-6 place-items-center rounded-full", a ? "bg-success-soft text-success" : "bg-[#eef3f9] text-muted")}>
+                        <span className={cn("inline-grid h-6 w-6 place-items-center rounded-full", a ? "bg-success-soft text-success" : "bg-neutral-soft text-muted")}>
                           {a ? <Check className="h-3.5 w-3.5" /> : <X className="h-3.5 w-3.5" />}
                         </span>
                       </td>
@@ -129,9 +121,9 @@ export function ResponsibleAi() {
             </table>
           </div>
         </div>
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-          <p className="flex items-center gap-2 font-bold text-ink">
-            <History className="h-4 w-4 text-one" /> Audit trail
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+          <p className="flex items-center gap-2 font-semibold text-ink">
+            <History className="h-4 w-4 text-one-ink" /> Audit trail
           </p>
           <ul className="scrollbar-thin mt-3 max-h-[320px] space-y-2 overflow-y-auto pr-1">
             {audit.map((a) => (

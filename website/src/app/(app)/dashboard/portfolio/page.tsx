@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { PortfolioDashboard } from "@/components/portfolio/portfolio-dashboard";
 
-export const metadata: Metadata = { title: "Portfolio Intelligence" };
+export const metadata: Metadata = { title: "Portofolio & Keputusan" };
 
-export default function PortfolioPage() {
+export default function Page() {
   return <PortfolioDashboard />;
 }

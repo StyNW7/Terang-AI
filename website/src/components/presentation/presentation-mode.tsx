@@ -96,20 +96,20 @@ export function PresentationMode() {
       {/* Top bar */}
       <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 px-5 py-4 sm:px-8">
         <div className="flex min-w-0 items-center gap-3">
-          <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-sky ring-1 ring-white/15">{slide.section}</span>
+          <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-sky ring-1 ring-white/15">{slide.section}</span>
           <span className="hidden truncate text-sm text-white/60 sm:block">{slide.title}</span>
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={() => goTo(ONE_START, 1)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold ring-1 transition", slide.section === "ONE · PRO" ? "bg-white text-one ring-white" : "bg-white/10 text-white ring-white/15 hover:bg-white/20")}>
+          <button type="button" onClick={() => goTo(ONE_START, 1)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold ring-1 transition", slide.section === "ONE · PRO" ? "bg-white text-one-ink ring-white" : "bg-white/10 text-white ring-white/15 hover:bg-white/20")}>
             <Target className="h-3.5 w-3.5" /> PRO · ONE
           </button>
-          <button type="button" onClick={() => goTo(ACE_START, 1)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold ring-1 transition", slide.section === "ACE · KONTRA" ? "bg-white text-[#0a7aa6] ring-white" : "bg-white/10 text-white ring-white/15 hover:bg-white/20")}>
+          <button type="button" onClick={() => goTo(ACE_START, 1)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold ring-1 transition", slide.section === "ACE · KONTRA" ? "bg-white text-ace-ink ring-white" : "bg-white/10 text-white ring-white/15 hover:bg-white/20")}>
             <Layers className="h-3.5 w-3.5" /> KONTRA · ACE
           </button>
           <button type="button" onClick={fullscreen} className="hidden h-9 w-9 place-items-center rounded-xl bg-white/10 ring-1 ring-white/15 hover:bg-white/20 sm:grid" aria-label="Layar penuh">
             <Expand className="h-4 w-4" />
           </button>
-          <Link href="/" className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-bold ring-1 ring-white/15 hover:bg-white/20" aria-label="Keluar dari mode presentasi">
+          <Link href="/" className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-semibold ring-1 ring-white/15 hover:bg-white/20" aria-label="Keluar dari mode presentasi">
             <X className="h-3.5 w-3.5" /> Keluar
           </Link>
         </div>
@@ -163,14 +163,14 @@ export function PresentationMode() {
           </div>
           <div className="flex items-center gap-2">
             {slide.link && (
-              <Link href={slide.link.href} className="hidden items-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-xs font-bold ring-1 ring-white/15 hover:bg-white/20 sm:flex">
+              <Link href={slide.link.href} className="hidden items-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-xs font-semibold ring-1 ring-white/15 hover:bg-white/20 sm:flex">
                 Buka {slide.link.label} <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             )}
-            <button type="button" onClick={() => setGrid((v) => !v)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold ring-1", grid ? "bg-white text-navy ring-white" : "bg-white/10 ring-white/15 hover:bg-white/20")}>
+            <button type="button" onClick={() => setGrid((v) => !v)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold ring-1", grid ? "bg-white text-navy ring-white" : "bg-white/10 ring-white/15 hover:bg-white/20")}>
               <LayoutGrid className="h-3.5 w-3.5" /> Semua slide
             </button>
-            <button type="button" onClick={() => setNotes((v) => !v)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold ring-1", notes ? "bg-white text-navy ring-white" : "bg-white/10 ring-white/15 hover:bg-white/20")}>
+            <button type="button" onClick={() => setNotes((v) => !v)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold ring-1", notes ? "bg-white text-navy ring-white" : "bg-white/10 ring-white/15 hover:bg-white/20")}>
               <NotebookPen className="h-3.5 w-3.5" /> Catatan
             </button>
           </div>
@@ -191,7 +191,7 @@ export function PresentationMode() {
             className="absolute bottom-0 right-0 top-0 z-30 w-full max-w-md bg-white p-6 text-ink shadow-lift"
           >
             <div className="flex items-center justify-between">
-              <p className="flex items-center gap-2 font-bold">
+              <p className="flex items-center gap-2 font-semibold">
                 <NotebookPen className="h-4 w-4 text-brand-ink" /> Catatan pembicara
               </p>
               <button type="button" onClick={() => setNotes(false)} className="grid h-9 w-9 place-items-center rounded-xl hover:bg-soft" aria-label="Tutup catatan">
@@ -204,7 +204,7 @@ export function PresentationMode() {
             <p className="mt-5 text-[15px] leading-relaxed text-ink">{slide.notes}</p>
             {index < SLIDES.length - 1 && (
               <div className="mt-6 rounded-xl bg-surface p-4 ring-1 ring-line">
-                <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Berikutnya</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Berikutnya</p>
                 <p className="mt-1 font-semibold">{SLIDES[index + 1].title}</p>
               </div>
             )}
@@ -218,7 +218,7 @@ export function PresentationMode() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-40 overflow-y-auto bg-navy-deep/95 p-8 backdrop-blur">
             <div className="mx-auto max-w-6xl">
               <div className="mb-6 flex items-center justify-between">
-                <p className="text-xl font-extrabold">Semua slide</p>
+                <p className="text-xl font-semibold">Semua slide</p>
                 <button type="button" onClick={() => setGrid(false)} className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 hover:bg-white/20" aria-label="Tutup">
                   <X className="h-5 w-5" />
                 </button>
@@ -234,10 +234,10 @@ export function PresentationMode() {
                     }}
                     className={cn("rounded-2xl p-4 text-left ring-1 transition hover:-translate-y-0.5", i === index ? "bg-white text-navy ring-white" : "bg-white/[0.06] ring-white/12 hover:bg-white/10")}
                   >
-                    <p className={cn("text-[10px] font-bold uppercase tracking-[0.14em]", i === index ? "text-brand-ink" : "text-sky")}>
+                    <p className={cn("text-[11px] font-semibold uppercase tracking-[0.12em]", i === index ? "text-brand-ink" : "text-sky")}>
                       {String(i + 1).padStart(2, "0")} · {s.section}
                     </p>
-                    <p className="mt-1 font-bold">{s.title}</p>
+                    <p className="mt-1 font-semibold">{s.title}</p>
                   </button>
                 ))}
               </div>

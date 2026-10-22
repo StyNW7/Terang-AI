@@ -38,6 +38,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Drawer } from "@/components/ui/modal";
 import { Select } from "@/components/ui/form";
+import { Segmented } from "@/components/ui/tabs";
+import { PageHeader } from "@/components/dashboard/page-header";
 import { Callout, Progress } from "@/components/ui/misc";
 import { InfoTip } from "@/components/ui/tooltip";
 import { Mascot } from "@/components/shared/brand";
@@ -78,15 +80,15 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
     { label: "Utilisasi Strategy & Ops", value: formatPercent(r.capacity.opsUtilization), win: better(r.capacity.opsUtilization, other.capacity.opsUtilization, false) },
   ];
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-white shadow-card">
+    <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-card shadow-card">
       <div className={cn("relative p-6 text-white", isOne ? "bg-one-gradient" : "bg-ace-gradient")}>
         <div className="bg-grid-dark absolute inset-0 opacity-50" />
         <div className="relative flex items-start justify-between gap-3">
           <div>
-            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-white/80">
+            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/80">
               {isOne ? <Target className="h-4 w-4" /> : <Layers className="h-4 w-4" />} {isOne ? "PRO" : "KONTRA"}
             </p>
-            <p className="font-display text-3xl font-extrabold">{isOne ? "ONE Strategy" : "ACE Strategy"}</p>
+            <p className="font-display text-3xl font-bold">{isOne ? "ONE Strategy" : "ACE Strategy"}</p>
           </div>
           <Mascot name={isOne ? "target" : "puzzle"} size={76} float={false} className="-mr-2 -mt-2" />
         </div>
@@ -98,7 +100,7 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
               tidak dihitung.
             </InfoTip>
           </p>
-          <p className="tabular font-display text-3xl font-extrabold">
+          <p className="tabular font-display text-3xl font-bold">
             <AnimatedNumber value={r.operatingResult} format="idrCompact" />
           </p>
           <p className="text-xs text-white/75">{r.operatingResult >= other.operatingResult ? "Lebih tinggi pada asumsi ini" : "Lebih rendah pada asumsi ini"}</p>
@@ -116,7 +118,7 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
         ))}
       </dl>
       <div className="border-t border-line bg-surface p-5">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Risiko utama</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Risiko utama</p>
         <ul className="mt-2 space-y-1">
           {r.risks.slice(0, 4).map((risk) => (
             <li key={risk} className="flex items-start gap-2 text-[13px] text-ink">
@@ -124,7 +126,7 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-xs font-bold uppercase tracking-[0.12em] text-muted">Syarat scale</p>
+        <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-muted">Syarat scale</p>
         <p className="mt-1 text-[13px] text-muted-strong">
           {isOne
             ? "Expansion Gate lulus: kualitas, traksi, ekonomi, kapasitas & Responsible AI."
@@ -205,29 +207,26 @@ export function StrategySimulator() {
 
   return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-3xl bg-navy-gradient p-6 text-white shadow-card sm:p-8">
-        <div className="bg-grid-dark absolute inset-0 opacity-60" />
-        <Mascot name="chart" size={160} className="absolute -bottom-8 right-6 hidden md:block" />
-        <div className="relative max-w-3xl">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-sky ring-1 ring-white/15">
-              <Scale className="h-3.5 w-3.5" /> ONE vs ACE Strategy Simulator
-            </span>
-            <SourceLabel type="illustrative-assumption" dark />
-          </div>
-          <h2 className="mt-3 text-3xl font-extrabold md:text-4xl">Two Strategies. One Resource Reality.</h2>
-          <p className="mt-2 text-white/75">Ubah asumsi dan lihat kapan ONE atau ACE lebih menarik. Semua angka adalah asumsi akademik ilustratif — bukan hasil Terang AI.</p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            {(Object.keys(SCENARIO_PRESETS) as ScenarioPreset[]).map((k) => (
-              <Button key={k} size="sm" variant={preset === k ? "light" : "glass"} onClick={() => { applyPreset(k); toast.info(`Preset ${SCENARIO_PRESETS[k].label} diterapkan.`); }}>
-                {SCENARIO_PRESETS[k].label}
-              </Button>
-            ))}
-            {preset === "custom" && <Badge tone="ace">Kustom</Badge>}
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow={<SourceLabel type="illustrative-assumption" compact />}
+        title="Simulator ONE vs ACE"
+        description="Ubah asumsi dan lihat kapan ONE atau ACE lebih menarik. Semua angka adalah asumsi akademik ilustratif."
+      />
 
+      <div className="flex flex-col gap-3 rounded-2xl border border-line bg-card p-4 shadow-soft lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
+          <span className="mr-1 text-[13px] font-medium text-muted-strong">Skenario</span>
+          <Segmented
+            size="sm"
+            value={preset === "custom" ? ("" as ScenarioPreset) : preset}
+            onChange={(k) => {
+              applyPreset(k);
+              toast.info(`Preset ${SCENARIO_PRESETS[k].label} diterapkan.`);
+            }}
+            items={(Object.keys(SCENARIO_PRESETS) as ScenarioPreset[]).map((k) => ({ id: k, label: SCENARIO_PRESETS[k].label }))}
+          />
+          {preset === "custom" && <Badge tone="ace">Kustom</Badge>}
+        </div>
       <div className="flex flex-wrap gap-2">
         <Button size="sm" variant="secondary" onClick={() => { reset(); toast.success("Asumsi direset ke Base Case."); }}>
           <RotateCcw className="h-4 w-4" /> Reset asumsi
@@ -245,14 +244,15 @@ export function StrategySimulator() {
           <ClipboardCopy className="h-4 w-4" /> Salin ringkasan
         </Button>
       </div>
+      </div>
 
       <AnimatePresence>
         {showFormulas && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {FORMULAS.map((f) => (
-                <div key={f.name} className="rounded-2xl border border-line bg-white p-4 shadow-soft">
-                  <p className="text-sm font-bold text-ink">{f.name}</p>
+                <div key={f.name} className="rounded-2xl border border-line bg-card p-4 shadow-soft">
+                  <p className="text-sm font-semibold text-ink">{f.name}</p>
                   <code className="mt-2 block rounded-lg bg-navy px-3 py-2 text-[12px] leading-relaxed text-sky">{f.formula}</code>
                   <p className="mt-2 text-xs text-muted-strong">{f.note}</p>
                 </div>
@@ -272,12 +272,12 @@ export function StrategySimulator() {
             key={leader ?? "tie"}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col gap-2 rounded-2xl border border-line bg-white p-5 shadow-soft sm:flex-row sm:items-center sm:justify-between"
+            className="flex flex-col gap-2 rounded-2xl border border-line bg-card p-5 shadow-soft sm:flex-row sm:items-center sm:justify-between"
           >
             <p className="text-sm text-ink">
               {leader ? (
                 <>
-                  Pada asumsi saat ini, <strong className={leader === "ONE" ? "text-one" : "text-[#0a7aa6]"}>{leader}</strong> unggul{" "}
+                  Pada asumsi saat ini, <strong className={leader === "ONE" ? "text-one-ink" : "text-ace-ink"}>{leader}</strong> unggul{" "}
                   <strong className="tabular">{formatIDRCompact(gap)}</strong> pada hasil operasional {assumptions.shared.horizonMonths} bulan.
                 </>
               ) : (
@@ -319,7 +319,7 @@ export function StrategySimulator() {
               title="Struktur biaya"
               description="Setiap biaya dihitung sekali."
               legend={[
-                { label: "Biaya tetap", color: "#17395e" },
+                { label: "Biaya tetap", color: SERIES.navy },
                 { label: "Pengembangan", color: "#2f66e0" },
                 { label: "Pemasaran & akuisisi", color: "#39b7ff" },
                 { label: "Overhead portofolio", color: "#0c9fd8" },
@@ -336,11 +336,11 @@ export function StrategySimulator() {
                   <XAxis type="number" tickFormatter={(v: number) => formatIDRCompact(v)} {...AXIS_PROPS} />
                   <YAxis type="category" dataKey="name" width={44} {...AXIS_PROPS} />
                   <Tooltip cursor={{ fill: "rgba(74,144,226,0.06)" }} content={(p) => <ChartTooltip {...p} format="idrCompact" />} />
-                  <Bar dataKey="tetap" name="Biaya tetap" stackId="c" fill="#17395e" stroke="#fff" strokeWidth={2} maxBarSize={44} />
-                  <Bar dataKey="pengembangan" name="Pengembangan" stackId="c" fill="#2f66e0" stroke="#fff" strokeWidth={2} maxBarSize={44} />
-                  <Bar dataKey="pemasaran" name="Pemasaran & akuisisi" stackId="c" fill="#39b7ff" stroke="#fff" strokeWidth={2} maxBarSize={44} />
-                  <Bar dataKey="overhead" name="Overhead portofolio" stackId="c" fill="#0c9fd8" stroke="#fff" strokeWidth={2} maxBarSize={44} />
-                  <Bar dataKey="langsung" name="Biaya langsung produk" stackId="c" fill="#94a3b8" stroke="#fff" strokeWidth={2} radius={[0, 4, 4, 0]} maxBarSize={44} />
+                  <Bar dataKey="tetap" name="Biaya tetap" stackId="c" fill={SERIES.navy} stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
+                  <Bar dataKey="pengembangan" name="Pengembangan" stackId="c" fill="#2f66e0" stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
+                  <Bar dataKey="pemasaran" name="Pemasaran & akuisisi" stackId="c" fill="#39b7ff" stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
+                  <Bar dataKey="overhead" name="Overhead portofolio" stackId="c" fill="#0c9fd8" stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
+                  <Bar dataKey="langsung" name="Biaya langsung produk" stackId="c" fill="#94a3b8" stroke="var(--color-card)" strokeWidth={2} radius={[0, 4, 4, 0]} maxBarSize={44} />
                 </BarChart>
               </ResponsiveContainer>
             </ChartFrame>
@@ -393,9 +393,9 @@ export function StrategySimulator() {
           </Callout>
 
           <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-            <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+            <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
               <div className="border-b border-line px-5 py-4">
-                <p className="font-bold text-ink">Bandingkan skenario preset</p>
+                <p className="font-semibold text-ink">Bandingkan skenario preset</p>
                 <p className="text-xs text-muted">Hasil operasional & pendapatan untuk ketiga preset (tidak terpengaruh slider).</p>
               </div>
               <div className="overflow-x-auto">
@@ -429,8 +429,8 @@ export function StrategySimulator() {
                 </table>
               </div>
             </div>
-            <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-              <p className="flex items-center gap-2 font-bold text-ink">
+            <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+              <p className="flex items-center gap-2 font-semibold text-ink">
                 <Scale className="h-4 w-4 text-brand-ink" /> Aturan perbandingan yang adil
               </p>
               <ul className="mt-3 space-y-1.5">
@@ -445,20 +445,20 @@ export function StrategySimulator() {
 
           <div className="grid gap-4 md:grid-cols-2">
             {[one, ace].map((r) => (
-              <div key={r.strategy} className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-                <p className="font-bold text-ink">Beban kerja · {r.strategy.toUpperCase()}</p>
+              <div key={r.strategy} className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+                <p className="font-semibold text-ink">Beban kerja · {r.strategy.toUpperCase()}</p>
                 <div className="mt-3 space-y-3 text-sm">
                   <div>
                     <div className="flex justify-between">
                       <span className="text-muted-strong">Product: {formatNumber(r.capacity.productRequired)} / {formatNumber(r.capacity.productAvailable)} jam/bln</span>
-                      <span className="tabular font-bold text-ink">{formatPercent(r.capacity.productUtilization)}</span>
+                      <span className="tabular font-semibold text-ink">{formatPercent(r.capacity.productUtilization)}</span>
                     </div>
                     <Progress value={r.capacity.productUtilization} tone="auto" className="mt-1" />
                   </div>
                   <div>
                     <div className="flex justify-between">
                       <span className="text-muted-strong">Strategy & Ops: {formatNumber(r.capacity.opsRequired)} / {formatNumber(r.capacity.opsAvailable)} jam/bln</span>
-                      <span className="tabular font-bold text-ink">{formatPercent(r.capacity.opsUtilization)}</span>
+                      <span className="tabular font-semibold text-ink">{formatPercent(r.capacity.opsUtilization)}</span>
                     </div>
                     <Progress value={r.capacity.opsUtilization} tone="auto" className="mt-1" />
                   </div>
@@ -475,7 +475,7 @@ export function StrategySimulator() {
             Asumsi ini tidak berasal dari laporan keuangan Terang AI. Gunakan untuk menguji logika strategi, bukan memprediksi hasil nyata.
           </Callout>
           <div>
-            <p className="font-bold text-ink">Bagaimana ONE & ACE dibedakan?</p>
+            <p className="font-semibold text-ink">Bagaimana ONE & ACE dibedakan?</p>
             <ul className="mt-2 list-disc space-y-1 pl-5 text-muted-strong">
               <li>ONE memakai 100% kapasitas penjualan & pengembangan untuk Interview, plus uplift konversi eksplisit.</li>
               <li>ACE membagi kapasitas yang sama berdasarkan porsi Interview; sisanya mengakuisisi organizer baru.</li>
@@ -484,7 +484,7 @@ export function StrategySimulator() {
             </ul>
           </div>
           <div>
-            <p className="font-bold text-ink">Glosarium</p>
+            <p className="font-semibold text-ink">Glosarium</p>
             <dl className="mt-2 space-y-2">
               {STRATEGY_GLOSSARY.map((g) => (
                 <div key={g.term} className="rounded-xl bg-surface p-3 ring-1 ring-line">

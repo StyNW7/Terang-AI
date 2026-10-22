@@ -7,7 +7,6 @@ import { REPEAT_COMPARISON, SOURCE_CONVERSION, WEEKLY_ACTIVITY } from "@/data/ev
 import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES } from "@/components/charts/chart-kit";
 import { Funnel } from "@/components/strategy/funnel";
 import { Select } from "@/components/ui/form";
-import { SourceLabel } from "@/components/shared/source-label";
 import { formatPercent } from "@/lib/formatters";
 import { safeDivide } from "@/lib/utils";
 
@@ -34,21 +33,10 @@ export function AnalyticsPanel() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col gap-3 rounded-2xl border border-line bg-white p-5 shadow-soft sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-ink">Existing analytics + ACE proposal</p>
-          <h3 className="text-lg font-extrabold text-ink">Organizer Growth Insights</h3>
-          <p className="text-sm text-muted-strong">Funnel registrasi, sumber konversi, aktivitas peserta, dan perbandingan event berulang.</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <SourceLabel type="strategic-proposal" compact />
-          <SourceLabel type="synthetic-demo" compact />
-        </div>
-      </div>
       <div className="grid gap-5 xl:grid-cols-2">
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-[15px] font-bold text-ink">Funnel registrasi</p>
+            <p className="text-[15px] font-semibold text-ink">Funnel registrasi</p>
             <Select value={event?.id} onChange={(e) => setEventId(e.target.value)} className="h-9 w-64 text-xs" aria-label="Pilih event funnel">
               {withViews.map((e) => (
                 <option key={e.id} value={e.id}>

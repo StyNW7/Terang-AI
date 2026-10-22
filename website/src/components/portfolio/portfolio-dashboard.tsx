@@ -30,19 +30,19 @@ import { KpiCard } from "@/components/ui/kpi-card";
 import { Segmented } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/misc";
+import { PageHeader } from "@/components/dashboard/page-header";
 import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES } from "@/components/charts/chart-kit";
 import { Funnel } from "@/components/strategy/funnel";
-import { Mascot } from "@/components/shared/brand";
 import { SourceLabel } from "@/components/shared/source-label";
 import { DecisionGate } from "./decision-gate";
 import { cn, safeDivide } from "@/lib/utils";
 
 const DECISIONS: PortfolioDecision[] = ["scale", "optimize", "limit", "pause"];
 const DECISION_BG: Record<PortfolioDecision, string> = {
-  scale: "border-[#c6eedf] bg-success-soft/60",
-  optimize: "border-[#cfe6fb] bg-soft/70",
-  limit: "border-[#fbe2b3] bg-warning-soft/70",
-  pause: "border-[#f8cfd0] bg-danger-soft/60",
+  scale: "border-current/15 bg-success-soft/60",
+  optimize: "border-current/15 bg-soft/70",
+  limit: "border-current/15 bg-warning-soft/70",
+  pause: "border-current/15 bg-danger-soft/60",
 };
 
 export function PortfolioDashboard() {
@@ -70,7 +70,7 @@ export function PortfolioDashboard() {
   }, [r, H]);
 
   const costPie = [
-    { name: "Biaya tetap", value: r.fixedCosts, color: "#17395e" },
+    { name: "Biaya tetap", value: r.fixedCosts, color: SERIES.navy },
     { name: "Pengembangan", value: r.developmentCosts, color: "#2f66e0" },
     { name: "Pemasaran & akuisisi", value: r.marketingCosts, color: "#39b7ff" },
     { name: "Overhead portofolio", value: r.portfolioOverhead, color: "#0c9fd8" },
@@ -113,30 +113,21 @@ export function PortfolioDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-3xl bg-navy-gradient p-6 text-white shadow-card sm:p-8">
-        <div className="bg-grid-dark absolute inset-0 opacity-60" />
-        <Mascot name="chart" size={150} className="absolute -bottom-6 right-6 hidden md:block" />
-        <div className="relative max-w-2xl">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-sky ring-1 ring-white/15">Portfolio Intelligence</span>
-            <SourceLabel type="illustrative-assumption" dark />
-          </div>
-          <h2 className="mt-3 text-3xl font-extrabold">Kinerja produk & keputusan portofolio</h2>
-          <p className="mt-1 text-white/75">Semua metrik dihitung dari asumsi simulator bersama — ubah di halaman Compare, dashboard ini ikut berubah.</p>
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <Segmented
-              dark
-              value={lens}
-              onChange={setLens}
-              items={[
-                { id: "one", label: "Lensa ONE", icon: <Target className="h-3.5 w-3.5" /> },
-                { id: "ace", label: "Lensa ACE", icon: <Layers className="h-3.5 w-3.5" /> },
-              ]}
-            />
-            <span className="text-xs text-white/65">Mengikuti Strategy Mode global; dapat diganti sementara.</span>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow={<SourceLabel type="illustrative-assumption" compact />}
+        title="Portofolio & Keputusan"
+        description="Metrik dihitung dari asumsi Simulator. Lensa mengikuti mode strategi aktif dan bisa diganti sementara."
+        actions={
+          <Segmented
+            value={lens}
+            onChange={setLens}
+            items={[
+              { id: "one", label: "Lensa ONE", icon: <Target className="h-3.5 w-3.5" /> },
+              { id: "ace", label: "Lensa ACE", icon: <Layers className="h-3.5 w-3.5" /> },
+            ]}
+          />
+        }
+      />
 
       {lens === "one" && (
         <Callout tone="info" title="Lensa ONE">
@@ -144,7 +135,7 @@ export function PortfolioDashboard() {
         </Callout>
       )}
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 2xl:grid-cols-8">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <KpiCard tone="one" label="Pendapatan Interview" value={r.interview.revenue} format="idrCompact" icon={<Wallet className="h-4 w-4" />} />
         <KpiCard tone="sky" label="Pendapatan Events" value={r.events.revenue} format="idrCompact" icon={<Wallet className="h-4 w-4" />} />
         <KpiCard tone="one" label="Kontribusi Interview" value={r.interview.contribution} format="idrCompact" icon={<Activity className="h-4 w-4" />} />
@@ -196,7 +187,7 @@ export function PortfolioDashboard() {
         >
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <Pie data={costPie} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="85%" paddingAngle={2} stroke="#fff" strokeWidth={2}>
+              <Pie data={costPie} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="85%" paddingAngle={2} stroke="var(--color-card)" strokeWidth={2}>
                 {costPie.map((c) => (
                   <Cell key={c.name} fill={c.color} />
                 ))}
@@ -281,8 +272,8 @@ export function PortfolioDashboard() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-          <p className="text-[15px] font-bold text-ink">Funnel akuisisi — AI Candidate Interview</p>
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+          <p className="text-[15px] font-semibold text-ink">Funnel akuisisi — AI Candidate Interview</p>
           <Funnel
             className="mt-4"
             compact
@@ -295,8 +286,8 @@ export function PortfolioDashboard() {
             ]}
           />
         </div>
-        <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-          <p className="text-[15px] font-bold text-ink">Funnel akuisisi — Terang Events</p>
+        <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+          <p className="text-[15px] font-semibold text-ink">Funnel akuisisi — Terang Events</p>
           {ev.newOrganizers > 0 ? (
             <Funnel
               className="mt-4"
@@ -317,12 +308,12 @@ export function PortfolioDashboard() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
-        <p className="text-[15px] font-bold text-ink">Roadmap kuartalan · lensa {lens.toUpperCase()}</p>
+      <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
+        <p className="text-[15px] font-semibold text-ink">Roadmap kuartalan · lensa {lens.toUpperCase()}</p>
         <div className="mt-4 grid gap-3 md:grid-cols-4">
           {ROADMAP[lens].map((q) => (
             <div key={q.quarter} className="rounded-xl bg-surface p-4 ring-1 ring-line">
-              <span className={cn("grid h-8 w-8 place-items-center rounded-lg text-xs font-bold text-white", lens === "one" ? "bg-one-gradient" : "bg-ace-gradient")}>{q.quarter}</span>
+              <span className={cn("grid h-8 w-8 place-items-center rounded-lg text-xs font-semibold text-white", lens === "one" ? "bg-one-gradient" : "bg-ace-gradient")}>{q.quarter}</span>
               <ul className="mt-3 space-y-1">
                 {q.items.map((it) => (
                   <li key={it} className="text-[13px] text-ink">
@@ -337,8 +328,8 @@ export function PortfolioDashboard() {
 
       <section>
         <div className="mb-4">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-ink">Portfolio Decision Matrix</p>
-          <h3 className="text-2xl font-extrabold text-ink">Scale · Optimize · Limit · Pause / Reassess</h3>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-ink">Portfolio Decision Matrix</p>
+          <h3 className="text-2xl font-semibold text-ink">Scale · Optimize · Limit · Pause / Reassess</h3>
           <p className="text-sm text-muted-strong">Posisi produk berdasarkan KPI simulasi saat ini. Klik produk untuk memeriksa kriterianya di bawah.</p>
         </div>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -347,7 +338,7 @@ export function PortfolioDashboard() {
             return (
               <div key={d} className={cn("min-h-[150px] rounded-2xl border p-4", DECISION_BG[d])}>
                 <div className="flex items-center justify-between">
-                  <p className="font-bold text-ink">{DECISION_META[d].label}</p>
+                  <p className="font-semibold text-ink">{DECISION_META[d].label}</p>
                   <Badge tone={DECISION_META[d].tone}>{lens === "one" ? DECISION_META[d].one : DECISION_META[d].ace}</Badge>
                 </div>
                 <p className="mt-1 text-xs text-muted-strong">{DECISION_META[d].description}</p>
@@ -357,7 +348,7 @@ export function PortfolioDashboard() {
                       key={p}
                       type="button"
                       onClick={() => setGateProduct(p)}
-                      className={cn("w-full rounded-xl bg-white p-2.5 text-left text-sm font-semibold text-ink ring-1 transition hover:shadow-soft", gateProduct === p ? "ring-brand" : "ring-line")}
+                      className={cn("w-full rounded-xl bg-card p-2.5 text-left text-sm font-semibold text-ink ring-1 transition hover:shadow-soft", gateProduct === p ? "ring-brand" : "ring-line")}
                     >
                       {p === "interview" ? "AI Candidate Interview" : "Terang Events"}
                       <span className="block text-[11px] font-normal text-muted">
@@ -372,7 +363,7 @@ export function PortfolioDashboard() {
         </div>
         <div className="mt-6">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-            <p className="font-bold text-ink">Inspeksi kriteria: {gateProduct === "interview" ? "AI Candidate Interview" : "Terang Events"}</p>
+            <p className="font-semibold text-ink">Inspeksi kriteria: {gateProduct === "interview" ? "AI Candidate Interview" : "Terang Events"}</p>
             <Segmented
               size="sm"
               value={gateProduct}

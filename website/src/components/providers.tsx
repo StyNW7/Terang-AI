@@ -8,7 +8,8 @@ import { useScenarioStore } from "@/store/scenario-store";
 import { useEventsStore } from "@/store/events-store";
 import { useInterviewStore } from "@/store/interview-store";
 import { useOperationsStore } from "@/store/operations-store";
-import { ModeTransition, StrategyModeDock } from "@/components/navigation/strategy-mode-switcher";
+import { ModeTransition } from "@/components/navigation/strategy-mode-switcher";
+import { useTheme } from "@/lib/theme";
 
 /** Rehydrate persisted demo stores after mount to keep SSR markup identical. */
 function StoreHydrator() {
@@ -22,19 +23,26 @@ function StoreHydrator() {
   return null;
 }
 
+function ThemedToaster() {
+  const { theme } = useTheme();
+  return (
+    <Toaster
+      position="top-right"
+      theme={theme}
+      richColors
+      closeButton
+      toastOptions={{ style: { fontFamily: "var(--font-geist)", borderRadius: 14 } }}
+    />
+  );
+}
+
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <MotionConfig reducedMotion="user">
       <StoreHydrator />
       {children}
-      <StrategyModeDock />
       <ModeTransition />
-      <Toaster
-        position="top-right"
-        richColors
-        closeButton
-        toastOptions={{ style: { fontFamily: "var(--font-inter)", borderRadius: 14 } }}
-      />
+      <ThemedToaster />
     </MotionConfig>
   );
 }

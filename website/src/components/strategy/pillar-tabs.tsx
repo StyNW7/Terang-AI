@@ -44,24 +44,24 @@ export function PillarTabs({
               aria-pressed={isActive}
               className={cn(
                 "group relative overflow-hidden rounded-2xl border p-5 text-left transition-all duration-300",
-                isActive ? "border-transparent text-white shadow-lift" : "border-line bg-white text-ink shadow-soft hover:-translate-y-0.5 hover:shadow-card",
+                isActive ? "border-transparent text-white shadow-lift" : "border-line bg-card text-ink shadow-soft hover:-translate-y-0.5 hover:shadow-card",
               )}
             >
               {isActive && <motion.span layoutId={`pillar-bg-${variant}`} className={cn("absolute inset-0", gradient)} transition={{ type: "spring", stiffness: 300, damping: 32 }} />}
               <span className="relative z-10 flex items-start gap-4">
                 <span
                   className={cn(
-                    "grid h-14 w-14 shrink-0 place-items-center rounded-2xl font-display text-3xl font-extrabold",
+                    "grid h-14 w-14 shrink-0 place-items-center rounded-2xl font-display text-3xl font-bold",
                     isActive ? "bg-white/15 text-white ring-1 ring-white/25" : cn(gradient, "text-white"),
                   )}
                 >
                   {p.letter}
                 </span>
                 <span className="min-w-0">
-                  <span className={cn("block text-[11px] font-bold uppercase tracking-[0.14em]", isActive ? "text-white/75" : "text-muted")}>
+                  <span className={cn("block text-[11px] font-semibold uppercase tracking-[0.12em]", isActive ? "text-white/75" : "text-muted")}>
                     Pilar {i + 1} · {p.program}
                   </span>
-                  <span className="mt-0.5 block text-lg font-extrabold leading-tight">{p.name}</span>
+                  <span className="mt-0.5 block text-lg font-semibold leading-tight">{p.name}</span>
                   <span className={cn("mt-1 block text-[13px] leading-snug", isActive ? "text-white/80" : "text-muted-strong")}>{p.purpose}</span>
                 </span>
               </span>
@@ -72,7 +72,7 @@ export function PillarTabs({
           );
         })}
       </div>
-      <div className="mt-3 h-1 overflow-hidden rounded-full bg-[#e6eef7]">
+      <div className="mt-3 h-1 overflow-hidden rounded-full bg-track">
         <motion.div className={cn("h-full rounded-full", gradient)} animate={{ width: `${((activeIndex + 1) / pillars.length) * 100}%` }} />
       </div>
       <div className="mt-10">

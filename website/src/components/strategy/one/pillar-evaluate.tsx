@@ -36,12 +36,12 @@ export function OnePillarEvaluate() {
     <div className="space-y-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-one">ONE Growth Intelligence</p>
-          <h3 className="text-2xl font-extrabold text-ink">KPI produk & komersial ({assumptions.shared.horizonMonths} bulan)</h3>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-one-ink">ONE Growth Intelligence</p>
+          <h3 className="text-2xl font-semibold text-ink">KPI produk & komersial ({assumptions.shared.horizonMonths} bulan)</h3>
         </div>
         <div className="flex items-center gap-2">
           <SourceLabel type="illustrative-assumption" />
-          <Button href="/compare" size="sm" variant="secondary">
+          <Button href="/dashboard/simulator" size="sm" variant="secondary">
             Ubah asumsi
           </Button>
         </div>
@@ -78,22 +78,22 @@ export function OnePillarEvaluate() {
           </ResponsiveContainer>
         </ChartFrame>
         <div className="space-y-4">
-          <div className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+          <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
             <div className="flex items-center justify-between">
-              <p className="font-bold text-ink">Kesiapan operasional</p>
+              <p className="font-semibold text-ink">Kesiapan operasional</p>
               <InfoTip align="right">Utilisasi = jam yang dibutuhkan ÷ jam produktif tersedia. Di atas 90% berarti risiko keterlambatan & kualitas meningkat.</InfoTip>
             </div>
             <div className="mt-4 space-y-3 text-sm">
               <div>
-                <div className="flex justify-between"><span className="text-muted-strong">Tim Product</span><span className="tabular font-bold text-ink">{formatPercent(r.capacity.productUtilization)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-strong">Tim Product</span><span className="tabular font-semibold text-ink">{formatPercent(r.capacity.productUtilization)}</span></div>
                 <Progress value={r.capacity.productUtilization} tone="auto" className="mt-1" />
               </div>
               <div>
-                <div className="flex justify-between"><span className="text-muted-strong">Strategy & Ops</span><span className="tabular font-bold text-ink">{formatPercent(r.capacity.opsUtilization)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-strong">Strategy & Ops</span><span className="tabular font-semibold text-ink">{formatPercent(r.capacity.opsUtilization)}</span></div>
                 <Progress value={r.capacity.opsUtilization} tone="auto" className="mt-1" />
               </div>
               <div>
-                <div className="flex justify-between"><span className="text-muted-strong">Konsumsi anggaran</span><span className="tabular font-bold text-ink">{formatPercent(r.budgetConsumption)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-strong">Konsumsi anggaran</span><span className="tabular font-semibold text-ink">{formatPercent(r.budgetConsumption)}</span></div>
                 <Progress value={r.budgetConsumption} tone="auto" className="mt-1" />
               </div>
             </div>
@@ -107,8 +107,8 @@ export function OnePillarEvaluate() {
 
       <div>
         <div className="mb-4">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-one">Interactive Decision Gate</p>
-          <h3 className="text-2xl font-extrabold text-ink">Scale · Improve · Pause / Revalidate</h3>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-one-ink">Interactive Decision Gate</p>
+          <h3 className="text-2xl font-semibold text-ink">Scale · Improve · Pause / Revalidate</h3>
           <p className="mt-1 text-sm text-muted-strong">
             Nilai awal diambil dari simulasi saat ini. Ekspansi di ONE berarti membawa AI Candidate Interview ke akun & use case B2B tambahan.
           </p>
