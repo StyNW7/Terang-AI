@@ -104,12 +104,13 @@ export function InterviewBuilder({ jobId, onJobChange }: { jobId: string; onJobC
       </aside>
 
       <div className="space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h3 className="text-lg font-semibold text-ink">Role-Based Interview Builder</h3>
-            <p className="text-sm text-muted-strong">Pertanyaan inti terstandar + follow-up kontekstual. HR dapat mengedit atau mengganti setiap pertanyaan.</p>
-          </div>
-          <Badge tone={job.status === "aktif" ? "success" : "warning"}>{job.status === "aktif" ? "Dipublikasikan" : "Draft"}</Badge>
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-card px-5 py-3.5 shadow-soft">
+          <p className="text-sm text-muted-strong">
+            <span className="font-semibold text-ink">{draft.length} pertanyaan</span> untuk {job.title} · edit atau ganti sebelum dipublikasikan
+          </p>
+          <Badge tone={job.status === "aktif" ? "success" : "warning"} dot>
+            {job.status === "aktif" ? "Dipublikasikan" : "Draft"}
+          </Badge>
         </div>
         <AnimatePresence mode="popLayout">
           {loading

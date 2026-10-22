@@ -86,7 +86,7 @@ export function Logo({
       height={height}
       preload={preload}
       className={cn(tone === "white" && "brightness-0 invert", className)}
-      style={{ height, width: "auto" }}
+      style={{ height, width }}
     />
   );
   if (!href) return img;

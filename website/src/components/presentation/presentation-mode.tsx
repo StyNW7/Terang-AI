@@ -132,7 +132,7 @@ export function PresentationMode() {
         </AnimatePresence>
         {slide.mascot && (
           <motion.div key={`m-${slide.id}`} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="pointer-events-none absolute bottom-24 right-8 hidden xl:block">
-            <Mascot name={slide.mascot} size={190} />
+            <Mascot name={slide.mascot} size={190} preload />
           </motion.div>
         )}
       </div>

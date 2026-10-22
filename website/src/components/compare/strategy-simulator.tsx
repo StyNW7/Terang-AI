@@ -95,7 +95,7 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
         <div className="relative mt-4 rounded-2xl bg-white/12 p-4 ring-1 ring-white/20">
           <p className="flex items-center gap-1.5 text-xs font-semibold text-white/80">
             Hasil operasional (estimasi)
-            <InfoTip align="left" title="Apa artinya?">
+            <InfoTip light title="Apa artinya?">
               Kontribusi total dikurangi biaya tetap, pengembangan, pemasaran, dan overhead portofolio. Bukan laba bersih — pajak & pembiayaan
               tidak dihitung.
             </InfoTip>

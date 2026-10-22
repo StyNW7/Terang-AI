@@ -9,7 +9,6 @@ import {
   GraduationCap,
   MapPin,
   Play,
-  ShieldAlert,
   ShieldHalf,
   Sparkles,
 } from "lucide-react";
@@ -311,22 +310,6 @@ export default function HomePage() {
           </Reveal>
         </Container>
       </Section>
-
-      {/* 8 — Disclaimer */}
-      <Container>
-        <div className="flex flex-col gap-3 rounded-2xl border border-line bg-card p-5 text-sm leading-relaxed text-muted-strong shadow-soft sm:flex-row sm:items-start">
-          <ShieldAlert className="h-5 w-5 shrink-0 text-brand-ink" />
-          <p>
-            <strong className="font-semibold text-ink">Prototype konsep akademik tidak resmi.</strong> Dibuat untuk BCDC 2026 dan tidak mewakili{" "}
-            {COMPANY.legalName}. Fitur baru diberi label <em>usulan</em>, angka finansial bersifat <em>ilustratif</em>, dan data demo bersifat{" "}
-            <em>fiktif</em>.{" "}
-            <Link href="/references" className="font-medium text-brand-ink underline-offset-2 hover:underline">
-              Lihat sumber &amp; asumsi
-            </Link>
-            .
-          </p>
-        </div>
-      </Container>
     </>
   );
 }

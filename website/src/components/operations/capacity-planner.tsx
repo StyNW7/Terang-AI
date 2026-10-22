@@ -102,7 +102,7 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
     <div className="rounded-2xl border border-line bg-card p-6 shadow-soft">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Section C</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Langkah 2 · Alokasi waktu tim</p>
           <h3 className="text-xl font-semibold text-ink">Interactive Resource Planner</h3>
           <p className="text-sm text-muted-strong">Atur persentase waktu tiap kelompok. Validasi berjalan langsung terhadap aturan strategi.</p>
         </div>
@@ -156,7 +156,7 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
 
       <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_1.4fr]">
         <div className="rounded-2xl bg-navy-gradient p-5 text-white">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">Section B · Product allocation (jam/bulan)</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">Hasil alokasi per produk (jam/bulan)</p>
           {(["interview", "events"] as const).map((p) => {
             const h = ph[p];
             const total = h.product + h.ops;

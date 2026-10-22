@@ -87,7 +87,7 @@ export const SLIDES: SlideDef[] = [
     render: (step) => (
       <div className="grid items-center gap-10 lg:grid-cols-[1.3fr_1fr]">
         <div>
-          <Logo height={48} tone="white" href={null} />
+          <Logo height={48} href={null} />
           <h1 className="mt-8 text-6xl font-bold leading-[1.02] xl:text-7xl">
             Smarter Solutions,
             <br />

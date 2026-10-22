@@ -7,6 +7,26 @@ import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+let scrollLocks = 0;
+let savedOverflow = "";
+
+function lockScroll() {
+  if (scrollLocks === 0) {
+    savedOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.classList.add("lenis-stopped");
+  }
+  scrollLocks += 1;
+}
+
+function unlockScroll() {
+  scrollLocks = Math.max(0, scrollLocks - 1);
+  if (scrollLocks === 0) {
+    document.body.style.overflow = savedOverflow;
+    document.documentElement.classList.remove("lenis-stopped");
+  }
+}
+
 function useOverlay(open: boolean, onClose: () => void) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
@@ -16,6 +36,7 @@ function useOverlay(open: boolean, onClose: () => void) {
   useEffect(() => {
     if (!open) return;
     const previous = document.activeElement as HTMLElement | null;
+    const panel = panelRef.current;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeRef.current();
       if (e.key === "Tab" && panelRef.current) {
@@ -35,17 +56,18 @@ function useOverlay(open: boolean, onClose: () => void) {
       }
     };
     document.addEventListener("keydown", onKey);
-    const overflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    lockScroll();
     const t = window.setTimeout(() => {
       const target = panelRef.current?.querySelector<HTMLElement>("[data-autofocus]") ?? panelRef.current;
       target?.focus();
     }, 30);
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = overflow;
+      unlockScroll();
       window.clearTimeout(t);
-      previous?.focus?.();
+      // Only hand focus back if nothing else (e.g. another dialog) has taken it.
+      const active = document.activeElement;
+      if (!active || active === document.body || panel?.contains(active)) previous?.focus?.();
     };
   }, [open]);
   return panelRef;
@@ -112,7 +134,7 @@ export function Modal({
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="scrollbar-thin flex-1 overflow-y-auto px-6 py-5">{children}</div>
+            <div data-lenis-prevent className="scrollbar-thin flex-1 overflow-y-auto px-6 py-5">{children}</div>
             {footer && <div className="flex flex-wrap items-center justify-end gap-2 border-t border-line bg-surface px-6 py-4">{footer}</div>}
           </motion.div>
         </div>
@@ -178,7 +200,7 @@ export function Drawer({
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="scrollbar-thin flex-1 overflow-y-auto px-6 py-5">{children}</div>
+            <div data-lenis-prevent className="scrollbar-thin flex-1 overflow-y-auto px-6 py-5">{children}</div>
             {footer && <div className="flex flex-wrap items-center justify-end gap-2 border-t border-line bg-surface px-6 py-4">{footer}</div>}
           </motion.aside>
         </div>

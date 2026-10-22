@@ -36,6 +36,9 @@ export function RepeatPlanner({ preselect, onDone }: { preselect?: string; onDon
 
   if (!source) return null;
 
+  const fallbackStage = { id: "s1", name: "Registrasi", date: addDays(source.registrationClose, -30), type: "registrasi" as const };
+  const previewStages = copyStages ? source.stages : [fallbackStage];
+
   const duplicate = () => {
     if (name.trim().length < 5) {
       toast.error("Nama edisi baru minimal 5 karakter.");
@@ -46,7 +49,7 @@ export function RepeatPlanner({ preselect, onDone }: { preselect?: string; onDon
       startDate: addDays(source.startDate, shift),
       endDate: addDays(source.endDate, shift),
       registrationClose: addDays(source.registrationClose, shift),
-      stages: copyStages ? source.stages.map((s) => ({ ...s, date: addDays(s.date, shift) })) : [{ id: "s1", name: "Registrasi", date: addDays(source.registrationClose, shift - 30), type: "registrasi" }],
+      stages: previewStages.map((s) => ({ ...s, date: addDays(s.date, shift) })),
       criteria: copyRubric ? source.criteria : [],
       fee: copyRegistration ? source.fee : 0,
       quota: copyRegistration ? source.quota : 100,
@@ -59,7 +62,6 @@ export function RepeatPlanner({ preselect, onDone }: { preselect?: string; onDon
 
   return (
     <div className="space-y-5">
-
       <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
         <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <p className="text-sm font-semibold text-ink">1. Pilih event sumber</p>
@@ -116,7 +118,7 @@ export function RepeatPlanner({ preselect, onDone }: { preselect?: string; onDon
             <CalendarRange className="h-4 w-4 text-sky-ink" /> Pratinjau jadwal
           </p>
           <ol className="mt-3 space-y-2">
-            {(copyStages ? source.stages : source.stages.slice(0, 1)).map((s, i) => (
+            {previewStages.map((s, i) => (
               <motion.li
                 key={s.id}
                 initial={{ opacity: 0, x: 8 }}

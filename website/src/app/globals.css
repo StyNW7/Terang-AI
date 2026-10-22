@@ -259,15 +259,42 @@ html.lenis {
   overscroll-behavior: contain;
 }
 
-body {
-  background: var(--color-surface);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  font-feature-settings: "ss01", "cv11";
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+@layer base {
+  body {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.022em;
+  }
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: rgb(57 183 255 / 0.28);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
 }
 
 /* Smooth colour cross-fade when the theme toggles (set briefly by the toggle). */
@@ -282,29 +309,31 @@ html[data-theme-switching] *::after {
     stroke 0.35s ease !important;
 }
 
-h1,
-h2,
-h3,
-h4,
-.font-display {
-  font-family: var(--font-display);
-  letter-spacing: -0.022em;
+/* Theme switch — circular reveal (View Transitions API). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
-h1,
-h2 {
-  text-wrap: balance;
+html[data-theme-vt]::view-transition-new(root) {
+  animation: theme-reveal 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
-p {
-  text-wrap: pretty;
+html[data-theme-vt]::view-transition-old(root) {
+  animation: theme-recede 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
-
-::selection {
-  background: rgb(57 183 255 / 0.28);
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0px at var(--vt-x) var(--vt-y));
+  }
+  to {
+    clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y));
+  }
 }
-
-:focus-visible {
-  outline: 2px solid var(--color-brand);
-  outline-offset: 2px;
+@keyframes theme-recede {
+  to {
+    transform: scale(0.985);
+    filter: brightness(0.92);
+  }
 }
 
 /* ---------- Brand gradients ---------- */
@@ -337,6 +366,12 @@ p {
 }
 @utility text-gradient-light {
   background-image: linear-gradient(100deg, #9fe0ff 0%, #ffffff 50%, #b9d6ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility wordmark-fill {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.02) 75%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

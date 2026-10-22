@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AlertCircle, ArrowRight, BadgeCheck, Building2, Check, Clock, Play, Sparkles, Wallet } from "lucide-react";
 import type { ProductKey } from "@/types/common";
 import { PRODUCTS } from "@/data/company";
@@ -29,6 +30,18 @@ const WORKFLOWS: Record<ProductKey, { step: string; detail: string; status: "exi
   ],
 };
 
+/** Where each proposed feature can be tried in the product dashboards. */
+const FEATURE_HREF: Record<string, string> = {
+  "Smart Event Templates": "/dashboard/events/templates",
+  "Repeat Event Planner": "/dashboard/events/repeat",
+  "Organizer Growth Insights": "/dashboard/events/analytics",
+  "Role-Based Interview Builder": "/dashboard/interview/builder",
+  "Adaptive Structured Interview": "/dashboard/interview/portal",
+  "Evidence-Linked Assessment": "/dashboard/interview/reports",
+  "Recruiter Review Dashboard": "/dashboard/interview",
+  "Responsible AI Controls": "/dashboard/interview/responsible-ai",
+};
+
 export function ProductDetail({ product }: { product: ProductKey }) {
   const p = PRODUCTS[product];
   const isEvents = product === "events";
@@ -39,7 +52,7 @@ export function ProductDetail({ product }: { product: ProductKey }) {
         title={
           <>
             {p.name}
-            <span className="mt-2 block text-2xl font-bold text-muted-strong md:text-3xl">{p.tagline}</span>
+            <span className="mt-3 block text-2xl font-semibold leading-snug text-muted-strong md:text-[1.75rem]">{p.tagline}</span>
           </>
         }
         aside={
@@ -159,7 +172,7 @@ export function ProductDetail({ product }: { product: ProductKey }) {
           <div className="grid gap-4 sm:grid-cols-2">
             {p.proposals.map((f, i) => (
               <Reveal key={f.name} delay={i * 0.06}>
-                <div className="h-full rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
+                <div className="flex h-full flex-col rounded-2xl border border-line bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
                   <div className="flex items-center justify-between gap-2">
                     <span className="grid h-9 w-9 place-items-center rounded-xl bg-soft text-brand-ink">
                       <Sparkles className="h-4 w-4" />
@@ -168,6 +181,11 @@ export function ProductDetail({ product }: { product: ProductKey }) {
                   </div>
                   <p className="mt-3 font-semibold text-ink">{f.name}</p>
                   <p className="mt-1 text-sm leading-relaxed text-muted-strong">{f.description}</p>
+                  {FEATURE_HREF[f.name] && (
+                    <Link href={FEATURE_HREF[f.name]} className="group mt-3 inline-flex items-center gap-1 text-[13px] font-medium text-brand-ink">
+                      Coba fitur ini <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+                    </Link>
+                  )}
                 </div>
               </Reveal>
             ))}

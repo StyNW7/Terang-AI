@@ -62,3 +62,16 @@ export function ScrollChrome() {
     </>
   );
 }
+
+/** Compact "back to top" control for dark surfaces (footer). */
+export function BackToTop() {
+  return (
+    <button
+      type="button"
+      onClick={scrollToTop}
+      className="inline-flex h-9 items-center gap-1.5 rounded-xl bg-white/10 px-3 text-[13px] font-medium text-white ring-1 ring-white/20 transition hover:bg-white/20"
+    >
+      <ArrowUp className="h-4 w-4" /> Ke atas
+    </button>
+  );
+}

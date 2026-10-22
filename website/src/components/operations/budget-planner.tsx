@@ -28,7 +28,7 @@ export function BudgetPlanner() {
     <div className="rounded-2xl border border-line bg-card p-6 shadow-soft">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Section D</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Langkah 3 · Anggaran</p>
           <h3 className="text-xl font-semibold text-ink">Budget Planner (per bulan)</h3>
           <p className="text-sm text-muted-strong">Anggaran diskresioner di luar gaji tetap: {formatIDR(MONTHLY_DISCRETIONARY_BUDGET)}.</p>
         </div>

@@ -70,7 +70,7 @@ export function SprintBoard() {
     <div className="rounded-2xl border border-line bg-card p-6 shadow-soft">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Section E</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Langkah 4 · Sprint board</p>
           <h3 className="text-xl font-semibold text-ink">Sprint Board</h3>
           <p className="text-sm text-muted-strong">Seret kartu antar kolom atau gunakan tombol panah. Batas WIP: 1 inisiatif besar per produk.</p>
         </div>

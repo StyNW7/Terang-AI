@@ -18,6 +18,7 @@ import { FinancePanel } from "@/components/events/finance-panel";
 import { ParticipantExperience } from "@/components/events/participant-experience";
 import { PageHeader } from "./page-header";
 import { AceOnlyNotice, ModeNotice } from "./mode-notice";
+import { QuickStart } from "./quick-start";
 
 const BASE = "/dashboard/events";
 const ACE = <Badge tone="ace">Usulan ACE</Badge>;
@@ -38,6 +39,17 @@ export function EventsOverviewPage() {
         }
       />
       <ModeNotice product="events" className="mb-6" />
+      <QuickStart
+        id="events"
+        title="Mulai dari sini — alur organizer"
+        accent="bg-events-gradient"
+        steps={[
+          { title: "Buat event", text: "Isi wizard 6 langkah, atau mulai dari template agar tahapan & rubrik terisi otomatis.", href: `${BASE}/templates`, icon: "plus" },
+          { title: "Kelola peserta", text: "Verifikasi pendaftar dan ubah status pembayaran per peserta.", href: `${BASE}/participants`, icon: "users" },
+          { title: "Nilai submisi", text: "Gunakan rubrik berbobot; peringkat diperbarui otomatis.", href: `${BASE}/judging`, icon: "gavel" },
+          { title: "Lihat dari sisi peserta", text: "Coba daftar event, bayar (simulasi), dan kirim submisi.", href: `${BASE}/portal`, icon: "ticket" },
+        ]}
+      />
       <OrganizerDashboard onOpenEvents={() => router.push(`${BASE}/list`)} />
     </>
   );

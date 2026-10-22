@@ -15,6 +15,7 @@ import { ResponsibleAi } from "@/components/interview/responsible-ai";
 import { CandidateExperience } from "@/components/interview/candidate-experience";
 import { PageHeader } from "./page-header";
 import { ModeNotice } from "./mode-notice";
+import { QuickStart } from "./quick-start";
 
 const BASE = "/dashboard/interview";
 const DEMO = <SourceLabel type="synthetic-demo" compact />;
@@ -36,6 +37,17 @@ export function InterviewOverviewPage() {
         }
       />
       <ModeNotice product="interview" className="mb-6" />
+      <QuickStart
+        id="interview"
+        title="Mulai dari sini — alur recruiter"
+        accent="bg-one-gradient"
+        steps={[
+          { title: "Buat lowongan", text: "Pilih template jabatan, kompetensi, dan bobotnya (total 100%).", href: `${BASE}/jobs`, icon: "briefcase" },
+          { title: "Susun pertanyaan", text: "Tinjau saran pertanyaan per kompetensi, edit, lalu publikasikan.", href: `${BASE}/builder`, icon: "wand" },
+          { title: "Jalankan wawancara", text: "Undang kandidat, atau coba sendiri wawancaranya lewat Portal Kandidat.", href: `${BASE}/portal`, icon: "user" },
+          { title: "Tinjau laporan bukti", text: "Cek kutipan jawaban per kompetensi, beri catatan, lalu tandai selesai ditinjau.", href: `${BASE}/reports`, icon: "filesearch" },
+        ]}
+      />
       <HrOverview onOpenReport={(id) => router.push(reportHref(id))} onCandidates={() => router.push(`${BASE}/candidates`)} />
     </>
   );
@@ -83,7 +95,7 @@ export function InterviewReportsPage() {
   return (
     <>
       <PageHeader
-        eyebrow={<Badge tone="success">Ditinjau manusia</Badge>}
+        eyebrow={<Badge tone="success">Human-in-the-loop</Badge>}
         title="Laporan berbasis bukti"
         description="Setiap penilaian dikaitkan dengan kutipan jawaban kandidat. Keputusan akhir tetap di tangan recruiter."
       />

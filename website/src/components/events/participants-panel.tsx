@@ -99,7 +99,13 @@ export function ParticipantsPanel() {
               </thead>
               <tbody className="divide-y divide-line">
                 {filtered.map((p) => (
-                  <tr key={p.id} onClick={() => setSelected(p)} className="cursor-pointer transition hover:bg-surface/70">
+                  <tr
+                    key={p.id}
+                    tabIndex={0}
+                    onClick={() => setSelected(p)}
+                    onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), setSelected(p))}
+                    className="cursor-pointer transition hover:bg-surface/70 focus-visible:bg-surface/70"
+                  >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-sky-soft text-xs font-semibold text-sky-ink">{initials(p.name)}</span>

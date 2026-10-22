@@ -63,7 +63,7 @@ export function CommandCenter() {
       />
 
       <section>
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Section A · Team overview</p>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Langkah 1 · Kondisi tim saat ini</p>
         <TeamOverview rules={rules} />
       </section>
       <CapacityPlanner rules={rules} onRulesChange={setRulesOverride} />
@@ -73,7 +73,7 @@ export function CommandCenter() {
 
       <section className="rounded-3xl bg-navy-gradient p-6 text-white shadow-lift">
         <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-sky">
-          <Lightbulb className="h-4 w-4" /> Section F · Management recommendations (berbasis aturan, bukan AI)
+          <Lightbulb className="h-4 w-4" /> Rekomendasi manajemen (berbasis aturan, bukan AI)
         </p>
         <ul className="mt-4 grid gap-3 md:grid-cols-2">
           {recs.map((r) => (

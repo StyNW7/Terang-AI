@@ -80,7 +80,7 @@ export function ReportViewer({ candidateId, onSelect }: { candidateId?: string; 
           <div className="rounded-2xl bg-one-gradient p-5 text-white shadow-card">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/75">Ringkasan rubrik</p>
-              <InfoTip align="right" title="Apa artinya?">
+              <InfoTip light title="Apa artinya?">
                 Rata-rata level rubrik (1–4) tertimbang bobot kompetensi, termasuk override recruiter. Ini ringkasan bukti — bukan skor
                 kelayakan atau rekomendasi terima/tolak.
               </InfoTip>

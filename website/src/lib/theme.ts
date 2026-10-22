@@ -68,15 +68,38 @@ export function useTheme() {
     return () => media.removeEventListener("change", onChange);
   }, []);
 
-  const setTheme = useCallback((next: Theme) => {
+  const setTheme = useCallback((next: Theme, origin?: { x: number; y: number }) => {
     const root = document.documentElement;
+    write(THEME_KEY, next);
+    if (root.getAttribute("data-theme") === next) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const doc = document as Document & { startViewTransition?: (cb: () => void) => { finished: Promise<void> } };
+
+    // Circular reveal from the toggle when the browser supports View Transitions.
+    if (doc.startViewTransition && !reduce) {
+      const x = origin?.x ?? window.innerWidth / 2;
+      const y = origin?.y ?? 0;
+      const r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+      root.style.setProperty("--vt-x", `${x}px`);
+      root.style.setProperty("--vt-y", `${y}px`);
+      root.style.setProperty("--vt-r", `${r}px`);
+      root.setAttribute("data-theme-vt", "");
+      const t = doc.startViewTransition(() => root.setAttribute("data-theme", next));
+      t.finished.finally(() => root.removeAttribute("data-theme-vt"));
+      return;
+    }
+
+    // Fallback: smooth colour cross-fade.
     root.setAttribute("data-theme-switching", "");
     root.setAttribute("data-theme", next);
-    write(THEME_KEY, next);
-    window.setTimeout(() => root.removeAttribute("data-theme-switching"), 400);
+    window.setTimeout(() => root.removeAttribute("data-theme-switching"), 450);
   }, []);
 
-  const toggle = useCallback(() => setTheme(theme === "dark" ? "light" : "dark"), [setTheme, theme]);
+  const toggle = useCallback(
+    (origin?: { x: number; y: number }) => setTheme(theme === "dark" ? "light" : "dark", origin),
+    [setTheme, theme],
+  );
 
   return { theme, setTheme, toggle };
 }

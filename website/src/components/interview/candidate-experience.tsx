@@ -230,7 +230,12 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
                 <Button variant="ghost" onClick={() => setStep("instructions")}>
                   <ArrowLeft className="h-4 w-4" /> Kembali
                 </Button>
-                <Button variant="one" onClick={() => setStep("interview")}>
+                <Button
+                  variant="one"
+                  onClick={() =>
+                    questions.length ? setStep("interview") : toast.error("Lowongan ini belum memiliki pertanyaan. Publikasikan dari Interview Builder.")
+                  }
+                >
                   <Sparkles className="h-4 w-4" /> Mulai wawancara
                 </Button>
               </div>

@@ -27,7 +27,7 @@ function ThemedToaster() {
   const { theme } = useTheme();
   return (
     <Toaster
-      position="top-right"
+      position="bottom-right"
       theme={theme}
       richColors
       closeButton

@@ -130,11 +130,14 @@ export function InfoTip({
   children,
   className,
   label,
+  light,
 }: {
   title?: string;
   children: ReactNode;
   className?: string;
   label?: string;
+  /** Use on coloured/dark surfaces. */
+  light?: boolean;
   /** @deprecated placement is now automatic */
   align?: "left" | "right";
 }) {
@@ -167,8 +170,9 @@ export function InfoTip({
         aria-controls={id}
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "inline-flex items-center gap-1 rounded-full text-xs font-medium text-brand-ink transition hover:text-royal dark:hover:text-sky",
-          open && "text-royal dark:text-sky",
+          "inline-flex items-center gap-1 rounded-full text-xs font-medium transition",
+          light ? "text-white/80 hover:text-white" : "text-brand-ink hover:text-royal dark:hover:text-sky",
+          open && (light ? "text-white" : "text-royal dark:text-sky"),
         )}
       >
         <CircleHelp className="h-3.5 w-3.5" />

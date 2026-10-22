@@ -18,7 +18,10 @@ export function ThemeToggle({ className, tone = "default" }: { className?: strin
     <Tooltip content={label} side="bottom">
       <button
         type="button"
-        onClick={toggle}
+        onClick={(e) => {
+          const r = e.currentTarget.getBoundingClientRect();
+          toggle({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+        }}
         aria-label={label}
         className={cn(
           "relative grid h-9 w-9 place-items-center overflow-hidden rounded-xl transition",
