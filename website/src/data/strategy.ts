@@ -1,19 +1,24 @@
 import type { EvidenceClassification } from "@/types/common";
+import { L, type Bilingual, type Txt } from "@/lib/i18n-core";
 
-export const KEY_QUESTION =
-  "Bagaimana Terang AI dapat mengoptimalkan prioritas pengembangan produk, alokasi sumber daya, dan penetrasi pasar untuk mencapai pertumbuhan B2B yang berkelanjutan?";
+export const KEY_QUESTION = L(
+  "Bagaimana Terang AI dapat mengoptimalkan prioritas pengembangan produk, alokasi sumber daya, dan penetrasi pasar untuk mencapai pertumbuhan B2B yang berkelanjutan?",
+  "How can Terang AI optimise its product-development priorities, resource allocation and market penetration to achieve sustainable B2B growth?",
+);
 
-export const CORE_INSIGHT =
-  "Tantangan Terang AI bukan sekadar memilih jumlah produk yang dikembangkan, melainkan bagaimana peluang pasar dapat dikonversi menjadi pertumbuhan bisnis yang terukur melalui pemanfaatan sumber daya secara optimal.";
+export const CORE_INSIGHT = L(
+  "Tantangan Terang AI bukan sekadar memilih jumlah produk yang dikembangkan, melainkan bagaimana peluang pasar dapat dikonversi menjadi pertumbuhan bisnis yang terukur melalui pemanfaatan sumber daya secara optimal.",
+  "Terang AI's challenge is not simply choosing how many products to build, but how to convert market opportunities into measurable business growth through the optimal use of resources.",
+);
 
 export interface Challenge {
   id: string;
   number: string;
-  title: string;
+  title: Bilingual;
   english: string;
-  summary: string;
-  drivers: string[];
-  implications: string[];
+  summary: Bilingual;
+  drivers: Txt[];
+  implications: Txt[];
   evidence: EvidenceClassification;
   icon: "users" | "target" | "layers";
 }
@@ -22,19 +27,22 @@ export const CHALLENGES: Challenge[] = [
   {
     id: "capacity",
     number: "01",
-    title: "Keterbatasan Sumber Daya",
+    title: L("Keterbatasan Sumber Daya", "Limited Resources"),
     english: "Resource Capacity Gap",
-    summary: "Struktur 7 personel dalam studi kasus dan tuntutan efisiensi anggaran menuntut prioritas investasi yang realistis.",
+    summary: L(
+      "Struktur 7 personel dalam studi kasus dan tuntutan efisiensi anggaran menuntut prioritas investasi yang realistis.",
+      "The case study's 7-person structure and the need for budget efficiency call for realistic investment priorities.",
+    ),
     drivers: [
-      "Hanya 3 personel Product untuk pengembangan seluruh fitur",
-      "2 personel Strategy & Operations untuk akuisisi, onboarding & dukungan",
-      "Kapasitas CEO & CPO tidak dapat diperlakukan sebagai jam engineering",
-      "Kebutuhan efisiensi biaya akuisisi & operasional",
+      L("Hanya 3 personel _Product_ untuk pengembangan seluruh fitur", "Only 3 Product staff to build every feature"),
+      L("2 personel _Strategy & Operations_ untuk akuisisi, _onboarding_ & dukungan", "2 Strategy & Operations staff for acquisition, onboarding & support"),
+      L("Kapasitas CEO & CPO tidak dapat diperlakukan sebagai jam _engineering_", "CEO & CPO capacity cannot be treated as engineering hours"),
+      L("Kebutuhan efisiensi biaya akuisisi & operasional", "The need to keep acquisition & operating costs efficient"),
     ],
     implications: [
-      "Setiap inisiatif baru mengurangi kapasitas inisiatif lain",
-      "Risiko kualitas & keterlambatan bila beban melebihi kapasitas",
-      "Perekrutan besar-besaran bukan asumsi yang realistis",
+      L("Setiap inisiatif baru mengurangi kapasitas inisiatif lain", "Every new initiative takes capacity away from another"),
+      L("Risiko kualitas & keterlambatan bila beban melebihi kapasitas", "Quality and delay risks when workload exceeds capacity"),
+      L("Perekrutan besar-besaran bukan asumsi yang realistis", "Large-scale hiring is not a realistic assumption"),
     ],
     evidence: "internal-restricted-context",
     icon: "users",
@@ -42,19 +50,22 @@ export const CHALLENGES: Challenge[] = [
   {
     id: "validation",
     number: "02",
-    title: "Tantangan Validasi Pasar",
+    title: L("Tantangan Validasi Pasar", "Market Validation Challenge"),
     english: "Product–Market Validation Gap",
-    summary: "Kedua produk memiliki pembeli, kriteria pembelian, dan proposisi nilai yang berbeda — bukti adopsi perlu dibandingkan.",
+    summary: L(
+      "Kedua produk memiliki pembeli, kriteria pembelian, dan proposisi nilai yang berbeda — bukti adopsi perlu dibandingkan.",
+      "The two products have different buyers, purchase criteria and value propositions — adoption evidence must be compared.",
+    ),
     drivers: [
-      "Terang Events → penyelenggara acara; AI Candidate Interview → tim HR",
-      "Kemauan membayar & siklus penjualan berbeda",
-      "Kesiapan enterprise Interview belum dapat diasumsikan dari simulator B2C",
-      "Potensi monetisasi & kelayakan komersial perlu diuji",
+      L("Terang Events → penyelenggara acara; AI Candidate Interview → tim HR", "Terang Events → event organisers; AI Candidate Interview → HR teams"),
+      L("Kemauan membayar & siklus penjualan berbeda", "Different willingness to pay & sales cycles"),
+      L("Kesiapan _enterprise_ Interview belum dapat diasumsikan dari simulator B2C", "Interview's enterprise readiness cannot be assumed from the B2C simulator"),
+      L("Potensi monetisasi & kelayakan komersial perlu diuji", "Monetisation potential & commercial viability need testing"),
     ],
     implications: [
-      "Investasi tanpa bukti berisiko salah sasaran",
-      "Dibutuhkan pilot & metrik yang jelas sebelum scaling",
-      "Keputusan harus berbasis bukti, bukan intuisi",
+      L("Investasi tanpa bukti berisiko salah sasaran", "Investing without evidence risks missing the target"),
+      L("Dibutuhkan _pilot_ & metrik yang jelas sebelum _scaling_", "Clear pilots & metrics are needed before scaling"),
+      L("Keputusan harus berbasis bukti, bukan intuisi", "Decisions must be evidence-based, not intuition-based"),
     ],
     evidence: "strategic-proposal",
     icon: "target",
@@ -62,19 +73,22 @@ export const CHALLENGES: Challenge[] = [
   {
     id: "execution",
     number: "03",
-    title: "Kompleksitas Eksekusi Bisnis",
+    title: L("Kompleksitas Eksekusi Bisnis", "Business Execution Complexity"),
     english: "Portfolio Execution Complexity",
-    summary: "Pengembangan fitur, akuisisi pelanggan, dan operasional kedua produk menuntut pendekatan yang berbeda.",
+    summary: L(
+      "Pengembangan fitur, akuisisi pelanggan, dan operasional kedua produk menuntut pendekatan yang berbeda.",
+      "Feature development, customer acquisition and operations for the two products each require a different approach.",
+    ),
     drivers: [
-      "Workflow & kebutuhan teknis produk yang berbeda",
-      "Dua kanal penjualan & dua jenis dukungan pelanggan",
-      "Koordinasi prioritas lintas produk",
-      "Context switching dalam tim kecil",
+      L("_Workflow_ & kebutuhan teknis produk yang berbeda", "Different product workflows & technical needs"),
+      L("Dua kanal penjualan & dua jenis dukungan pelanggan", "Two sales channels & two kinds of customer support"),
+      L("Koordinasi prioritas lintas produk", "Coordinating priorities across products"),
+      L("_Context switching_ dalam tim kecil", "Context switching within a small team"),
     ],
     implications: [
-      "Pengembangan paralel menambah beban kerja & biaya koordinasi",
-      "Tanpa tata kelola, prioritas mudah bergeser",
-      "Butuh mekanisme evaluasi & realokasi yang transparan",
+      L("Pengembangan paralel menambah beban kerja & biaya koordinasi", "Parallel development adds workload & coordination cost"),
+      L("Tanpa tata kelola, prioritas mudah bergeser", "Without governance, priorities drift easily"),
+      L("Butuh mekanisme evaluasi & realokasi yang transparan", "A transparent evaluation & reallocation mechanism is needed"),
     ],
     evidence: "strategic-proposal",
     icon: "layers",
@@ -85,27 +99,36 @@ export interface Pillar {
   letter: string;
   key: string;
   name: string;
-  purpose: string;
+  purpose: Txt;
   program: string;
-  highlights: string[];
-  cta: { label: string; href: string };
+  highlights: Txt[];
+  cta: { label: Txt; href: string };
 }
 
 export const ONE_STRATEGY = {
   name: "ONE Strategy",
-  position: "PRO — Prioritaskan satu produk B2B",
+  position: L("PRO — Prioritaskan satu produk B2B", "PRO — Prioritise one B2B product"),
+  badge: "PRO",
   focus: "AI Candidate Interview",
   tagline: "One Product, Proven Growth.",
   shortTitle: "Focus to Grow",
-  thesis:
-    "Pusatkan pengembangan produk, validasi pelanggan, sumber daya akuisisi, dan investasi pada AI Candidate Interview. Bangun produk yang tepercaya, validasi kemauan membayar, lalu scale berdasarkan bukti.",
-  eventsPolicy: "Terang Events dipertahankan dalam mode maintenance — layanan berjalan, tanpa pengembangan agresif.",
+  thesis: L(
+    "Pusatkan pengembangan produk, validasi pelanggan, sumber daya akuisisi, dan investasi pada AI Candidate Interview. Bangun produk yang tepercaya, validasi kemauan membayar, lalu _scale_ berdasarkan bukti.",
+    "Concentrate product development, customer validation, acquisition resources and investment on AI Candidate Interview. Build a trusted product, validate willingness to pay, then scale on evidence.",
+  ),
+  eventsPolicy: L(
+    "Terang Events dipertahankan dalam mode _maintenance_ — layanan berjalan, tanpa pengembangan agresif.",
+    "Terang Events is kept in maintenance mode — the service keeps running, without aggressive development.",
+  ),
   pillars: [
     {
       letter: "O",
       key: "optimize",
       name: "Optimize Product Value",
-      purpose: "Meningkatkan nilai, kualitas, dan kesiapan enterprise AI Candidate Interview.",
+      purpose: L(
+        "Meningkatkan nilai, kualitas, dan kesiapan _enterprise_ AI Candidate Interview.",
+        "Raise the value, quality and enterprise readiness of AI Candidate Interview.",
+      ),
       program: "AI Interview Intelligence Suite",
       highlights: [
         "Role-Based Interview Builder",
@@ -114,120 +137,211 @@ export const ONE_STRATEGY = {
         "Recruiter Review Dashboard",
         "Responsible AI Controls",
       ],
-      cta: { label: "Coba Simulasi Produk", href: "/dashboard/interview" },
+      cta: { label: L("Coba Simulasi Produk", "Try the Product Simulation"), href: "/dashboard/interview" },
     },
     {
       letter: "N",
       key: "navigate",
       name: "Navigate Market Growth",
-      purpose: "Menjangkau pelanggan bisnis yang relevan dan membuktikan nilai komersial.",
+      purpose: L(
+        "Menjangkau pelanggan bisnis yang relevan dan membuktikan nilai komersial.",
+        "Reach the right business customers and prove commercial value.",
+      ),
       program: "Pilot-to-Paid Growth Engine",
       highlights: [
-        "Outreach B2B via komunitas HR & LinkedIn",
-        "Webinar HR Efficiency Clinic",
-        "Demo produk enterprise",
-        "Pilot HR terbatas & evaluasi ROI",
-        "Konversi kontrak berbayar & renewal",
+        L("_Outreach_ B2B via komunitas HR & LinkedIn", "B2B outreach via HR communities & LinkedIn"),
+        L("Webinar HR Efficiency Clinic", "HR Efficiency Clinic webinars"),
+        L("Demo produk _enterprise_", "Enterprise product demos"),
+        L("_Pilot_ HR terbatas & evaluasi ROI", "Limited HR pilots & ROI evaluation"),
+        L("Konversi kontrak berbayar & _renewal_", "Paid-contract conversion & renewals"),
       ],
-      cta: { label: "Lihat Funnel Pilot-to-Paid", href: "/strategies/one?pillar=navigate" },
+      cta: { label: L("Lihat _Funnel_ Pilot-to-Paid", "See the Pilot-to-Paid Funnel"), href: "/strategies/one?pillar=navigate" },
     },
     {
       letter: "E",
       key: "evaluate",
       name: "Evaluate for Expansion",
-      purpose: "Memastikan AI Candidate Interview siap tumbuh sebelum menambah komitmen sumber daya.",
+      purpose: L(
+        "Memastikan AI Candidate Interview siap tumbuh sebelum menambah komitmen sumber daya.",
+        "Make sure AI Candidate Interview is ready to grow before committing more resources.",
+      ),
       program: "ONE Growth Intelligence & Expansion Gate",
-      highlights: ["Kualitas produk", "Traksi komersial", "Kontribusi finansial", "Kapasitas tim", "Kesiapan Responsible AI"],
-      cta: { label: "Tinjau Kesiapan Ekspansi", href: "/strategies/one?pillar=evaluate" },
+      highlights: [
+        L("Kualitas produk", "Product quality"),
+        L("Traksi komersial", "Commercial traction"),
+        L("Kontribusi finansial", "Financial contribution"),
+        L("Kapasitas tim", "Team capacity"),
+        L("Kesiapan Responsible AI", "Responsible AI readiness"),
+      ],
+      cta: { label: L("Tinjau Kesiapan Ekspansi", "Review Expansion Readiness"), href: "/strategies/one?pillar=evaluate" },
     },
   ] satisfies Pillar[],
 };
 
 export const ACE_STRATEGY = {
   name: "ACE Strategy",
-  position: "KONTRA — Kembangkan dua produk secara terkoordinasi",
+  position: L("KONTRA — Kembangkan dua produk secara terkoordinasi", "CONTRA — Grow two products in coordination"),
+  badge: L("KONTRA", "CONTRA"),
   focus: "Terang Events + AI Candidate Interview",
   tagline: "Two Products, One Coordinated Growth Engine.",
   shortTitle: "Coordinate to Grow",
   approach: "Controlled Dual-Product Growth",
-  thesis:
+  thesis: L(
     "Kembangkan dua peluang B2B melalui peningkatan selektif, strategi akuisisi yang berbeda, koordinasi operasional bersama, dan alokasi sumber daya berbasis bukti.",
-  guardrail:
+    "Grow two B2B opportunities through selective improvements, distinct acquisition strategies, shared operational coordination and evidence-based resource allocation.",
+  ),
+  guardrail: L(
     "ACE tidak mengasumsikan pembagian 50:50. Nilai tambah produk kedua harus membenarkan biaya finansial & operasional tambahannya.",
+    "ACE does not assume a 50:50 split. The second product's added value must justify its extra financial & operational cost.",
+  ),
   pillars: [
     {
       letter: "A",
       key: "agile",
       name: "Agile Feature Development",
-      purpose: "Mengembangkan sejumlah kecil fitur bernilai tinggi untuk kedua produk dengan batas WIP yang ketat.",
+      purpose: L(
+        "Mengembangkan sejumlah kecil fitur bernilai tinggi untuk kedua produk dengan batas WIP yang ketat.",
+        "Build a small number of high-value features for both products under a strict WIP limit.",
+      ),
       program: "ACE Dual-Product Innovation Sprint",
       highlights: [
         "Smart Event Templates",
         "Repeat Event Planner",
         "Organizer Growth Insights",
         "Interview Builder & Evidence-Linked Assessment",
-        "Batas WIP: 1 inisiatif besar per produk",
+        L("Batas WIP: 1 inisiatif besar per produk", "WIP limit: 1 major initiative per product"),
       ],
-      cta: { label: "Lihat Backlog Ganda", href: "/strategies/ace?pillar=agile" },
+      cta: { label: L("Lihat _Backlog_ Ganda", "See the Dual Backlog"), href: "/strategies/ace?pillar=agile" },
     },
     {
       letter: "C",
       key: "coordinate",
       name: "Coordinate Markets & Capacity",
-      purpose: "Menjalankan dua jalur go-to-market dengan kendali kapasitas dan anggaran bersama.",
+      purpose: L(
+        "Menjalankan dua jalur _go-to-market_ dengan kendali kapasitas dan anggaran bersama.",
+        "Run two go-to-market tracks under shared capacity and budget control.",
+      ),
       program: "ACE Dual-Market Growth & Resource Control",
       highlights: [
-        "Kampanye “Host Smarter with Terang”",
-        "Kampanye “Hire Smarter with Terang”",
-        "Eksperimen career fair institusional",
+        L("Kampanye “Host Smarter with Terang”", "“Host Smarter with Terang” campaign"),
+        L("Kampanye “Hire Smarter with Terang”", "“Hire Smarter with Terang” campaign"),
+        L("Eksperimen _career fair_ institusional", "Institutional career-fair experiment"),
         "ACE Command Center",
       ],
-      cta: { label: "Buka ACE Command Center", href: "/dashboard/operations" },
+      cta: { label: L("Buka ACE Command Center", "Open the ACE Command Center"), href: "/dashboard/operations" },
     },
     {
       letter: "E",
       key: "evolve",
       name: "Evaluate and Evolve Portfolio",
-      purpose: "Mengevaluasi setiap produk secara independen dan di level portofolio, lalu merealokasi sumber daya.",
+      purpose: L(
+        "Mengevaluasi setiap produk secara independen dan di level portofolio, lalu merealokasi sumber daya.",
+        "Evaluate each product independently and at portfolio level, then reallocate resources.",
+      ),
       program: "ACE Portfolio Intelligence",
-      highlights: ["KPI per produk", "KPI portofolio", "Simulator realokasi", "Invest · Improve · Reduce · Pause"],
-      cta: { label: "Lihat Hasil Evaluasi", href: "/dashboard/portfolio" },
+      highlights: [
+        L("KPI per produk", "KPIs per product"),
+        L("KPI portofolio", "Portfolio KPIs"),
+        L("Simulator realokasi", "Reallocation simulator"),
+        "Invest · Improve · Reduce · Pause",
+      ],
+      cta: { label: L("Lihat Hasil Evaluasi", "See Evaluation Results"), href: "/dashboard/portfolio" },
     },
   ] satisfies Pillar[],
 };
 
-export const COMPARISON_ROWS = [
-  { label: "Produk aktif dikembangkan", one: "1 — AI Candidate Interview", ace: "2 — Events + Interview" },
-  { label: "Terang Events", one: "Maintenance-only (layanan existing)", ace: "Pengembangan selektif + akuisisi organizer" },
-  { label: "Fokus pengembangan", one: "AI Interview Intelligence Suite", ace: "Dual-Product Innovation Sprint (WIP 1/produk)" },
-  { label: "Kanal akuisisi", one: "Komunitas HR, LinkedIn, webinar, pilot", ace: "Kampus & asosiasi + komunitas HR & agensi" },
-  { label: "Profil risiko utama", one: "Konsentrasi pada satu pasar yang belum tervalidasi", ace: "Kapasitas terbagi & overhead koordinasi" },
-  { label: "Syarat scale", one: "Expansion Gate: kualitas, traksi, ekonomi, kapasitas, Responsible AI", ace: "Portfolio review: invest / improve / reduce / pause per produk" },
+export const COMPARISON_ROWS: { label: Txt; one: Txt; ace: Txt }[] = [
+  {
+    label: L("Produk aktif dikembangkan", "Products in active development"),
+    one: "1 — AI Candidate Interview",
+    ace: "2 — Events + Interview",
+  },
+  {
+    label: "Terang Events",
+    one: L("_Maintenance-only_ (layanan _existing_)", "Maintenance-only (existing service)"),
+    ace: L("Pengembangan selektif + akuisisi _organizer_", "Selective development + organizer acquisition"),
+  },
+  {
+    label: L("Fokus pengembangan", "Development focus"),
+    one: "AI Interview Intelligence Suite",
+    ace: L("Dual-Product Innovation Sprint (WIP 1/produk)", "Dual-Product Innovation Sprint (WIP 1/product)"),
+  },
+  {
+    label: L("Kanal akuisisi", "Acquisition channels"),
+    one: L("Komunitas HR, LinkedIn, webinar, _pilot_", "HR communities, LinkedIn, webinars, pilots"),
+    ace: L("Kampus & asosiasi + komunitas HR & agensi", "Campuses & associations + HR communities & agencies"),
+  },
+  {
+    label: L("Profil risiko utama", "Main risk profile"),
+    one: L("Konsentrasi pada satu pasar yang belum tervalidasi", "Concentration on one not-yet-validated market"),
+    ace: L("Kapasitas terbagi & _overhead_ koordinasi", "Split capacity & coordination overhead"),
+  },
+  {
+    label: L("Syarat _scale_", "Conditions to scale"),
+    one: L("Expansion Gate: kualitas, traksi, ekonomi, kapasitas, Responsible AI", "Expansion Gate: quality, traction, economics, capacity, Responsible AI"),
+    ace: L("_Portfolio review_: _invest / improve / reduce / pause_ per produk", "Portfolio review: invest / improve / reduce / pause per product"),
+  },
 ];
 
-export const ROADMAP = {
+export const ROADMAP: Record<"one" | "ace", { quarter: string; items: Txt[]; product: "interview" | "both" }[]> = {
   one: [
-    { quarter: "Q1", items: ["Interview Builder & rubrik", "Responsible AI baseline", "Rekrut 8–10 pilot"], product: "interview" as const },
-    { quarter: "Q2", items: ["Evidence-Linked Assessment", "Recruiter Dashboard", "Konversi pilot → berbayar"], product: "interview" as const },
-    { quarter: "Q3", items: ["Audit trail & retensi", "Paket per interview", "Expansion Gate review #1"], product: "interview" as const },
-    { quarter: "Q4", items: ["Scale ke agensi rekrutmen", "Renewal program", "Expansion Gate review #2"], product: "interview" as const },
+    { quarter: "Q1", items: [L("Interview Builder & rubrik", "Interview Builder & rubrics"), "Responsible AI baseline", L("Rekrut 8–10 _pilot_", "Recruit 8–10 pilots")], product: "interview" },
+    { quarter: "Q2", items: ["Evidence-Linked Assessment", "Recruiter Dashboard", L("Konversi _pilot_ → berbayar", "Pilot → paid conversion")], product: "interview" },
+    { quarter: "Q3", items: [L("_Audit trail_ & retensi", "Audit trail & retention"), L("Paket per _interview_", "Per-interview package"), "Expansion Gate review #1"], product: "interview" },
+    { quarter: "Q4", items: [L("_Scale_ ke agensi rekrutmen", "Scale to recruitment agencies"), L("Program _renewal_", "Renewal programme"), "Expansion Gate review #2"], product: "interview" },
   ],
   ace: [
-    { quarter: "Q1", items: ["Smart Event Templates", "Interview Builder & rubrik"], product: "both" as const },
-    { quarter: "Q2", items: ["Repeat Event Planner", "Evidence-Linked Assessment"], product: "both" as const },
-    { quarter: "Q3", items: ["Organizer Growth Insights", "Recruiter Dashboard", "Portfolio review #1"], product: "both" as const },
-    { quarter: "Q4", items: ["Career fair experiment", "Responsible AI Controls", "Portfolio review #2"], product: "both" as const },
+    { quarter: "Q1", items: ["Smart Event Templates", L("Interview Builder & rubrik", "Interview Builder & rubrics")], product: "both" },
+    { quarter: "Q2", items: ["Repeat Event Planner", "Evidence-Linked Assessment"], product: "both" },
+    { quarter: "Q3", items: ["Organizer Growth Insights", "Recruiter Dashboard", "Portfolio review #1"], product: "both" },
+    { quarter: "Q4", items: [L("Eksperimen _career fair_", "Career-fair experiment"), "Responsible AI Controls", "Portfolio review #2"], product: "both" },
   ],
 };
 
-export const STRATEGY_GLOSSARY = [
-  { term: "Contribution margin", meaning: "Persentase pendapatan yang tersisa setelah biaya variabel & dukungan langsung produk." },
-  { term: "Operating result", meaning: "Kontribusi total dikurangi biaya tetap, pengembangan, pemasaran & overhead. Bukan laba bersih." },
-  { term: "Pilot-to-paid", meaning: "Persentase perusahaan pilot yang menjadi pelanggan berbayar." },
-  { term: "CAC", meaning: "Customer Acquisition Cost — biaya untuk memperoleh satu pelanggan/pilot/organizer." },
-  { term: "WIP limit", meaning: "Batas jumlah inisiatif besar yang boleh berjalan bersamaan agar tim tidak kelebihan beban." },
-  { term: "Ramp-up factor", meaning: "Rata-rata porsi periode di mana pelanggan baru sudah aktif, karena akuisisi terjadi bertahap." },
-  { term: "Context switching", meaning: "Tambahan jam kerja akibat berpindah fokus antara dua roadmap produk." },
-  { term: "Expansion Gate", meaning: "Titik keputusan ONE: Scale, Improve, atau Pause/Revalidate berdasarkan ambang KPI." },
-  { term: "Hard gate", meaning: "Kriteria wajib (privasi, keamanan, validitas penilaian) yang tidak bisa dikompensasi kinerja komersial." },
+export const STRATEGY_GLOSSARY: { term: string; meaning: Txt }[] = [
+  {
+    term: "Contribution margin",
+    meaning: L(
+      "Persentase pendapatan yang tersisa setelah biaya variabel & dukungan langsung produk.",
+      "The share of revenue left after variable costs & direct product support.",
+    ),
+  },
+  {
+    term: "Operating result",
+    meaning: L(
+      "Kontribusi total dikurangi biaya tetap, pengembangan, pemasaran & _overhead_. Bukan laba bersih.",
+      "Total contribution minus fixed, development, marketing & overhead costs. Not net profit.",
+    ),
+  },
+  { term: "Pilot-to-paid", meaning: L("Persentase perusahaan _pilot_ yang menjadi pelanggan berbayar.", "The share of pilot companies that become paying customers.") },
+  {
+    term: "CAC",
+    meaning: L(
+      "_Customer Acquisition Cost_ — biaya untuk memperoleh satu pelanggan/_pilot_/_organizer_.",
+      "Customer Acquisition Cost — the cost of acquiring one customer / pilot / organizer.",
+    ),
+  },
+  {
+    term: "WIP limit",
+    meaning: L(
+      "Batas jumlah inisiatif besar yang boleh berjalan bersamaan agar tim tidak kelebihan beban.",
+      "The maximum number of major initiatives allowed in parallel so the team is not overloaded.",
+    ),
+  },
+  {
+    term: "Ramp-up factor",
+    meaning: L(
+      "Rata-rata porsi periode di mana pelanggan baru sudah aktif, karena akuisisi terjadi bertahap.",
+      "The average share of the period in which new customers are already active, since acquisition happens gradually.",
+    ),
+  },
+  { term: "Context switching", meaning: L("Tambahan jam kerja akibat berpindah fokus antara dua _roadmap_ produk.", "Extra working hours caused by switching focus between two product roadmaps.") },
+  { term: "Expansion Gate", meaning: L("Titik keputusan ONE: Scale, Improve, atau Pause/Revalidate berdasarkan ambang KPI.", "ONE's decision point: Scale, Improve or Pause/Revalidate based on KPI thresholds.") },
+  {
+    term: "Hard gate",
+    meaning: L(
+      "Kriteria wajib (privasi, keamanan, validitas penilaian) yang tidak bisa dikompensasi kinerja komersial.",
+      "Mandatory criteria (privacy, security, assessment validity) that commercial performance cannot offset.",
+    ),
+  },
 ];

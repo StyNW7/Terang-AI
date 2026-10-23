@@ -16,12 +16,17 @@ import { JudgingPanel } from "@/components/events/judging-panel";
 import { AnalyticsPanel } from "@/components/events/analytics-panel";
 import { FinancePanel } from "@/components/events/finance-panel";
 import { ParticipantExperience } from "@/components/events/participant-experience";
+import { L, T, useI18n } from "@/lib/i18n";
 import { PageHeader } from "./page-header";
 import { AceOnlyNotice, ModeNotice } from "./mode-notice";
 import { QuickStart } from "./quick-start";
 
 const BASE = "/dashboard/events";
-const ACE = <Badge tone="ace">Usulan ACE</Badge>;
+const ACE = (
+  <Badge tone="ace">
+    <T id="Usulan ACE" en="ACE proposal" />
+  </Badge>
+);
 const DEMO = <SourceLabel type="synthetic-demo" compact />;
 
 export function EventsOverviewPage() {
@@ -30,24 +35,44 @@ export function EventsOverviewPage() {
     <>
       <PageHeader
         eyebrow={DEMO}
-        title="Halo, Organizer Demo"
-        description="Ringkasan semua event Anda: peserta, submisi, dan tenggat terdekat."
+        title={<T id="Halo, Organizer Demo" en="Hello, Demo Organizer" />}
+        description={<T id="Ringkasan semua _event_ Anda: peserta, submisi, dan tenggat terdekat." en="A summary of all your events: participants, submissions and upcoming deadlines." />}
         actions={
           <Button href={`${BASE}/create`}>
-            <Plus className="h-4 w-4" /> Buat event
+            <Plus className="h-4 w-4" /> <T id="Buat _event_" en="Create event" />
           </Button>
         }
       />
       <ModeNotice product="events" className="mb-6" />
       <QuickStart
         id="events"
-        title="Mulai dari sini — alur organizer"
+        title={L("Mulai dari sini — alur _organizer_", "Start here — the organizer flow")}
         accent="bg-events-gradient"
         steps={[
-          { title: "Buat event", text: "Isi wizard 6 langkah, atau mulai dari template agar tahapan & rubrik terisi otomatis.", href: `${BASE}/templates`, icon: "plus" },
-          { title: "Kelola peserta", text: "Verifikasi pendaftar dan ubah status pembayaran per peserta.", href: `${BASE}/participants`, icon: "users" },
-          { title: "Nilai submisi", text: "Gunakan rubrik berbobot; peringkat diperbarui otomatis.", href: `${BASE}/judging`, icon: "gavel" },
-          { title: "Lihat dari sisi peserta", text: "Coba daftar event, bayar (simulasi), dan kirim submisi.", href: `${BASE}/portal`, icon: "ticket" },
+          {
+            title: L("Buat _event_", "Create an event"),
+            text: L("Isi _wizard_ 6 langkah, atau mulai dari _template_ agar tahapan & rubrik terisi otomatis.", "Fill in the 6-step wizard, or start from a template so stages & rubrics are filled in automatically."),
+            href: `${BASE}/templates`,
+            icon: "plus",
+          },
+          {
+            title: L("Kelola peserta", "Manage participants"),
+            text: L("Verifikasi pendaftar dan ubah status pembayaran per peserta.", "Verify registrants and update each participant's payment status."),
+            href: `${BASE}/participants`,
+            icon: "users",
+          },
+          {
+            title: L("Nilai submisi", "Score submissions"),
+            text: L("Gunakan rubrik berbobot; peringkat diperbarui otomatis.", "Use weighted rubrics; the ranking updates automatically."),
+            href: `${BASE}/judging`,
+            icon: "gavel",
+          },
+          {
+            title: L("Lihat dari sisi peserta", "See the participant side"),
+            text: L("Coba daftar _event_, bayar (simulasi), dan kirim submisi.", "Try registering for an event, paying (simulated) and submitting work."),
+            href: `${BASE}/portal`,
+            icon: "ticket",
+          },
         ]}
       />
       <OrganizerDashboard onOpenEvents={() => router.push(`${BASE}/list`)} />
@@ -60,11 +85,11 @@ export function EventsListPage() {
   return (
     <>
       <PageHeader
-        title="Daftar event"
-        description="Cari, filter, dan kelola semua event. Duplikasi event lama lewat Repeat Planner."
+        title={<T id="Daftar _event_" en="Event list" />}
+        description={<T id="Cari, filter, dan kelola semua _event_. Duplikasi _event_ lama lewat Repeat Planner." en="Search, filter and manage every event. Duplicate past events with the Repeat Planner." />}
         actions={
           <Button href={`${BASE}/create`}>
-            <Plus className="h-4 w-4" /> Buat event
+            <Plus className="h-4 w-4" /> <T id="Buat _event_" en="Create event" />
           </Button>
         }
       />
@@ -76,13 +101,20 @@ export function EventsListPage() {
 export function EventsCreatePage() {
   const router = useRouter();
   const params = useSearchParams();
-  const template = EVENT_TEMPLATES.find((t) => t.id === params.get("template"));
+  const { t } = useI18n();
+  const template = EVENT_TEMPLATES.find((tpl) => tpl.id === params.get("template"));
   return (
     <>
       <PageHeader
-        eyebrow={template ? <Badge tone="ace" icon={<Sparkles className="h-3 w-3" />}>Dari template</Badge> : undefined}
-        title="Buat event baru"
-        description="Enam langkah singkat: info dasar, jadwal, tahapan, penjurian, biaya, lalu tinjau."
+        eyebrow={
+          template ? (
+            <Badge tone="ace" icon={<Sparkles className="h-3 w-3" />}>
+              <T id="Dari _template_" en="From a template" />
+            </Badge>
+          ) : undefined
+        }
+        title={<T id="Buat _event_ baru" en="Create a new event" />}
+        description={<T id="Enam langkah singkat: info dasar, jadwal, tahapan, penjurian, biaya, lalu tinjau." en="Six short steps: basics, schedule, stages, judging, fees, then review." />}
       />
       {!template && (
         <button
@@ -92,14 +124,14 @@ export function EventsCreatePage() {
         >
           <ListChecks className="h-5 w-5 shrink-0 text-ace-ink" />
           <span className="text-sm text-ink">
-            <strong className="font-semibold">Lebih cepat:</strong> mulai dari <strong className="font-semibold">Smart Event Templates</strong> — tahapan &amp; rubrik
-            langsung terisi.
+            <strong className="font-semibold">{t("Lebih cepat:", "Faster:")}</strong> {t("mulai dari", "start from")}{" "}
+            <strong className="font-semibold">Smart Event Templates</strong> — {t("tahapan & rubrik langsung terisi.", "stages & rubrics are filled in instantly.")}
           </span>
         </button>
       )}
       <EventWizard
         key={template?.id ?? "manual"}
-        initial={template ? templateToValues(template) : undefined}
+        initial={template ? templateToValues(template, t) : undefined}
         source={template ? "template" : "manual"}
         templateName={template?.name}
         onDone={() => router.push(`${BASE}/list`)}
@@ -115,10 +147,15 @@ export function EventsTemplatesPage() {
       <PageHeader
         eyebrow={ACE}
         title="Smart Event Templates"
-        description="Pilih template — tahapan, rubrik, biaya, dan kuota langsung terisi di wizard. Tetap bisa disesuaikan."
+        description={
+          <T
+            id="Pilih _template_ — tahapan, rubrik, biaya, dan kuota langsung terisi di _wizard_. Tetap bisa disesuaikan."
+            en="Pick a template — stages, rubrics, fees and quota are filled into the wizard instantly. Everything stays editable."
+          />
+        }
       />
       <AceOnlyNotice feature="Smart Event Templates" className="mb-5" />
-      <TemplatesPanel onUse={(t) => router.push(`${BASE}/create?template=${t.id}`)} />
+      <TemplatesPanel onUse={(tpl) => router.push(`${BASE}/create?template=${tpl.id}`)} />
     </>
   );
 }
@@ -131,7 +168,7 @@ export function EventsRepeatPage() {
       <PageHeader
         eyebrow={ACE}
         title="Repeat Event Planner"
-        description="Salin konfigurasi event sebelumnya dalam hitungan detik — tanpa menyalin data peserta."
+        description={<T id="Salin konfigurasi _event_ sebelumnya dalam hitungan detik — tanpa menyalin data peserta." en="Copy a previous event's configuration in seconds — without copying participant data." />}
       />
       <AceOnlyNotice feature="Repeat Event Planner" className="mb-5" />
       <RepeatPlanner key={source ?? "default"} preselect={source} onDone={() => router.push(`${BASE}/list`)} />
@@ -142,7 +179,7 @@ export function EventsRepeatPage() {
 export function EventsParticipantsPage() {
   return (
     <>
-      <PageHeader title="Peserta" description="Verifikasi pendaftar dan pantau status tiap peserta." />
+      <PageHeader title={<T id="Peserta" en="Participants" />} description={<T id="Verifikasi pendaftar dan pantau status tiap peserta." en="Verify registrants and track each participant's status." />} />
       <ParticipantsPanel />
     </>
   );
@@ -151,7 +188,7 @@ export function EventsParticipantsPage() {
 export function EventsJudgingPage() {
   return (
     <>
-      <PageHeader title="Penjurian" description="Nilai submisi dengan rubrik berbobot dan lihat peringkat secara langsung." />
+      <PageHeader title={<T id="Penjurian" en="Judging" />} description={<T id="Nilai submisi dengan rubrik berbobot dan lihat peringkat secara langsung." en="Score submissions with weighted rubrics and watch the ranking live." />} />
       <JudgingPanel />
     </>
   );
@@ -168,7 +205,7 @@ export function EventsAnalyticsPage() {
           </>
         }
         title="Organizer Growth Insights"
-        description="Funnel registrasi, sumber konversi, aktivitas peserta, dan perbandingan event berulang."
+        description={<T id="_Funnel_ registrasi, sumber konversi, aktivitas peserta, dan perbandingan _event_ berulang." en="Registration funnel, conversion sources, participant activity and recurring-event comparison." />}
       />
       <AceOnlyNotice feature="Organizer Growth Insights" className="mb-5" />
       <AnalyticsPanel />
@@ -179,7 +216,7 @@ export function EventsAnalyticsPage() {
 export function EventsFinancePage() {
   return (
     <>
-      <PageHeader title="Keuangan" description="Transaksi registrasi, refund, dan estimasi dana yang diterima organizer." />
+      <PageHeader title={<T id="Keuangan" en="Finance" />} description={<T id="Transaksi registrasi, _refund_, dan estimasi dana yang diterima _organizer_." en="Registration transactions, refunds and the estimated funds the organizer receives." />} />
       <FinancePanel />
     </>
   );
@@ -189,9 +226,13 @@ export function EventsPortalPage() {
   return (
     <>
       <PageHeader
-        eyebrow={<Badge tone="sky">Tampilan peserta</Badge>}
-        title="Portal Peserta"
-        description="Simulasikan alur peserta: cari event, daftar, lalu kirim submisi."
+        eyebrow={
+          <Badge tone="sky">
+            <T id="Tampilan peserta" en="Participant view" />
+          </Badge>
+        }
+        title={<T id="Portal Peserta" en="Participant Portal" />}
+        description={<T id="Simulasikan alur peserta: cari _event_, daftar, lalu kirim submisi." en="Simulate the participant journey: find an event, register, then submit your work." />}
       />
       <ParticipantExperience />
     </>

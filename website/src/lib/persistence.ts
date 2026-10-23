@@ -4,7 +4,8 @@ import { createJSONStorage, type StateStorage } from "zustand/middleware";
  * Small, versioned localStorage helpers for fictional demo state only.
  * Never store real personal data or confidential case information here.
  */
-export const STORAGE_VERSION = 1;
+// v2: demo content became bilingual (ID/EN) — older saved demo data is discarded.
+export const STORAGE_VERSION = 2;
 export const STORAGE_PREFIX = "terang-sge";
 
 export const storageKey = (name: string) => `${STORAGE_PREFIX}:${name}:v${STORAGE_VERSION}`;

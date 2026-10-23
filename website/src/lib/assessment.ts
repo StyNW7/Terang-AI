@@ -1,15 +1,23 @@
 import type { Candidate, Competency, EvidenceItem, JobPosition } from "@/types/interview";
 import { COMPETENCY_MAP } from "@/data/candidates.mock";
+import { L, pick, type Bilingual, type Locale } from "@/lib/i18n-core";
 
 /**
  * Deterministic, rule-based demo assessment. This is NOT machine learning and NOT a
  * hiring decision. It only highlights text signals against predefined demo rubrics so
- * that a human recruiter has an evidence trail to review.
+ * that a human recruiter has an evidence trail to review. Markers cover Indonesian
+ * and English answers.
  */
 
-const RESULT_MARKERS = ["hasil", "sehingga", "berhasil", "turun", "naik", "meningkat", "%", "persen", "selesai", "tepat waktu", "capaian", "kesepakatan"];
-const ACTION_MARKERS = ["saya membuat", "saya analisis", "saya usulkan", "saya koordinasikan", "saya menggali", "saya memecah", "saya belajar", "saya mendengarkan", "saya cek", "saya negosiasikan", "saya berkoordinasi", "saya menawarkan", "saya selalu"];
-const SITUATION_MARKERS = ["saat", "ketika", "di organisasi", "waktu", "pernah", "ada pelanggan", "di kampus"];
+const RESULT_MARKERS = [
+  "hasil", "sehingga", "berhasil", "turun", "naik", "meningkat", "%", "persen", "selesai", "tepat waktu", "capaian", "kesepakatan",
+  "result", "so that", "succeed", "dropped", "reduced", "increased", "percent", "completed", "finished", "on time", "achieved", "agreement",
+];
+const ACTION_MARKERS = [
+  "saya membuat", "saya analisis", "saya usulkan", "saya koordinasikan", "saya menggali", "saya memecah", "saya belajar", "saya mendengarkan", "saya cek", "saya negosiasikan", "saya berkoordinasi", "saya menawarkan", "saya selalu",
+  "i created", "i analysed", "i analyzed", "i proposed", "i coordinated", "i explored", "i broke", "i learned", "i listened", "i checked", "i negotiated", "i offered", "i always",
+];
+const SITUATION_MARKERS = ["saat", "ketika", "di organisasi", "waktu", "pernah", "ada pelanggan", "di kampus", "during", "when", "there was", "in my", "once"];
 
 export interface AnswerSignals {
   words: number;
@@ -27,7 +35,7 @@ export function answerSignals(answer: string, competency: Competency): AnswerSig
     words,
     keywordHits,
     hasResult: RESULT_MARKERS.some((m) => text.includes(m)),
-    hasAction: ACTION_MARKERS.some((m) => text.includes(m)) || /\bsaya\s+\w+(kan|i)\b/.test(text),
+    hasAction: ACTION_MARKERS.some((m) => text.includes(m)) || /\bsaya\s+\w+(kan|i)\b/.test(text) || /\bi\s+\w+ed\b/.test(text),
     hasSituation: SITUATION_MARKERS.some((m) => text.includes(m)),
   };
 }
@@ -55,7 +63,7 @@ function bestExcerpt(answer: string, competency: Competency) {
 export function assessAnswer(answer: string, competencyId: string): EvidenceItem {
   const competency = COMPETENCY_MAP[competencyId];
   if (!competency) {
-    return { competencyId, level: 1, excerpt: answer.slice(0, 160), rationale: "Kompetensi tidak dikenali.", confidence: "rendah" };
+    return { competencyId, level: 1, excerpt: answer.slice(0, 160), rationale: L("Kompetensi tidak dikenali.", "Competency not recognised."), confidence: "rendah" };
   }
   const s = answerSignals(answer, competency);
   let points = 0;
@@ -65,39 +73,40 @@ export function assessAnswer(answer: string, competencyId: string): EvidenceItem
   if (s.keywordHits.length >= 2 && s.words >= 30 && (s.hasAction || s.hasSituation)) points += 1;
   const level = Math.max(1, Math.min(4, points)) as EvidenceItem["level"];
 
-  const reasons: string[] = [];
-  reasons.push(`${s.words} kata`);
-  reasons.push(
+  const hits = s.keywordHits.slice(0, 3).join(", ");
+  const reasons: Bilingual[] = [
+    L(`${s.words} kata`, `${s.words} words`),
     s.keywordHits.length
-      ? `${s.keywordHits.length} indikator rubrik (${s.keywordHits.slice(0, 3).join(", ")})`
-      : "belum ada indikator rubrik",
-  );
-  reasons.push(s.hasResult ? "menyebut hasil/dampak" : "belum menyebut hasil");
-  if (s.hasSituation) reasons.push("ada konteks situasi");
+      ? L(`${s.keywordHits.length} indikator rubrik (${hits})`, `${s.keywordHits.length} rubric indicators (${hits})`)
+      : L("belum ada indikator rubrik", "no rubric indicators yet"),
+    s.hasResult ? L("menyebut hasil/dampak", "mentions a result/impact") : L("belum menyebut hasil", "no result mentioned yet"),
+  ];
+  if (s.hasSituation) reasons.push(L("ada konteks situasi", "situational context given"));
 
   return {
     competencyId,
     level,
     excerpt: bestExcerpt(answer, competency),
-    rationale: `Sinyal teks: ${reasons.join(" · ")}.`,
+    rationale: L(`Sinyal teks: ${reasons.map((r) => r.id).join(" · ")}.`, `Text signals: ${reasons.map((r) => r.en).join(" · ")}.`),
     confidence: s.words < 15 ? "rendah" : s.words < 35 ? "sedang" : "tinggi",
   };
 }
 
-export function followUpFor(answer: string, competencyId: string, defaultFollowUp: string) {
+export function followUpFor(answer: string, competencyId: string, defaultFollowUp: Bilingual | string): Bilingual | string {
   const competency = COMPETENCY_MAP[competencyId];
   if (!competency) return defaultFollowUp;
   const s = answerSignals(answer, competency);
-  if (s.words < 15) return "Bisa ceritakan contoh spesifik — situasinya apa dan apa yang Anda lakukan?";
-  if (!s.hasResult) return "Apa hasil akhirnya, dan bagaimana Anda mengukurnya?";
+  if (s.words < 15) return L("Bisa ceritakan contoh spesifik — situasinya apa dan apa yang Anda lakukan?", "Could you share a specific example — what was the situation and what did you do?");
+  if (!s.hasResult) return L("Apa hasil akhirnya, dan bagaimana Anda mengukurnya?", "What was the final outcome, and how did you measure it?");
   return defaultFollowUp;
 }
 
-export function assessCandidate(candidate: Candidate, job: JobPosition | undefined): EvidenceItem[] {
+/** Evidence for a candidate; bilingual seed answers are assessed in the language being viewed. */
+export function assessCandidate(candidate: Candidate, job: JobPosition | undefined, locale: Locale = "id"): EvidenceItem[] {
   if (!job) return [];
   return candidate.transcript.map((t) => {
     const q = job.questions.find((qq) => qq.id === t.questionId);
-    return assessAnswer(t.answer, q?.competencyId ?? job.competencies[0]?.id ?? "komunikasi");
+    return assessAnswer(pick(t.answer, locale), q?.competencyId ?? job.competencies[0]?.id ?? "komunikasi");
   });
 }
 
@@ -116,4 +125,15 @@ export function weightedSummary(evidence: EvidenceItem[], job: JobPosition | und
   return weights ? total / weights : 0;
 }
 
-export const LEVEL_LABEL: Record<number, string> = { 1: "Belum terlihat", 2: "Berkembang", 3: "Cakap", 4: "Kuat" };
+export const LEVEL_LABEL: Record<number, Bilingual> = {
+  1: L("Belum terlihat", "Not yet shown"),
+  2: L("Berkembang", "Developing"),
+  3: L("Cakap", "Proficient"),
+  4: L("Kuat", "Strong"),
+};
+
+export const CONFIDENCE_LABEL: Record<EvidenceItem["confidence"], Bilingual> = {
+  rendah: L("rendah", "low"),
+  sedang: L("sedang", "medium"),
+  tinggi: L("tinggi", "high"),
+};

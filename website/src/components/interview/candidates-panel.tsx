@@ -11,8 +11,10 @@ import { Field, FieldError, Input, Label, Select } from "@/components/ui/form";
 import { EmptyState } from "@/components/ui/misc";
 import { formatDate, initials } from "@/lib/formatters";
 import { CANDIDATE_STATUS, CandidateStatusBadge, displayName } from "./shared";
+import { useI18n } from "@/lib/i18n";
 
 export function CandidatesPanel({ onOpenReport }: { onOpenReport: (id: string) => void }) {
+  const { t } = useI18n();
   const candidates = useInterviewStore((s) => s.candidates);
   const jobs = useInterviewStore((s) => s.jobs);
   const invite = useInterviewStore((s) => s.inviteCandidate);
@@ -37,13 +39,13 @@ export function CandidatesPanel({ onOpenReport }: { onOpenReport: (id: string) =
 
   const submitInvite = () => {
     const e: Record<string, string> = {};
-    if (form.name.trim().length < 3) e.name = "Nama minimal 3 karakter.";
-    if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) e.email = "Format email tidak valid.";
-    if (!form.jobId) e.jobId = "Pilih lowongan.";
+    if (form.name.trim().length < 3) e.name = t("Nama minimal 3 karakter.", "Name must be at least 3 characters.");
+    if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) e.email = t("Format _email_ tidak valid.", "Invalid email format.");
+    if (!form.jobId) e.jobId = t("Pilih lowongan.", "Choose a vacancy.");
     setErrors(e);
     if (Object.keys(e).length) return;
     invite(form.name.trim(), form.email.trim(), form.jobId);
-    toast.success("Undangan dibuat (simulasi).", { description: "Tidak ada email yang benar-benar dikirim." });
+    toast.success(t("Undangan dibuat (simulasi).", "Invitation created (simulated)."), { description: t("Tidak ada _email_ yang benar-benar dikirim.", "No email is actually sent.") });
     setOpen(false);
     setForm({ name: "", email: "", jobId: jobs[0]?.id ?? "" });
   };
@@ -53,43 +55,47 @@ export function CandidatesPanel({ onOpenReport }: { onOpenReport: (id: string) =
       <div className="flex flex-col gap-2 rounded-2xl border border-line bg-card p-4 shadow-soft lg:flex-row lg:items-center">
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-          <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Cari kandidat…" className="pl-9" aria-label="Cari kandidat" />
+          <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t("Cari kandidat…", "Search candidates…")} className="pl-9" aria-label={t("Cari kandidat", "Search candidates")} />
         </div>
-        <Select value={jobId} onChange={(e) => setJobId(e.target.value)} className="lg:w-64" aria-label="Filter lowongan">
-          <option value="all">Semua lowongan</option>
+        <Select value={jobId} onChange={(e) => setJobId(e.target.value)} className="lg:w-64" aria-label={t("Filter lowongan", "Filter by vacancy")}>
+          <option value="all">{t("Semua lowongan", "All vacancies")}</option>
           {jobs.map((j) => (
             <option key={j.id} value={j.id}>
               {j.title}
             </option>
           ))}
         </Select>
-        <Select value={status} onChange={(e) => setStatus(e.target.value as typeof status)} className="lg:w-52" aria-label="Filter status">
-          <option value="all">Semua status</option>
+        <Select value={status} onChange={(e) => setStatus(e.target.value as typeof status)} className="lg:w-52" aria-label={t("Filter status", "Filter by status")}>
+          <option value="all">{t("Semua status", "All statuses")}</option>
           {(Object.keys(CANDIDATE_STATUS) as CandidateStatus[]).map((s) => (
             <option key={s} value={s}>
-              {CANDIDATE_STATUS[s].label}
+              {t(CANDIDATE_STATUS[s].label)}
             </option>
           ))}
         </Select>
         <Button variant="one" onClick={() => setOpen(true)}>
-          <UserPlus className="h-4 w-4" /> Undang kandidat
+          <UserPlus className="h-4 w-4" /> {t("Undang kandidat", "Invite candidate")}
         </Button>
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState icon={<Users className="h-5 w-5" />} title="Tidak ada kandidat yang cocok" description="Ubah filter, atau undang kandidat baru." />
+        <EmptyState
+          icon={<Users className="h-5 w-5" />}
+          title={t("Tidak ada kandidat yang cocok", "No matching candidates")}
+          description={t("Ubah filter, atau undang kandidat baru.", "Change the filters, or invite a new candidate.")}
+        />
       ) : (
         <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[780px] text-left text-sm">
               <thead className="bg-surface text-xs text-muted">
                 <tr>
-                  <th className="px-4 py-3 font-semibold">Kandidat (fiktif)</th>
-                  <th className="px-4 py-3 font-semibold">Lowongan</th>
-                  <th className="px-4 py-3 font-semibold">Diundang</th>
+                  <th className="px-4 py-3 font-semibold">{t("Kandidat (fiktif)", "Candidate (fictional)")}</th>
+                  <th className="px-4 py-3 font-semibold">{t("Lowongan", "Vacancy")}</th>
+                  <th className="px-4 py-3 font-semibold">{t("Diundang", "Invited")}</th>
                   <th className="px-4 py-3 font-semibold">Status</th>
-                  <th className="px-4 py-3 font-semibold">Catatan</th>
-                  <th className="px-4 py-3 text-right font-semibold">Aksi</th>
+                  <th className="px-4 py-3 font-semibold">{t("Catatan", "Notes")}</th>
+                  <th className="px-4 py-3 text-right font-semibold">{t("Aksi", "Actions")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
@@ -102,9 +108,9 @@ export function CandidatesPanel({ onOpenReport }: { onOpenReport: (id: string) =
                         </span>
                         <div>
                           <p className="flex items-center gap-1.5 font-semibold text-ink">
-                            {displayName(c, mask)} {c.flagged && <Flag className="h-3.5 w-3.5 text-danger" aria-label="Ditandai" />}
+                            {displayName(c, mask)} {c.flagged && <Flag className="h-3.5 w-3.5 text-danger" aria-label={t("Ditandai", "Flagged")} />}
                           </p>
-                          <p className="text-xs text-muted">{mask ? "email disamarkan" : c.email}</p>
+                          <p className="text-xs text-muted">{mask ? t("_email_ disamarkan", "email masked") : c.email}</p>
                         </div>
                       </div>
                     </td>
@@ -117,11 +123,11 @@ export function CandidatesPanel({ onOpenReport }: { onOpenReport: (id: string) =
                     <td className="px-4 py-3 text-right">
                       {c.transcript.length > 0 ? (
                         <Button size="sm" variant="soft" onClick={() => onOpenReport(c.id)}>
-                          Lihat laporan
+                          {t("Lihat laporan", "View report")}
                         </Button>
                       ) : (
-                        <Button size="sm" variant="ghost" onClick={() => toast.info(`Pengingat dikirim ke ${displayName(c, mask)} (simulasi).`)}>
-                          <Send className="h-3.5 w-3.5" /> Ingatkan
+                        <Button size="sm" variant="ghost" onClick={() => toast.info(t(`Pengingat dikirim ke ${displayName(c, mask)} (simulasi).`, `Reminder sent to ${displayName(c, mask)} (simulated).`))}>
+                          <Send className="h-3.5 w-3.5" /> {t("Ingatkan", "Remind")}
                         </Button>
                       )}
                     </td>
@@ -130,30 +136,34 @@ export function CandidatesPanel({ onOpenReport }: { onOpenReport: (id: string) =
               </tbody>
             </table>
           </div>
-          <p className="border-t border-line px-4 py-2.5 text-xs text-muted">{filtered.length} kandidat</p>
+          <p className="border-t border-line px-4 py-2.5 text-xs text-muted">
+            {filtered.length} {t("kandidat", "candidates")}
+          </p>
         </div>
       )}
 
       <Modal
         open={open}
         onClose={() => setOpen(false)}
-        title="Undang kandidat"
-        description="Gunakan data fiktif — undangan hanya simulasi."
+        title={t("Undang kandidat", "Invite a candidate")}
+        description={t("Gunakan data fiktif — undangan hanya simulasi.", "Use fictional data — the invitation is only simulated.")}
         size="sm"
         footer={
           <>
             <Button variant="secondary" onClick={() => setOpen(false)}>
-              Batal
+              {t("Batal", "Cancel")}
             </Button>
             <Button variant="one" onClick={submitInvite}>
-              <Send className="h-4 w-4" /> Buat undangan
+              <Send className="h-4 w-4" /> {t("Buat undangan", "Create invitation")}
             </Button>
           </>
         }
       >
         <div className="grid gap-4">
           <Field>
-            <Label htmlFor="inv-name" required>Nama kandidat</Label>
+            <Label htmlFor="inv-name" required>
+              {t("Nama kandidat", "Candidate name")}
+            </Label>
             <Input id="inv-name" data-autofocus value={form.name} aria-invalid={!!errors.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             <FieldError message={errors.name} />
           </Field>
@@ -163,7 +173,9 @@ export function CandidatesPanel({ onOpenReport }: { onOpenReport: (id: string) =
             <FieldError message={errors.email} />
           </Field>
           <Field>
-            <Label htmlFor="inv-job" required>Lowongan</Label>
+            <Label htmlFor="inv-job" required>
+              {t("Lowongan", "Vacancy")}
+            </Label>
             <Select id="inv-job" value={form.jobId} onChange={(e) => setForm({ ...form, jobId: e.target.value })}>
               {jobs.map((j) => (
                 <option key={j.id} value={j.id}>

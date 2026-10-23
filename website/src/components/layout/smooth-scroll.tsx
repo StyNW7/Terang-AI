@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Lenis from "lenis";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { ArrowUp } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 let active: Lenis | null = null;
 
@@ -38,6 +39,7 @@ export function ScrollChrome() {
   const { scrollYProgress, scrollY } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 28, mass: 0.3 });
   const [showTop, setShowTop] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => scrollY.on("change", (y) => setShowTop(y > 900)), [scrollY]);
 
@@ -53,7 +55,7 @@ export function ScrollChrome() {
             exit={{ opacity: 0, y: 12, scale: 0.9 }}
             onClick={scrollToTop}
             className="fixed bottom-5 right-5 z-[60] grid h-11 w-11 place-items-center rounded-full border border-line bg-card/90 text-ink shadow-lift backdrop-blur transition hover:border-brand/40 hover:text-brand-ink"
-            aria-label="Kembali ke atas"
+            aria-label={t("Kembali ke atas", "Back to top")}
           >
             <ArrowUp className="h-[18px] w-[18px]" />
           </motion.button>

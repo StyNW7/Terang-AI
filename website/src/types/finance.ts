@@ -1,3 +1,5 @@
+import type { Txt } from "@/lib/i18n-core";
+
 export type ScenarioPreset = "conservative" | "base" | "optimistic";
 
 /** All monetary values are in IDR. Periods are explicitly per month or per horizon. */
@@ -94,5 +96,5 @@ export interface StrategyResult {
   totalCosts: number;
   budgetConsumption: number;
   capacity: CapacityResult;
-  risks: string[];
+  risks: Txt[];
 }

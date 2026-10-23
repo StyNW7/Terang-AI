@@ -7,12 +7,14 @@ import { useStrategyMode } from "@/hooks/use-strategy-mode";
 import { Mascot } from "@/components/shared/brand";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 export function StrategySelector() {
   const { mode, setMode } = useStrategyMode();
+  const { t, tx } = useI18n();
   const cards = [
-    { key: "one" as const, s: ONE_STRATEGY, icon: Target, mascot: "target" as const, gradient: "bg-one-gradient", href: "/strategies/one", cta: "Jelajahi ONE Strategy", subtitle: "Focused Single-Product Growth" },
-    { key: "ace" as const, s: ACE_STRATEGY, icon: Layers, mascot: "puzzle" as const, gradient: "bg-ace-gradient", href: "/strategies/ace", cta: "Jelajahi ACE Strategy", subtitle: "Coordinated Dual-Product Growth" },
+    { key: "one" as const, s: ONE_STRATEGY, icon: Target, mascot: "target" as const, gradient: "bg-one-gradient", href: "/strategies/one", cta: t("Jelajahi ONE Strategy", "Explore the ONE Strategy"), subtitle: "Focused Single-Product Growth" },
+    { key: "ace" as const, s: ACE_STRATEGY, icon: Layers, mascot: "puzzle" as const, gradient: "bg-ace-gradient", href: "/strategies/ace", cta: t("Jelajahi ACE Strategy", "Explore the ACE Strategy"), subtitle: "Coordinated Dual-Product Growth" },
   ];
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -38,7 +40,7 @@ export function StrategySelector() {
                         <Icon className="h-5 w-5" />
                       </span>
                       <span className="rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold ring-1 ring-white/25">
-                        {key === "one" ? "PRO" : "KONTRA"}
+                        {key === "one" ? "PRO" : t("KONTRA", "CONTRA")}
                       </span>
                     </div>
                     <h3 className="mt-4 font-display text-4xl font-semibold tracking-tight">{key.toUpperCase()}</h3>
@@ -49,7 +51,7 @@ export function StrategySelector() {
                 </div>
               </div>
               <div className="flex flex-1 flex-col p-7">
-                <p className="text-sm leading-relaxed text-muted-strong">{s.thesis}</p>
+                <p className="text-sm leading-relaxed text-muted-strong">{tx(s.thesis)}</p>
                 <div className="mt-5 grid gap-2">
                   {s.pillars.map((p) => (
                     <div key={p.key} className="flex items-center gap-3 rounded-xl bg-surface p-2.5 ring-1 ring-line">
@@ -65,10 +67,12 @@ export function StrategySelector() {
                   <Button variant={selected ? "secondary" : key} onClick={() => setMode(key)} size="sm">
                     {selected ? (
                       <>
-                        <CheckCircle2 className="h-4 w-4 text-success" /> Mode aktif
+                        <CheckCircle2 className="h-4 w-4 text-success" /> {t("Mode aktif", "Active mode")}
                       </>
                     ) : (
-                      <>Aktifkan mode {key.toUpperCase()}</>
+                      <>
+                        {t("Aktifkan mode", "Activate mode")} {key.toUpperCase()}
+                      </>
                     )}
                   </Button>
                   <Button href={href} variant="ghost" size="sm">

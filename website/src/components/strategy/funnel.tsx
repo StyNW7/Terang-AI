@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { formatNumber, formatPercent } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 export interface FunnelStage {
   label: string;
@@ -22,6 +23,7 @@ export function Funnel({
   className?: string;
   compact?: boolean;
 }) {
+  const { t } = useI18n();
   const max = Math.max(1, ...stages.map((s) => s.value));
   return (
     <div className={cn("space-y-2", className)}>
@@ -32,7 +34,7 @@ export function Funnel({
           <div key={s.label} className="grid grid-cols-[110px_1fr] items-center gap-3 sm:grid-cols-[140px_1fr]">
             <div className="min-w-0">
               <p className={cn("font-semibold leading-tight text-ink", compact ? "text-xs" : "text-[13px]")}>{s.label}</p>
-              {conv !== null && <p className="text-[11px] text-muted">{formatPercent(conv, 1)} dari tahap sebelumnya</p>}
+              {conv !== null && <p className="text-[11px] text-muted">{formatPercent(conv, 1)} {t("dari tahap sebelumnya", "of the previous stage")}</p>}
             </div>
             <div className="relative h-9 rounded-xl bg-neutral-soft">
               <motion.div

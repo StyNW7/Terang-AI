@@ -6,14 +6,15 @@ import type {
   Transaction,
   JudgingCriterion,
 } from "@/types/events";
+import { L, type Bilingual, type Txt } from "@/lib/i18n-core";
 
 /* All records below are FICTIONAL demo data (synthetic-demo). */
 
 const bccCriteria: JudgingCriterion[] = [
-  { id: "c1", name: "Analisis Masalah", weight: 30, description: "Ketajaman identifikasi akar masalah & data pendukung." },
-  { id: "c2", name: "Kelayakan Solusi", weight: 30, description: "Solusi realistis, terukur, dan sesuai kapasitas." },
-  { id: "c3", name: "Dampak Finansial", weight: 20, description: "Logika proyeksi & asumsi finansial." },
-  { id: "c4", name: "Presentasi", weight: 20, description: "Struktur, kejelasan, dan kemampuan menjawab." },
+  { id: "c1", name: L("Analisis Masalah", "Problem Analysis"), weight: 30, description: L("Ketajaman identifikasi akar masalah & data pendukung.", "Sharpness of root-cause identification & supporting data.") },
+  { id: "c2", name: L("Kelayakan Solusi", "Solution Feasibility"), weight: 30, description: L("Solusi realistis, terukur, dan sesuai kapasitas.", "A realistic, measurable solution that fits capacity.") },
+  { id: "c3", name: L("Dampak Finansial", "Financial Impact"), weight: 20, description: L("Logika proyeksi & asumsi finansial.", "Logic of projections & financial assumptions.") },
+  { id: "c4", name: L("Presentasi", "Presentation"), weight: 20, description: L("Struktur, kejelasan, dan kemampuan menjawab.", "Structure, clarity and ability to answer questions.") },
 ];
 
 export const SEED_EVENTS: EventItem[] = [
@@ -33,12 +34,15 @@ export const SEED_EVENTS: EventItem[] = [
     registered: 108,
     submissions: 64,
     views: 4_820,
-    description: "Kompetisi studi kasus bisnis tingkat nasional untuk mahasiswa S1 dengan babak penyisihan online dan final offline.",
+    description: L(
+      "Kompetisi studi kasus bisnis tingkat nasional untuk mahasiswa S1 dengan babak penyisihan _online_ dan final _offline_.",
+      "A national business case competition for undergraduates, with online preliminary rounds and an offline final.",
+    ),
     stages: [
-      { id: "s1", name: "Registrasi tim", date: "2026-09-01", type: "registrasi" },
-      { id: "s2", name: "Submisi proposal", date: "2026-10-10", type: "submisi" },
-      { id: "s3", name: "Penjurian penyisihan", date: "2026-10-24", type: "penjurian" },
-      { id: "s4", name: "Pengumuman finalis", date: "2026-10-31", type: "pengumuman" },
+      { id: "s1", name: L("Registrasi tim", "Team registration"), date: "2026-09-01", type: "registrasi" },
+      { id: "s2", name: L("Submisi proposal", "Proposal submission"), date: "2026-10-10", type: "submisi" },
+      { id: "s3", name: L("Penjurian penyisihan", "Preliminary judging"), date: "2026-10-24", type: "penjurian" },
+      { id: "s4", name: L("Pengumuman finalis", "Finalist announcement"), date: "2026-10-31", type: "pengumuman" },
       { id: "s5", name: "Grand final", date: "2026-11-14", type: "acara" },
     ],
     criteria: bccCriteria,
@@ -61,10 +65,13 @@ export const SEED_EVENTS: EventItem[] = [
     registered: 263,
     submissions: 0,
     views: 6_140,
-    description: "Konferensi dua hari tentang data, AI, dan karier analitik untuk mahasiswa dan profesional muda.",
+    description: L(
+      "Konferensi dua hari tentang data, AI, dan karier analitik untuk mahasiswa dan profesional muda.",
+      "A two-day conference on data, AI and analytics careers for students and young professionals.",
+    ),
     stages: [
-      { id: "s1", name: "Registrasi peserta", date: "2026-10-01", type: "registrasi" },
-      { id: "s2", name: "Hari konferensi", date: "2026-11-21", type: "acara" },
+      { id: "s1", name: L("Registrasi peserta", "Participant registration"), date: "2026-10-01", type: "registrasi" },
+      { id: "s2", name: L("Hari konferensi", "Conference day"), date: "2026-11-21", type: "acara" },
     ],
     criteria: [],
     teamBased: false,
@@ -72,7 +79,7 @@ export const SEED_EVENTS: EventItem[] = [
   },
   {
     id: "ev-uiux",
-    name: "Workshop UI/UX untuk Pemula",
+    name: L("Workshop UI/UX untuk Pemula", "UI/UX Workshop for Beginners"),
     organizer: "Institut Teknologi Lintas Samudra",
     category: "workshop",
     status: "completed",
@@ -86,11 +93,14 @@ export const SEED_EVENTS: EventItem[] = [
     registered: 142,
     submissions: 118,
     views: 2_310,
-    description: "Workshop praktik desain antarmuka dengan tugas akhir mini-project dan sertifikat.",
+    description: L(
+      "_Workshop_ praktik desain antarmuka dengan tugas akhir _mini-project_ dan sertifikat.",
+      "A hands-on interface-design workshop with a final mini-project and a certificate.",
+    ),
     stages: [
-      { id: "s1", name: "Registrasi", date: "2026-08-20", type: "registrasi" },
-      { id: "s2", name: "Sesi workshop", date: "2026-09-12", type: "acara" },
-      { id: "s3", name: "Submisi mini-project", date: "2026-09-19", type: "submisi" },
+      { id: "s1", name: L("Registrasi", "Registration"), date: "2026-08-20", type: "registrasi" },
+      { id: "s2", name: L("Sesi _workshop_", "Workshop session"), date: "2026-09-12", type: "acara" },
+      { id: "s3", name: L("Submisi _mini-project_", "Mini-project submission"), date: "2026-09-19", type: "submisi" },
     ],
     criteria: [],
     teamBased: false,
@@ -98,7 +108,7 @@ export const SEED_EVENTS: EventItem[] = [
   },
   {
     id: "ev-karier",
-    name: "Seminar Karier: Siap Kerja di Era AI",
+    name: L("Seminar Karier: Siap Kerja di Era AI", "Career Seminar: Job-Ready in the AI Era"),
     organizer: "Pusat Karier Universitas Arunika",
     category: "seminar",
     status: "registration",
@@ -112,10 +122,13 @@ export const SEED_EVENTS: EventItem[] = [
     registered: 187,
     submissions: 0,
     views: 3_960,
-    description: "Seminar persiapan karier bersama praktisi HR tentang wawancara, portofolio, dan literasi AI.",
+    description: L(
+      "Seminar persiapan karier bersama praktisi HR tentang wawancara, portofolio, dan literasi AI.",
+      "A career-preparation seminar with HR practitioners on interviews, portfolios and AI literacy.",
+    ),
     stages: [
-      { id: "s1", name: "Registrasi", date: "2026-10-05", type: "registrasi" },
-      { id: "s2", name: "Hari seminar", date: "2026-11-08", type: "acara" },
+      { id: "s1", name: L("Registrasi", "Registration"), date: "2026-10-05", type: "registrasi" },
+      { id: "s2", name: L("Hari seminar", "Seminar day"), date: "2026-11-08", type: "acara" },
     ],
     criteria: [],
     teamBased: false,
@@ -123,7 +136,7 @@ export const SEED_EVENTS: EventItem[] = [
   },
   {
     id: "ev-esai",
-    name: "Lomba Esai Inovasi Pendidikan",
+    name: L("Lomba Esai Inovasi Pendidikan", "Education Innovation Essay Competition"),
     organizer: "Asosiasi Pengajar Bisnis Digital",
     category: "kompetisi",
     status: "registration",
@@ -137,24 +150,27 @@ export const SEED_EVENTS: EventItem[] = [
     registered: 96,
     submissions: 12,
     views: 2_870,
-    description: "Lomba esai individu tentang inovasi pendidikan berbasis teknologi untuk mahasiswa dan guru muda.",
+    description: L(
+      "Lomba esai individu tentang inovasi pendidikan berbasis teknologi untuk mahasiswa dan guru muda.",
+      "An individual essay competition on technology-driven education innovation for students and young teachers.",
+    ),
     stages: [
-      { id: "s1", name: "Registrasi", date: "2026-10-15", type: "registrasi" },
-      { id: "s2", name: "Submisi esai", date: "2026-11-20", type: "submisi" },
-      { id: "s3", name: "Penjurian", date: "2026-11-28", type: "penjurian" },
-      { id: "s4", name: "Pengumuman", date: "2026-12-05", type: "pengumuman" },
+      { id: "s1", name: L("Registrasi", "Registration"), date: "2026-10-15", type: "registrasi" },
+      { id: "s2", name: L("Submisi esai", "Essay submission"), date: "2026-11-20", type: "submisi" },
+      { id: "s3", name: L("Penjurian", "Judging"), date: "2026-11-28", type: "penjurian" },
+      { id: "s4", name: L("Pengumuman", "Announcement"), date: "2026-12-05", type: "pengumuman" },
     ],
     criteria: [
-      { id: "c1", name: "Orisinalitas", weight: 35, description: "Kebaruan ide." },
-      { id: "c2", name: "Argumentasi", weight: 35, description: "Kekuatan argumen & referensi." },
-      { id: "c3", name: "Bahasa", weight: 30, description: "Kejelasan & tata bahasa." },
+      { id: "c1", name: L("Orisinalitas", "Originality"), weight: 35, description: L("Kebaruan ide.", "Novelty of the idea.") },
+      { id: "c2", name: L("Argumentasi", "Argumentation"), weight: 35, description: L("Kekuatan argumen & referensi.", "Strength of arguments & references.") },
+      { id: "c3", name: L("Bahasa", "Language"), weight: 30, description: L("Kejelasan & tata bahasa.", "Clarity & grammar.") },
     ],
     teamBased: false,
     createdFrom: "seed",
   },
   {
     id: "ev-riset",
-    name: "Konferensi Riset Mahasiswa Teknologi",
+    name: L("Konferensi Riset Mahasiswa Teknologi", "Student Technology Research Conference"),
     organizer: "Institut Teknologi Lintas Samudra",
     category: "konferensi",
     status: "draft",
@@ -168,23 +184,26 @@ export const SEED_EVENTS: EventItem[] = [
     registered: 0,
     submissions: 0,
     views: 0,
-    description: "Konferensi call-for-paper untuk riset mahasiswa bidang teknologi terapan.",
+    description: L(
+      "Konferensi _call-for-paper_ untuk riset mahasiswa bidang teknologi terapan.",
+      "A call-for-papers conference for student research in applied technology.",
+    ),
     stages: [
       { id: "s1", name: "Call for paper", date: "2026-12-01", type: "submisi" },
-      { id: "s2", name: "Review paper", date: "2027-01-15", type: "penjurian" },
-      { id: "s3", name: "Konferensi", date: "2027-02-18", type: "acara" },
+      { id: "s2", name: L("_Review paper_", "Paper review"), date: "2027-01-15", type: "penjurian" },
+      { id: "s3", name: L("Konferensi", "Conference"), date: "2027-02-18", type: "acara" },
     ],
     criteria: [
-      { id: "c1", name: "Kontribusi ilmiah", weight: 40, description: "Kebaruan & signifikansi." },
-      { id: "c2", name: "Metodologi", weight: 40, description: "Ketepatan metode." },
-      { id: "c3", name: "Penulisan", weight: 20, description: "Struktur & kejelasan." },
+      { id: "c1", name: L("Kontribusi ilmiah", "Scientific contribution"), weight: 40, description: L("Kebaruan & signifikansi.", "Novelty & significance.") },
+      { id: "c2", name: L("Metodologi", "Methodology"), weight: 40, description: L("Ketepatan metode.", "Appropriateness of methods.") },
+      { id: "c3", name: L("Penulisan", "Writing"), weight: 20, description: L("Struktur & kejelasan.", "Structure & clarity.") },
     ],
     teamBased: false,
     createdFrom: "seed",
   },
   {
     id: "ev-bootcamp",
-    name: "Bootcamp Analisis Data Weekend",
+    name: L("Bootcamp Analisis Data Weekend", "Weekend Data Analysis Bootcamp"),
     organizer: "Komunitas Data Muda Bandung",
     category: "workshop",
     status: "published",
@@ -198,11 +217,14 @@ export const SEED_EVENTS: EventItem[] = [
     registered: 41,
     submissions: 0,
     views: 1_540,
-    description: "Bootcamp dua akhir pekan: SQL, spreadsheet lanjutan, dan visualisasi data.",
+    description: L(
+      "_Bootcamp_ dua akhir pekan: SQL, _spreadsheet_ lanjutan, dan visualisasi data.",
+      "A two-weekend bootcamp: SQL, advanced spreadsheets and data visualisation.",
+    ),
     stages: [
-      { id: "s1", name: "Registrasi", date: "2026-11-01", type: "registrasi" },
-      { id: "s2", name: "Pekan 1", date: "2026-12-05", type: "acara" },
-      { id: "s3", name: "Pekan 2 & capstone", date: "2026-12-12", type: "submisi" },
+      { id: "s1", name: L("Registrasi", "Registration"), date: "2026-11-01", type: "registrasi" },
+      { id: "s2", name: L("Pekan 1", "Week 1"), date: "2026-12-05", type: "acara" },
+      { id: "s3", name: L("Pekan 2 & _capstone_", "Week 2 & capstone"), date: "2026-12-12", type: "submisi" },
     ],
     criteria: [],
     teamBased: false,
@@ -210,7 +232,7 @@ export const SEED_EVENTS: EventItem[] = [
   },
   {
     id: "ev-hack25",
-    name: "Hackathon Smart City Lintas Kampus 2025",
+    name: L("Hackathon Smart City Lintas Kampus 2025", "Inter-Campus Smart City Hackathon 2025"),
     organizer: "Himpunan Mahasiswa Manajemen Univ. Cakrawala Nusantara",
     category: "kompetisi",
     status: "completed",
@@ -224,17 +246,20 @@ export const SEED_EVENTS: EventItem[] = [
     registered: 58,
     submissions: 41,
     views: 3_120,
-    description: "Hackathon 36 jam untuk solusi kota cerdas — edisi sebelumnya yang dapat diulang.",
+    description: L(
+      "_Hackathon_ 36 jam untuk solusi kota cerdas — edisi sebelumnya yang dapat diulang.",
+      "A 36-hour hackathon for smart-city solutions — a previous edition that can be repeated.",
+    ),
     stages: [
-      { id: "s1", name: "Registrasi tim", date: "2025-10-01", type: "registrasi" },
+      { id: "s1", name: L("Registrasi tim", "Team registration"), date: "2025-10-01", type: "registrasi" },
       { id: "s2", name: "Hacking day", date: "2025-11-15", type: "acara" },
-      { id: "s3", name: "Penjurian demo", date: "2025-11-16", type: "penjurian" },
+      { id: "s3", name: L("Penjurian demo", "Demo judging"), date: "2025-11-16", type: "penjurian" },
     ],
     criteria: [
-      { id: "c1", name: "Inovasi", weight: 30, description: "Kebaruan solusi." },
-      { id: "c2", name: "Teknis", weight: 30, description: "Kualitas implementasi." },
-      { id: "c3", name: "Dampak", weight: 25, description: "Potensi dampak bagi kota." },
-      { id: "c4", name: "Pitching", weight: 15, description: "Kualitas demo & pitch." },
+      { id: "c1", name: L("Inovasi", "Innovation"), weight: 30, description: L("Kebaruan solusi.", "Novelty of the solution.") },
+      { id: "c2", name: L("Teknis", "Technical"), weight: 30, description: L("Kualitas implementasi.", "Implementation quality.") },
+      { id: "c3", name: L("Dampak", "Impact"), weight: 25, description: L("Potensi dampak bagi kota.", "Potential impact on the city.") },
+      { id: "c4", name: "Pitching", weight: 15, description: L("Kualitas demo & _pitch_.", "Quality of the demo & pitch.") },
     ],
     teamBased: true,
     createdFrom: "seed",
@@ -266,17 +291,21 @@ export const SEED_PARTICIPANTS: Participant[] = Array.from({ length: 36 }, (_, i
   };
 });
 
-const SUB_TITLES = [
-  "Ekspansi UMKM Kopi Lokal ke Pasar Digital",
-  "Optimasi Rantai Pasok Retail Modern",
-  "Strategi Retensi Pengguna Aplikasi Fintech",
-  "Model Bisnis Sirkular untuk Fashion Lokal",
-  "Digitalisasi Layanan Koperasi Desa",
-  "Penetrasi Pasar EdTech di Kota Tier-2",
-  "Efisiensi Biaya Logistik Last-Mile",
-  "Strategi Harga Dinamis Transportasi Online",
+const SUB_TITLES: Bilingual[] = [
+  L("Ekspansi UMKM Kopi Lokal ke Pasar Digital", "Taking Local Coffee SMEs into Digital Markets"),
+  L("Optimasi Rantai Pasok Retail Modern", "Optimising the Modern Retail Supply Chain"),
+  L("Strategi Retensi Pengguna Aplikasi Fintech", "User-Retention Strategy for a Fintech App"),
+  L("Model Bisnis Sirkular untuk Fashion Lokal", "A Circular Business Model for Local Fashion"),
+  L("Digitalisasi Layanan Koperasi Desa", "Digitising Village Cooperative Services"),
+  L("Penetrasi Pasar EdTech di Kota Tier-2", "EdTech Market Penetration in Tier-2 Cities"),
+  L("Efisiensi Biaya Logistik Last-Mile", "Cutting Last-Mile Logistics Costs"),
+  L("Strategi Harga Dinamis Transportasi Online", "Dynamic Pricing Strategy for Ride-Hailing"),
 ];
-const REVIEWERS = ["Dr. Ratna Wibisono (fiktif)", "Andi Kurniawan, MBA (fiktif)", "Sari Dewanti (fiktif)"];
+const REVIEWERS: Bilingual[] = [
+  L("Dr. Ratna Wibisono (fiktif)", "Dr. Ratna Wibisono (fictional)"),
+  L("Andi Kurniawan, MBA (fiktif)", "Andi Kurniawan, MBA (fictional)"),
+  L("Sari Dewanti (fiktif)", "Sari Dewanti (fictional)"),
+];
 
 export const SEED_SUBMISSIONS: Submission[] = TEAMS.map((team, i): Submission => {
   const graded = i < 5;
@@ -310,17 +339,25 @@ export const SEED_TRANSACTIONS: Transaction[] = Array.from({ length: 16 }, (_, i
 });
 
 /** Weekly activity for the organizer dashboard (synthetic). */
-export const WEEKLY_ACTIVITY = [
-  { week: "M1 Sep", registrasi: 34, submisi: 0, kunjungan: 820 },
-  { week: "M2 Sep", registrasi: 51, submisi: 4, kunjungan: 1_140 },
-  { week: "M3 Sep", registrasi: 66, submisi: 18, kunjungan: 1_320 },
-  { week: "M4 Sep", registrasi: 58, submisi: 41, kunjungan: 1_180 },
-  { week: "M1 Okt", registrasi: 72, submisi: 52, kunjungan: 1_610 },
-  { week: "M2 Okt", registrasi: 89, submisi: 38, kunjungan: 1_930 },
-  { week: "M3 Okt", registrasi: 77, submisi: 26, kunjungan: 1_720 },
+export const WEEKLY_ACTIVITY: { week: Bilingual; registrasi: number; submisi: number; kunjungan: number }[] = [
+  { week: L("M1 Sep", "W1 Sep"), registrasi: 34, submisi: 0, kunjungan: 820 },
+  { week: L("M2 Sep", "W2 Sep"), registrasi: 51, submisi: 4, kunjungan: 1_140 },
+  { week: L("M3 Sep", "W3 Sep"), registrasi: 66, submisi: 18, kunjungan: 1_320 },
+  { week: L("M4 Sep", "W4 Sep"), registrasi: 58, submisi: 41, kunjungan: 1_180 },
+  { week: L("M1 Okt", "W1 Oct"), registrasi: 72, submisi: 52, kunjungan: 1_610 },
+  { week: L("M2 Okt", "W2 Oct"), registrasi: 89, submisi: 38, kunjungan: 1_930 },
+  { week: L("M3 Okt", "W3 Oct"), registrasi: 77, submisi: 26, kunjungan: 1_720 },
 ];
 
-export const SOURCE_CONVERSION = [
+export const SOURCE_LABEL: Record<Participant["source"], Txt> = {
+  Instagram: "Instagram",
+  Kampus: L("Kampus", "Campus"),
+  Referral: "Referral",
+  Website: "Website",
+  LinkedIn: "LinkedIn",
+};
+
+export const SOURCE_CONVERSION: { source: Participant["source"]; kunjungan: number; registrasi: number }[] = [
   { source: "Kampus", kunjungan: 3_400, registrasi: 312 },
   { source: "Instagram", kunjungan: 5_900, registrasi: 248 },
   { source: "Referral", kunjungan: 1_250, registrasi: 171 },
@@ -328,11 +365,11 @@ export const SOURCE_CONVERSION = [
   { source: "LinkedIn", kunjungan: 1_100, registrasi: 63 },
 ];
 
-export const REPEAT_COMPARISON = [
-  { metric: "Registrasi tim", edisi2025: 58, edisi2026: 108 },
-  { metric: "Submisi", edisi2025: 41, edisi2026: 64 },
-  { metric: "Juri aktif", edisi2025: 4, edisi2026: 6 },
-  { metric: "Hari setup", edisi2025: 14, edisi2026: 5 },
+export const REPEAT_COMPARISON: { metric: Bilingual; edisi2025: number; edisi2026: number }[] = [
+  { metric: L("Registrasi tim", "Team registrations"), edisi2025: 58, edisi2026: 108 },
+  { metric: L("Submisi", "Submissions"), edisi2025: 41, edisi2026: 64 },
+  { metric: L("Juri aktif", "Active judges"), edisi2025: 4, edisi2026: 6 },
+  { metric: L("Hari _setup_", "Setup days"), edisi2025: 14, edisi2026: 5 },
 ];
 
 export const EVENT_TEMPLATES: EventTemplate[] = [
@@ -340,7 +377,7 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
     id: "tpl-bcc",
     name: "Business Case Competition",
     category: "kompetisi",
-    description: "Registrasi tim, submisi proposal, penjurian berbobot, dan grand final.",
+    description: L("Registrasi tim, submisi proposal, penjurian berbobot, dan _grand final_.", "Team registration, proposal submission, weighted judging and a grand final."),
     icon: "trophy",
     defaults: {
       durationDays: 45,
@@ -349,26 +386,26 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
       teamBased: true,
       mode: "hybrid",
       stages: [
-        { name: "Registrasi tim", type: "registrasi", offsetDays: 0 },
-        { name: "Submisi proposal", type: "submisi", offsetDays: 21 },
-        { name: "Penjurian penyisihan", type: "penjurian", offsetDays: 30 },
-        { name: "Pengumuman finalis", type: "pengumuman", offsetDays: 35 },
+        { name: L("Registrasi tim", "Team registration"), type: "registrasi", offsetDays: 0 },
+        { name: L("Submisi proposal", "Proposal submission"), type: "submisi", offsetDays: 21 },
+        { name: L("Penjurian penyisihan", "Preliminary judging"), type: "penjurian", offsetDays: 30 },
+        { name: L("Pengumuman finalis", "Finalist announcement"), type: "pengumuman", offsetDays: 35 },
         { name: "Grand final", type: "acara", offsetDays: 45 },
       ],
       criteria: [
-        { name: "Analisis Masalah", weight: 30, description: "Ketajaman identifikasi masalah." },
-        { name: "Kelayakan Solusi", weight: 30, description: "Solusi realistis & terukur." },
-        { name: "Dampak Finansial", weight: 20, description: "Logika finansial." },
-        { name: "Presentasi", weight: 20, description: "Kejelasan & Q&A." },
+        { name: L("Analisis Masalah", "Problem Analysis"), weight: 30, description: L("Ketajaman identifikasi masalah.", "Sharpness of problem identification.") },
+        { name: L("Kelayakan Solusi", "Solution Feasibility"), weight: 30, description: L("Solusi realistis & terukur.", "A realistic & measurable solution.") },
+        { name: L("Dampak Finansial", "Financial Impact"), weight: 20, description: L("Logika finansial.", "Financial logic.") },
+        { name: L("Presentasi", "Presentation"), weight: 20, description: L("Kejelasan & tanya jawab.", "Clarity & Q&A.") },
       ],
-      tasks: ["Undang 6 juri", "Siapkan guidebook", "Atur rubrik penyisihan", "Siapkan venue final"],
+      tasks: [L("Undang 6 juri", "Invite 6 judges"), L("Siapkan _guidebook_", "Prepare the guidebook"), L("Atur rubrik penyisihan", "Set up the preliminary rubric"), L("Siapkan _venue_ final", "Prepare the final venue")],
     },
   },
   {
     id: "tpl-conf",
     name: "Academic Conference",
     category: "konferensi",
-    description: "Call for paper, review sejawat, dan hari konferensi.",
+    description: L("_Call for paper_, _review_ sejawat, dan hari konferensi.", "Call for papers, peer review and the conference day."),
     icon: "presentation",
     defaults: {
       durationDays: 75,
@@ -378,23 +415,23 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
       mode: "offline",
       stages: [
         { name: "Call for paper", type: "submisi", offsetDays: 0 },
-        { name: "Review paper", type: "penjurian", offsetDays: 40 },
-        { name: "Pengumuman penerimaan", type: "pengumuman", offsetDays: 55 },
-        { name: "Hari konferensi", type: "acara", offsetDays: 75 },
+        { name: L("_Review paper_", "Paper review"), type: "penjurian", offsetDays: 40 },
+        { name: L("Pengumuman penerimaan", "Acceptance announcement"), type: "pengumuman", offsetDays: 55 },
+        { name: L("Hari konferensi", "Conference day"), type: "acara", offsetDays: 75 },
       ],
       criteria: [
-        { name: "Kontribusi ilmiah", weight: 40, description: "Kebaruan & signifikansi." },
-        { name: "Metodologi", weight: 40, description: "Ketepatan metode." },
-        { name: "Penulisan", weight: 20, description: "Struktur & kejelasan." },
+        { name: L("Kontribusi ilmiah", "Scientific contribution"), weight: 40, description: L("Kebaruan & signifikansi.", "Novelty & significance.") },
+        { name: L("Metodologi", "Methodology"), weight: 40, description: L("Ketepatan metode.", "Appropriateness of methods.") },
+        { name: L("Penulisan", "Writing"), weight: 20, description: L("Struktur & kejelasan.", "Structure & clarity.") },
       ],
-      tasks: ["Bentuk komite reviewer", "Publikasikan template paper", "Atur sesi paralel"],
+      tasks: [L("Bentuk komite _reviewer_", "Form the reviewer committee"), L("Publikasikan _template paper_", "Publish the paper template"), L("Atur sesi paralel", "Arrange parallel sessions")],
     },
   },
   {
     id: "tpl-workshop",
     name: "Workshop",
     category: "workshop",
-    description: "Registrasi peserta, sesi praktik, tugas akhir, dan sertifikat.",
+    description: L("Registrasi peserta, sesi praktik, tugas akhir, dan sertifikat.", "Participant registration, hands-on sessions, a final assignment and certificates."),
     icon: "wrench",
     defaults: {
       durationDays: 14,
@@ -403,19 +440,19 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
       teamBased: false,
       mode: "online",
       stages: [
-        { name: "Registrasi", type: "registrasi", offsetDays: 0 },
-        { name: "Sesi workshop", type: "acara", offsetDays: 10 },
-        { name: "Submisi tugas akhir", type: "submisi", offsetDays: 14 },
+        { name: L("Registrasi", "Registration"), type: "registrasi", offsetDays: 0 },
+        { name: L("Sesi _workshop_", "Workshop session"), type: "acara", offsetDays: 10 },
+        { name: L("Submisi tugas akhir", "Final assignment submission"), type: "submisi", offsetDays: 14 },
       ],
       criteria: [],
-      tasks: ["Siapkan materi & tautan kelas", "Kirim pengingat H-1", "Terbitkan sertifikat"],
+      tasks: [L("Siapkan materi & tautan kelas", "Prepare materials & class links"), L("Kirim pengingat H-1", "Send a reminder one day before"), L("Terbitkan sertifikat", "Issue certificates")],
     },
   },
   {
     id: "tpl-seminar",
     name: "Professional Seminar",
     category: "seminar",
-    description: "Registrasi cepat, pengingat, dan presensi peserta.",
+    description: L("Registrasi cepat, pengingat, dan presensi peserta.", "Quick registration, reminders and attendance tracking."),
     icon: "mic",
     defaults: {
       durationDays: 21,
@@ -424,28 +461,28 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
       teamBased: false,
       mode: "hybrid",
       stages: [
-        { name: "Registrasi", type: "registrasi", offsetDays: 0 },
-        { name: "Hari seminar", type: "acara", offsetDays: 21 },
+        { name: L("Registrasi", "Registration"), type: "registrasi", offsetDays: 0 },
+        { name: L("Hari seminar", "Seminar day"), type: "acara", offsetDays: 21 },
       ],
       criteria: [],
-      tasks: ["Konfirmasi pembicara", "Siapkan form presensi", "Kirim materi pasca-acara"],
+      tasks: [L("Konfirmasi pembicara", "Confirm speakers"), L("Siapkan formulir presensi", "Prepare the attendance form"), L("Kirim materi pasca-acara", "Send post-event materials")],
     },
   },
 ];
 
-export const CATEGORY_LABEL: Record<EventItem["category"], string> = {
-  kompetisi: "Kompetisi",
-  konferensi: "Konferensi",
-  workshop: "Workshop",
-  seminar: "Seminar",
+export const CATEGORY_LABEL: Record<EventItem["category"], Bilingual> = {
+  kompetisi: L("Kompetisi", "Competition"),
+  konferensi: L("Konferensi", "Conference"),
+  workshop: L("_Workshop_", "Workshop"),
+  seminar: L("Seminar", "Seminar"),
 };
 
-export const STATUS_LABEL: Record<EventItem["status"], string> = {
-  draft: "Draft",
-  published: "Dipublikasikan",
-  registration: "Registrasi dibuka",
-  judging: "Penjurian",
-  completed: "Selesai",
+export const STATUS_LABEL: Record<EventItem["status"], Bilingual> = {
+  draft: L("_Draft_", "Draft"),
+  published: L("Dipublikasikan", "Published"),
+  registration: L("Registrasi dibuka", "Registration open"),
+  judging: L("Penjurian", "Judging"),
+  completed: L("Selesai", "Completed"),
 };
 
 /** Platform fee used for the finance preview — illustrative assumption. */

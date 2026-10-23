@@ -13,9 +13,11 @@ import { EmptyState, Progress } from "@/components/ui/misc";
 import { Badge } from "@/components/ui/badge";
 import { formatDate, formatIDR, formatNumber } from "@/lib/formatters";
 import { safeDivide } from "@/lib/utils";
-import { CategoryBadge, EventStatusBadge } from "./shared";
+import { CategoryBadge, EventStatusBadge, MODE_LABEL } from "./shared";
+import { useI18n } from "@/lib/i18n";
 
 export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; onDuplicate: (id: string) => void }) {
+  const { t, tx } = useI18n();
   const events = useEventsStore((s) => s.events);
   const updateEvent = useEventsStore((s) => s.updateEvent);
   const [query, setQuery] = useState("");
@@ -32,23 +34,26 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
         (e) =>
           (category === "all" || e.category === category) &&
           (status === "all" || e.status === status) &&
-          (e.name.toLowerCase().includes(query.toLowerCase()) || e.organizer.toLowerCase().includes(query.toLowerCase())),
+          (t(e.name).toLowerCase().includes(query.toLowerCase()) || e.organizer.toLowerCase().includes(query.toLowerCase())),
       ),
-    [events, category, status, query],
+    [events, category, status, query, t],
   );
 
   const openEdit = (e: EventItem) => {
     setEditing(e);
-    setDraft({ name: e.name, status: e.status, quota: e.quota, fee: e.fee });
+    setDraft({ name: t(e.name), status: e.status, quota: e.quota, fee: e.fee });
     setError(undefined);
   };
 
   const saveEdit = () => {
     if (!editing) return;
-    if (draft.name.trim().length < 5) return setError("Nama event minimal 5 karakter.");
-    if (draft.quota < editing.registered) return setError(`Kuota tidak boleh di bawah jumlah pendaftar (${editing.registered}).`);
-    updateEvent(editing.id, { name: draft.name.trim(), status: draft.status, quota: draft.quota, fee: Math.max(0, draft.fee) });
-    toast.success("Perubahan event disimpan.");
+    if (draft.name.trim().length < 5) return setError(t("Nama _event_ minimal 5 karakter.", "Event name must be at least 5 characters."));
+    if (draft.quota < editing.registered)
+      return setError(t(`Kuota tidak boleh di bawah jumlah pendaftar (${editing.registered}).`, `The quota cannot be below the number of registrants (${editing.registered}).`));
+    // Keep the bilingual name unless the organizer actually renamed the event.
+    const name = draft.name.trim() === t(editing.name) ? editing.name : draft.name.trim();
+    updateEvent(editing.id, { name, status: draft.status, quota: draft.quota, fee: Math.max(0, draft.fee) });
+    toast.success(t("Perubahan _event_ disimpan.", "Event changes saved."));
     setEditing(null);
   };
 
@@ -58,35 +63,35 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
         <div className="flex flex-1 flex-col gap-2 sm:flex-row">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-            <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Cari event atau organizer…" className="pl-9" aria-label="Cari event" />
+            <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t("Cari _event_ atau _organizer_…", "Search events or organizers…")} className="pl-9" aria-label={t("Cari _event_", "Search events")} />
           </div>
-          <Select value={category} onChange={(e) => setCategory(e.target.value as typeof category)} className="sm:w-44" aria-label="Filter kategori">
-            <option value="all">Semua kategori</option>
+          <Select value={category} onChange={(e) => setCategory(e.target.value as typeof category)} className="sm:w-44" aria-label={t("Filter kategori", "Filter by category")}>
+            <option value="all">{t("Semua kategori", "All categories")}</option>
             {Object.entries(CATEGORY_LABEL).map(([k, v]) => (
               <option key={k} value={k}>
-                {v}
+                {t(v)}
               </option>
             ))}
           </Select>
-          <Select value={status} onChange={(e) => setStatus(e.target.value as typeof status)} className="sm:w-48" aria-label="Filter status">
-            <option value="all">Semua status</option>
+          <Select value={status} onChange={(e) => setStatus(e.target.value as typeof status)} className="sm:w-48" aria-label={t("Filter status", "Filter by status")}>
+            <option value="all">{t("Semua status", "All statuses")}</option>
             {Object.entries(STATUS_LABEL).map(([k, v]) => (
               <option key={k} value={k}>
-                {v}
+                {t(v)}
               </option>
             ))}
           </Select>
         </div>
         <Button onClick={onCreate}>
-          <Plus className="h-4 w-4" /> Buat event
+          <Plus className="h-4 w-4" /> {tx("Buat _event_", "Create event")}
         </Button>
       </div>
 
       {filtered.length === 0 ? (
         <EmptyState
           icon={<Search className="h-5 w-5" />}
-          title="Tidak ada event yang cocok"
-          description="Ubah kata kunci atau filter untuk melihat event lain."
+          title={t("Tidak ada _event_ yang cocok", "No matching events")}
+          description={t("Ubah kata kunci atau filter untuk melihat _event_ lain.", "Change the keyword or filters to see other events.")}
           action={
             <Button
               variant="secondary"
@@ -97,7 +102,7 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
                 setStatus("all");
               }}
             >
-              Reset filter
+              {t("Reset filter", "Reset filters")}
             </Button>
           }
         />
@@ -107,22 +112,30 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
             <table className="w-full min-w-[820px] text-left text-sm">
               <thead className="bg-surface text-xs text-muted">
                 <tr>
-                  <th className="px-4 py-3 font-semibold">Event</th>
-                  <th className="px-4 py-3 font-semibold">Kategori</th>
-                  <th className="px-4 py-3 font-semibold">Tanggal</th>
-                  <th className="px-4 py-3 font-semibold">Pendaftar</th>
+                  <th className="px-4 py-3 font-semibold">{tx("_Event_", "Event")}</th>
+                  <th className="px-4 py-3 font-semibold">{t("Kategori", "Category")}</th>
+                  <th className="px-4 py-3 font-semibold">{t("Tanggal", "Date")}</th>
+                  <th className="px-4 py-3 font-semibold">{t("Pendaftar", "Registrants")}</th>
                   <th className="px-4 py-3 font-semibold">Status</th>
-                  <th className="px-4 py-3 text-right font-semibold">Aksi</th>
+                  <th className="px-4 py-3 text-right font-semibold">{t("Aksi", "Actions")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
                 {filtered.map((e) => (
                   <tr key={e.id} className="transition hover:bg-surface/70">
                     <td className="px-4 py-3">
-                      <p className="font-semibold text-ink">{e.name}</p>
+                      <p className="font-semibold text-ink">{t(e.name)}</p>
                       <p className="text-xs text-muted">{e.organizer}</p>
-                      {e.createdFrom === "repeat" && <Badge tone="ace" className="mt-1">Dari Repeat Planner</Badge>}
-                      {e.createdFrom === "template" && <Badge tone="ace" className="mt-1">Dari Smart Template</Badge>}
+                      {e.createdFrom === "repeat" && (
+                        <Badge tone="ace" className="mt-1">
+                          {t("Dari Repeat Planner", "From Repeat Planner")}
+                        </Badge>
+                      )}
+                      {e.createdFrom === "template" && (
+                        <Badge tone="ace" className="mt-1">
+                          {t("Dari Smart Template", "From a Smart Template")}
+                        </Badge>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <CategoryBadge category={e.category} />
@@ -139,13 +152,13 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex justify-end gap-1">
-                        <Button size="icon" variant="ghost" onClick={() => setDetail(e)} aria-label={`Detail ${e.name}`}>
+                        <Button size="icon" variant="ghost" onClick={() => setDetail(e)} aria-label={`${t("Detail", "Details")} ${t(e.name)}`}>
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button size="icon" variant="ghost" onClick={() => openEdit(e)} aria-label={`Edit ${e.name}`}>
+                        <Button size="icon" variant="ghost" onClick={() => openEdit(e)} aria-label={`Edit ${t(e.name)}`}>
                           <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button size="icon" variant="ghost" onClick={() => onDuplicate(e.id)} aria-label={`Duplikasi ${e.name}`}>
+                        <Button size="icon" variant="ghost" onClick={() => onDuplicate(e.id)} aria-label={`${t("Duplikasi", "Duplicate")} ${t(e.name)}`}>
                           <Copy className="h-4 w-4" />
                         </Button>
                       </div>
@@ -156,26 +169,26 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
             </table>
           </div>
           <p className="border-t border-line px-4 py-2.5 text-xs text-muted">
-            Menampilkan {filtered.length} dari {events.length} event
+            {t(`Menampilkan ${filtered.length} dari ${events.length} event`, `Showing ${filtered.length} of ${events.length} events`)}
           </p>
         </div>
       )}
 
-      <Drawer open={!!detail} onClose={() => setDetail(null)} title={detail?.name ?? ""} description={detail?.organizer}>
+      <Drawer open={!!detail} onClose={() => setDetail(null)} title={detail ? t(detail.name) : ""} description={detail?.organizer}>
         {detail && (
           <div className="space-y-5">
             <div className="flex flex-wrap gap-2">
               <EventStatusBadge status={detail.status} />
               <CategoryBadge category={detail.category} />
-              <Badge tone="neutral">{detail.mode}</Badge>
+              <Badge tone="neutral">{tx(MODE_LABEL[detail.mode])}</Badge>
             </div>
-            <p className="text-sm leading-relaxed text-muted-strong">{detail.description}</p>
+            <p className="text-sm leading-relaxed text-muted-strong">{tx(detail.description)}</p>
             <div className="grid grid-cols-2 gap-3 text-sm">
               {[
-                [CalendarDays, "Tanggal", `${formatDate(detail.startDate)} – ${formatDate(detail.endDate)}`],
-                [MapPin, "Lokasi", detail.location],
-                [Users, "Pendaftar", `${formatNumber(detail.registered)} / ${formatNumber(detail.quota)}`],
-                [CalendarDays, "Biaya", detail.fee ? formatIDR(detail.fee) : "Gratis"],
+                [CalendarDays, t("Tanggal", "Dates"), `${formatDate(detail.startDate)} – ${formatDate(detail.endDate)}`],
+                [MapPin, t("Lokasi", "Location"), detail.location],
+                [Users, t("Pendaftar", "Registrants"), `${formatNumber(detail.registered)} / ${formatNumber(detail.quota)}`],
+                [CalendarDays, t("Biaya", "Fee"), detail.fee ? formatIDR(detail.fee) : t("Gratis", "Free")],
               ].map(([Icon, k, v]) => {
                 const I = Icon as typeof CalendarDays;
                 return (
@@ -189,12 +202,12 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
               })}
             </div>
             <div>
-              <p className="mb-2 text-sm font-semibold text-ink">Tahapan</p>
+              <p className="mb-2 text-sm font-semibold text-ink">{t("Tahapan", "Stages")}</p>
               <ol className="relative space-y-3 border-l-2 border-line pl-5">
                 {detail.stages.map((s) => (
                   <li key={s.id} className="relative">
                     <span className="absolute -left-[27px] top-1 h-3 w-3 rounded-full bg-sky ring-4 ring-card" />
-                    <p className="text-sm font-semibold text-ink">{s.name}</p>
+                    <p className="text-sm font-semibold text-ink">{tx(s.name)}</p>
                     <p className="text-xs text-muted">{formatDate(s.date)}</p>
                   </li>
                 ))}
@@ -202,11 +215,11 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
             </div>
             {detail.criteria.length > 0 && (
               <div>
-                <p className="mb-2 text-sm font-semibold text-ink">Rubrik penjurian</p>
+                <p className="mb-2 text-sm font-semibold text-ink">{t("Rubrik penjurian", "Judging rubric")}</p>
                 <div className="space-y-1.5">
                   {detail.criteria.map((c) => (
                     <div key={c.id} className="flex items-center justify-between rounded-lg bg-surface px-3 py-2 text-sm ring-1 ring-line">
-                      <span className="text-ink">{c.name}</span>
+                      <span className="text-ink">{tx(c.name)}</span>
                       <span className="tabular font-semibold text-sky-ink">{c.weight}%</span>
                     </div>
                   ))}
@@ -229,7 +242,7 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
                   setDetail(null);
                 }}
               >
-                <Copy className="h-4 w-4" /> Ulangi event ini
+                <Copy className="h-4 w-4" /> {tx("Ulangi _event_ ini", "Repeat this event")}
               </Button>
             </div>
           </div>
@@ -239,21 +252,21 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
       <Modal
         open={!!editing}
         onClose={() => setEditing(null)}
-        title="Edit event"
+        title={tx("Edit _event_", "Edit event")}
         description={editing?.organizer}
         footer={
           <>
             <Button variant="secondary" onClick={() => setEditing(null)}>
-              Batal
+              {t("Batal", "Cancel")}
             </Button>
-            <Button onClick={saveEdit}>Simpan perubahan</Button>
+            <Button onClick={saveEdit}>{t("Simpan perubahan", "Save changes")}</Button>
           </>
         }
       >
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field className="sm:col-span-2">
             <Label htmlFor="edit-name" required>
-              Nama event
+              {tx("Nama _event_", "Event name")}
             </Label>
             <Input id="edit-name" data-autofocus value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
           </Field>
@@ -262,19 +275,19 @@ export function EventsTable({ onCreate, onDuplicate }: { onCreate: () => void; o
             <Select id="edit-status" value={draft.status} onChange={(e) => setDraft({ ...draft, status: e.target.value as EventItem["status"] })}>
               {Object.entries(STATUS_LABEL).map(([k, v]) => (
                 <option key={k} value={k}>
-                  {v}
+                  {t(v)}
                 </option>
               ))}
             </Select>
           </Field>
           <Field>
             <Label htmlFor="edit-quota" required>
-              Kuota
+              {t("Kuota", "Quota")}
             </Label>
             <Input id="edit-quota" type="number" min={0} value={draft.quota} onChange={(e) => setDraft({ ...draft, quota: Math.max(0, Number(e.target.value)) })} />
           </Field>
           <Field className="sm:col-span-2">
-            <Label htmlFor="edit-fee">Biaya registrasi (Rp)</Label>
+            <Label htmlFor="edit-fee">{t("Biaya registrasi (Rp)", "Registration fee (Rp)")}</Label>
             <Input id="edit-fee" type="number" min={0} step={5000} value={draft.fee} onChange={(e) => setDraft({ ...draft, fee: Math.max(0, Number(e.target.value)) })} />
           </Field>
         </div>

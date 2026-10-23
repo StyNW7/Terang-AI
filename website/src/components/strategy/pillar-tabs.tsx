@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import type { Pillar } from "@/data/strategy";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 /** O-N-E / A-C-E pipeline that doubles as tab navigation (synced to ?pillar=). */
 export function PillarTabs({
@@ -17,6 +18,7 @@ export function PillarTabs({
   variant: "one" | "ace";
 }) {
   const params = useSearchParams();
+  const { t, tx } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
   const fromUrl = params.get("pillar");
@@ -59,10 +61,10 @@ export function PillarTabs({
                 </span>
                 <span className="min-w-0">
                   <span className={cn("block text-[11px] font-semibold uppercase tracking-[0.12em]", isActive ? "text-white/75" : "text-muted")}>
-                    Pilar {i + 1} · {p.program}
+                    {t("Pilar", "Pillar")} {i + 1} · {p.program}
                   </span>
                   <span className="mt-0.5 block text-lg font-semibold leading-tight">{p.name}</span>
-                  <span className={cn("mt-1 block text-[13px] leading-snug", isActive ? "text-white/80" : "text-muted-strong")}>{p.purpose}</span>
+                  <span className={cn("mt-1 block text-[13px] leading-snug", isActive ? "text-white/80" : "text-muted-strong")}>{tx(p.purpose)}</span>
                 </span>
               </span>
               {i < pillars.length - 1 && (

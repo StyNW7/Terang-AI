@@ -7,12 +7,14 @@ import { GUIDED_FLOW, guidedStepFor } from "@/data/navigation";
 import { NavIcon } from "@/components/navigation/nav-icon";
 import { Container } from "@/components/layout/container";
 import { cn } from "@/lib/utils";
+import { keyOf, L, useI18n } from "@/lib/i18n";
 
-const HOME = { href: "/", title: "Beranda", description: "Kembali ke halaman utama", icon: "dashboard" };
+const HOME = { href: "/", title: L("Beranda", "Home"), description: L("Kembali ke halaman utama", "Back to the home page"), icon: "dashboard" };
 
 /** "Step X of 6" stepper + previous/next cards so every story page leads to the next one. */
 export function JourneyNav() {
   const pathname = usePathname() ?? "/";
+  const { t, tx } = useI18n();
   const step = guidedStepFor(pathname);
   if (step < 0) return null;
 
@@ -21,22 +23,22 @@ export function JourneyNav() {
   const pct = ((step + 1) / GUIDED_FLOW.length) * 100;
 
   return (
-    <section aria-label="Alur cerita" className="pb-8 pt-4">
+    <section aria-label={t("Alur cerita", "Story flow")} data-journey className="pb-8 pt-4">
       <Container>
         <div className="rounded-[28px] border border-line bg-card p-5 shadow-soft sm:p-7">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="eyebrow text-brand-ink">Alur cerita</p>
+              <p className="eyebrow text-brand-ink">{t("Alur cerita", "Story flow")}</p>
               <p className="mt-1 text-sm text-muted-strong">
-                Langkah <span className="tabular font-semibold text-ink">{step + 1}</span> dari {GUIDED_FLOW.length} —{" "}
-                {GUIDED_FLOW[step].title}
+                {t("Langkah", "Step")} <span className="tabular font-semibold text-ink">{step + 1}</span> {t("dari", "of")} {GUIDED_FLOW.length} —{" "}
+                {tx(GUIDED_FLOW[step].title)}
               </p>
             </div>
             <Link
               href="/presentation"
               className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium text-muted-strong ring-1 ring-line transition hover:text-ink hover:ring-brand/40"
             >
-              <Play className="h-3 w-3 fill-current" /> Versi presentasi
+              <Play className="h-3 w-3 fill-current" /> {t("Versi presentasi", "Presentation version")}
             </Link>
           </div>
 
@@ -49,7 +51,7 @@ export function JourneyNav() {
               const done = i < step;
               const current = i === step;
               return (
-                <li key={s.href} className="relative">
+                <li key={keyOf(s.href)} className="relative">
                   {i > 0 && (
                     <span
                       aria-hidden
@@ -72,7 +74,7 @@ export function JourneyNav() {
                       {done ? <Check className="h-4 w-4" /> : i + 1}
                     </span>
                     <span className={cn("text-[13px] font-medium transition", current ? "text-ink" : "text-muted group-hover:text-ink")}>
-                      {s.label}
+                      {tx(s.label)}
                     </span>
                   </Link>
                 </li>
@@ -87,8 +89,8 @@ export function JourneyNav() {
             >
               <ArrowLeft className="h-5 w-5 shrink-0 text-muted transition group-hover:-translate-x-0.5 group-hover:text-brand-ink" />
               <span className="min-w-0">
-                <span className="block text-xs text-muted">Sebelumnya</span>
-                <span className="block truncate font-semibold text-ink">{prev.title}</span>
+                <span className="block text-xs text-muted">{t("Sebelumnya", "Previous")}</span>
+                <span className="block truncate font-semibold text-ink">{tx(prev.title)}</span>
               </span>
             </Link>
             {next && (
@@ -100,8 +102,10 @@ export function JourneyNav() {
                   <NavIcon name={next.icon} className="h-5 w-5" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-xs text-white/75">Selanjutnya · {next.description}</span>
-                  <span className="block truncate font-semibold">{next.title}</span>
+                  <span className="block truncate text-xs text-white/75">
+                    {t("Selanjutnya", "Next")} · {t(next.description)}
+                  </span>
+                  <span className="block truncate font-semibold">{tx(next.title)}</span>
                 </span>
                 <ArrowRight className="h-5 w-5 shrink-0 transition group-hover:translate-x-0.5" />
               </Link>

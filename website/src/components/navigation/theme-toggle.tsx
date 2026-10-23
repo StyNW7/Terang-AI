@@ -6,13 +6,15 @@ import { useTheme } from "@/lib/theme";
 import { useMounted } from "@/hooks/use-mounted";
 import { Tooltip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 /** Light/dark switch. Defaults to the OS preference until the viewer chooses. */
 export function ThemeToggle({ className, tone = "default" }: { className?: string; tone?: "default" | "glass" }) {
   const { theme, toggle } = useTheme();
   const mounted = useMounted();
+  const { t } = useI18n();
   const dark = mounted && theme === "dark";
-  const label = dark ? "Ganti ke mode terang" : "Ganti ke mode gelap";
+  const label = dark ? t("Ganti ke mode terang", "Switch to light mode") : t("Ganti ke mode gelap", "Switch to dark mode");
 
   return (
     <Tooltip content={label} side="bottom">

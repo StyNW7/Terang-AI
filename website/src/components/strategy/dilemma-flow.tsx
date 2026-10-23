@@ -7,23 +7,25 @@ import { TEAM } from "@/data/team";
 import { CHALLENGES } from "@/data/strategy";
 import { SourceLabel } from "@/components/shared/source-label";
 import { cn } from "@/lib/utils";
+import { L, useI18n } from "@/lib/i18n";
 
 const STAGES = [
-  { id: "products", label: "Two B2B Products", short: "Dua produk", icon: Boxes },
-  { id: "capacity", label: "Shared Company Capacity", short: "Kapasitas bersama", icon: Users },
-  { id: "challenges", label: "Three Business Challenges", short: "Tiga tantangan", icon: TriangleAlert },
-  { id: "alternatives", label: "Two Strategic Alternatives", short: "Dua alternatif", icon: GitFork },
+  { id: "products", label: L("Dua Produk B2B", "Two B2B Products"), icon: Boxes },
+  { id: "capacity", label: L("Kapasitas Bersama", "Shared Company Capacity"), icon: Users },
+  { id: "challenges", label: L("Tiga Tantangan Bisnis", "Three Business Challenges"), icon: TriangleAlert },
+  { id: "alternatives", label: L("Dua Alternatif Strategi", "Two Strategic Alternatives"), icon: GitFork },
 ] as const;
 
 type StageId = (typeof STAGES)[number]["id"];
 
 function StagePanel({ id }: { id: StageId }) {
+  const { t, tx } = useI18n();
   if (id === "products") {
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {[
-          { name: "Terang Events", cat: "EventTech", icon: CalendarDays, color: "bg-sky-soft text-sky-ink", text: "Penyelenggara acara & kompetisi — registrasi, pembayaran, penjurian." },
-          { name: "AI Candidate Interview", cat: "HRTech", icon: Brain, color: "bg-one-soft text-one-ink", text: "Tim HR — wawancara terstruktur & evaluasi kandidat berbasis bukti." },
+          { name: "Terang Events", cat: "EventTech", icon: CalendarDays, color: "bg-sky-soft text-sky-ink", text: L("Penyelenggara acara & kompetisi — registrasi, pembayaran, penjurian.", "Event & competition organisers — registration, payment, judging.") },
+          { name: "AI Candidate Interview", cat: "HRTech", icon: Brain, color: "bg-one-soft text-one-ink", text: L("Tim HR — wawancara terstruktur & evaluasi kandidat berbasis bukti.", "HR teams — structured interviews & evidence-based candidate evaluation.") },
         ].map((p) => (
           <div key={p.name} className="rounded-2xl border border-line bg-card p-5">
             <span className={cn("grid h-10 w-10 place-items-center rounded-xl", p.color)}>
@@ -31,7 +33,7 @@ function StagePanel({ id }: { id: StageId }) {
             </span>
             <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-muted">{p.cat}</p>
             <p className="text-lg font-semibold text-ink">{p.name}</p>
-            <p className="mt-1 text-sm text-muted-strong">{p.text}</p>
+            <p className="mt-1 text-sm text-muted-strong">{tx(p.text)}</p>
           </div>
         ))}
       </div>
@@ -46,7 +48,7 @@ function StagePanel({ id }: { id: StageId }) {
     return (
       <div>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-sm font-semibold text-ink">7 personel melayani dua peluang sekaligus</p>
+          <p className="text-sm font-semibold text-ink">{t("7 personel melayani dua peluang sekaligus", "7 people serving two opportunities at once")}</p>
           <SourceLabel type="internal-restricted-context" compact />
         </div>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -76,7 +78,10 @@ function StagePanel({ id }: { id: StageId }) {
           ))}
         </div>
         <p className="mt-4 text-sm text-muted-strong">
-          Kapasitas tidak dapat dipertukarkan: jam CEO/CPO bukan jam engineering, dan tim Product terpisah dari Strategy & Ops.
+          {tx(
+            "Kapasitas tidak dapat dipertukarkan: jam CEO/CPO bukan jam _engineering_, dan tim _Product_ terpisah dari _Strategy & Ops_.",
+            "Capacity is not interchangeable: CEO/CPO hours are not engineering hours, and the Product team is separate from Strategy & Ops.",
+          )}
         </p>
       </div>
     );
@@ -94,7 +99,7 @@ function StagePanel({ id }: { id: StageId }) {
           >
             <span className="font-display text-2xl font-semibold text-gradient">{c.number}</span>
             <p className="mt-1 font-semibold text-ink">{c.english}</p>
-            <p className="mt-1 text-[13px] text-muted-strong">{c.summary}</p>
+            <p className="mt-1 text-[13px] text-muted-strong">{tx(c.summary)}</p>
           </motion.div>
         ))}
       </div>
@@ -103,14 +108,14 @@ function StagePanel({ id }: { id: StageId }) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {[
-        { k: "ONE", t: "Focus to Grow", d: "Prioritaskan AI Candidate Interview; Events maintenance-only.", icon: Target, g: "bg-one-gradient" },
-        { k: "ACE", t: "Coordinate to Grow", d: "Kembangkan dua produk dengan alokasi terkendali & evaluasi portofolio.", icon: Layers, g: "bg-ace-gradient" },
+        { k: "ONE", t: "Focus to Grow", d: L("Prioritaskan AI Candidate Interview; Events hanya _maintenance_.", "Prioritise AI Candidate Interview; Events on maintenance only."), icon: Target, g: "bg-one-gradient" },
+        { k: "ACE", t: "Coordinate to Grow", d: L("Kembangkan dua produk dengan alokasi terkendali & evaluasi portofolio.", "Grow both products with controlled allocation & portfolio evaluation."), icon: Layers, g: "bg-ace-gradient" },
       ].map((s) => (
         <div key={s.k} className={cn("rounded-2xl p-5 text-white", s.g)}>
           <s.icon className="h-6 w-6" />
           <p className="mt-3 font-display text-3xl font-semibold">{s.k}</p>
           <p className="font-semibold">{s.t}</p>
-          <p className="mt-1 text-sm text-white/85">{s.d}</p>
+          <p className="mt-1 text-sm text-white/85">{tx(s.d)}</p>
         </div>
       ))}
     </div>
@@ -120,6 +125,7 @@ function StagePanel({ id }: { id: StageId }) {
 export function DilemmaFlow() {
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const { t, tx } = useI18n();
 
   useEffect(() => {
     if (!playing) return;
@@ -130,14 +136,14 @@ export function DilemmaFlow() {
   return (
     <div className="rounded-[28px] border border-line bg-gradient-to-br from-card to-subtle p-5 shadow-card sm:p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-ink">Alur dilema — klik setiap tahap</p>
+        <p className="text-sm font-semibold text-ink">{t("Alur dilema — klik setiap tahap", "The dilemma flow — click each stage")}</p>
         <button
           type="button"
           onClick={() => setPlaying((p) => !p)}
           className="inline-flex items-center gap-2 rounded-xl bg-ink px-3 py-1.5 text-xs font-semibold text-card transition hover:opacity-90"
         >
           {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
-          {playing ? "Jeda" : "Putar alur otomatis"}
+          {playing ? t("Jeda", "Pause") : t("Putar alur otomatis", "Autoplay the flow")}
         </button>
       </div>
       <div className="relative mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -171,9 +177,9 @@ export function DilemmaFlow() {
                 <s.icon className="h-6 w-6" />
               </motion.span>
               <span className={cn("mt-3 text-[11px] font-semibold uppercase tracking-[0.12em]", done ? "text-brand-ink" : "text-muted")}>
-                Tahap {i + 1}
+                {t("Tahap", "Stage")} {i + 1}
               </span>
-              <span className={cn("text-sm font-semibold", i === active ? "text-ink" : "text-muted-strong")}>{s.label}</span>
+              <span className={cn("text-sm font-semibold", i === active ? "text-ink" : "text-muted-strong")}>{tx(s.label)}</span>
             </button>
           );
         })}

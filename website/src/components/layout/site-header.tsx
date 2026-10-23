@@ -9,8 +9,10 @@ import { MAIN_NAV, WORKSPACES } from "@/data/navigation";
 import { Logo } from "@/components/shared/brand";
 import { NavIcon } from "@/components/navigation/nav-icon";
 import { ThemeToggle } from "@/components/navigation/theme-toggle";
+import { LanguageToggle } from "@/components/navigation/language-toggle";
 import { CommandTrigger } from "@/components/navigation/command-palette";
 import { Tooltip } from "@/components/ui/tooltip";
+import { keyOf, useI18n, type Txt } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 function isActive(pathname: string, href?: string) {
@@ -42,7 +44,8 @@ function Dropdown({ open, children, align = "left", width = "w-[340px]" }: { ope
   );
 }
 
-function MenuItem({ href, icon, label, description, tag, active, accent }: { href: string; icon: string; label: string; description?: string; tag?: string; active?: boolean; accent?: string }) {
+function MenuItem({ href, icon, label, description, tag, active, accent }: { href: string; icon: string; label: Txt; description?: Txt; tag?: string; active?: boolean; accent?: string }) {
+  const { tx } = useI18n();
   return (
     <Link href={href} className={cn("group flex items-start gap-3 rounded-xl p-2.5 transition hover:bg-neutral-soft", active && "bg-neutral-soft")}>
       <span
@@ -55,10 +58,10 @@ function MenuItem({ href, icon, label, description, tag, active, accent }: { hre
       </span>
       <span className="min-w-0 pt-px">
         <span className="flex items-center gap-2 text-sm font-semibold text-ink">
-          {label}
+          {tx(label)}
           {tag && <span className={cn("rounded-full px-1.5 py-0.5 text-[11px] font-semibold leading-none", TAG_STYLE[tag])}>{tag}</span>}
         </span>
-        {description && <span className="mt-0.5 block text-[13px] leading-snug text-muted">{description}</span>}
+        {description && <span className="mt-0.5 block text-[13px] leading-snug text-muted">{tx(description)}</span>}
       </span>
     </Link>
   );
@@ -66,6 +69,7 @@ function MenuItem({ href, icon, label, description, tag, active, accent }: { hre
 
 export function SiteHeader() {
   const pathname = usePathname() ?? "/";
+  const { t, tx } = useI18n();
   const [open, setOpen] = useState<string | null>(null);
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -114,7 +118,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-8">
           <Logo height={24} preload />
           <nav
-            aria-label="Navigasi utama"
+            aria-label={t("Navigasi utama", "Main navigation")}
             className="hidden items-center gap-0.5 lg:flex"
             onMouseLeave={() => {
               setOpen(null);
@@ -122,8 +126,9 @@ export function SiteHeader() {
             }}
           >
             {MAIN_NAV.map((item) => {
+              const id = keyOf(item.label);
               const active = isActive(pathname, item.href) || item.children?.some((c) => isActive(pathname, c.href));
-              const pill = hovered === item.label && (
+              const pill = hovered === id && (
                 <motion.span
                   layoutId="nav-hover-pill"
                   className="absolute inset-0 -z-10 rounded-lg bg-neutral-soft"
@@ -133,42 +138,42 @@ export function SiteHeader() {
               if (!item.children) {
                 return (
                   <Link
-                    key={item.label}
+                    key={id}
                     href={item.href!}
                     aria-current={active ? "page" : undefined}
-                    onMouseEnter={() => setHovered(item.label)}
+                    onMouseEnter={() => setHovered(id)}
                     className={cn(
-                      "relative isolate rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                      "relative isolate whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                       active ? "text-ink" : "text-muted-strong hover:text-ink",
                     )}
                   >
                     {pill}
-                    {item.label}
+                    {tx(item.label)}
                     {active && <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-brand-gradient" />}
                   </Link>
                 );
               }
-              const isOpen = open === item.label;
+              const isOpen = open === id;
               return (
                 <div
-                  key={item.label}
+                  key={id}
                   className="relative"
                   onMouseEnter={() => {
-                    setOpen(item.label);
-                    setHovered(item.label);
+                    setOpen(id);
+                    setHovered(id);
                   }}
                 >
                   <button
                     type="button"
                     aria-expanded={isOpen}
-                    onClick={() => setOpen(isOpen ? null : item.label)}
+                    onClick={() => setOpen(isOpen ? null : id)}
                     className={cn(
-                      "relative isolate flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                      "relative isolate flex items-center gap-1 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                       active || isOpen ? "text-ink" : "text-muted-strong hover:text-ink",
                     )}
                   >
                     {pill}
-                    {item.label}
+                    {tx(item.label)}
                     <ChevronDown className={cn("h-3.5 w-3.5 text-muted transition-transform", isOpen && "rotate-180")} />
                     {active && <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-brand-gradient" />}
                   </button>
@@ -186,15 +191,16 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           <CommandTrigger className="hidden xl:inline-flex" />
           <CommandTrigger compact className="xl:hidden" />
-          <Tooltip content="Mode presentasi" side="bottom">
+          <Tooltip content={t("Mode presentasi", "Presentation mode")} side="bottom">
             <Link
               href="/presentation"
-              aria-label="Mode presentasi"
-              className="hidden h-9 w-9 place-items-center rounded-xl text-muted-strong transition hover:bg-neutral-soft hover:text-ink sm:grid"
+              aria-label={t("Mode presentasi", "Presentation mode")}
+              className="hidden h-9 w-9 place-items-center rounded-xl text-muted-strong transition hover:bg-neutral-soft hover:text-ink sm:grid lg:hidden xl:grid"
             >
               <Presentation className="h-[18px] w-[18px]" />
             </Link>
           </Tooltip>
+          <LanguageToggle className="hidden sm:flex" />
           <ThemeToggle />
           <div className="relative hidden md:block" onMouseLeave={() => open === "dashboard" && setOpen(null)}>
             <button
@@ -208,7 +214,7 @@ export function SiteHeader() {
               <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", open === "dashboard" && "rotate-180")} />
             </button>
             <Dropdown open={open === "dashboard"} align="right" width="w-[320px]">
-              <p className="px-2.5 pb-1 pt-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-muted">Pilih dashboard</p>
+              <p className="px-2.5 pb-1 pt-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-muted">{t("Pilih dashboard", "Choose a dashboard")}</p>
               {WORKSPACES.map((ws) => (
                 <MenuItem key={ws.id} href={ws.base} icon={ws.icon} label={ws.label} description={ws.description} accent={ws.accent} />
               ))}
@@ -218,7 +224,7 @@ export function SiteHeader() {
             type="button"
             onClick={() => setMobile(true)}
             className="grid h-10 w-10 place-items-center rounded-xl border border-line bg-card text-ink shadow-soft lg:hidden"
-            aria-label="Buka menu"
+            aria-label={t("Buka menu", "Open menu")}
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -246,17 +252,21 @@ export function SiteHeader() {
                     type="button"
                     onClick={() => setMobile(false)}
                     className="grid h-9 w-9 place-items-center rounded-xl text-muted hover:bg-neutral-soft"
-                    aria-label="Tutup menu"
+                    aria-label={t("Tutup menu", "Close menu")}
                   >
                     <X className="h-5 w-5" />
                   </button>
                 </div>
               </div>
+              <div className="mb-5 flex items-center justify-between rounded-xl border border-line bg-surface px-3 py-2">
+                <span className="text-[13px] font-medium text-muted-strong">{t("Bahasa", "Language")}</span>
+                <LanguageToggle layoutId="lang-pill-mobile" />
+              </div>
               <div className="space-y-5">
                 {MAIN_NAV.map((item) =>
                   item.children ? (
-                    <div key={item.label}>
-                      <p className="mb-1.5 px-3 text-[11px] font-medium uppercase tracking-[0.1em] text-muted">{item.label}</p>
+                    <div key={keyOf(item.label)}>
+                      <p className="mb-1.5 px-3 text-[11px] font-medium uppercase tracking-[0.1em] text-muted">{t(item.label)}</p>
                       <div className="space-y-0.5">
                         {item.children.map((c) => (
                           <Link
@@ -268,21 +278,21 @@ export function SiteHeader() {
                             )}
                           >
                             <NavIcon name={c.icon} className="h-[18px] w-[18px] text-muted" />
-                            {c.label}
+                            {tx(c.label)}
                           </Link>
                         ))}
                       </div>
                     </div>
                   ) : (
                     <Link
-                      key={item.label}
+                      key={keyOf(item.label)}
                       href={item.href!}
                       className={cn(
                         "block rounded-xl px-3 py-2.5 text-[15px] font-semibold",
                         isActive(pathname, item.href) ? "bg-soft text-brand-ink" : "text-ink hover:bg-neutral-soft",
                       )}
                     >
-                      {item.label}
+                      {tx(item.label)}
                     </Link>
                   ),
                 )}
@@ -305,10 +315,10 @@ export function SiteHeader() {
                   href="/dashboard"
                   className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,#2a86e2_0%,#2563d6_55%,#1f4fc4_100%)] text-sm font-medium text-white"
                 >
-                  Buka Dashboard <ArrowRight className="h-4 w-4" />
+                  {tx("Buka _Dashboard_", "Open Dashboard")} <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link href="/presentation" className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-line text-sm font-medium text-ink">
-                  <Presentation className="h-4 w-4" /> Mode Presentasi
+                  <Presentation className="h-4 w-4" /> {t("Mode Presentasi", "Presentation Mode")}
                 </Link>
               </div>
             </motion.nav>

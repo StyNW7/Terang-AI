@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { CircleHelp, X } from "lucide-react";
 import { useMounted } from "@/hooks/use-mounted";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 type Side = "top" | "bottom" | "right";
 
@@ -126,7 +127,7 @@ export function Tooltip({
 
 /** "Apa artinya?" explainer — click to open a small popover with a short explanation. */
 export function InfoTip({
-  title = "Apa artinya?",
+  title: titleProp,
   children,
   className,
   label,
@@ -145,6 +146,8 @@ export function InfoTip({
   const { anchorRef, panelRef, pos } = useFloating(open, "bottom");
   const id = useId();
   const mounted = useMounted();
+  const { t } = useI18n();
+  const title = titleProp ?? t("Apa artinya?", "What does this mean?");
 
   useEffect(() => {
     if (!open) return;
@@ -203,7 +206,7 @@ export function InfoTip({
                     type="button"
                     onClick={() => setOpen(false)}
                     className="grid h-6 w-6 place-items-center rounded-md text-muted transition hover:bg-neutral-soft hover:text-ink"
-                    aria-label="Tutup penjelasan"
+                    aria-label={t("Tutup penjelasan", "Close explanation")}
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>

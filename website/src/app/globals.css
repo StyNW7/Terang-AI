@@ -309,6 +309,37 @@ html[data-theme-switching] *::after {
     stroke 0.35s ease !important;
 }
 
+/* Language: server HTML is Indonesian, so English visitors see the page only once
+   React has re-rendered it in English (with a failsafe reveal after 1.6s). */
+html[data-locale="en"]:not([data-i18n-ready]) body {
+  animation: i18n-reveal 0.01s 1.6s both;
+}
+@keyframes i18n-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Soft fade when the language is switched. */
+html[data-locale-switching] main,
+html[data-locale-switching] header,
+html[data-locale-switching] footer,
+html[data-locale-switching] aside {
+  animation: locale-fade 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes locale-fade {
+  from {
+    opacity: 0.35;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
 /* Theme switch — circular reveal (View Transitions API). */
 ::view-transition-old(root),
 ::view-transition-new(root) {

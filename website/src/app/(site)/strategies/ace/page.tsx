@@ -12,13 +12,17 @@ import { Button } from "@/components/ui/button";
 import { SectionHeading, Callout } from "@/components/ui/misc";
 import { Reveal } from "@/components/ui/reveal";
 import { ACE_STRATEGY } from "@/data/strategy";
+import { T } from "@/lib/i18n";
+import { L } from "@/lib/i18n-core";
 
 export const metadata: Metadata = { title: "ACE Strategy — KONTRA" };
 
 function DualTrackVisual() {
   return (
     <div className="relative rounded-[28px] bg-white/10 p-6 ring-1 ring-white/20 backdrop-blur">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/75">Two tracks · one resource system</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/75">
+        <T id="Dua jalur · satu sistem sumber daya" en="Two tracks · one resource system" />
+      </p>
       <div className="mt-4 grid grid-cols-2 gap-3">
         {[
           { icon: CalendarDays, name: "Terang Events", sub: "Host Smarter" },
@@ -39,7 +43,9 @@ function DualTrackVisual() {
         <p className="flex items-center justify-center gap-2 font-display text-lg font-semibold">
           <Gauge className="h-5 w-5" /> ACE Command Center
         </p>
-        <p className="text-xs text-[#475a72]">Kapasitas · anggaran · WIP · risiko</p>
+        <p className="text-xs text-[#475a72]">
+          <T id="Kapasitas · anggaran · WIP · risiko" en="Capacity · budget · WIP · risk" />
+        </p>
       </div>
       <div className="mt-3 flex flex-wrap justify-center gap-1.5">
         {ACE_STRATEGY.pillars.map((p) => (
@@ -69,16 +75,23 @@ export default function AceStrategyPage() {
 
       <Section className="pt-14">
         <Container>
-          <Callout tone="info" icon={<ShieldAlert className="h-[18px] w-[18px]" />} title={`${ACE_STRATEGY.approach} — guardrail`}>
-            {ACE_STRATEGY.guardrail} ACE tidak menjanjikan mempertahankan dua produk dengan segala cara: setiap produk memiliki kondisi exit &
-            reassessment yang transparan.
+          <Callout tone="info" icon={<ShieldAlert className="h-[18px] w-[18px]" />} title={<T id={`${ACE_STRATEGY.approach} — _guardrail_`} en={`${ACE_STRATEGY.approach} — guardrail`} />}>
+            <T
+              id={`${ACE_STRATEGY.guardrail.id} ACE tidak menjanjikan mempertahankan dua produk dengan segala cara: setiap produk memiliki kondisi _exit_ & _reassessment_ yang transparan.`}
+              en={`${ACE_STRATEGY.guardrail.en} ACE does not promise to keep both products at all costs: each product has transparent exit & reassessment conditions.`}
+            />
           </Callout>
           <Reveal>
             <SectionHeading
               className="mt-12"
               eyebrow="Agile → Coordinate → Evaluate & Evolve"
-              title="Tiga pilar, dua produk, satu mesin koordinasi"
-              description="Pilih pilar untuk menjelajahi backlog ganda, go-to-market ganda, dan intelijen portofolio ACE."
+              title={<T id="Tiga pilar, dua produk, satu mesin koordinasi" en="Three pillars, two products, one coordination engine" />}
+              description={
+                <T
+                  id="Pilih pilar untuk menjelajahi _backlog_ ganda, _go-to-market_ ganda, dan intelijen portofolio ACE."
+                  en="Pick a pillar to explore ACE's dual backlog, dual go-to-market and portfolio intelligence."
+                />
+              }
             />
           </Reveal>
           <div className="mt-10">
@@ -101,9 +114,9 @@ export default function AceStrategyPage() {
         <Container>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {[
-              { icon: CalendarDays, title: "Coba Smart Templates", text: "Demo Terang Events dengan usulan ACE.", href: "/dashboard/events" },
-              { icon: Gauge, title: "Atur Alokasi Sumber Daya", text: "ACE Command Center untuk 7 personel.", href: "/dashboard/operations" },
-              { icon: Scale, title: "Bandingkan dengan ONE", text: "Asumsi sama, kapasitas sama.", href: "/dashboard/simulator" },
+              { icon: CalendarDays, title: L("Coba Smart Templates", "Try Smart Templates"), text: L("Demo Terang Events dengan usulan ACE.", "The Terang Events demo with ACE proposals."), href: "/dashboard/events" },
+              { icon: Gauge, title: L("Atur Alokasi Sumber Daya", "Set Resource Allocation"), text: L("ACE Command Center untuk 7 personel.", "The ACE Command Center for 7 people."), href: "/dashboard/operations" },
+              { icon: Scale, title: L("Bandingkan dengan ONE", "Compare with ONE"), text: L("Asumsi sama, kapasitas sama.", "Same assumptions, same capacity."), href: "/dashboard/simulator" },
             ].map((c) => (
               <Button key={c.href} href={c.href} variant="secondary" className="h-auto justify-between rounded-2xl p-5 text-left">
                 <span className="flex items-center gap-3">
@@ -111,8 +124,12 @@ export default function AceStrategyPage() {
                     <c.icon className="h-5 w-5" />
                   </span>
                   <span>
-                    <span className="block text-sm font-semibold text-ink">{c.title}</span>
-                    <span className="block whitespace-normal text-xs font-normal text-muted-strong">{c.text}</span>
+                    <span className="block text-sm font-semibold text-ink">
+                      <T v={c.title} />
+                    </span>
+                    <span className="block whitespace-normal text-xs font-normal text-muted-strong">
+                      <T v={c.text} />
+                    </span>
                   </span>
                 </span>
                 <ArrowRight className="h-4 w-4 shrink-0" />

@@ -27,19 +27,35 @@ import { ACE_STRATEGY, CHALLENGES, KEY_QUESTION, ONE_STRATEGY } from "@/data/str
 import { COMPANY, PRODUCTS } from "@/data/company";
 import { TEAM } from "@/data/team";
 import { formatIDRCompact, formatNumber, formatPercent } from "@/lib/formatters";
+import { L, keyOf, type Bilingual, type Txt } from "@/lib/i18n";
 import { Logo, Mascot, type MascotName } from "@/components/shared/brand";
 import { cn } from "@/lib/utils";
 
+export type SlideSection = "context" | "one" | "ace" | "compare";
+
+export const SECTION_LABEL: Record<SlideSection, Bilingual> = {
+  context: L("Konteks", "Context"),
+  one: L("ONE · PRO", "ONE · PRO"),
+  ace: L("ACE · KONTRA", "ACE · CONTRA"),
+  compare: L("Perbandingan", "Comparison"),
+};
+
+/** Translation helpers handed to every slide renderer. */
+export interface SlideI18n {
+  t: (value: Txt, en?: string) => string;
+  tx: (value: Txt, en?: string) => ReactNode;
+}
+
 export interface SlideDef {
   id: string;
-  section: "Konteks" | "ONE · PRO" | "ACE · KONTRA" | "Perbandingan";
-  title: string;
+  section: SlideSection;
+  title: Txt;
   steps: number;
-  notes: string;
+  notes: Bilingual;
   mascot?: MascotName;
-  link?: { href: string; label: string };
+  link?: { href: string; label: Txt };
   accent: "brand" | "one" | "ace";
-  render: (step: number, a: Assumptions) => ReactNode;
+  render: (step: number, a: Assumptions, i18n: SlideI18n) => ReactNode;
 }
 
 /** Reveals a block once the presenter has advanced to `at`. */
@@ -76,15 +92,17 @@ function PillarRow({ pillars, step, accent }: { pillars: { letter: string; name:
 export const SLIDES: SlideDef[] = [
   {
     id: "overview",
-    section: "Konteks",
+    section: "context",
     title: "Terang AI",
     steps: 2,
     accent: "brand",
     mascot: "wave",
-    link: { href: "/company", label: "Company overview" },
-    notes:
-      "Buka dengan konteks: Terang AI adalah startup EdTech Indonesia (PT Terang Inovasi Indonesia) yang diperkenalkan 2024. Mulai dari B2C — UTBK, CPNS, beasiswa, simulasi wawancara AI — lalu bergerak ke B2B. Tegaskan bahwa ini prototype akademik tidak resmi.",
-    render: (step) => (
+    link: { href: "/company", label: L("Profil perusahaan", "Company overview") },
+    notes: L(
+      "Buka dengan konteks: Terang AI adalah startup EdTech Indonesia (PT Terang Inovasi Indonesia) yang diperkenalkan 2024. Mulai dari B2C — UTBK, CPNS, beasiswa, simulasi wawancara AI — lalu bergerak ke B2B. Tegaskan bahwa ini prototipe akademik.",
+      "Open with context: Terang AI is an Indonesian EdTech startup (PT Terang Inovasi Indonesia) introduced in 2024. It began in B2C — UTBK, CPNS, scholarships, AI interview simulation — and is moving into B2B. Make clear this is an academic prototype.",
+    ),
+    render: (step, _a, { t }) => (
       <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.3fr_1fr]">
         <div>
           <Logo height={48} href={null} />
@@ -94,14 +112,16 @@ export const SLIDES: SlideDef[] = [
             <span className="text-gradient-light">Brighter Futures.</span>
           </h1>
           <Step at={1} step={step}>
-            <p className="mt-6 max-w-2xl text-2xl leading-relaxed text-white/75">From AI-Powered Education to B2B Business Solutions.</p>
+            <p className="mt-6 max-w-2xl text-2xl leading-relaxed text-white/75">
+              {t("Dari pendidikan berbasis AI menuju solusi bisnis B2B.", "From AI-Powered Education to B2B Business Solutions.")}
+            </p>
           </Step>
         </div>
         <Step at={2} step={step} className="grid gap-3">
           {[
-            ["Badan hukum", COMPANY.legalName],
-            ["Diperkenalkan", "2024 · Indonesia"],
-            ["Evolusi", "B2C EdTech → B2B Solutions"],
+            [t("Badan hukum", "Legal entity"), COMPANY.legalName],
+            [t("Diperkenalkan", "Introduced"), "2024 · Indonesia"],
+            [t("Evolusi", "Evolution"), "B2C EdTech → B2B Solutions"],
           ].map(([k, v]) => (
             <div key={k} className={card}>
               <p className="text-sm uppercase tracking-[0.12em] text-sky">{k}</p>
@@ -114,23 +134,28 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "portfolio",
-    section: "Konteks",
-    title: "Dua produk B2B",
+    section: "context",
+    title: L("Dua produk B2B", "Two B2B products"),
     steps: 2,
     accent: "brand",
-    link: { href: "/products", label: "Dua produk B2B" },
-    notes: "Perkenalkan dua produk fokus. Terang Events = EventTech untuk penyelenggara acara. AI Candidate Interview = HRTech untuk tim rekrutmen. Tekankan pembeli & workflow yang berbeda.",
-    render: (step) => (
+    link: { href: "/products", label: L("Dua produk B2B", "Two B2B products") },
+    notes: L(
+      "Perkenalkan dua produk fokus. Terang Events = EventTech untuk penyelenggara acara. AI Candidate Interview = HRTech untuk tim rekrutmen. Tekankan pembeli & _workflow_ yang berbeda.",
+      "Introduce the two focus products. Terang Events = EventTech for event organisers. AI Candidate Interview = HRTech for recruitment teams. Stress the different buyers & workflows.",
+    ),
+    render: (step, _a, { t, tx }) => (
       <div>
-        <h2 className="text-5xl font-semibold">Dua produk B2B, dua pasar berbeda.</h2>
+        <h2 className="text-5xl font-semibold">{t("Dua produk B2B, dua pasar berbeda.", "Two B2B products, two different markets.")}</h2>
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {[PRODUCTS.events, PRODUCTS.interview].map((p, i) => (
             <Step key={p.key} at={i + 1} step={step} className={cn(card, "relative overflow-hidden")}>
               <Mascot name={i === 0 ? "events" : "interview"} size={130} className="absolute -bottom-4 -right-2" />
               <p className="text-sm font-semibold uppercase tracking-[0.12em] text-sky">{p.category}</p>
               <p className="mt-2 text-4xl font-semibold">{p.name}</p>
-              <p className="mt-3 max-w-md text-lg text-white/75">{p.tagline}</p>
-              <p className="mt-5 text-sm text-white/60">Pembeli: {p.buyer}</p>
+              <p className="mt-3 max-w-md text-lg text-white/75">{tx(p.tagline)}</p>
+              <p className="mt-5 text-sm text-white/60">
+                {t("Pembeli", "Buyer")}: {tx(p.buyer)}
+              </p>
             </Step>
           ))}
         </div>
@@ -139,26 +164,29 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "market",
-    section: "Konteks",
-    title: "Peluang pasar",
+    section: "context",
+    title: L("Peluang pasar", "Market opportunity"),
     steps: 2,
     accent: "brand",
-    notes: "Jelaskan masalah pelanggan masing-masing pasar secara kualitatif — tidak ada klaim ukuran pasar yang belum diverifikasi. Events: koordinasi & setup berulang. Interview: screening yang memakan waktu & bukti penilaian.",
-    render: (step) => (
+    notes: L(
+      "Jelaskan masalah pelanggan masing-masing pasar secara kualitatif — tidak ada klaim ukuran pasar yang belum diverifikasi. Events: koordinasi & _setup_ berulang. Interview: _screening_ yang memakan waktu & bukti penilaian.",
+      "Explain each market's customer problems qualitatively — no unverified market-size claims. Events: coordination & repeated setup. Interview: time-consuming screening & assessment evidence.",
+    ),
+    render: (step, _a, { t, tx }) => (
       <div>
-        <h2 className="text-5xl font-semibold">Masalah nyata di dua segmen.</h2>
+        <h2 className="text-5xl font-semibold">{t("Masalah nyata di dua segmen.", "Real problems in two segments.")}</h2>
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {[
-            { icon: GraduationCap, t: "Penyelenggara acara & institusi", items: PRODUCTS.events.problems.slice(0, 4) },
-            { icon: Users, t: "Tim HR & talent acquisition", items: PRODUCTS.interview.problems.slice(0, 4) },
+            { icon: GraduationCap, title: t("Penyelenggara acara & institusi", "Event organisers & institutions"), items: PRODUCTS.events.problems.slice(0, 4) },
+            { icon: Users, title: t("Tim HR & _talent acquisition_", "HR & talent acquisition teams"), items: PRODUCTS.interview.problems.slice(0, 4) },
           ].map((m, i) => (
-            <Step key={m.t} at={i + 1} step={step} className={card}>
+            <Step key={m.title} at={i + 1} step={step} className={card}>
               <m.icon className="h-8 w-8 text-sky" />
-              <p className="mt-3 text-2xl font-semibold">{m.t}</p>
+              <p className="mt-3 text-2xl font-semibold">{m.title}</p>
               <ul className="mt-4 space-y-2 text-lg text-white/75">
                 {m.items.map((x) => (
-                  <li key={x} className="flex gap-2">
-                    <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-sky" /> {x}
+                  <li key={keyOf(x)} className="flex gap-2">
+                    <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-sky" /> <span>{tx(x)}</span>
                   </li>
                 ))}
               </ul>
@@ -170,49 +198,56 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "dilemma",
-    section: "Konteks",
-    title: "Dilema strategis",
+    section: "context",
+    title: L("Dilema strategis", "The strategic dilemma"),
     steps: 1,
     accent: "brand",
     mascot: "think",
     link: { href: "/strategy-lab", label: "Strategy Lab" },
-    notes: "Ini inti kasus. Dua peluang, sumber daya terbatas. Bacakan key strategic question perlahan. Tekankan bahwa kita menilai dua alternatif secara adil.",
-    render: (step) => (
+    notes: L(
+      "Ini inti kasus. Dua peluang, sumber daya terbatas. Bacakan _key strategic question_ perlahan. Tekankan bahwa kita menilai dua alternatif secara adil.",
+      "This is the heart of the case. Two opportunities, limited resources. Read the key strategic question slowly. Stress that we assess both alternatives fairly.",
+    ),
+    render: (step, _a, { t, tx }) => (
       <div className="max-w-5xl">
-        <p className="text-lg font-semibold uppercase tracking-[0.12em] text-sky">Strategic Growth Dilemma</p>
+        <p className="text-lg font-semibold uppercase tracking-[0.12em] text-sky">{t("Dilema Pertumbuhan Strategis", "Strategic Growth Dilemma")}</p>
         <h2 className="mt-4 text-6xl font-semibold leading-[1.05]">
-          Two Opportunities. Limited Resources. <span className="text-gradient-light">One Strategic Decision.</span>
+          {t("Dua Peluang. Sumber Daya Terbatas.", "Two Opportunities. Limited Resources.")}{" "}
+          <span className="text-gradient-light">{t("Satu Keputusan Strategis.", "One Strategic Decision.")}</span>
         </h2>
         <Step at={1} step={step}>
-          <p className="mt-10 rounded-3xl bg-white/[0.07] p-8 font-display text-3xl font-semibold leading-snug ring-1 ring-white/12">“{KEY_QUESTION}”</p>
+          <p className="mt-10 rounded-3xl bg-white/[0.07] p-8 font-display text-3xl font-semibold leading-snug ring-1 ring-white/12">“{tx(KEY_QUESTION)}”</p>
         </Step>
       </div>
     ),
   },
   {
     id: "challenges",
-    section: "Konteks",
-    title: "Tantangan sumber daya & operasional",
+    section: "context",
+    title: L("Tantangan sumber daya & operasional", "Resource & operational challenges"),
     steps: 4,
     accent: "brand",
-    notes: "Tiga gap: kapasitas (7 personel dalam studi kasus), validasi pasar, kompleksitas eksekusi. Sebutkan bahwa angka tujuh personel adalah konfigurasi studi kasus, bukan verifikasi headcount.",
-    render: (step) => (
+    notes: L(
+      "Tiga _gap_: kapasitas (7 personel dalam studi kasus), validasi pasar, kompleksitas eksekusi. Sebutkan bahwa angka tujuh personel adalah konfigurasi studi kasus, bukan verifikasi _headcount_.",
+      "Three gaps: capacity (7 people in the case study), market validation, execution complexity. Mention that the seven-person figure is a case-study setting, not a verified headcount.",
+    ),
+    render: (step, _a, { t, tx }) => (
       <div>
-        <h2 className="text-5xl font-semibold">Tiga tantangan utama</h2>
+        <h2 className="text-5xl font-semibold">{t("Tiga tantangan utama", "Three core challenges")}</h2>
         <Step at={1} step={step} className="mt-6 flex items-center gap-2">
           {TEAM.map((m) => (
             <span key={m.id} className={cn("grid h-12 w-12 place-items-center rounded-full text-sm font-semibold ring-4 ring-navy", m.pool === "leadership" ? "bg-white text-navy" : m.pool === "product" ? "bg-brand-gradient" : "bg-ace-gradient")}>
               {m.role === "CEO" || m.role === "CPO" ? m.role : m.initials}
             </span>
           ))}
-          <span className="ml-3 text-lg text-white/70">7 personel (konteks studi kasus)</span>
+          <span className="ml-3 text-lg text-white/70">{t("7 personel (konteks studi kasus)", "7 people (case-study context)")}</span>
         </Step>
         <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
           {CHALLENGES.map((c, i) => (
             <Step key={c.id} at={i + 2} step={step} className={card}>
               <p className="font-display text-5xl font-semibold text-sky/60">{c.number}</p>
               <p className="mt-2 text-2xl font-semibold">{c.english}</p>
-              <p className="mt-2 text-white/70">{c.summary}</p>
+              <p className="mt-2 text-white/70">{tx(c.summary)}</p>
             </Step>
           ))}
         </div>
@@ -221,16 +256,19 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "one-overview",
-    section: "ONE · PRO",
+    section: "one",
     title: "ONE Strategy",
     steps: 3,
     accent: "one",
     mascot: "target",
     link: { href: "/strategies/one", label: "ONE Strategy" },
-    notes: "ONE: prioritaskan AI Candidate Interview. Tiga pilar: Optimize Product Value, Navigate Market Growth, Evaluate for Expansion. Events tetap maintenance-only — biaya maintenance tetap dihitung.",
-    render: (step) => (
+    notes: L(
+      "ONE: prioritaskan AI Candidate Interview. Tiga pilar: Optimize Product Value, Navigate Market Growth, Evaluate for Expansion. Events tetap hanya _maintenance_ — biaya _maintenance_ tetap dihitung.",
+      "ONE: prioritise AI Candidate Interview. Three pillars: Optimize Product Value, Navigate Market Growth, Evaluate for Expansion. Events stays maintenance-only — its maintenance cost is still counted.",
+    ),
+    render: (step, _a, { t }) => (
       <div>
-        <p className="text-lg font-semibold uppercase tracking-[0.12em] text-sky">PRO · Prioritaskan satu produk</p>
+        <p className="text-lg font-semibold uppercase tracking-[0.12em] text-sky">{t("PRO · Prioritaskan satu produk", "PRO · Prioritise one product")}</p>
         <h2 className="mt-3 text-7xl font-semibold">ONE Strategy</h2>
         <p className="mt-2 font-display text-3xl font-semibold text-white/85">{ONE_STRATEGY.tagline}</p>
         <div className="mt-10">
@@ -241,21 +279,24 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "one-product",
-    section: "ONE · PRO",
+    section: "one",
     title: "AI Interview Intelligence Suite",
     steps: 2,
     accent: "one",
-    link: { href: "/dashboard/interview", label: "Demo AI Interview" },
-    notes: "Tunjukkan demo: builder per jabatan, wawancara terstruktur, laporan berbasis bukti, review recruiter, Responsible AI. Tekankan: AI pendukung keputusan, bukan otoritas perekrutan.",
-    render: (step) => (
+    link: { href: "/dashboard/interview", label: L("Demo AI Interview", "AI Interview demo") },
+    notes: L(
+      "Tunjukkan demo: _builder_ per jabatan, wawancara terstruktur, laporan berbasis bukti, _review recruiter_, Responsible AI. Tekankan: AI pendukung keputusan, bukan otoritas perekrutan.",
+      "Show the demo: the per-role builder, structured interview, evidence-based report, recruiter review and Responsible AI. Stress: AI supports decisions; it is not a hiring authority.",
+    ),
+    render: (step, _a, { t, tx }) => (
       <div>
-        <h2 className="text-5xl font-semibold">From generic scores to evidence-based recruiter insights.</h2>
+        <h2 className="text-5xl font-semibold">{t("Dari skor generik ke _insight recruiter_ berbasis bukti.", "From generic scores to evidence-based recruiter insights.")}</h2>
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-5">
           {PRODUCTS.interview.proposals.map((f, i) => (
             <Step key={f.name} at={i < 3 ? 1 : 2} step={step} className={card}>
               <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-gradient text-lg font-semibold">{i + 1}</span>
               <p className="mt-3 text-xl font-semibold">{f.name}</p>
-              <p className="mt-2 text-sm text-white/65">{f.description}</p>
+              <p className="mt-2 text-sm text-white/65">{tx(f.description)}</p>
             </Step>
           ))}
         </div>
@@ -264,13 +305,16 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "one-gtm",
-    section: "ONE · PRO",
-    title: "ONE go-to-market",
+    section: "one",
+    title: L("_Go-to-market_ ONE", "ONE go-to-market"),
     steps: 1,
     accent: "one",
-    link: { href: "/strategies/one?pillar=navigate", label: "Pilot-to-Paid funnel" },
-    notes: "Pilot-to-Paid Growth Engine: komunitas HR, LinkedIn, webinar HR Efficiency Clinic, demo enterprise, pilot terbatas, evaluasi ROI, konversi & renewal. Angka funnel mengikuti asumsi simulator saat ini.",
-    render: (step, a) => {
+    link: { href: "/strategies/one?pillar=navigate", label: L("_Funnel_ Pilot-to-Paid", "Pilot-to-Paid funnel") },
+    notes: L(
+      "Pilot-to-Paid Growth Engine: komunitas HR, LinkedIn, _webinar_ HR Efficiency Clinic, demo _enterprise_, _pilot_ terbatas, evaluasi ROI, konversi & _renewal_. Angka _funnel_ mengikuti asumsi simulator saat ini.",
+      "Pilot-to-Paid Growth Engine: HR communities, LinkedIn, HR Efficiency Clinic webinars, enterprise demos, limited pilots, ROI evaluation, conversion & renewal. Funnel numbers follow the current simulator assumptions.",
+    ),
+    render: (step, a, { t }) => {
       const iv = computeInterview("one", a);
       const stages = [
         ["Demo", Math.round(iv.pilots / 0.45)],
@@ -297,7 +341,7 @@ export const SLIDES: SlideDef[] = [
                 </motion.div>
               </div>
             ))}
-            <p className="pt-2 text-sm text-white/55">Asumsi ilustratif dari simulator — bukan data Terang AI.</p>
+            <p className="pt-2 text-sm text-white/55">{t("Asumsi ilustratif dari simulator — bukan data Terang AI.", "Illustrative assumptions from the simulator — not Terang AI data.")}</p>
           </Step>
         </div>
       );
@@ -305,24 +349,27 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "one-eval",
-    section: "ONE · PRO",
+    section: "one",
     title: "Evaluate for Expansion",
     steps: 3,
     accent: "one",
     link: { href: "/strategies/one?pillar=evaluate", label: "Expansion Gate" },
-    notes: "Expansion Gate: Scale jika kualitas, permintaan, ekonomi, kapasitas & keamanan lulus. Improve jika ada target meleset tapi bisa diperbaiki. Pause/Revalidate jika privasi, kualitas, atau kelayakan komersial gagal. Privasi & validitas adalah hard gate.",
-    render: (step) => (
+    notes: L(
+      "Expansion Gate: _Scale_ jika kualitas, permintaan, ekonomi, kapasitas & keamanan lulus. _Improve_ jika ada target meleset tapi bisa diperbaiki. _Pause/Revalidate_ jika privasi, kualitas, atau kelayakan komersial gagal. Privasi & validitas adalah _hard gate_.",
+      "Expansion Gate: Scale if quality, demand, economics, capacity & safety pass. Improve if some targets are missed but fixable. Pause/Revalidate if privacy, quality or commercial viability fails. Privacy & validity are hard gates.",
+    ),
+    render: (step, _a, { t }) => (
       <div>
         <h2 className="text-5xl font-semibold">ONE Growth Intelligence & Expansion Gate</h2>
         <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
           {[
-            { icon: Rocket, t: "Scale", d: "Kualitas, permintaan, ekonomi, kapasitas & keamanan lulus.", c: "from-[#12a37a] to-[#0b7a5a]" },
-            { icon: Wrench, t: "Improve", d: "Beberapa target meleset, perbaikan masih layak.", c: "from-[#4a90e2] to-[#2251c9]" },
-            { icon: Pause, t: "Pause / Revalidate", d: "Kualitas, privasi, atau kelayakan komersial gagal.", c: "from-[#e0484d] to-[#a82025]" },
+            { icon: Rocket, title: "Scale", d: t("Kualitas, permintaan, ekonomi, kapasitas & keamanan lulus.", "Quality, demand, economics, capacity & safety all pass."), c: "from-[#12a37a] to-[#0b7a5a]" },
+            { icon: Wrench, title: "Improve", d: t("Beberapa target meleset, perbaikan masih layak.", "Some targets are missed, but improvement is still viable."), c: "from-[#4a90e2] to-[#2251c9]" },
+            { icon: Pause, title: "Pause / Revalidate", d: t("Kualitas, privasi, atau kelayakan komersial gagal.", "Quality, privacy or commercial viability fails."), c: "from-[#e0484d] to-[#a82025]" },
           ].map((g, i) => (
-            <Step key={g.t} at={i + 1} step={step} className={cn("rounded-3xl bg-gradient-to-br p-6", g.c)}>
+            <Step key={g.title} at={i + 1} step={step} className={cn("rounded-3xl bg-gradient-to-br p-6", g.c)}>
               <g.icon className="h-9 w-9" />
-              <p className="mt-4 text-3xl font-semibold">{g.t}</p>
+              <p className="mt-4 text-3xl font-semibold">{g.title}</p>
               <p className="mt-2 text-lg text-white/85">{g.d}</p>
             </Step>
           ))}
@@ -332,46 +379,52 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "ace-overview",
-    section: "ACE · KONTRA",
+    section: "ace",
     title: "ACE Strategy",
     steps: 4,
     accent: "ace",
     mascot: "puzzle",
     link: { href: "/strategies/ace", label: "ACE Strategy" },
-    notes: "ACE: kembangkan kedua produk secara terkoordinasi. Tiga pilar: Agile Feature Development, Coordinate Markets & Capacity, Evaluate and Evolve Portfolio. Guardrail: tidak harus 50:50; produk kedua harus membuktikan nilainya.",
-    render: (step) => (
+    notes: L(
+      "ACE: kembangkan kedua produk secara terkoordinasi. Tiga pilar: Agile Feature Development, Coordinate Markets & Capacity, Evaluate and Evolve Portfolio. _Guardrail_: tidak harus 50:50; produk kedua harus membuktikan nilainya.",
+      "ACE: grow both products in coordination. Three pillars: Agile Feature Development, Coordinate Markets & Capacity, Evaluate and Evolve Portfolio. Guardrail: no 50:50 requirement; the second product must prove its value.",
+    ),
+    render: (step, _a, { t, tx }) => (
       <div>
-        <p className="text-lg font-semibold uppercase tracking-[0.12em] text-sky">KONTRA · Dua produk terkoordinasi</p>
+        <p className="text-lg font-semibold uppercase tracking-[0.12em] text-sky">{t("KONTRA · Dua produk terkoordinasi", "CONTRA · Two coordinated products")}</p>
         <h2 className="mt-3 text-7xl font-semibold">ACE Strategy</h2>
         <p className="mt-2 font-display text-3xl font-semibold text-white/85">{ACE_STRATEGY.tagline}</p>
         <div className="mt-10">
           <PillarRow pillars={ACE_STRATEGY.pillars} step={step} accent="ace" />
         </div>
         <Step at={4} step={step}>
-          <p className="mt-6 rounded-2xl bg-white/[0.07] p-4 text-lg text-white/80 ring-1 ring-white/12">{ACE_STRATEGY.guardrail}</p>
+          <p className="mt-6 rounded-2xl bg-white/[0.07] p-4 text-lg text-white/80 ring-1 ring-white/12">{tx(ACE_STRATEGY.guardrail)}</p>
         </Step>
       </div>
     ),
   },
   {
     id: "ace-dual",
-    section: "ACE · KONTRA",
-    title: "Dual-product demonstration",
+    section: "ace",
+    title: L("Demonstrasi dua produk", "Dual-product demonstration"),
     steps: 2,
     accent: "ace",
-    link: { href: "/dashboard/events", label: "Demo Terang Events" },
-    notes: "Tunjukkan demo Events: Smart Event Templates dan Repeat Event Planner. Di sisi Interview, fitur esensial yang sama dengan ONE namun dikembangkan selektif. Batas WIP: satu inisiatif besar per produk.",
+    link: { href: "/dashboard/events", label: L("Demo Terang Events", "Terang Events demo") },
+    notes: L(
+      "Tunjukkan demo Events: Smart Event Templates dan Repeat Event Planner. Di sisi Interview, fitur esensial yang sama dengan ONE namun dikembangkan selektif. Batas WIP: satu inisiatif besar per produk.",
+      "Show the Events demo: Smart Event Templates and Repeat Event Planner. On the Interview side, the same essential features as ONE, developed selectively. WIP limit: one major initiative per product.",
+    ),
     render: (step) => (
       <div>
         <h2 className="text-5xl font-semibold">ACE Dual-Product Innovation Sprint</h2>
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {[
-            { icon: CalendarDays, t: "Terang Events", items: PRODUCTS.events.proposals.map((p) => p.name) },
-            { icon: Brain, t: "AI Candidate Interview", items: ["Role-Based Interview Builder", "Evidence-Linked Assessment", "Recruiter Review Dashboard", "Responsible AI Controls"] },
+            { icon: CalendarDays, title: "Terang Events", items: PRODUCTS.events.proposals.map((p) => p.name) },
+            { icon: Brain, title: "AI Candidate Interview", items: ["Role-Based Interview Builder", "Evidence-Linked Assessment", "Recruiter Review Dashboard", "Responsible AI Controls"] },
           ].map((p, i) => (
-            <Step key={p.t} at={i + 1} step={step} className={card}>
+            <Step key={p.title} at={i + 1} step={step} className={card}>
               <p className="flex items-center gap-3 text-3xl font-semibold">
-                <p.icon className="h-8 w-8 text-sky" /> {p.t}
+                <p.icon className="h-8 w-8 text-sky" /> {p.title}
               </p>
               <ul className="mt-5 space-y-2.5 text-lg">
                 {p.items.map((x) => (
@@ -388,24 +441,27 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "ace-coord",
-    section: "ACE · KONTRA",
-    title: "Koordinasi sumber daya",
+    section: "ace",
+    title: L("Koordinasi sumber daya", "Resource coordination"),
     steps: 2,
     accent: "ace",
     link: { href: "/dashboard/operations", label: "ACE Command Center" },
-    notes: "Buka ACE Command Center: alokasi kapasitas per kelompok, buffer wajib, QA bersama, batas WIP, anggaran, dan rekomendasi berbasis aturan. Tunjukkan preset 'Bagi rata' yang melanggar batas.",
-    render: (step) => (
+    notes: L(
+      "Buka ACE Command Center: alokasi kapasitas per kelompok, _buffer_ wajib, QA bersama, batas WIP, anggaran, dan rekomendasi berbasis aturan. Tunjukkan _preset_ 'Bagi rata' yang melanggar batas.",
+      "Open the ACE Command Center: capacity allocation per group, mandatory buffers, shared QA, WIP limits, budget and rule-based recommendations. Show how the 'Even split' preset breaks the limits.",
+    ),
+    render: (step, _a, { t }) => (
       <div>
         <h2 className="text-5xl font-semibold">ACE Command Center</h2>
-        <p className="mt-3 text-xl text-white/70">Kapasitas · anggaran · WIP · risiko — dalam satu layar.</p>
+        <p className="mt-3 text-xl text-white/70">{t("Kapasitas · anggaran · WIP · risiko — dalam satu layar.", "Capacity · budget · WIP · risk — on one screen.")}</p>
         <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
           {[
-            { t: "Product (3)", v: [["Interview", 37], ["Events", 25], ["QA", 13], ["Maint.", 10], ["Buffer", 15]] },
-            { t: "Strategy & Ops (2)", v: [["Interview", 40], ["Events", 30], ["Koordinasi", 15], ["Buffer", 15]] },
-            { t: "Leadership (2)", v: [["Interview", 45], ["Events", 30], ["Tata kelola", 25]] },
+            { title: "Product (3)", v: [["Interview", 37], ["Events", 25], ["QA", 13], ["Maint.", 10], ["Buffer", 15]] },
+            { title: "Strategy & Ops (2)", v: [["Interview", 40], ["Events", 30], [t("Koordinasi", "Coordination"), 15], ["Buffer", 15]] },
+            { title: "Leadership (2)", v: [["Interview", 45], ["Events", 30], [t("Tata kelola", "Governance"), 25]] },
           ].map((pool, i) => (
-            <Step key={pool.t} at={i === 0 ? 1 : 2} step={step} className={card}>
-              <p className="text-xl font-semibold">{pool.t}</p>
+            <Step key={pool.title} at={i === 0 ? 1 : 2} step={step} className={card}>
+              <p className="text-xl font-semibold">{pool.title}</p>
               <div className="mt-4 space-y-2">
                 {(pool.v as [string, number][]).map(([k, n]) => (
                   <div key={k}>
@@ -424,7 +480,11 @@ export const SLIDES: SlideDef[] = [
         </div>
         <Step at={2} step={step}>
           <p className="mt-6 flex items-center gap-2 text-lg text-white/75">
-            <Gauge className="h-5 w-5 text-sky" /> Aturan: total ≤ 100%, buffer ≥ 10%, QA ≥ 10%, tiap produk ≥ 15%, WIP 1 inisiatif besar per produk.
+            <Gauge className="h-5 w-5 text-sky" />{" "}
+            {t(
+              "Aturan: total ≤ 100%, buffer ≥ 10%, QA ≥ 10%, tiap produk ≥ 15%, WIP 1 inisiatif besar per produk.",
+              "Rules: total ≤ 100%, buffer ≥ 10%, QA ≥ 10%, each product ≥ 15%, WIP of 1 major initiative per product.",
+            )}
           </p>
         </Step>
       </div>
@@ -432,25 +492,28 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "ace-eval",
-    section: "ACE · KONTRA",
+    section: "ace",
     title: "ACE Portfolio Intelligence",
     steps: 4,
     accent: "ace",
     link: { href: "/dashboard/portfolio", label: "Portfolio Intelligence" },
-    notes: "Evaluasi per produk dan per portofolio. Empat keputusan: Invest more, Improve, Reduce scope, Pause. ACE tidak menjanjikan mempertahankan dua produk dengan segala cara — ada kondisi exit yang transparan.",
-    render: (step) => (
+    notes: L(
+      "Evaluasi per produk dan per portofolio. Empat keputusan: _Invest more_, _Improve_, _Reduce scope_, _Pause_. ACE tidak menjanjikan mempertahankan dua produk dengan segala cara — ada kondisi _exit_ yang transparan.",
+      "Evaluate per product and per portfolio. Four decisions: Invest more, Improve, Reduce scope, Pause. ACE does not promise to keep both products at all costs — there are transparent exit conditions.",
+    ),
+    render: (step, _a, { t }) => (
       <div>
         <h2 className="text-5xl font-semibold">Evaluate & Evolve Portfolio</h2>
         <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-4">
           {[
-            { icon: Rocket, t: "Invest more", d: "Traksi kuat & ekonomi berkelanjutan", c: "from-[#12a37a] to-[#0b7a5a]" },
-            { icon: Wrench, t: "Improve", d: "Potensi ada, KPI tertentu perlu diperbaiki", c: "from-[#4a90e2] to-[#2251c9]" },
-            { icon: Minimize2, t: "Reduce scope", d: "Bukti belum cukup untuk intensitas saat ini", c: "from-[#f0a92c] to-[#c97a06]" },
-            { icon: Pause, t: "Pause", d: "Milestone gagal berulang / risiko kritis", c: "from-[#e0484d] to-[#a82025]" },
+            { icon: Rocket, title: "Invest more", d: t("Traksi kuat & ekonomi berkelanjutan", "Strong traction & sustainable economics"), c: "from-[#12a37a] to-[#0b7a5a]" },
+            { icon: Wrench, title: "Improve", d: t("Potensi ada, KPI tertentu perlu diperbaiki", "Potential is there; certain KPIs need work"), c: "from-[#4a90e2] to-[#2251c9]" },
+            { icon: Minimize2, title: "Reduce scope", d: t("Bukti belum cukup untuk intensitas saat ini", "Not enough evidence for the current intensity"), c: "from-[#f0a92c] to-[#c97a06]" },
+            { icon: Pause, title: "Pause", d: t("_Milestone_ gagal berulang / risiko kritis", "Repeated missed milestones / critical risk"), c: "from-[#e0484d] to-[#a82025]" },
           ].map((g, i) => (
-            <Step key={g.t} at={i + 1} step={step} className={cn("rounded-3xl bg-gradient-to-br p-6", g.c)}>
+            <Step key={g.title} at={i + 1} step={step} className={cn("rounded-3xl bg-gradient-to-br p-6", g.c)}>
               <g.icon className="h-8 w-8" />
-              <p className="mt-4 text-2xl font-semibold">{g.t}</p>
+              <p className="mt-4 text-2xl font-semibold">{g.title}</p>
               <p className="mt-2 text-white/85">{g.d}</p>
             </Step>
           ))}
@@ -460,22 +523,25 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "compare",
-    section: "Perbandingan",
+    section: "compare",
     title: "ONE vs ACE",
     steps: 2,
     accent: "brand",
     mascot: "chart",
-    link: { href: "/dashboard/simulator", label: "Strategy Simulator" },
-    notes: "Gunakan simulator untuk Q&A juri. Angka di slide ini mengikuti asumsi simulator saat ini. Tunjukkan bahwa hasil bisa berbalik bergantung asumsi (lihat tabel tiga preset).",
-    render: (step, a) => {
+    link: { href: "/dashboard/simulator", label: L("Simulator Strategi", "Strategy Simulator") },
+    notes: L(
+      "Gunakan simulator untuk tanya-jawab juri. Angka di _slide_ ini mengikuti asumsi simulator saat ini. Tunjukkan bahwa hasil bisa berbalik bergantung asumsi (lihat tabel tiga _preset_).",
+      "Use the simulator for the judges' Q&A. Figures on this slide follow the current simulator assumptions. Show that the result can flip depending on assumptions (see the three-preset table).",
+    ),
+    render: (step, a, { t }) => {
       const { one, ace } = computeBoth(a);
       const presets = (Object.keys(SCENARIO_PRESETS) as (keyof typeof SCENARIO_PRESETS)[]).map((k) => {
         const b = computeBoth(SCENARIO_PRESETS[k].assumptions);
-        return { label: SCENARIO_PRESETS[k].label, win: b.one.operatingResult >= b.ace.operatingResult ? "ONE" : "ACE" };
+        return { label: t(SCENARIO_PRESETS[k].label), win: b.one.operatingResult >= b.ace.operatingResult ? "ONE" : "ACE" };
       });
       return (
         <div>
-          <h2 className="text-5xl font-semibold">Two Strategies. One Resource Reality.</h2>
+          <h2 className="text-5xl font-semibold">{t("Dua Strategi. Satu Realitas Sumber Daya.", "Two Strategies. One Resource Reality.")}</h2>
           <Step at={1} step={step} className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
             {[
               { k: "ONE", r: one, g: "bg-one-gradient", icon: Target },
@@ -487,10 +553,10 @@ export const SLIDES: SlideDef[] = [
                 </p>
                 <div className="mt-5 grid grid-cols-2 gap-3 text-lg">
                   {[
-                    ["Pendapatan", formatIDRCompact(r.revenue)],
-                    ["Kontribusi", formatIDRCompact(r.totalContribution)],
-                    ["Hasil operasional", formatIDRCompact(r.operatingResult)],
-                    ["Utilisasi Product", formatPercent(r.capacity.productUtilization)],
+                    [t("Pendapatan", "Revenue"), formatIDRCompact(r.revenue)],
+                    [t("Kontribusi", "Contribution"), formatIDRCompact(r.totalContribution)],
+                    [t("Hasil operasional", "Operating result"), formatIDRCompact(r.operatingResult)],
+                    [t("Utilisasi Product", "Product utilisation"), formatPercent(r.capacity.productUtilization)],
                   ].map(([l, v]) => (
                     <div key={l} className="rounded-2xl bg-white/12 p-3 ring-1 ring-white/20">
                       <p className="text-sm text-white/75">{l}</p>
@@ -505,7 +571,7 @@ export const SLIDES: SlideDef[] = [
             <Scale className="h-6 w-6 text-sky" />
             {presets.map((p) => (
               <span key={p.label} className="rounded-full bg-white/10 px-4 py-1.5 ring-1 ring-white/15">
-                {p.label}: <strong>{p.win}</strong> unggul
+                {p.label}: <strong>{p.win}</strong> {t("unggul", "leads")}
               </span>
             ))}
           </Step>
@@ -515,34 +581,51 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: "conclusions",
-    section: "Perbandingan",
-    title: "Kesimpulan kunci",
+    section: "compare",
+    title: L("Kesimpulan kunci", "Key conclusions"),
     steps: 3,
     accent: "brand",
     mascot: "sparkle",
-    link: { href: "/dashboard/simulator", label: "Uji asumsi" },
-    notes: "Tutup dengan kondisi kapan masing-masing strategi lebih menarik. Jangan menentukan pemenang tunggal — keputusan bergantung pada bukti validasi pasar dan kapasitas eksekusi.",
-    render: (step) => (
+    link: { href: "/dashboard/simulator", label: L("Simulator Strategi", "Strategy Simulator") },
+    notes: L(
+      "Tutup dengan kondisi kapan masing-masing strategi lebih menarik. Jangan menentukan pemenang tunggal — keputusan bergantung pada bukti validasi pasar dan kapasitas eksekusi.",
+      "Close with the conditions under which each strategy is more attractive. Don't name a single winner — the decision depends on market-validation evidence and execution capacity.",
+    ),
+    render: (step, _a, { t, tx }) => (
       <div>
-        <h2 className="text-5xl font-semibold">Kapan masing-masing strategi lebih menarik?</h2>
+        <h2 className="text-5xl font-semibold">{t("Kapan masing-masing strategi lebih menarik?", "When is each strategy more attractive?")}</h2>
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           <Step at={1} step={step} className="rounded-3xl bg-one-gradient p-6">
             <p className="flex items-center gap-2 text-3xl font-semibold">
-              <Target className="h-7 w-7" /> ONE unggul bila…
+              <Target className="h-7 w-7" /> {t("ONE unggul bila…", "ONE wins when…")}
             </p>
             <ul className="mt-4 space-y-2 text-lg text-white/90">
-              {["Permintaan rekrutmen B2B kuat & konversi pilot tinggi", "Nilai per pelanggan Interview jauh lebih besar", "Tim kecil perlu menghindari context switching", "Responsible AI & kualitas bisa dibuktikan cepat"].map((x) => (
-                <li key={x} className="flex gap-2"><BadgeCheck className="mt-1 h-5 w-5 shrink-0" /> {x}</li>
+              {[
+                L("Permintaan rekrutmen B2B kuat & konversi _pilot_ tinggi", "B2B hiring demand is strong & pilot conversion is high"),
+                L("Nilai per pelanggan Interview jauh lebih besar", "Interview's value per customer is much larger"),
+                L("Tim kecil perlu menghindari _context switching_", "A small team needs to avoid context switching"),
+                L("Responsible AI & kualitas bisa dibuktikan cepat", "Responsible AI & quality can be proven quickly"),
+              ].map((x) => (
+                <li key={x.id} className="flex gap-2">
+                  <BadgeCheck className="mt-1 h-5 w-5 shrink-0" /> <span>{tx(x)}</span>
+                </li>
               ))}
             </ul>
           </Step>
           <Step at={2} step={step} className="rounded-3xl bg-ace-gradient p-6">
             <p className="flex items-center gap-2 text-3xl font-semibold">
-              <Layers className="h-7 w-7" /> ACE unggul bila…
+              <Layers className="h-7 w-7" /> {t("ACE unggul bila…", "ACE wins when…")}
             </p>
             <ul className="mt-4 space-y-2 text-lg text-white/90">
-              {["Validasi Interview lambat — diversifikasi mengurangi risiko", "Events punya margin & permintaan organizer yang solid", "Overhead koordinasi tetap rendah & WIP disiplin", "Ada mekanisme reduce/pause yang tegas"].map((x) => (
-                <li key={x} className="flex gap-2"><BadgeCheck className="mt-1 h-5 w-5 shrink-0" /> {x}</li>
+              {[
+                L("Validasi Interview lambat — diversifikasi mengurangi risiko", "Interview validation is slow — diversification reduces risk"),
+                L("Events punya margin & permintaan _organizer_ yang solid", "Events has solid margins & organizer demand"),
+                L("_Overhead_ koordinasi tetap rendah & WIP disiplin", "Coordination overhead stays low & WIP is disciplined"),
+                L("Ada mekanisme _reduce/pause_ yang tegas", "There is a firm reduce/pause mechanism"),
+              ].map((x) => (
+                <li key={x.id} className="flex gap-2">
+                  <BadgeCheck className="mt-1 h-5 w-5 shrink-0" /> <span>{tx(x)}</span>
+                </li>
               ))}
             </ul>
           </Step>
@@ -550,10 +633,13 @@ export const SLIDES: SlideDef[] = [
         <Step at={3} step={step}>
           <p className="mt-8 flex items-start gap-3 text-xl text-white/80">
             <Lightbulb className="mt-1 h-6 w-6 shrink-0 text-sky" />
-            Tantangannya bukan sekadar memilih jumlah produk, tetapi mengonversi peluang pasar menjadi pertumbuhan terukur dengan sumber daya optimal.
+            {t(
+              "Tantangannya bukan sekadar memilih jumlah produk, tetapi mengonversi peluang pasar menjadi pertumbuhan terukur dengan sumber daya optimal.",
+              "The challenge is not just choosing how many products, but converting market opportunity into measurable growth with optimal resources.",
+            )}
           </p>
           <p className="mt-3 flex items-center gap-2 text-sm text-white/50">
-            <TriangleAlert className="h-4 w-4" /> Unofficial academic concept prototype — BCDC 2026.
+            <TriangleAlert className="h-4 w-4" /> {t("Prototipe konsep akademik — BCDC 2026.", "Academic concept prototype — BCDC 2026.")}
           </p>
         </Step>
       </div>

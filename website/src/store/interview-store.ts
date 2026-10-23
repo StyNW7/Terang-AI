@@ -6,6 +6,7 @@ import type { AuditEntry, Candidate, CandidateStatus, InterviewQuestion, JobPosi
 import { SEED_AUDIT, SEED_CANDIDATES, SEED_JOBS } from "@/data/candidates.mock";
 import { demoStorage, storageKey } from "@/lib/persistence";
 import { makeId } from "@/lib/utils";
+import { L, type Txt } from "@/lib/i18n-core";
 
 export type InterviewRole = "recruiter" | "candidate";
 
@@ -24,7 +25,7 @@ interface InterviewState {
   updateJob: (id: string, patch: Partial<JobPosition>) => void;
   setQuestions: (jobId: string, questions: InterviewQuestion[]) => void;
   inviteCandidate: (name: string, email: string, jobId: string) => void;
-  setStatus: (id: string, status: CandidateStatus, action: string) => void;
+  setStatus: (id: string, status: CandidateStatus, action: Txt) => void;
   addNote: (id: string, text: string) => void;
   toggleFlag: (id: string) => void;
   overrideLevel: (id: string, competencyId: string, level: 1 | 2 | 3 | 4) => void;
@@ -32,7 +33,7 @@ interface InterviewState {
   setRetention: (days: number) => void;
   setRequireHumanReview: (v: boolean) => void;
   setMaskIdentity: (v: boolean) => void;
-  log: (action: string, target: string) => void;
+  log: (action: Txt, target: Txt) => void;
   reset: () => void;
 }
 
@@ -52,14 +53,14 @@ export const useInterviewStore = create<InterviewState>()(
       addJob: (job) => {
         const created: JobPosition = { ...job, id: makeId("job"), createdAt: new Date().toISOString().slice(0, 10) };
         set((s) => ({ jobs: [created, ...s.jobs] }));
-        get().log("Membuat lowongan", created.title);
+        get().log(L("Membuat lowongan", "Created a vacancy"), created.title);
         return created;
       },
       updateJob: (id, patch) => set((s) => ({ jobs: s.jobs.map((j) => (j.id === id ? { ...j, ...patch } : j)) })),
       setQuestions: (jobId, questions) => {
         set((s) => ({ jobs: s.jobs.map((j) => (j.id === jobId ? { ...j, questions } : j)) }));
         const job = get().jobs.find((j) => j.id === jobId);
-        get().log("Mempublikasikan set pertanyaan", job?.title ?? jobId);
+        get().log(L("Mempublikasikan set pertanyaan", "Published a question set"), job?.title ?? jobId);
       },
       inviteCandidate: (name, email, jobId) => {
         const candidate: Candidate = {
@@ -76,7 +77,7 @@ export const useInterviewStore = create<InterviewState>()(
           overrides: {},
         };
         set((s) => ({ candidates: [candidate, ...s.candidates] }));
-        get().log("Mengirim undangan (simulasi)", name);
+        get().log(L("Mengirim undangan (simulasi)", "Sent an invitation (simulated)"), name);
       },
       setStatus: (id, status, action) => {
         set((s) => ({ candidates: s.candidates.map((c) => (c.id === id ? { ...c, status } : c)) }));
@@ -88,36 +89,47 @@ export const useInterviewStore = create<InterviewState>()(
             c.id === id ? { ...c, notes: [...c.notes, { id: makeId("n"), author: ACTOR, text, at: new Date().toISOString() }] } : c,
           ),
         }));
-        get().log("Menambahkan catatan review", get().candidates.find((c) => c.id === id)?.name ?? id);
+        get().log(L("Menambahkan catatan _review_", "Added a review note"), get().candidates.find((c) => c.id === id)?.name ?? id);
       },
       toggleFlag: (id) => {
         const target = get().candidates.find((c) => c.id === id);
         set((s) => ({ candidates: s.candidates.map((c) => (c.id === id ? { ...c, flagged: !c.flagged } : c)) }));
-        get().log(target?.flagged ? "Mencabut tanda inspeksi manual" : "Menandai untuk inspeksi manual", target?.name ?? id);
+        get().log(
+          target?.flagged ? L("Mencabut tanda inspeksi manual", "Removed the manual-inspection flag") : L("Menandai untuk inspeksi manual", "Flagged for manual inspection"),
+          target?.name ?? id,
+        );
       },
       overrideLevel: (id, competencyId, level) => {
         set((s) => ({
           candidates: s.candidates.map((c) => (c.id === id ? { ...c, overrides: { ...c.overrides, [competencyId]: level } } : c)),
         }));
-        get().log(`Override level ${competencyId} → ${level}`, get().candidates.find((c) => c.id === id)?.name ?? id);
+        get().log(L(`_Override_ level ${competencyId} → ${level}`, `Level override ${competencyId} → ${level}`), get().candidates.find((c) => c.id === id)?.name ?? id);
       },
       addCandidateResult: (candidate) => {
         const id = makeId("cd");
         set((s) => ({ candidates: [{ ...candidate, id }, ...s.candidates] }));
-        get().log("Sesi interview demo selesai", candidate.name);
+        get().log(L("Sesi _interview_ demo selesai", "Demo interview session completed"), candidate.name);
         return id;
       },
       setRetention: (retentionDays) => {
         set({ retentionDays });
-        get().log(`Mengubah retensi data → ${retentionDays} hari`, "Pengaturan");
+        get().log(L(`Mengubah retensi data → ${retentionDays} hari`, `Changed data retention → ${retentionDays} days`), L("Pengaturan", "Settings"));
       },
       setRequireHumanReview: (requireHumanReview) => {
         set({ requireHumanReview });
-        get().log(requireHumanReview ? "Mengaktifkan wajib tinjauan manusia" : "Mencoba menonaktifkan tinjauan manusia", "Pengaturan");
+        get().log(
+          requireHumanReview
+            ? L("Mengaktifkan wajib tinjauan manusia", "Enabled mandatory human review")
+            : L("Mencoba menonaktifkan tinjauan manusia", "Attempted to disable human review"),
+          L("Pengaturan", "Settings"),
+        );
       },
       setMaskIdentity: (maskIdentity) => {
         set({ maskIdentity });
-        get().log(maskIdentity ? "Mengaktifkan penyamaran identitas" : "Menonaktifkan penyamaran identitas", "Pengaturan");
+        get().log(
+          maskIdentity ? L("Mengaktifkan penyamaran identitas", "Enabled identity masking") : L("Menonaktifkan penyamaran identitas", "Disabled identity masking"),
+          L("Pengaturan", "Settings"),
+        );
       },
       reset: () =>
         set({ jobs: SEED_JOBS, candidates: SEED_CANDIDATES, audit: SEED_AUDIT, retentionDays: 90, requireHumanReview: true, maskIdentity: false }),

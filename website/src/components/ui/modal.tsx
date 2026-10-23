@@ -6,6 +6,7 @@ import { useMounted } from "@/hooks/use-mounted";
 import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 let scrollLocks = 0;
 let savedOverflow = "";
@@ -93,6 +94,7 @@ export function Modal({
 }) {
   const panelRef = useOverlay(open, onClose);
   const mounted = useMounted();
+  const { t } = useI18n();
   if (!mounted) return null;
   const widths = { sm: "max-w-md", md: "max-w-xl", lg: "max-w-3xl", xl: "max-w-5xl" };
   return createPortal(
@@ -129,7 +131,7 @@ export function Modal({
                 type="button"
                 onClick={onClose}
                 className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-muted transition hover:bg-soft hover:text-ink"
-                aria-label="Tutup"
+                aria-label={t("Tutup", "Close")}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -163,6 +165,7 @@ export function Drawer({
 }) {
   const panelRef = useOverlay(open, onClose);
   const mounted = useMounted();
+  const { t } = useI18n();
   if (!mounted) return null;
   return createPortal(
     <AnimatePresence>
@@ -195,7 +198,7 @@ export function Drawer({
                 type="button"
                 onClick={onClose}
                 className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-muted transition hover:bg-soft hover:text-ink"
-                aria-label="Tutup"
+                aria-label={t("Tutup", "Close")}
               >
                 <X className="h-5 w-5" />
               </button>

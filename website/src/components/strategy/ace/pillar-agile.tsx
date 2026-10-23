@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { InfoTip } from "@/components/ui/tooltip";
 import { SourceLabel } from "@/components/shared/source-label";
 import { cn } from "@/lib/utils";
+import { keyOf, L, useI18n, type Bilingual } from "@/lib/i18n";
 
 interface BacklogItem {
   id: string;
@@ -35,29 +36,38 @@ const INITIAL: BacklogItem[] = [
   { id: "i4", product: "interview", name: "Responsible AI Controls", reach: 7, impact: 3, confidence: 0.9, effort: 3, status: "proposed" },
 ];
 
-const EXISTING = {
-  events: ["Registrasi & pembayaran", "Submisi & penjurian", "Analitik event dasar"],
-  interview: ["Simulasi wawancara AI (Professor Terra)", "Umpan balik wawancara B2C"],
+const EXISTING: Record<ProductKey, Bilingual[]> = {
+  events: [L("Registrasi & pembayaran", "Registration & payment"), L("Submisi & penjurian", "Submissions & judging"), L("Analitik _event_ dasar", "Basic event analytics")],
+  interview: [L("Simulasi wawancara AI (Professor Terra)", "AI interview simulation (Professor Terra)"), L("Umpan balik wawancara B2C", "B2C interview feedback")],
 };
 
-const STATUS_META: Record<FeatureStatus, { label: string; tone: "success" | "brand" | "sky" | "neutral" | "warning" }> = {
-  existing: { label: "Existing", tone: "success" },
-  proposed: { label: "Proposed", tone: "brand" },
-  "in-development": { label: "In development", tone: "sky" },
-  simulated: { label: "Simulated demo", tone: "neutral" },
-  later: { label: "Later priority", tone: "warning" },
+const STATUS_META: Record<FeatureStatus, { label: Bilingual; tone: "success" | "brand" | "sky" | "neutral" | "warning" }> = {
+  existing: { label: L("Sudah ada", "Existing"), tone: "success" },
+  proposed: { label: L("Usulan", "Proposed"), tone: "brand" },
+  "in-development": { label: L("Dalam pengembangan", "In development"), tone: "sky" },
+  simulated: { label: L("Demo simulasi", "Simulated demo"), tone: "neutral" },
+  later: { label: L("Prioritas berikutnya", "Later priority"), tone: "warning" },
+};
+
+const SPRINT_COLUMN_LABEL: Record<string, Bilingual> = {
+  backlog: L("_Backlog_", "Backlog"),
+  planned: L("Direncanakan", "Planned"),
+  "in-progress": L("Berjalan", "In progress"),
+  review: L("_Review_", "Review"),
+  done: L("Selesai", "Done"),
 };
 
 const score = (i: BacklogItem) => (i.reach * i.impact * i.confidence) / i.effort;
 
 function Stepper({ value, onChange, min, max, label }: { value: number; onChange: (v: number) => void; min: number; max: number; label: string }) {
+  const { t } = useI18n();
   return (
     <span className="inline-flex items-center rounded-lg bg-card ring-1 ring-line" aria-label={label}>
-      <button type="button" className="grid h-6 w-6 place-items-center text-muted hover:text-ink" onClick={() => onChange(Math.max(min, value - 1))} aria-label={`Kurangi ${label}`}>
+      <button type="button" className="grid h-6 w-6 place-items-center text-muted hover:text-ink" onClick={() => onChange(Math.max(min, value - 1))} aria-label={`${t("Kurangi", "Decrease")} ${label}`}>
         <Minus className="h-3 w-3" />
       </button>
       <span className="tabular w-5 text-center text-xs font-semibold text-ink">{value}</span>
-      <button type="button" className="grid h-6 w-6 place-items-center text-muted hover:text-ink" onClick={() => onChange(Math.min(max, value + 1))} aria-label={`Tambah ${label}`}>
+      <button type="button" className="grid h-6 w-6 place-items-center text-muted hover:text-ink" onClick={() => onChange(Math.min(max, value + 1))} aria-label={`${t("Tambah", "Increase")} ${label}`}>
         <Plus className="h-3 w-3" />
       </button>
     </span>
@@ -66,28 +76,32 @@ function Stepper({ value, onChange, min, max, label }: { value: number; onChange
 
 export function AcePillarAgile() {
   const [items, setItems] = useState(INITIAL);
+  const { t, tx } = useI18n();
   const [committed, setCommitted] = useState<string[]>(["e1", "i1"]);
   const tasks = useOperationsStore((s) => s.tasks);
 
   const toggleCommit = (item: BacklogItem) => {
     if (committed.includes(item.id)) {
       setCommitted((c) => c.filter((x) => x !== item.id));
-      toast.info(`${item.name} dikembalikan ke backlog.`);
+      toast.info(t(`${item.name} dikembalikan ke backlog.`, `${item.name} moved back to the backlog.`));
       return;
     }
     if (item.status === "later") {
-      toast.warning(`${item.name} berstatus later priority — tidak masuk sprint awal.`);
+      toast.warning(t(`${item.name} berstatus prioritas berikutnya — tidak masuk sprint awal.`, `${item.name} is a later priority — it is not part of the first sprint.`));
       return;
     }
     const sameProduct = committed.filter((id) => items.find((x) => x.id === id)?.product === item.product);
     if (sameProduct.length >= 1) {
-      toast.error("Batas WIP tercapai", {
-        description: "ACE membatasi 1 inisiatif besar per produk. Selesaikan atau kembalikan inisiatif aktif terlebih dahulu.",
+      toast.error(t("Batas WIP tercapai", "WIP limit reached"), {
+        description: t(
+          "ACE membatasi 1 inisiatif besar per produk. Selesaikan atau kembalikan inisiatif aktif terlebih dahulu.",
+          "ACE allows 1 major initiative per product. Finish or return the active initiative first.",
+        ),
       });
       return;
     }
     setCommitted((c) => [...c, item.id]);
-    toast.success(`${item.name} masuk sprint aktif.`);
+    toast.success(t(`${item.name} masuk sprint aktif.`, `${item.name} added to the active sprint.`));
   };
 
   const update = (id: string, patch: Partial<BacklogItem>) => setItems((list) => list.map((i) => (i.id === id ? { ...i, ...patch } : i)));
@@ -107,16 +121,21 @@ export function AcePillarAgile() {
     <div className="space-y-10">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">Flagship Program</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">{tx("Program _Flagship_", "Flagship Program")}</p>
           <h3 className="text-2xl font-semibold text-ink">ACE Dual-Product Innovation Sprint</h3>
           <p className="mt-1 max-w-2xl text-sm text-muted-strong">
-            Dua backlog diurutkan dengan skor prioritas. Masukkan inisiatif ke sprint — sistem menegakkan batas WIP 1 inisiatif besar per produk
-            dengan kapasitas QA & support wajib.
+            {tx(
+              "Dua _backlog_ diurutkan dengan skor prioritas. Masukkan inisiatif ke _sprint_ — sistem menegakkan batas WIP 1 inisiatif besar per produk dengan kapasitas QA & _support_ wajib.",
+              "Two backlogs ranked by priority score. Move initiatives into the sprint — the system enforces a WIP limit of 1 major initiative per product, with mandatory QA & support capacity.",
+            )}
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <InfoTip align="right" label="Skor prioritas">
-            Skor = Reach × Impact × Confidence ÷ Effort. Ubah Impact dan Effort untuk melihat urutan backlog berubah.
+          <InfoTip align="right" label={t("Skor prioritas", "Priority score")}>
+            {tx(
+              "Skor = _Reach_ × _Impact_ × _Confidence_ ÷ _Effort_. Ubah _Impact_ dan _Effort_ untuk melihat urutan _backlog_ berubah.",
+              "Score = Reach × Impact × Confidence ÷ Effort. Change Impact and Effort to watch the backlog order change.",
+            )}
           </InfoTip>
           <SourceLabel type="strategic-proposal" compact />
         </div>
@@ -136,7 +155,7 @@ export function AcePillarAgile() {
                     </span>
                     <div>
                       <p className="font-semibold text-ink">{isEvents ? "Terang Events" : "AI Candidate Interview"}</p>
-                      <p className="text-xs text-muted">Backlog prioritas</p>
+                      <p className="text-xs text-muted">{tx("_Backlog_ prioritas", "Priority backlog")}</p>
                     </div>
                   </div>
                   <span className={cn("rounded-full px-2.5 py-1 text-xs font-semibold", active >= 1 ? "bg-warning-soft text-warning-ink" : "bg-success-soft text-success-ink")}>
@@ -145,8 +164,8 @@ export function AcePillarAgile() {
                 </div>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {EXISTING[product].map((e) => (
-                    <Badge key={e} tone="success">
-                      Existing · {e}
+                    <Badge key={keyOf(e)} tone="success">
+                      {t("Sudah ada", "Existing")} · {tx(e)}
                     </Badge>
                   ))}
                 </div>
@@ -172,10 +191,10 @@ export function AcePillarAgile() {
                             <div className="min-w-0">
                               <p className="text-sm font-semibold text-ink">{item.name}</p>
                               <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                                <Badge tone={STATUS_META[status].tone}>{STATUS_META[status].label}</Badge>
+                                <Badge tone={STATUS_META[status].tone}>{t(STATUS_META[status].label)}</Badge>
                                 {item.demo && (
                                   <a href={item.demo} className="text-[11px] font-semibold text-brand-ink hover:underline">
-                                    Lihat demo →
+                                    {t("Lihat demo →", "See demo →")}
                                   </a>
                                 )}
                               </div>
@@ -183,7 +202,7 @@ export function AcePillarAgile() {
                           </div>
                           <div className="text-right">
                             <p className="tabular font-display text-xl font-semibold text-ink">{score(item).toFixed(1)}</p>
-                            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">skor</p>
+                            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">{t("skor", "score")}</p>
                           </div>
                         </div>
                         <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
@@ -194,7 +213,17 @@ export function AcePillarAgile() {
                             <span className="flex items-center gap-1">Effort <Stepper value={item.effort} min={1} max={5} onChange={(v) => update(item.id, { effort: v })} label="effort" /></span>
                           </div>
                           <Button size="sm" variant={isCommitted ? "secondary" : "soft"} onClick={() => toggleCommit(item)}>
-                            {isCommitted ? "Kembalikan" : item.status === "later" ? (<><Lock className="h-3.5 w-3.5" /> Later</>) : (<><Rocket className="h-3.5 w-3.5" /> Masuk sprint</>)}
+                            {isCommitted ? (
+                              t("Kembalikan", "Return")
+                            ) : item.status === "later" ? (
+                              <>
+                                <Lock className="h-3.5 w-3.5" /> {t("Nanti", "Later")}
+                              </>
+                            ) : (
+                              <>
+                                <Rocket className="h-3.5 w-3.5" /> {tx("Masuk _sprint_", "Add to sprint")}
+                              </>
+                            )}
                           </Button>
                         </div>
                       </motion.div>
@@ -209,19 +238,19 @@ export function AcePillarAgile() {
 
       <div className="flex flex-col gap-5 rounded-3xl bg-navy-gradient p-6 text-white shadow-lift md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">Sprint view · ACE Command Center</p>
-          <p className="mt-1 text-xl font-semibold">Sprint board bersama dua produk</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">{tx("Tampilan _sprint_ · ACE Command Center", "Sprint view · ACE Command Center")}</p>
+          <p className="mt-1 text-xl font-semibold">{tx("_Sprint board_ bersama dua produk", "A shared sprint board for both products")}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {sprintCounts.map(({ c, n }) => (
               <span key={c} className="rounded-xl bg-white/10 px-3 py-2 text-center ring-1 ring-white/15">
                 <span className="tabular block font-display text-lg font-semibold">{n}</span>
-                <span className="text-[11px] capitalize text-white/70">{c.replace("-", " ")}</span>
+                <span className="text-[11px] text-white/70">{t(SPRINT_COLUMN_LABEL[c])}</span>
               </span>
             ))}
           </div>
         </div>
         <Button href="/dashboard/operations" variant="light">
-          Buka sprint board <ArrowRight className="h-4 w-4" />
+          {tx("Buka _sprint board_", "Open the sprint board")} <ArrowRight className="h-4 w-4" />
         </Button>
       </div>
     </div>

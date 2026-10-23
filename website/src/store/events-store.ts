@@ -6,6 +6,7 @@ import type { EventItem, Participant, ParticipantRegistration, Submission } from
 import { SEED_EVENTS, SEED_PARTICIPANTS, SEED_SUBMISSIONS } from "@/data/events.mock";
 import { demoStorage, storageKey } from "@/lib/persistence";
 import { makeId } from "@/lib/utils";
+import type { Txt } from "@/lib/i18n-core";
 
 export type EventsRole = "organizer" | "participant";
 
@@ -21,7 +22,7 @@ interface EventsState {
   duplicateEvent: (id: string, overrides: Partial<EventItem>) => EventItem | undefined;
   scoreSubmission: (id: string, criterionId: string, score: number) => void;
   setSubmissionStatus: (id: string, status: Submission["status"]) => void;
-  assignReviewer: (id: string, reviewer: string) => void;
+  assignReviewer: (id: string, reviewer: Txt) => void;
   setParticipantStatus: (id: string, status: Participant["status"]) => void;
   register: (reg: Omit<ParticipantRegistration, "registeredAt">) => void;
   submitWork: (eventId: string, submission: NonNullable<ParticipantRegistration["submission"]>) => void;

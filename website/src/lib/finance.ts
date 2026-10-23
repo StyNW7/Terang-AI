@@ -1,4 +1,5 @@
 import type { Assumptions, ProductResult, StrategyResult } from "@/types/finance";
+import { L, type Bilingual } from "@/lib/i18n-core";
 import { clamp, nonNegative, safeDivide } from "./utils";
 
 /**
@@ -174,18 +175,18 @@ export function computeStrategy(strategy: StrategyKey, a: Assumptions): Strategy
 
   const budgetConsumption = safeDivide(totalCosts, shared.totalBudget);
 
-  const risks: string[] = [];
-  if (capacity.productUtilization > 1) risks.push("Kapasitas tim Product melebihi 100% — risiko keterlambatan & kualitas.");
-  else if (capacity.productUtilization > 0.9) risks.push("Kapasitas tim Product sangat ketat (>90%).");
-  if (capacity.opsUtilization > 1) risks.push("Kapasitas Strategy & Operations melebihi 100%.");
-  else if (capacity.opsUtilization > 0.9) risks.push("Kapasitas Strategy & Operations sangat ketat (>90%).");
-  if (budgetConsumption > 1) risks.push("Total biaya melebihi anggaran yang tersedia.");
+  const risks: Bilingual[] = [];
+  if (capacity.productUtilization > 1) risks.push(L("Kapasitas tim _Product_ melebihi 100% — risiko keterlambatan & kualitas.", "Product team capacity exceeds 100% — risk of delays & quality issues."));
+  else if (capacity.productUtilization > 0.9) risks.push(L("Kapasitas tim _Product_ sangat ketat (>90%).", "Product team capacity is very tight (>90%)."));
+  if (capacity.opsUtilization > 1) risks.push(L("Kapasitas _Strategy & Operations_ melebihi 100%.", "Strategy & Operations capacity exceeds 100%."));
+  else if (capacity.opsUtilization > 0.9) risks.push(L("Kapasitas _Strategy & Operations_ sangat ketat (>90%).", "Strategy & Operations capacity is very tight (>90%)."));
+  if (budgetConsumption > 1) risks.push(L("Total biaya melebihi anggaran yang tersedia.", "Total costs exceed the available budget."));
   const interviewRevenueShare = safeDivide(interview.revenue, revenue);
-  if (interviewRevenueShare > 0.8) risks.push("Konsentrasi pendapatan tinggi pada satu produk (>80%).");
-  if (strategy === "one") risks.push("Bergantung pada keberhasilan konversi pilot AI Candidate Interview.");
-  if (strategy === "ace") risks.push("Kompleksitas koordinasi dua roadmap & dua go-to-market.");
-  if (interview.contribution < 0) risks.push("Kontribusi AI Candidate Interview negatif pada asumsi ini.");
-  if (events.contribution < 0) risks.push("Kontribusi Terang Events negatif pada asumsi ini.");
+  if (interviewRevenueShare > 0.8) risks.push(L("Konsentrasi pendapatan tinggi pada satu produk (>80%).", "High revenue concentration in one product (>80%)."));
+  if (strategy === "one") risks.push(L("Bergantung pada keberhasilan konversi _pilot_ AI Candidate Interview.", "Depends on successfully converting AI Candidate Interview pilots."));
+  if (strategy === "ace") risks.push(L("Kompleksitas koordinasi dua _roadmap_ & dua _go-to-market_.", "Complexity of coordinating two roadmaps & two go-to-market tracks."));
+  if (interview.contribution < 0) risks.push(L("Kontribusi AI Candidate Interview negatif pada asumsi ini.", "AI Candidate Interview's contribution is negative under these assumptions."));
+  if (events.contribution < 0) risks.push(L("Kontribusi Terang Events negatif pada asumsi ini.", "Terang Events' contribution is negative under these assumptions."));
 
   return {
     strategy,
@@ -219,10 +220,10 @@ export type SensitivityParam =
 
 export const SENSITIVITY_PARAMS: Record<
   SensitivityParam,
-  { label: string; min: number; max: number; steps: number; format: "percent" | "idr" | "number"; apply: (a: Assumptions, v: number) => Assumptions }
+  { label: Bilingual; min: number; max: number; steps: number; format: "percent" | "idr" | "number"; apply: (a: Assumptions, v: number) => Assumptions }
 > = {
   pilotConversion: {
-    label: "Konversi pilot → berbayar (Interview)",
+    label: L("Konversi _pilot_ → berbayar (Interview)", "Pilot → paid conversion (Interview)"),
     min: 0.1,
     max: 0.7,
     steps: 13,
@@ -230,7 +231,7 @@ export const SENSITIVITY_PARAMS: Record<
     apply: (a, v) => ({ ...a, interview: { ...a.interview, pilotConversion: v } }),
   },
   netRevenuePerInterview: {
-    label: "Pendapatan bersih per interview",
+    label: L("Pendapatan bersih per _interview_", "Net revenue per interview"),
     min: 20_000,
     max: 120_000,
     steps: 11,
@@ -238,7 +239,7 @@ export const SENSITIVITY_PARAMS: Record<
     apply: (a, v) => ({ ...a, interview: { ...a.interview, netRevenuePerInterview: v } }),
   },
   netRevenuePerEvent: {
-    label: "Pendapatan bersih per event",
+    label: L("Pendapatan bersih per _event_", "Net revenue per event"),
     min: 2_000_000,
     max: 16_000_000,
     steps: 15,
@@ -246,7 +247,7 @@ export const SENSITIVITY_PARAMS: Record<
     apply: (a, v) => ({ ...a, events: { ...a.events, netRevenuePerEvent: v } }),
   },
   salesCapacityOrganizers: {
-    label: "Kapasitas akuisisi organizer baru",
+    label: L("Kapasitas akuisisi _organizer_ baru", "New-organizer acquisition capacity"),
     min: 10,
     max: 100,
     steps: 10,
@@ -254,7 +255,7 @@ export const SENSITIVITY_PARAMS: Record<
     apply: (a, v) => ({ ...a, shared: { ...a.shared, salesCapacityOrganizers: v } }),
   },
   interviewShare: {
-    label: "Porsi kapasitas ACE untuk Interview",
+    label: L("Porsi kapasitas ACE untuk Interview", "ACE capacity share for Interview"),
     min: 0.3,
     max: 0.9,
     steps: 13,
@@ -288,30 +289,45 @@ export function findCrossover(points: { x: number; one: number; ace: number }[])
   return null;
 }
 
-export const FORMULAS = [
+export const FORMULAS: { name: Bilingual; formula: string; note: Bilingual }[] = [
   {
-    name: "Pendapatan Events",
-    formula: "RevenueEvents = JumlahEvent × PendapatanBersihPerEvent",
-    note: "JumlahEvent = organizer existing × event/organizer × retensi + organizer baru × (event pertama + event ulang × retensi).",
+    name: L("Pendapatan Events", "Events revenue"),
+    formula: "RevenueEvents = EventCount × NetRevenuePerEvent",
+    note: L(
+      "Jumlah _event_ = _organizer existing_ × _event_/_organizer_ × retensi + _organizer_ baru × (_event_ pertama + _event_ ulang × retensi).",
+      "Event count = existing organizers × events/organizer × retention + new organizers × (first event + repeat events × retention).",
+    ),
   },
   {
-    name: "Pendapatan Interview",
-    formula: "RevenueInterview = InterviewBerbayarSelesai × PendapatanBersihPerInterview",
-    note: "Interview = pelanggan × bulan aktif (setelah renewal) × faktor ramp-up × interview/pelanggan/bulan.",
+    name: L("Pendapatan Interview", "Interview revenue"),
+    formula: "RevenueInterview = PaidInterviewsCompleted × NetRevenuePerInterview",
+    note: L(
+      "_Interview_ = pelanggan × bulan aktif (setelah _renewal_) × faktor _ramp-up_ × _interview_/pelanggan/bulan.",
+      "Interviews = customers × active months (after renewal) × ramp-up factor × interviews/customer/month.",
+    ),
   },
   {
-    name: "Kontribusi produk",
+    name: L("Kontribusi produk", "Product contribution"),
     formula: "ContributionProduct = ProductRevenue − DirectVariableCosts − AttributableDirectSupportCosts",
-    note: "Biaya maintenance Terang Events dihitung sebagai biaya dukungan langsung Events pada kedua strategi.",
+    note: L(
+      "Biaya _maintenance_ Terang Events dihitung sebagai biaya dukungan langsung Events pada kedua strategi.",
+      "Terang Events maintenance cost is counted as a direct Events support cost in both strategies.",
+    ),
   },
   {
-    name: "Hasil operasional",
+    name: L("Hasil operasional", "Operating result"),
     formula: "OperatingResult = TotalContribution − FixedOperatingCosts − DevelopmentCosts − Marketing − AdditionalPortfolioOverhead",
-    note: "Bukan laba bersih: pajak, pembiayaan, dan biaya non-operasional tidak dihitung.",
+    note: L(
+      "Bukan laba bersih: pajak, pembiayaan, dan biaya non-operasional tidak dihitung.",
+      "Not net profit: taxes, financing and non-operating costs are excluded.",
+    ),
   },
   {
-    name: "Konsumsi anggaran",
-    formula: "BudgetConsumption = TotalBiaya ÷ AnggaranTersedia",
-    note: "Total biaya mencakup biaya langsung, tetap, pengembangan, pemasaran, dan overhead portofolio.",
+    name: L("Konsumsi anggaran", "Budget consumption"),
+    formula: "BudgetConsumption = TotalCosts ÷ AvailableBudget",
+    note: L(
+      "Total biaya mencakup biaya langsung, tetap, pengembangan, pemasaran, dan _overhead_ portofolio.",
+      "Total costs include direct, fixed, development, marketing and portfolio-overhead costs.",
+    ),
   },
-] as const;
+];

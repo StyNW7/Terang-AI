@@ -5,6 +5,7 @@ import { Table2, BarChart3 } from "lucide-react";
 import { formatValue, type NumberFormat } from "@/components/ui/animated-number";
 import { formatIDRCompact } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 /** Validated series colors (dataviz validator: CVD ΔE ≥ 18 for each pair). */
 export const SERIES = {
@@ -114,6 +115,7 @@ export function ChartFrame({
   summary?: string;
 }) {
   const [view, setView] = useState<"chart" | "table">("chart");
+  const { t } = useI18n();
   return (
     <figure data-spotlight className={cn("rounded-2xl border border-line bg-card p-5 shadow-soft", className)} aria-label={summary}>
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -128,10 +130,10 @@ export function ChartFrame({
               type="button"
               onClick={() => setView(view === "chart" ? "table" : "chart")}
               className="inline-flex items-center gap-1 rounded-lg border border-line px-2 py-1 text-[11px] font-semibold text-muted-strong transition hover:text-ink"
-              aria-label={view === "chart" ? "Tampilkan tabel" : "Tampilkan grafik"}
+              aria-label={view === "chart" ? t("Tampilkan tabel", "Show table") : t("Tampilkan grafik", "Show chart")}
             >
               {view === "chart" ? <Table2 className="h-3.5 w-3.5" /> : <BarChart3 className="h-3.5 w-3.5" />}
-              {view === "chart" ? "Tabel" : "Grafik"}
+              {view === "chart" ? t("Tabel", "Table") : t("Grafik", "Chart")}
             </button>
           )}
         </div>

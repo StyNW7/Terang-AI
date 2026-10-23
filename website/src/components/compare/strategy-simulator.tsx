@@ -47,15 +47,16 @@ import { SourceLabel } from "@/components/shared/source-label";
 import { STRATEGY_GLOSSARY } from "@/data/strategy";
 import { AssumptionPanel } from "./assumption-panel";
 import { cn } from "@/lib/utils";
+import { keyOf, L, useI18n, type Bilingual } from "@/lib/i18n";
 
-const FAIR_RULES = [
-  "Headcount sama: 7 personel untuk kedua strategi",
-  "Periode evaluasi & biaya tetap identik",
-  "Anggaran pengembangan & kapasitas penjualan sama",
-  "Maintenance Events dihitung di kedua strategi (sekali saja)",
-  "Uplift fokus ONE hanya lewat asumsi eksplisit",
-  "Kompleksitas ACE memiliki biaya & efek kapasitas",
-  "Tidak ada pemenang yang ditentukan sebelumnya",
+const FAIR_RULES: Bilingual[] = [
+  L("_Headcount_ sama: 7 personel untuk kedua strategi", "Same headcount: 7 people for both strategies"),
+  L("Periode evaluasi & biaya tetap identik", "Identical evaluation period & fixed costs"),
+  L("Anggaran pengembangan & kapasitas penjualan sama", "Same development budget & sales capacity"),
+  L("_Maintenance_ Events dihitung di kedua strategi (sekali saja)", "Events maintenance counted in both strategies (once)"),
+  L("_Uplift_ fokus ONE hanya lewat asumsi eksplisit", "ONE's focus uplift only via an explicit assumption"),
+  L("Kompleksitas ACE memiliki biaya & efek kapasitas", "ACE's complexity carries cost & capacity effects"),
+  L("Tidak ada pemenang yang ditentukan sebelumnya", "No winner is decided in advance"),
 ];
 
 function sensFormat(param: SensitivityParam, v: number) {
@@ -64,20 +65,21 @@ function sensFormat(param: SensitivityParam, v: number) {
 }
 
 function StrategyCard({ r, other, variant }: { r: StrategyResult; other: StrategyResult; variant: "one" | "ace" }) {
+  const { t, tx } = useI18n();
   const isOne = variant === "one";
   const better = (a: number, b: number, higherIsBetter = true) => (higherIsBetter ? a > b : a < b);
   const rows: { label: string; value: string; win?: boolean; hint?: string }[] = [
-    { label: "Produk aktif dikembangkan", value: isOne ? "1 · AI Candidate Interview" : "2 · Events + Interview" },
-    { label: "Fokus pengembangan", value: isOne ? "AI Interview Intelligence Suite" : "Dual-Product Innovation Sprint" },
-    { label: "Kanal akuisisi", value: isOne ? "Komunitas HR, LinkedIn, webinar" : "Kampus & asosiasi + HR & agensi" },
-    { label: "Pendapatan", value: formatIDRCompact(r.revenue), win: better(r.revenue, other.revenue) },
-    { label: "Kontribusi total", value: formatIDRCompact(r.totalContribution), win: better(r.totalContribution, other.totalContribution) },
-    { label: "Contribution margin", value: formatPercent(r.contributionMargin), win: better(r.contributionMargin, other.contributionMargin) },
-    { label: "Biaya pemasaran & akuisisi", value: formatIDRCompact(r.marketingCosts), win: better(r.marketingCosts, other.marketingCosts, false) },
-    { label: "Overhead portofolio", value: formatIDRCompact(r.portfolioOverhead), win: better(r.portfolioOverhead, other.portfolioOverhead, false) },
-    { label: "Konsumsi anggaran", value: formatPercent(r.budgetConsumption), win: better(r.budgetConsumption, other.budgetConsumption, false) },
-    { label: "Utilisasi tim Product", value: formatPercent(r.capacity.productUtilization), win: better(r.capacity.productUtilization, other.capacity.productUtilization, false) },
-    { label: "Utilisasi Strategy & Ops", value: formatPercent(r.capacity.opsUtilization), win: better(r.capacity.opsUtilization, other.capacity.opsUtilization, false) },
+    { label: t("Produk aktif dikembangkan", "Products in active development"), value: isOne ? "1 · AI Candidate Interview" : "2 · Events + Interview" },
+    { label: t("Fokus pengembangan", "Development focus"), value: isOne ? "AI Interview Intelligence Suite" : "Dual-Product Innovation Sprint" },
+    { label: t("Kanal akuisisi", "Acquisition channels"), value: isOne ? t("Komunitas HR, LinkedIn, webinar", "HR communities, LinkedIn, webinars") : t("Kampus & asosiasi + HR & agensi", "Campuses & associations + HR & agencies") },
+    { label: t("Pendapatan", "Revenue"), value: formatIDRCompact(r.revenue), win: better(r.revenue, other.revenue) },
+    { label: t("Kontribusi total", "Total contribution"), value: formatIDRCompact(r.totalContribution), win: better(r.totalContribution, other.totalContribution) },
+    { label: t("_Contribution margin_", "Contribution margin"), value: formatPercent(r.contributionMargin), win: better(r.contributionMargin, other.contributionMargin) },
+    { label: t("Biaya pemasaran & akuisisi", "Marketing & acquisition cost"), value: formatIDRCompact(r.marketingCosts), win: better(r.marketingCosts, other.marketingCosts, false) },
+    { label: t("_Overhead_ portofolio", "Portfolio overhead"), value: formatIDRCompact(r.portfolioOverhead), win: better(r.portfolioOverhead, other.portfolioOverhead, false) },
+    { label: t("Konsumsi anggaran", "Budget consumption"), value: formatPercent(r.budgetConsumption), win: better(r.budgetConsumption, other.budgetConsumption, false) },
+    { label: t("Utilisasi tim Product", "Product team utilisation"), value: formatPercent(r.capacity.productUtilization), win: better(r.capacity.productUtilization, other.capacity.productUtilization, false) },
+    { label: t("Utilisasi Strategy & Ops", "Strategy & Ops utilisation"), value: formatPercent(r.capacity.opsUtilization), win: better(r.capacity.opsUtilization, other.capacity.opsUtilization, false) },
   ];
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-card shadow-card">
@@ -86,7 +88,7 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
         <div className="relative flex items-start justify-between gap-3">
           <div>
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/80">
-              {isOne ? <Target className="h-4 w-4" /> : <Layers className="h-4 w-4" />} {isOne ? "PRO" : "KONTRA"}
+              {isOne ? <Target className="h-4 w-4" /> : <Layers className="h-4 w-4" />} {isOne ? "PRO" : t("KONTRA", "CONTRA")}
             </p>
             <p className="font-display text-3xl font-semibold">{isOne ? "ONE Strategy" : "ACE Strategy"}</p>
           </div>
@@ -94,16 +96,20 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
         </div>
         <div className="relative mt-4 rounded-2xl bg-white/12 p-4 ring-1 ring-white/20">
           <p className="flex items-center gap-1.5 text-xs font-semibold text-white/80">
-            Hasil operasional (estimasi)
-            <InfoTip light title="Apa artinya?">
-              Kontribusi total dikurangi biaya tetap, pengembangan, pemasaran, dan overhead portofolio. Bukan laba bersih — pajak & pembiayaan
-              tidak dihitung.
+            {t("Hasil operasional (estimasi)", "Operating result (estimated)")}
+            <InfoTip light>
+              {tx(
+                "Kontribusi total dikurangi biaya tetap, pengembangan, pemasaran, dan _overhead_ portofolio. Bukan laba bersih — pajak & pembiayaan tidak dihitung.",
+                "Total contribution minus fixed, development, marketing and portfolio-overhead costs. Not net profit — taxes & financing are excluded.",
+              )}
             </InfoTip>
           </p>
           <p className="tabular font-display text-3xl font-semibold">
             <AnimatedNumber value={r.operatingResult} format="idrCompact" />
           </p>
-          <p className="text-xs text-white/75">{r.operatingResult >= other.operatingResult ? "Lebih tinggi pada asumsi ini" : "Lebih rendah pada asumsi ini"}</p>
+          <p className="text-xs text-white/75">
+            {r.operatingResult >= other.operatingResult ? t("Lebih tinggi pada asumsi ini", "Higher under these assumptions") : t("Lebih rendah pada asumsi ini", "Lower under these assumptions")}
+          </p>
         </div>
       </div>
       <dl className="flex-1 divide-y divide-line px-6">
@@ -112,25 +118,25 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
             <dt className="text-muted-strong">{row.label}</dt>
             <dd className="flex items-center gap-1.5 text-right font-semibold text-ink">
               <span className="tabular">{row.value}</span>
-              {row.win && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-success" aria-label="lebih baik" />}
+              {row.win && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-success" aria-label={t("lebih baik", "better")} />}
             </dd>
           </div>
         ))}
       </dl>
       <div className="border-t border-line bg-surface p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Risiko utama</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">{t("Risiko utama", "Main risks")}</p>
         <ul className="mt-2 space-y-1">
           {r.risks.slice(0, 4).map((risk) => (
-            <li key={risk} className="flex items-start gap-2 text-[13px] text-ink">
-              <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-warning" /> {risk}
+            <li key={keyOf(risk)} className="flex items-start gap-2 text-[13px] text-ink">
+              <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-warning" /> {tx(risk)}
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-muted">Syarat scale</p>
+        <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-muted">{tx("Syarat _scale_", "Conditions to scale")}</p>
         <p className="mt-1 text-[13px] text-muted-strong">
           {isOne
-            ? "Expansion Gate lulus: kualitas, traksi, ekonomi, kapasitas & Responsible AI."
-            : "Portfolio review per produk: invest / improve / reduce / pause berdasarkan KPI."}
+            ? t("Expansion Gate lulus: kualitas, traksi, ekonomi, kapasitas & Responsible AI.", "Pass the Expansion Gate: quality, traction, economics, capacity & Responsible AI.")
+            : tx("_Portfolio review_ per produk: _invest / improve / reduce / pause_ berdasarkan KPI.", "Per-product portfolio review: invest / improve / reduce / pause based on KPIs.")}
         </p>
       </div>
     </div>
@@ -138,6 +144,7 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
 }
 
 export function StrategySimulator() {
+  const { t, tx } = useI18n();
   const assumptions = useScenarioStore((s) => s.assumptions);
   const preset = useScenarioStore((s) => s.preset);
   const applyPreset = useScenarioStore((s) => s.applyPreset);
@@ -153,7 +160,7 @@ export function StrategySimulator() {
     () =>
       (Object.keys(SCENARIO_PRESETS) as ScenarioPreset[]).map((k) => {
         const b = computeBoth(SCENARIO_PRESETS[k].assumptions);
-        return { key: k, label: SCENARIO_PRESETS[k].label, one: b.one, ace: b.ace };
+        return { key: k, label: SCENARIO_PRESETS[k].label as Bilingual, one: b.one, ace: b.ace };
       }),
     [],
   );
@@ -162,10 +169,10 @@ export function StrategySimulator() {
   const gap = Math.abs(one.operatingResult - ace.operatingResult);
 
   const compareData = [
-    { metric: "Pendapatan", one: one.revenue, ace: ace.revenue },
-    { metric: "Kontribusi", one: one.totalContribution, ace: ace.totalContribution },
-    { metric: "Total biaya", one: one.totalCosts, ace: ace.totalCosts },
-    { metric: "Hasil operasional", one: one.operatingResult, ace: ace.operatingResult },
+    { metric: t("Pendapatan", "Revenue"), one: one.revenue, ace: ace.revenue },
+    { metric: t("Kontribusi", "Contribution"), one: one.totalContribution, ace: ace.totalContribution },
+    { metric: t("Total biaya", "Total costs"), one: one.totalCosts, ace: ace.totalCosts },
+    { metric: t("Hasil operasional", "Operating result"), one: one.operatingResult, ace: ace.operatingResult },
   ];
   const costData = [
     { name: "ONE", tetap: one.fixedCosts, pengembangan: one.developmentCosts, pemasaran: one.marketingCosts, overhead: one.portfolioOverhead, langsung: one.totalCosts - one.fixedCosts - one.developmentCosts - one.marketingCosts - one.portfolioOverhead },
@@ -173,14 +180,21 @@ export function StrategySimulator() {
   ];
   const sensData = sens.map((p) => ({ x: p.x, label: sensFormat(param, p.x), one: p.one, ace: p.ace }));
 
+  const strategyLine = (name: string, r: StrategyResult) =>
+    t(
+      `${name}: pendapatan ${formatIDR(r.revenue)}, kontribusi ${formatIDR(r.totalContribution)}, hasil operasional ${formatIDR(r.operatingResult)}, utilisasi Product ${formatPercent(r.capacity.productUtilization)}`,
+      `${name}: revenue ${formatIDR(r.revenue)}, contribution ${formatIDR(r.totalContribution)}, operating result ${formatIDR(r.operatingResult)}, Product utilisation ${formatPercent(r.capacity.productUtilization)}`,
+    );
   const summaryText = () =>
     [
-      "Terang AI — ONE vs ACE Simulator (asumsi ilustratif akademik)",
-      `Skenario: ${preset === "custom" ? "Kustom" : SCENARIO_PRESETS[preset].label} · Horizon ${assumptions.shared.horizonMonths} bulan`,
-      `ONE: pendapatan ${formatIDR(one.revenue)}, kontribusi ${formatIDR(one.totalContribution)}, hasil operasional ${formatIDR(one.operatingResult)}, utilisasi Product ${formatPercent(one.capacity.productUtilization)}`,
-      `ACE: pendapatan ${formatIDR(ace.revenue)}, kontribusi ${formatIDR(ace.totalContribution)}, hasil operasional ${formatIDR(ace.operatingResult)}, utilisasi Product ${formatPercent(ace.capacity.productUtilization)}`,
-      leader ? `Pada asumsi ini ${leader} unggul ${formatIDR(gap)} pada hasil operasional.` : "Kedua strategi setara pada asumsi ini.",
-      crossover !== null ? `Titik balik ${SENSITIVITY_PARAMS[param].label}: ± ${sensFormat(param, crossover)}.` : "",
+      t("Terang AI — Simulator ONE vs ACE (asumsi ilustratif akademik)", "Terang AI — ONE vs ACE Simulator (illustrative academic assumptions)"),
+      `${t("Skenario", "Scenario")}: ${preset === "custom" ? t("Kustom", "Custom") : t(SCENARIO_PRESETS[preset].label)} · Horizon ${assumptions.shared.horizonMonths} ${t("bulan", "months")}`,
+      strategyLine("ONE", one),
+      strategyLine("ACE", ace),
+      leader
+        ? t(`Pada asumsi ini ${leader} unggul ${formatIDR(gap)} pada hasil operasional.`, `Under these assumptions ${leader} leads by ${formatIDR(gap)} in operating result.`)
+        : t("Kedua strategi setara pada asumsi ini.", "Both strategies are level under these assumptions."),
+      crossover !== null ? `${t("Titik balik", "Tipping point")} ${t(SENSITIVITY_PARAMS[param].label)}: ± ${sensFormat(param, crossover)}.` : "",
     ]
       .filter(Boolean)
       .join("\n");
@@ -188,9 +202,9 @@ export function StrategySimulator() {
   const copySummary = async () => {
     try {
       await navigator.clipboard.writeText(summaryText());
-      toast.success("Ringkasan skenario disalin ke clipboard.");
+      toast.success(t("Ringkasan skenario disalin ke _clipboard_.", "Scenario summary copied to the clipboard."));
     } catch {
-      toast.error("Clipboard tidak tersedia di browser ini.");
+      toast.error(t("_Clipboard_ tidak tersedia di _browser_ ini.", "The clipboard is not available in this browser."));
     }
   };
 
@@ -202,46 +216,56 @@ export function StrategySimulator() {
     a.download = `terang-one-vs-ace-${preset}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("Skenario diunduh sebagai JSON.");
+    toast.success(t("Skenario diunduh sebagai JSON.", "Scenario downloaded as JSON."));
   };
 
   return (
     <div className="space-y-6">
       <PageHeader
         eyebrow={<SourceLabel type="illustrative-assumption" compact />}
-        title="Simulator ONE vs ACE"
-        description="Ubah asumsi dan lihat kapan ONE atau ACE lebih menarik. Semua angka adalah asumsi akademik ilustratif."
+        title={t("Simulator ONE vs ACE", "ONE vs ACE Simulator")}
+        description={t(
+          "Ubah asumsi dan lihat kapan ONE atau ACE lebih menarik. Semua angka adalah asumsi akademik ilustratif.",
+          "Change the assumptions and see when ONE or ACE is more attractive. Every figure is an illustrative academic assumption.",
+        )}
       />
 
       <div className="flex flex-col gap-3 rounded-2xl border border-line bg-card p-4 shadow-soft lg:flex-row lg:items-center lg:justify-between">
         <div className="flex min-w-0 flex-wrap items-center gap-2">
-          <span className="mr-1 text-[13px] font-medium text-muted-strong">Skenario</span>
+          <span className="mr-1 text-[13px] font-medium text-muted-strong">{t("Skenario", "Scenario")}</span>
           <Segmented
             size="sm"
             value={preset === "custom" ? ("" as ScenarioPreset) : preset}
             onChange={(k) => {
               applyPreset(k);
-              toast.info(`Preset ${SCENARIO_PRESETS[k].label} diterapkan.`);
+              toast.info(t(`_Preset_ ${t(SCENARIO_PRESETS[k].label)} diterapkan.`, `${t(SCENARIO_PRESETS[k].label)} preset applied.`));
             }}
-            items={(Object.keys(SCENARIO_PRESETS) as ScenarioPreset[]).map((k) => ({ id: k, label: SCENARIO_PRESETS[k].label }))}
+            items={(Object.keys(SCENARIO_PRESETS) as ScenarioPreset[]).map((k) => ({ id: k, label: tx(SCENARIO_PRESETS[k].label) }))}
           />
-          {preset === "custom" && <Badge tone="ace">Kustom</Badge>}
+          {preset === "custom" && <Badge tone="ace">{t("Kustom", "Custom")}</Badge>}
         </div>
       <div className="flex flex-wrap gap-2">
-        <Button size="sm" variant="secondary" onClick={() => { reset(); toast.success("Asumsi direset ke Base Case."); }}>
-          <RotateCcw className="h-4 w-4" /> Reset asumsi
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => {
+            reset();
+            toast.success(t("Asumsi direset ke _Base Case_.", "Assumptions reset to the Base Case."));
+          }}
+        >
+          <RotateCcw className="h-4 w-4" /> {t("Reset asumsi", "Reset assumptions")}
         </Button>
         <Button size="sm" variant={showFormulas ? "dark" : "secondary"} onClick={() => setShowFormulas((s) => !s)}>
-          <Sigma className="h-4 w-4" /> {showFormulas ? "Sembunyikan rumus" : "Tampilkan rumus"}
+          <Sigma className="h-4 w-4" /> {showFormulas ? t("Sembunyikan rumus", "Hide formulas") : t("Tampilkan rumus", "Show formulas")}
         </Button>
         <Button size="sm" variant="secondary" onClick={() => setExplain(true)}>
-          <BookOpen className="h-4 w-4" /> Jelaskan asumsi
+          <BookOpen className="h-4 w-4" /> {t("Jelaskan asumsi", "Explain assumptions")}
         </Button>
         <Button size="sm" variant="secondary" onClick={downloadJson}>
-          <Download className="h-4 w-4" /> Unduh JSON
+          <Download className="h-4 w-4" /> {t("Unduh JSON", "Download JSON")}
         </Button>
         <Button size="sm" variant="secondary" onClick={copySummary}>
-          <ClipboardCopy className="h-4 w-4" /> Salin ringkasan
+          <ClipboardCopy className="h-4 w-4" /> {t("Salin ringkasan", "Copy summary")}
         </Button>
       </div>
       </div>
@@ -251,10 +275,10 @@ export function StrategySimulator() {
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
               {FORMULAS.map((f) => (
-                <div key={f.name} className="rounded-2xl border border-line bg-card p-4 shadow-soft">
-                  <p className="text-sm font-semibold text-ink">{f.name}</p>
+                <div key={f.name.id} className="rounded-2xl border border-line bg-card p-4 shadow-soft">
+                  <p className="text-sm font-semibold text-ink">{tx(f.name)}</p>
                   <code className="mt-2 block rounded-lg bg-navy px-3 py-2 text-[12px] leading-relaxed text-sky">{f.formula}</code>
-                  <p className="mt-2 text-xs text-muted-strong">{f.note}</p>
+                  <p className="mt-2 text-xs text-muted-strong">{tx(f.note)}</p>
                 </div>
               ))}
             </div>
@@ -277,13 +301,14 @@ export function StrategySimulator() {
             <p className="text-sm text-ink">
               {leader ? (
                 <>
-                  Pada asumsi saat ini, <strong className={leader === "ONE" ? "text-one-ink" : "text-ace-ink"}>{leader}</strong> unggul{" "}
-                  <strong className="tabular">{formatIDRCompact(gap)}</strong> pada hasil operasional {assumptions.shared.horizonMonths} bulan.
+                  {t("Pada asumsi saat ini,", "Under the current assumptions,")} <strong className={leader === "ONE" ? "text-one-ink" : "text-ace-ink"}>{leader}</strong>{" "}
+                  {t("unggul", "leads by")} <strong className="tabular">{formatIDRCompact(gap)}</strong>{" "}
+                  {t(`pada hasil operasional ${assumptions.shared.horizonMonths} bulan.`, `in ${assumptions.shared.horizonMonths}-month operating result.`)}
                 </>
               ) : (
-                "Kedua strategi menghasilkan hasil operasional yang setara pada asumsi ini."
+                t("Kedua strategi menghasilkan hasil operasional yang setara pada asumsi ini.", "Both strategies produce the same operating result under these assumptions.")
               )}{" "}
-              <span className="text-muted-strong">Ini bukan kesimpulan final — ubah asumsi untuk menguji kondisinya.</span>
+              <span className="text-muted-strong">{t("Ini bukan kesimpulan final — ubah asumsi untuk menguji kondisinya.", "This is not a final conclusion — change the assumptions to test the conditions.")}</span>
             </p>
             <SourceLabel type="illustrative-assumption" compact />
           </motion.div>
@@ -295,13 +320,13 @@ export function StrategySimulator() {
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <ChartFrame
-              title="Perbandingan finansial"
-              description={`Horizon ${assumptions.shared.horizonMonths} bulan · IDR.`}
+              title={t("Perbandingan finansial", "Financial comparison")}
+              description={`Horizon ${assumptions.shared.horizonMonths} ${t("bulan", "months")} · IDR.`}
               legend={[
                 { label: "ONE", color: SERIES.one },
                 { label: "ACE", color: SERIES.ace },
               ]}
-              table={{ columns: ["Metrik", "ONE", "ACE"], rows: compareData.map((d) => [d.metric, formatIDR(d.one), formatIDR(d.ace)]) }}
+              table={{ columns: [t("Metrik", "Metric"), "ONE", "ACE"], rows: compareData.map((d) => [d.metric, formatIDR(d.one), formatIDR(d.ace)]) }}
             >
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={compareData} margin={{ top: 8, right: 8, left: 8, bottom: 0 }} barGap={2}>
@@ -316,17 +341,17 @@ export function StrategySimulator() {
               </ResponsiveContainer>
             </ChartFrame>
             <ChartFrame
-              title="Struktur biaya"
-              description="Setiap biaya dihitung sekali."
+              title={t("Struktur biaya", "Cost structure")}
+              description={t("Setiap biaya dihitung sekali.", "Every cost is counted once.")}
               legend={[
-                { label: "Biaya tetap", color: SERIES.navy },
-                { label: "Pengembangan", color: "#2f66e0" },
-                { label: "Pemasaran & akuisisi", color: "#39b7ff" },
-                { label: "Overhead portofolio", color: "#0c9fd8" },
-                { label: "Biaya langsung produk", color: "#94a3b8" },
+                { label: t("Biaya tetap", "Fixed costs"), color: SERIES.navy },
+                { label: t("Pengembangan", "Development"), color: "#2f66e0" },
+                { label: t("Pemasaran & akuisisi", "Marketing & acquisition"), color: "#39b7ff" },
+                { label: t("_Overhead_ portofolio", "Portfolio overhead"), color: "#0c9fd8" },
+                { label: t("Biaya langsung produk", "Direct product costs"), color: "#94a3b8" },
               ]}
               table={{
-                columns: ["Strategi", "Tetap", "Pengembangan", "Pemasaran", "Overhead", "Langsung"],
+                columns: [t("Strategi", "Strategy"), t("Tetap", "Fixed"), t("Pengembangan", "Development"), t("Pemasaran", "Marketing"), "Overhead", t("Langsung", "Direct")],
                 rows: costData.map((c) => [c.name, formatIDRCompact(c.tetap), formatIDRCompact(c.pengembangan), formatIDRCompact(c.pemasaran), formatIDRCompact(c.overhead), formatIDRCompact(c.langsung)]),
               }}
             >
@@ -336,34 +361,34 @@ export function StrategySimulator() {
                   <XAxis type="number" tickFormatter={tickIDR} {...AXIS_PROPS} />
                   <YAxis type="category" dataKey="name" width={44} tickFormatter={noWrap} {...AXIS_PROPS} />
                   <Tooltip cursor={{ fill: "rgba(74,144,226,0.06)" }} content={(p) => <ChartTooltip {...p} format="idrCompact" />} />
-                  <Bar dataKey="tetap" name="Biaya tetap" stackId="c" fill={SERIES.navy} stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
-                  <Bar dataKey="pengembangan" name="Pengembangan" stackId="c" fill="#2f66e0" stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
-                  <Bar dataKey="pemasaran" name="Pemasaran & akuisisi" stackId="c" fill="#39b7ff" stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
-                  <Bar dataKey="overhead" name="Overhead portofolio" stackId="c" fill="#0c9fd8" stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
-                  <Bar dataKey="langsung" name="Biaya langsung produk" stackId="c" fill="#94a3b8" stroke="var(--color-card)" strokeWidth={2} radius={[0, 4, 4, 0]} maxBarSize={44} />
+                  <Bar dataKey="tetap" name={t("Biaya tetap", "Fixed costs")} stackId="c" fill={SERIES.navy} stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
+                  <Bar dataKey="pengembangan" name={t("Pengembangan", "Development")} stackId="c" fill="#2f66e0" stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
+                  <Bar dataKey="pemasaran" name={t("Pemasaran & akuisisi", "Marketing & acquisition")} stackId="c" fill="#39b7ff" stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
+                  <Bar dataKey="overhead" name={t("_Overhead_ portofolio", "Portfolio overhead")} stackId="c" fill="#0c9fd8" stroke="var(--color-card)" strokeWidth={2} maxBarSize={44} />
+                  <Bar dataKey="langsung" name={t("Biaya langsung produk", "Direct product costs")} stackId="c" fill="#94a3b8" stroke="var(--color-card)" strokeWidth={2} radius={[0, 4, 4, 0]} maxBarSize={44} />
                 </BarChart>
               </ResponsiveContainer>
             </ChartFrame>
           </div>
 
           <ChartFrame
-            title="Kapan ONE atau ACE lebih menarik?"
-            description="Analisis sensitivitas: geser satu parameter, asumsi lain tetap."
+            title={t("Kapan ONE atau ACE lebih menarik?", "When is ONE or ACE more attractive?")}
+            description={t("Analisis sensitivitas: geser satu parameter, asumsi lain tetap.", "Sensitivity analysis: move one parameter while the other assumptions stay fixed.")}
             height={300}
             legend={[
               { label: "ONE", color: SERIES.one },
               { label: "ACE", color: SERIES.ace },
             ]}
             action={
-              <Select value={param} onChange={(e) => setParam(e.target.value as SensitivityParam)} className="h-8 w-64 text-xs" aria-label="Parameter sensitivitas">
+              <Select value={param} onChange={(e) => setParam(e.target.value as SensitivityParam)} className="h-8 w-64 text-xs" aria-label={t("Parameter sensitivitas", "Sensitivity parameter")}>
                 {(Object.keys(SENSITIVITY_PARAMS) as SensitivityParam[]).map((k) => (
                   <option key={k} value={k}>
-                    {SENSITIVITY_PARAMS[k].label}
+                    {t(SENSITIVITY_PARAMS[k].label)}
                   </option>
                 ))}
               </Select>
             }
-            table={{ columns: [SENSITIVITY_PARAMS[param].label, "ONE", "ACE"], rows: sensData.map((d) => [d.label, formatIDRCompact(d.one), formatIDRCompact(d.ace)]) }}
+            table={{ columns: [t(SENSITIVITY_PARAMS[param].label), "ONE", "ACE"], rows: sensData.map((d) => [d.label, formatIDRCompact(d.one), formatIDRCompact(d.ace)]) }}
           >
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={sensData} margin={{ top: 16, right: 16, left: 8, bottom: 0 }}>
@@ -372,22 +397,28 @@ export function StrategySimulator() {
                 <YAxis width={86} tickFormatter={tickIDR} {...AXIS_PROPS} />
                 <ReferenceLine y={0} stroke="#94a3b8" />
                 <Tooltip content={(p) => <ChartTooltip {...p} format="idrCompact" labelFmt={(l) => sensFormat(param, Number(l))} />} />
-                {crossover !== null && <ReferenceLine x={crossover} stroke="#e2930f" strokeDasharray="4 4" label={{ value: "titik balik", position: "top", fontSize: 11, fill: "#9a5b00" }} />}
+                {crossover !== null && <ReferenceLine x={crossover} stroke="#e2930f" strokeDasharray="4 4" label={{ value: t("titik balik", "tipping point"), position: "top", fontSize: 11, fill: "#9a5b00" }} />}
                 <Line type="monotone" dataKey="one" name="ONE" stroke={SERIES.one} strokeWidth={2.5} dot={{ r: 3.5, stroke: "#fff", strokeWidth: 2 }} />
                 <Line type="monotone" dataKey="ace" name="ACE" stroke={SERIES.ace} strokeWidth={2.5} dot={{ r: 3.5, stroke: "#fff", strokeWidth: 2 }} />
               </LineChart>
             </ResponsiveContainer>
           </ChartFrame>
-          <Callout tone={crossover !== null ? "info" : "warning"} title="Interpretasi sensitivitas">
+          <Callout tone={crossover !== null ? "info" : "warning"} title={t("Interpretasi sensitivitas", "Reading the sensitivity")}>
             {crossover !== null ? (
               <>
-                Pada parameter <strong>{SENSITIVITY_PARAMS[param].label}</strong>, keunggulan berpindah di sekitar <strong>{sensFormat(param, crossover)}</strong>. Di sisi kiri
-                titik ini {sens[0].one > sens[0].ace ? "ONE" : "ACE"} unggul; di sisi kanan {sens[sens.length - 1].one > sens[sens.length - 1].ace ? "ONE" : "ACE"} unggul.
+                {t("Pada parameter", "For the parameter")} <strong>{tx(SENSITIVITY_PARAMS[param].label)}</strong>,{" "}
+                {t("keunggulan berpindah di sekitar", "the lead switches at around")} <strong>{sensFormat(param, crossover)}</strong>.{" "}
+                {t(
+                  `Di sisi kiri titik ini ${sens[0].one > sens[0].ace ? "ONE" : "ACE"} unggul; di sisi kanan ${sens[sens.length - 1].one > sens[sens.length - 1].ace ? "ONE" : "ACE"} unggul.`,
+                  `To the left of this point ${sens[0].one > sens[0].ace ? "ONE" : "ACE"} leads; to the right ${sens[sens.length - 1].one > sens[sens.length - 1].ace ? "ONE" : "ACE"} leads.`,
+                )}
               </>
             ) : (
               <>
-                Dalam rentang yang diuji, {sens[0].one > sens[0].ace ? "ONE" : "ACE"} selalu unggul pada parameter ini. Coba parameter lain atau ubah asumsi dasar
-                untuk menemukan titik balik.
+                {t(
+                  `Dalam rentang yang diuji, ${sens[0].one > sens[0].ace ? "ONE" : "ACE"} selalu unggul pada parameter ini. Coba parameter lain atau ubah asumsi dasar untuk menemukan titik balik.`,
+                  `Across the tested range, ${sens[0].one > sens[0].ace ? "ONE" : "ACE"} always leads on this parameter. Try another parameter or change the base assumptions to find a tipping point.`,
+                )}
               </>
             )}
           </Callout>
@@ -395,17 +426,19 @@ export function StrategySimulator() {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
             <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
               <div className="border-b border-line px-5 py-4">
-                <p className="font-semibold text-ink">Bandingkan skenario preset</p>
-                <p className="text-xs text-muted">Hasil operasional & pendapatan untuk ketiga preset (tidak terpengaruh slider).</p>
+                <p className="font-semibold text-ink">{tx("Bandingkan skenario _preset_", "Compare preset scenarios")}</p>
+                <p className="text-xs text-muted">
+                  {tx("Hasil operasional & pendapatan untuk ketiga _preset_ (tidak terpengaruh _slider_).", "Operating result & revenue for all three presets (unaffected by the sliders).")}
+                </p>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[520px] text-sm">
                   <thead className="bg-surface text-xs text-muted">
                     <tr>
-                      <th className="px-4 py-2.5 text-left font-semibold">Skenario</th>
-                      <th className="px-4 py-2.5 text-right font-semibold">ONE · hasil op.</th>
-                      <th className="px-4 py-2.5 text-right font-semibold">ACE · hasil op.</th>
-                      <th className="px-4 py-2.5 text-right font-semibold">Unggul</th>
+                      <th className="px-4 py-2.5 text-left font-semibold">{t("Skenario", "Scenario")}</th>
+                      <th className="px-4 py-2.5 text-right font-semibold">ONE · {t("hasil op.", "op. result")}</th>
+                      <th className="px-4 py-2.5 text-right font-semibold">ACE · {t("hasil op.", "op. result")}</th>
+                      <th className="px-4 py-2.5 text-right font-semibold">{t("Unggul", "Leader")}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-line">
@@ -414,8 +447,10 @@ export function StrategySimulator() {
                       return (
                         <tr key={row.key} className={cn(preset === row.key && "bg-soft/50")}>
                           <td className="px-4 py-2.5">
-                            <p className="font-semibold text-ink">{row.label}</p>
-                            <p className="text-[11px] text-muted">Pendapatan ONE {formatIDRCompact(row.one.revenue)} · ACE {formatIDRCompact(row.ace.revenue)}</p>
+                            <p className="font-semibold text-ink">{tx(row.label)}</p>
+                            <p className="text-[11px] text-muted">
+                              {t("Pendapatan", "Revenue")} ONE {formatIDRCompact(row.one.revenue)} · ACE {formatIDRCompact(row.ace.revenue)}
+                            </p>
                           </td>
                           <td className="tabular px-4 py-2.5 text-right font-semibold text-ink">{formatIDRCompact(row.one.operatingResult)}</td>
                           <td className="tabular px-4 py-2.5 text-right font-semibold text-ink">{formatIDRCompact(row.ace.operatingResult)}</td>
@@ -431,12 +466,12 @@ export function StrategySimulator() {
             </div>
             <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
               <p className="flex items-center gap-2 font-semibold text-ink">
-                <Scale className="h-4 w-4 text-brand-ink" /> Aturan perbandingan yang adil
+                <Scale className="h-4 w-4 text-brand-ink" /> {t("Aturan perbandingan yang adil", "Fair-comparison rules")}
               </p>
               <ul className="mt-3 space-y-1.5">
                 {FAIR_RULES.map((r) => (
-                  <li key={r} className="flex items-start gap-2 text-[13px] text-ink">
-                    <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success" /> {r}
+                  <li key={r.id} className="flex items-start gap-2 text-[13px] text-ink">
+                    <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success" /> {tx(r)}
                   </li>
                 ))}
               </ul>
@@ -446,18 +481,24 @@ export function StrategySimulator() {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {[one, ace].map((r) => (
               <div key={r.strategy} className="rounded-2xl border border-line bg-card p-5 shadow-soft">
-                <p className="font-semibold text-ink">Beban kerja · {r.strategy.toUpperCase()}</p>
+                <p className="font-semibold text-ink">
+                  {t("Beban kerja", "Workload")} · {r.strategy.toUpperCase()}
+                </p>
                 <div className="mt-3 space-y-3 text-sm">
                   <div>
                     <div className="flex justify-between">
-                      <span className="text-muted-strong">Product: {formatNumber(r.capacity.productRequired)} / {formatNumber(r.capacity.productAvailable)} jam/bln</span>
+                      <span className="text-muted-strong">
+                        Product: {formatNumber(r.capacity.productRequired)} / {formatNumber(r.capacity.productAvailable)} {t("jam/bln", "hrs/mo")}
+                      </span>
                       <span className="tabular font-semibold text-ink">{formatPercent(r.capacity.productUtilization)}</span>
                     </div>
                     <Progress value={r.capacity.productUtilization} tone="auto" className="mt-1" />
                   </div>
                   <div>
                     <div className="flex justify-between">
-                      <span className="text-muted-strong">Strategy & Ops: {formatNumber(r.capacity.opsRequired)} / {formatNumber(r.capacity.opsAvailable)} jam/bln</span>
+                      <span className="text-muted-strong">
+                        Strategy & Ops: {formatNumber(r.capacity.opsRequired)} / {formatNumber(r.capacity.opsAvailable)} {t("jam/bln", "hrs/mo")}
+                      </span>
                       <span className="tabular font-semibold text-ink">{formatPercent(r.capacity.opsUtilization)}</span>
                     </div>
                     <Progress value={r.capacity.opsUtilization} tone="auto" className="mt-1" />
@@ -469,27 +510,35 @@ export function StrategySimulator() {
         </div>
       </div>
 
-      <Drawer open={explain} onClose={() => setExplain(false)} title="Penjelasan asumsi" description="Semua angka bersifat ilustratif untuk diskusi akademik.">
+      <Drawer
+        open={explain}
+        onClose={() => setExplain(false)}
+        title={t("Penjelasan asumsi", "About the assumptions")}
+        description={t("Semua angka bersifat ilustratif untuk diskusi akademik.", "Every figure is illustrative, for academic discussion.")}
+      >
         <div className="space-y-5 text-sm">
-          <Callout tone="warning" title="Bukan data perusahaan">
-            Asumsi ini tidak berasal dari laporan keuangan Terang AI. Gunakan untuk menguji logika strategi, bukan memprediksi hasil nyata.
+          <Callout tone="warning" title={t("Bukan data perusahaan", "Not company data")}>
+            {t(
+              "Asumsi ini tidak berasal dari laporan keuangan Terang AI. Gunakan untuk menguji logika strategi, bukan memprediksi hasil nyata.",
+              "These assumptions do not come from Terang AI's financial statements. Use them to test the strategic logic, not to predict real outcomes.",
+            )}
           </Callout>
           <div>
-            <p className="font-semibold text-ink">Bagaimana ONE & ACE dibedakan?</p>
+            <p className="font-semibold text-ink">{t("Bagaimana ONE & ACE dibedakan?", "How do ONE & ACE differ?")}</p>
             <ul className="mt-2 list-disc space-y-1 pl-5 text-muted-strong">
-              <li>ONE memakai 100% kapasitas penjualan & pengembangan untuk Interview, plus uplift konversi eksplisit.</li>
-              <li>ACE membagi kapasitas yang sama berdasarkan porsi Interview; sisanya mengakuisisi organizer baru.</li>
-              <li>ACE menanggung biaya koordinasi, overhead pemasaran, kampanye kedua, dan context switching.</li>
-              <li>Kedua strategi melayani organizer existing dan membayar maintenance Events.</li>
+              <li>{tx("ONE memakai 100% kapasitas penjualan & pengembangan untuk Interview, plus _uplift_ konversi eksplisit.", "ONE puts 100% of sales & development capacity into Interview, plus an explicit conversion uplift.")}</li>
+              <li>{tx("ACE membagi kapasitas yang sama berdasarkan porsi Interview; sisanya mengakuisisi _organizer_ baru.", "ACE splits the same capacity by the Interview share; the rest acquires new organizers.")}</li>
+              <li>{tx("ACE menanggung biaya koordinasi, _overhead_ pemasaran, kampanye kedua, dan _context switching_.", "ACE bears coordination costs, marketing overhead, a second campaign and context switching.")}</li>
+              <li>{tx("Kedua strategi melayani _organizer_ yang sudah ada dan membayar _maintenance_ Events.", "Both strategies serve existing organizers and pay for Events maintenance.")}</li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold text-ink">Glosarium</p>
+            <p className="font-semibold text-ink">{t("Glosarium", "Glossary")}</p>
             <dl className="mt-2 space-y-2">
               {STRATEGY_GLOSSARY.map((g) => (
                 <div key={g.term} className="rounded-xl bg-surface p-3 ring-1 ring-line">
-                  <dt className="font-semibold text-ink">{g.term}</dt>
-                  <dd className="text-muted-strong">{g.meaning}</dd>
+                  <dt className="font-semibold text-ink">{tx(`_${g.term}_`, g.term)}</dt>
+                  <dd className="text-muted-strong">{tx(g.meaning)}</dd>
                 </div>
               ))}
             </dl>

@@ -33,6 +33,7 @@ import { InfoTip } from "@/components/ui/tooltip";
 import { SourceLabel } from "@/components/shared/source-label";
 import { Mascot } from "@/components/shared/brand";
 import { cn } from "@/lib/utils";
+import { L, useI18n, type Bilingual } from "@/lib/i18n";
 import { PageHeader } from "./page-header";
 
 const MODE_ICON = { overview: Compass, one: Target, ace: Layers } as const;
@@ -48,26 +49,27 @@ function useComparison() {
 function StrategySnapshot({ className }: { className?: string }) {
   const { one, ace } = useComparison();
   const { mode } = useStrategyMode();
+  const { t } = useI18n();
   const leader = one.operatingResult === ace.operatingResult ? null : one.operatingResult > ace.operatingResult ? "one" : "ace";
   const rows = [
-    { label: "Pendapatan 12 bln", one: one.revenue, ace: ace.revenue, fmt: formatIDRCompact },
-    { label: "Hasil operasional", one: one.operatingResult, ace: ace.operatingResult, fmt: formatIDRCompact },
-    { label: "Utilisasi tim Product", one: one.capacity.productUtilization, ace: ace.capacity.productUtilization, fmt: (v: number) => formatPercent(v) },
+    { label: t("Pendapatan 12 bln", "12-month revenue"), one: one.revenue, ace: ace.revenue, fmt: formatIDRCompact },
+    { label: t("Hasil operasional", "Operating result"), one: one.operatingResult, ace: ace.operatingResult, fmt: formatIDRCompact },
+    { label: t("Utilisasi tim Product", "Product team utilisation"), one: one.capacity.productUtilization, ace: ace.capacity.productUtilization, fmt: (v: number) => formatPercent(v) },
   ];
   return (
     <div className={cn("rounded-2xl border border-line bg-card p-5 shadow-soft", className)}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="flex items-center gap-2 text-[15px] font-semibold text-ink">
-            <Scale className="h-4 w-4 text-brand-ink" /> ONE vs ACE — skenario saat ini
+            <Scale className="h-4 w-4 text-brand-ink" /> {t("ONE vs ACE — skenario saat ini", "ONE vs ACE — current scenario")}
           </p>
-          <p className="mt-0.5 text-[13px] text-muted-strong">Dihitung dari asumsi Simulator yang sama.</p>
+          <p className="mt-0.5 text-[13px] text-muted-strong">{t("Dihitung dari asumsi Simulator yang sama.", "Computed from the same Simulator assumptions.")}</p>
         </div>
         <SourceLabel type="illustrative-assumption" compact />
       </div>
       <div className="mt-4 overflow-hidden rounded-xl border border-line">
         <div className="grid grid-cols-[1.3fr_1fr_1fr] bg-subtle text-[12px] font-medium text-muted">
-          <span className="px-3 py-2">Metrik</span>
+          <span className="px-3 py-2">{t("Metrik", "Metric")}</span>
           <span className={cn("px-3 py-2", mode === "one" && "text-one-ink")}>ONE</span>
           <span className={cn("px-3 py-2", mode === "ace" && "text-ace-ink")}>ACE</span>
         </div>
@@ -83,15 +85,16 @@ function StrategySnapshot({ className }: { className?: string }) {
         <p className="text-[13px] text-muted-strong">
           {leader ? (
             <>
-              Pada asumsi ini <strong className={leader === "one" ? "text-one-ink" : "text-ace-ink"}>{leader.toUpperCase()}</strong> unggul{" "}
+              {t("Pada asumsi ini", "Under these assumptions")}{" "}
+              <strong className={leader === "one" ? "text-one-ink" : "text-ace-ink"}>{leader.toUpperCase()}</strong> {t("unggul", "leads by")}{" "}
               <span className="tabular font-semibold text-ink">{formatIDRCompact(Math.abs(one.operatingResult - ace.operatingResult))}</span>.
             </>
           ) : (
-            "Kedua strategi setara pada asumsi ini."
+            t("Kedua strategi setara pada asumsi ini.", "Both strategies are level under these assumptions.")
           )}
         </p>
         <Button href="/dashboard/simulator" size="sm" variant="secondary">
-          Buka simulator <ArrowRight className="h-3.5 w-3.5" />
+          {t("Buka simulator", "Open simulator")} <ArrowRight className="h-3.5 w-3.5" />
         </Button>
       </div>
     </div>
@@ -103,6 +106,7 @@ function StrategySnapshot({ className }: { className?: string }) {
 ------------------------------------------------------------------- */
 export function AdminOverviewPage() {
   const { mode } = useStrategyMode();
+  const { t, tx } = useI18n();
   const events = useEventsStore((s) => s.events);
   const jobs = useInterviewStore((s) => s.jobs);
   const candidates = useInterviewStore((s) => s.candidates);
@@ -127,11 +131,11 @@ export function AdminOverviewPage() {
       href: "/dashboard/events",
       icon: CalendarDays,
       accent: "bg-events-gradient",
-      status: mode === "one" ? { tone: "warning" as const, text: "Maintenance-only" } : mode === "ace" ? { tone: "ace" as const, text: "Dikembangkan selektif" } : null,
+      status: mode === "one" ? { tone: "warning" as const, text: tx("Hanya _maintenance_", "Maintenance-only") } : mode === "ace" ? { tone: "ace" as const, text: t("Dikembangkan selektif", "Developed selectively") } : null,
       stats: [
-        { k: "Total event", v: formatNumber(ev.total) },
-        { k: "Event aktif", v: formatNumber(ev.active) },
-        { k: "Peserta", v: formatNumber(ev.registered) },
+        { k: t("Total _event_", "Total events"), v: formatNumber(ev.total) },
+        { k: t("_Event_ aktif", "Active events"), v: formatNumber(ev.active) },
+        { k: t("Peserta", "Participants"), v: formatNumber(ev.registered) },
       ],
     },
     {
@@ -141,28 +145,28 @@ export function AdminOverviewPage() {
       href: "/dashboard/interview",
       icon: Brain,
       accent: "bg-one-gradient",
-      status: mode === "one" ? { tone: "one" as const, text: "Produk prioritas" } : mode === "ace" ? { tone: "ace" as const, text: "Bagian portofolio" } : null,
+      status: mode === "one" ? { tone: "one" as const, text: t("Produk prioritas", "Priority product") } : mode === "ace" ? { tone: "ace" as const, text: t("Bagian portofolio", "Part of the portfolio") } : null,
       stats: [
-        { k: "Lowongan aktif", v: formatNumber(iv.open) },
-        { k: "Kandidat", v: formatNumber(iv.candidates) },
-        { k: "Menunggu tinjauan", v: formatNumber(iv.awaiting) },
+        { k: t("Lowongan aktif", "Open vacancies"), v: formatNumber(iv.open) },
+        { k: t("Kandidat", "Candidates"), v: formatNumber(iv.candidates) },
+        { k: t("Menunggu tinjauan", "Awaiting review"), v: formatNumber(iv.awaiting) },
       ],
     },
   ];
 
   const modules = [
-    { href: "/dashboard/strategy", icon: SlidersHorizontal, title: "Kontrol Strategi", text: "Pilih mode ONE atau ACE untuk seluruh dashboard." },
-    { href: "/dashboard/simulator", icon: Scale, title: "Simulator ONE vs ACE", text: "Uji asumsi & lihat dampak finansial 12 bulan." },
-    { href: "/dashboard/operations", icon: Gauge, title: "Kapasitas & Operasional", text: "Alokasi jam tim, anggaran, dan sprint board." },
-    { href: "/dashboard/portfolio", icon: ChartNoAxesCombined, title: "Portofolio & Keputusan", text: "KPI per produk dan decision gate." },
+    { href: "/dashboard/strategy", icon: SlidersHorizontal, title: t("Kontrol Strategi", "Strategy Control"), text: tx("Pilih mode ONE atau ACE untuk seluruh _dashboard_.", "Choose the ONE or ACE mode for every dashboard.") },
+    { href: "/dashboard/simulator", icon: Scale, title: t("Simulator ONE vs ACE", "ONE vs ACE Simulator"), text: t("Uji asumsi & lihat dampak finansial 12 bulan.", "Test assumptions & see the 12-month financial impact.") },
+    { href: "/dashboard/operations", icon: Gauge, title: t("Kapasitas & Operasional", "Capacity & Operations"), text: tx("Alokasi jam tim, anggaran, dan _sprint board_.", "Team-hour allocation, budget and the sprint board.") },
+    { href: "/dashboard/portfolio", icon: ChartNoAxesCombined, title: t("Portofolio & Keputusan", "Portfolio & Decisions"), text: tx("KPI per produk dan _decision gate_.", "Per-product KPIs and the decision gate.") },
   ];
 
   return (
     <>
       <PageHeader
         eyebrow={<Badge tone="navy">Super Admin</Badge>}
-        title="Pusat kendali Terang AI"
-        description="Satu tempat untuk memantau kedua produk dan menguji strategi ONE vs ACE."
+        title={t("Pusat kendali Terang AI", "Terang AI control centre")}
+        description={t("Satu tempat untuk memantau kedua produk dan menguji strategi ONE vs ACE.", "One place to monitor both products and test the ONE vs ACE strategies.")}
       />
 
       {/* Mode hero */}
@@ -181,17 +185,17 @@ export function AdminOverviewPage() {
               <ModeIcon className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.12em] text-white/75">Mode strategi aktif</p>
-              <p className="font-display text-2xl font-semibold">{MODE_META[mode].label}</p>
+              <p className="text-xs font-medium uppercase tracking-[0.12em] text-white/75">{t("Mode strategi aktif", "Active strategy mode")}</p>
+              <p className="font-display text-2xl font-semibold">{t(MODE_META[mode].label)}</p>
             </div>
           </div>
-          <p className="text-[15px] leading-relaxed text-white/85">{MODE_META[mode].description}</p>
+          <p className="text-[15px] leading-relaxed text-white/85">{tx(MODE_META[mode].description)}</p>
           <div className="flex flex-wrap gap-2">
             <Button href="/dashboard/strategy" variant="light" size="sm">
-              <SlidersHorizontal className="h-3.5 w-3.5" /> Ubah mode
+              <SlidersHorizontal className="h-3.5 w-3.5" /> {t("Ubah mode", "Change mode")}
             </Button>
             <Button href="/dashboard/simulator" variant="glass" size="sm">
-              Bandingkan dampak <ArrowRight className="h-3.5 w-3.5" />
+              {t("Bandingkan dampak", "Compare impact")} <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </div>
         </div>
@@ -222,9 +226,9 @@ export function AdminOverviewPage() {
               ))}
             </div>
             <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
-              <p className="text-[13px] text-muted-strong">Dashboard produk terpisah dengan fitur lengkap.</p>
+              <p className="text-[13px] text-muted-strong">{tx("_Dashboard_ produk terpisah dengan fitur lengkap.", "A separate, full-featured product dashboard.")}</p>
               <Button href={p.href} size="sm" variant={p.key === "events" ? "ace" : "one"}>
-                Buka <ArrowUpRight className="h-3.5 w-3.5" />
+                {t("Buka", "Open")} <ArrowUpRight className="h-3.5 w-3.5" />
               </Button>
             </div>
           </div>
@@ -234,8 +238,8 @@ export function AdminOverviewPage() {
       <div className="mt-6 grid grid-cols-1 gap-5 xl:grid-cols-[1.25fr_1fr]">
         <StrategySnapshot />
         <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
-          <p className="text-[15px] font-semibold text-ink">Alur kerja yang disarankan</p>
-          <p className="mt-0.5 text-[13px] text-muted-strong">Ikuti urutan ini untuk sesi analisis yang runtut.</p>
+          <p className="text-[15px] font-semibold text-ink">{t("Alur kerja yang disarankan", "Suggested workflow")}</p>
+          <p className="mt-0.5 text-[13px] text-muted-strong">{t("Ikuti urutan ini untuk sesi analisis yang runtut.", "Follow this order for a well-structured analysis session.")}</p>
           <ol className="mt-4 space-y-1">
             {modules.map((m, i) => (
               <li key={m.href}>
@@ -263,47 +267,51 @@ export function AdminOverviewPage() {
 /* ------------------------------------------------------------------
    Strategy control
 ------------------------------------------------------------------- */
-const IMPACT: Record<StrategyMode, { events: string; interview: string; resources: string }> = {
+const IMPACT: Record<StrategyMode, { events: Bilingual; interview: Bilingual; resources: Bilingual }> = {
   overview: {
-    events: "Ditampilkan netral sebagai salah satu peluang.",
-    interview: "Ditampilkan netral sebagai salah satu peluang.",
-    resources: "Belum ada prioritas — gunakan untuk presentasi pembuka.",
+    events: L("Ditampilkan netral sebagai salah satu peluang.", "Shown neutrally as one of the opportunities."),
+    interview: L("Ditampilkan netral sebagai salah satu peluang.", "Shown neutrally as one of the opportunities."),
+    resources: L("Belum ada prioritas — gunakan untuk presentasi pembuka.", "No priority yet — use it to open a presentation."),
   },
   one: {
-    events: "Maintenance-only: layanan berjalan, tanpa fitur baru.",
-    interview: "Seluruh pengembangan & akuisisi difokuskan di sini.",
-    resources: "Kapasitas Product & Ops terpusat pada satu produk.",
+    events: L("Hanya _maintenance_: layanan berjalan, tanpa fitur baru.", "Maintenance-only: the service runs, with no new features."),
+    interview: L("Seluruh pengembangan & akuisisi difokuskan di sini.", "All development & acquisition is focused here."),
+    resources: L("Kapasitas _Product_ & _Ops_ terpusat pada satu produk.", "Product & Ops capacity is concentrated on one product."),
   },
   ace: {
-    events: "Fitur selektif: template, repeat planner, growth insights.",
-    interview: "Workflow HR esensial dikembangkan bertahap.",
-    resources: "Dua produk berbagi kapasitas dengan batas 1 inisiatif besar.",
+    events: L("Fitur selektif: _template_, _repeat planner_, _growth insights_.", "Selective features: templates, repeat planner, growth insights."),
+    interview: L("_Workflow_ HR esensial dikembangkan bertahap.", "Essential HR workflows are developed step by step."),
+    resources: L("Dua produk berbagi kapasitas dengan batas 1 inisiatif besar.", "Two products share capacity, with a limit of 1 major initiative."),
   },
 };
 
 export function StrategyControlPage() {
   const { mode, setMode } = useStrategyMode();
+  const { t, tx } = useI18n();
   const strategy = mode === "ace" ? ACE_STRATEGY : mode === "one" ? ONE_STRATEGY : null;
   const options: { id: StrategyMode; title: string; sub: string }[] = [
-    { id: "overview", title: "Overview", sub: "Netral" },
-    { id: "one", title: "ONE Strategy", sub: "PRO · fokus satu produk" },
-    { id: "ace", title: "ACE Strategy", sub: "KONTRA · dua produk terkoordinasi" },
+    { id: "overview", title: t("Netral", "Overview"), sub: t("Tanpa keberpihakan", "Neutral") },
+    { id: "one", title: "ONE Strategy", sub: t("PRO · fokus satu produk", "PRO · one-product focus") },
+    { id: "ace", title: "ACE Strategy", sub: t("KONTRA · dua produk terkoordinasi", "CONTRA · two coordinated products") },
   ];
 
   return (
     <>
       <PageHeader
         eyebrow={<Badge tone="navy">Super Admin</Badge>}
-        title="Kontrol Strategi"
-        description="Mode yang dipilih di sini berlaku untuk seluruh dashboard dan situs."
+        title={t("Kontrol Strategi", "Strategy Control")}
+        description={tx("Mode yang dipilih di sini berlaku untuk seluruh _dashboard_ dan situs.", "The mode chosen here applies to every dashboard and the whole site.")}
         actions={
-          <InfoTip title="Bagaimana mode bekerja?" label="Cara kerja">
-            Mode mengubah label prioritas, catatan, dan lensa analitik di dashboard Events, Interview, serta halaman strategi. Data demo tidak berubah.
+          <InfoTip title={t("Bagaimana mode bekerja?", "How do modes work?")} label={t("Cara kerja", "How it works")}>
+            {tx(
+              "Mode mengubah label prioritas, catatan, dan lensa analitik di _dashboard_ Events, Interview, serta halaman strategi. Data demo tidak berubah.",
+              "A mode changes the priority labels, notes and analytical lens in the Events and Interview dashboards and on the strategy pages. Demo data does not change.",
+            )}
           </InfoTip>
         }
       />
 
-      <div role="radiogroup" aria-label="Mode strategi" className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div role="radiogroup" aria-label={t("Mode strategi", "Strategy mode")} className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {options.map((o) => {
           const active = mode === o.id;
           const Icon = MODE_ICON[o.id];
@@ -325,10 +333,10 @@ export function StrategyControlPage() {
                 </span>
                 {active ? (
                   <span className="inline-flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 text-xs font-medium text-success-ink">
-                    <CheckCircle2 className="h-3.5 w-3.5" /> Aktif
+                    <CheckCircle2 className="h-3.5 w-3.5" /> {t("Aktif", "Active")}
                   </span>
                 ) : (
-                  <span className="text-xs font-medium text-muted">Pilih</span>
+                  <span className="text-xs font-medium text-muted">{t("Pilih", "Select")}</span>
                 )}
               </span>
               <span className="mt-4 text-lg font-semibold text-ink">{o.title}</span>
@@ -336,15 +344,15 @@ export function StrategyControlPage() {
               <span className="mt-4 space-y-2 border-t border-line pt-4 text-[13px]">
                 <span className="flex gap-2">
                   <CalendarDays className="mt-0.5 h-4 w-4 shrink-0 text-events-ink" />
-                  <span className="text-muted-strong">{IMPACT[o.id].events}</span>
+                  <span className="text-muted-strong">{tx(IMPACT[o.id].events)}</span>
                 </span>
                 <span className="flex gap-2">
                   <Brain className="mt-0.5 h-4 w-4 shrink-0 text-interview-ink" />
-                  <span className="text-muted-strong">{IMPACT[o.id].interview}</span>
+                  <span className="text-muted-strong">{tx(IMPACT[o.id].interview)}</span>
                 </span>
                 <span className="flex gap-2">
                   <Gauge className="mt-0.5 h-4 w-4 shrink-0 text-muted" />
-                  <span className="text-muted-strong">{IMPACT[o.id].resources}</span>
+                  <span className="text-muted-strong">{tx(IMPACT[o.id].resources)}</span>
                 </span>
               </span>
             </button>
@@ -357,11 +365,11 @@ export function StrategyControlPage() {
           <motion.div key={mode} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-line bg-card p-5 shadow-soft">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted">{strategy.position}</p>
+                <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted">{t(strategy.position)}</p>
                 <p className="mt-1 text-lg font-semibold text-ink">“{strategy.tagline}”</p>
               </div>
               <Button href={mode === "one" ? "/strategies/one" : "/strategies/ace"} size="sm" variant="secondary">
-                Detail strategi <ArrowUpRight className="h-3.5 w-3.5" />
+                {t("Detail strategi", "Strategy details")} <ArrowUpRight className="h-3.5 w-3.5" />
               </Button>
             </div>
             <div className="mt-4 space-y-2">
@@ -391,16 +399,18 @@ export function StrategyControlPage() {
         ) : (
           <div className="flex flex-col items-start justify-center gap-3 rounded-2xl border border-dashed border-line-strong bg-subtle p-6">
             <Trophy className="h-6 w-6 text-brand-ink" />
-            <p className="text-[15px] font-semibold text-ink">Pilih ONE atau ACE untuk melihat tiga pilarnya.</p>
-            <p className="text-[13px] text-muted-strong">Mode Overview cocok untuk membuka presentasi tanpa memihak.</p>
+            <p className="text-[15px] font-semibold text-ink">{t("Pilih ONE atau ACE untuk melihat tiga pilarnya.", "Choose ONE or ACE to see its three pillars.")}</p>
+            <p className="text-[13px] text-muted-strong">{t("Mode Netral cocok untuk membuka presentasi tanpa memihak.", "Overview mode is ideal for opening a presentation without taking sides.")}</p>
           </div>
         )}
         <StrategySnapshot />
       </div>
 
       <div className="mt-6 rounded-2xl border border-line bg-card p-5 shadow-soft">
-        <p className="text-[15px] font-semibold text-ink">Kesiapan kapasitas per mode</p>
-        <p className="mt-0.5 text-[13px] text-muted-strong">Utilisasi tim Product yang diproyeksikan model finansial. Di atas 90% berisiko.</p>
+        <p className="text-[15px] font-semibold text-ink">{t("Kesiapan kapasitas per mode", "Capacity readiness by mode")}</p>
+        <p className="mt-0.5 text-[13px] text-muted-strong">
+          {tx("Utilisasi tim _Product_ yang diproyeksikan model finansial. Di atas 90% berisiko.", "Team utilisation projected by the financial model. Above 90% is risky.")}
+        </p>
         <CapacityBars />
       </div>
     </>
@@ -409,6 +419,7 @@ export function StrategyControlPage() {
 
 function CapacityBars() {
   const { one, ace } = useComparison();
+  const { t } = useI18n();
   const rows = [
     { key: "ONE", value: one.capacity.productUtilization, ops: one.capacity.opsUtilization },
     { key: "ACE", value: ace.capacity.productUtilization, ops: ace.capacity.opsUtilization },
@@ -420,8 +431,8 @@ function CapacityBars() {
           <p className="text-sm font-semibold text-ink">{r.key}</p>
           <div className="mt-3 space-y-3 text-[13px]">
             {[
-              { label: "Tim Product", v: r.value },
-              { label: "Tim Strategy & Ops", v: r.ops },
+              { label: t("Tim Product", "Product team"), v: r.value },
+              { label: t("Tim Strategy & Ops", "Strategy & Ops team"), v: r.ops },
             ].map((x) => (
               <div key={x.label}>
                 <div className="flex justify-between text-muted-strong">

@@ -12,6 +12,7 @@ import { useTheme } from "@/lib/theme";
 import { useMounted } from "@/hooks/use-mounted";
 import type { StrategyMode } from "@/types/common";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 interface Command {
   id: string;
@@ -45,6 +46,7 @@ const normalize = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-�
 export function CommandPalette() {
   const open = useSyncExternalStore(subscribe, () => isOpen, () => false);
   const mounted = useMounted();
+  const { t } = useI18n();
 
   // Global shortcut: Ctrl/⌘ + K
   useEffect(() => {
@@ -76,7 +78,7 @@ export function CommandPalette() {
   return createPortal(
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-[150] flex items-start justify-center px-4 pt-[12vh]" role="dialog" aria-modal="true" aria-label="Pencarian cepat">
+        <div className="fixed inset-0 z-[150] flex items-start justify-center px-4 pt-[12vh]" role="dialog" aria-modal="true" aria-label={t("Pencarian cepat", "Quick search")}>
           <motion.div
             className="absolute inset-0 bg-navy-deep/50 backdrop-blur-sm"
             initial={{ opacity: 0 }}
@@ -96,18 +98,20 @@ function PaletteBody() {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const { setMode } = useStrategyMode();
+  const { t, locale, setLocale } = useI18n();
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const listRef = useRef<HTMLDivElement>(null);
 
   const commands = useMemo<Command[]>(() => {
     const go = (href: string) => () => router.push(href);
-    const pages: Command[] = [{ id: "home", group: "Halaman", label: "Beranda", icon: "compass", run: go("/") }];
+    const pagesGroup = t("Halaman", "Pages");
+    const pages: Command[] = [{ id: "home", group: pagesGroup, label: t("Beranda", "Home"), icon: "compass", keywords: "home beranda", run: go("/") }];
     for (const item of MAIN_NAV) {
-      if (item.href) pages.push({ id: item.href, group: "Halaman", label: item.label, icon: "compass", run: go(item.href) });
+      if (item.href) pages.push({ id: item.href, group: pagesGroup, label: t(item.label), icon: "compass", run: go(item.href) });
       for (const c of item.children ?? []) {
         if (c.href.startsWith("/dashboard")) continue;
-        pages.push({ id: c.href, group: "Halaman", label: c.label, hint: c.description, icon: c.icon, run: go(c.href) });
+        pages.push({ id: c.href, group: pagesGroup, label: t(c.label), hint: c.description && t(c.description), icon: c.icon, run: go(c.href) });
       }
     }
     const dash: Command[] = WORKSPACES.flatMap((ws) =>
@@ -115,37 +119,45 @@ function PaletteBody() {
         g.links.map((l) => ({
           id: l.href,
           group: ws.label,
-          label: l.href === ws.base ? `${ws.label} — Ringkasan` : l.label,
-          hint: l.description ?? g.group,
+          label: l.href === ws.base ? `${ws.label} — ${t("Ringkasan", "Overview")}` : t(l.label),
+          hint: t(l.description ?? g.group),
           icon: l.icon,
-          keywords: `${ws.label} ${ws.short} dashboard ${g.group}`,
+          keywords: `${ws.label} ${ws.short} dashboard ${t(g.group)}`,
           run: go(l.href),
         })),
       ),
     );
     const modes: Command[] = (["overview", "one", "ace"] as StrategyMode[]).map((m) => ({
       id: `mode-${m}`,
-      group: "Aksi",
-      label: `Aktifkan mode ${MODE_META[m].label}`,
-      hint: MODE_META[m].description,
+      group: t("Aksi", "Actions"),
+      label: `${t("Aktifkan mode", "Activate mode")} ${t(MODE_META[m].label)}`,
+      hint: t(MODE_META[m].description),
       icon: m === "one" ? "target" : m === "ace" ? "layers" : "compass",
-      keywords: "strategi mode switch",
+      keywords: "strategi strategy mode switch",
       run: () => setMode(m),
     }));
     const actions: Command[] = [
       {
         id: "theme",
-        group: "Aksi",
-        label: theme === "dark" ? "Ganti ke mode terang" : "Ganti ke mode gelap",
+        group: t("Aksi", "Actions"),
+        label: theme === "dark" ? t("Ganti ke mode terang", "Switch to light mode") : t("Ganti ke mode gelap", "Switch to dark mode"),
         icon: theme === "dark" ? "sun" : "moon",
         keywords: "tema theme dark light gelap terang",
         run: () => setTheme(theme === "dark" ? "light" : "dark"),
       },
-      { id: "present", group: "Aksi", label: "Mulai mode presentasi", icon: "play", keywords: "slide juri", run: go("/presentation") },
+      {
+        id: "language",
+        group: t("Aksi", "Actions"),
+        label: locale === "en" ? "Ganti ke Bahasa Indonesia" : "Switch to English",
+        icon: "languages",
+        keywords: "bahasa language english indonesia translate terjemah",
+        run: () => setLocale(locale === "en" ? "id" : "en"),
+      },
+      { id: "present", group: t("Aksi", "Actions"), label: t("Mulai mode presentasi", "Start presentation mode"), icon: "play", keywords: "slide juri judges presentasi presentation", run: go("/presentation") },
       ...modes,
     ];
     return [...pages, ...dash, ...actions];
-  }, [router, theme, setTheme, setMode]);
+  }, [router, theme, setTheme, setMode, t, locale, setLocale]);
 
   const results = useMemo(() => {
     const q = normalize(query.trim());
@@ -209,9 +221,9 @@ function PaletteBody() {
             setQuery(e.target.value);
             setActive(0);
           }}
-          placeholder="Cari halaman, fitur dashboard, atau aksi…"
+          placeholder={t("Cari halaman, fitur _dashboard_, atau aksi…", "Search pages, dashboard features or actions…")}
           className="h-14 w-full bg-transparent text-[15px] text-ink outline-none placeholder:text-muted"
-          aria-label="Kata kunci pencarian"
+          aria-label={t("Kata kunci pencarian", "Search keywords")}
           aria-controls="command-results"
           aria-activedescendant={results[active] ? `cmd-${results[active].id}` : undefined}
         />
@@ -220,7 +232,7 @@ function PaletteBody() {
       <div ref={listRef} id="command-results" role="listbox" data-lenis-prevent className="scrollbar-thin max-h-[min(60vh,440px)] overflow-y-auto p-2">
         {results.length === 0 && (
           <p className="px-3 py-10 text-center text-sm text-muted-strong">
-            Tidak ada hasil untuk “<span className="font-medium text-ink">{query}</span>”.
+            {t("Tidak ada hasil untuk", "No results for")} “<span className="font-medium text-ink">{query}</span>”.
           </p>
         )}
         {groups.map(([group, items]) => (
@@ -263,13 +275,15 @@ function PaletteBody() {
         <span className="flex items-center gap-3">
           <span className="flex items-center gap-1">
             <kbd className="rounded border border-line bg-card px-1">↑</kbd>
-            <kbd className="rounded border border-line bg-card px-1">↓</kbd> pilih
+            <kbd className="rounded border border-line bg-card px-1">↓</kbd> {t("pilih", "select")}
           </span>
           <span className="flex items-center gap-1">
-            <kbd className="rounded border border-line bg-card px-1">Enter</kbd> buka
+            <kbd className="rounded border border-line bg-card px-1">Enter</kbd> {t("buka", "open")}
           </span>
         </span>
-        <span>{results.length} hasil</span>
+        <span>
+          {results.length} {t("hasil", results.length === 1 ? "result" : "results")}
+        </span>
       </div>
     </motion.div>
   );
@@ -277,11 +291,12 @@ function PaletteBody() {
 
 /** Search trigger shown in headers. */
 export function CommandTrigger({ className, compact }: { className?: string; compact?: boolean }) {
+  const { t } = useI18n();
   return (
     <button
       type="button"
       onClick={openCommandPalette}
-      aria-label="Cari (Ctrl+K)"
+      aria-label={t("Cari (Ctrl+K)", "Search (Ctrl+K)")}
       className={cn(
         "group inline-flex h-9 items-center gap-2 rounded-xl border border-line bg-card text-[13px] text-muted shadow-soft transition hover:border-brand/40 hover:text-ink",
         compact ? "w-9 justify-center" : "px-3",
@@ -291,7 +306,7 @@ export function CommandTrigger({ className, compact }: { className?: string; com
       <Search className="h-4 w-4 shrink-0" />
       {!compact && (
         <>
-          <span className="pr-6">Cari…</span>
+          <span className="pr-6">{t("Cari…", "Search…")}</span>
           <kbd className="rounded-md border border-line bg-subtle px-1.5 py-0.5 text-[11px] font-medium text-muted">Ctrl K</kbd>
         </>
       )}

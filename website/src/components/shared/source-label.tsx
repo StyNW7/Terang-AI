@@ -3,6 +3,7 @@ import type { EvidenceClassification } from "@/types/common";
 import { EVIDENCE_META } from "@/data/public-sources";
 import { Tooltip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { T } from "@/lib/i18n";
 
 const STYLES: Record<EvidenceClassification, { className: string; Icon: typeof BadgeCheck }> = {
   "public-source": { className: "bg-success-soft text-success-ink ring-current/15", Icon: BadgeCheck },
@@ -26,7 +27,7 @@ export function SourceLabel({
   const meta = EVIDENCE_META[type];
   const { className: style, Icon } = STYLES[type];
   return (
-    <Tooltip content={meta.description}>
+    <Tooltip content={<T v={meta.description} />}>
       <span
         tabIndex={0}
         className={cn(
@@ -36,7 +37,7 @@ export function SourceLabel({
         )}
       >
         <Icon className="h-3 w-3" />
-        {compact ? meta.short : meta.label}
+        <T v={compact ? meta.short : meta.label} />
       </span>
     </Tooltip>
   );

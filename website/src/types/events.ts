@@ -1,24 +1,26 @@
+import type { Txt } from "@/lib/i18n-core";
+
 export type EventCategory = "kompetisi" | "konferensi" | "workshop" | "seminar";
 export type EventStatus = "draft" | "published" | "registration" | "judging" | "completed";
 export type RegistrationStatus = "terverifikasi" | "menunggu-pembayaran" | "lunas" | "dibatalkan";
 
 export interface EventStage {
   id: string;
-  name: string;
+  name: Txt;
   date: string; // ISO date
   type: "registrasi" | "submisi" | "penjurian" | "pengumuman" | "acara";
 }
 
 export interface JudgingCriterion {
   id: string;
-  name: string;
+  name: Txt;
   weight: number; // percentage, totals 100
-  description: string;
+  description: Txt;
 }
 
 export interface EventItem {
   id: string;
-  name: string;
+  name: Txt;
   organizer: string;
   category: EventCategory;
   status: EventStatus;
@@ -32,7 +34,7 @@ export interface EventItem {
   registered: number;
   submissions: number;
   views: number;
-  description: string;
+  description: Txt;
   stages: EventStage[];
   criteria: JudgingCriterion[];
   teamBased: boolean;
@@ -56,9 +58,9 @@ export interface Submission {
   id: string;
   eventId: string;
   team: string;
-  title: string;
+  title: Txt;
   submittedAt: string;
-  reviewer: string;
+  reviewer: Txt;
   status: "belum-dinilai" | "dinilai" | "final";
   scores: Record<string, number>; // criterionId -> 0..100
 }
@@ -77,7 +79,7 @@ export interface EventTemplate {
   id: string;
   name: string;
   category: EventCategory;
-  description: string;
+  description: Txt;
   icon: "trophy" | "presentation" | "wrench" | "mic";
   defaults: {
     durationDays: number;
@@ -85,9 +87,9 @@ export interface EventTemplate {
     quota: number;
     teamBased: boolean;
     mode: "online" | "offline" | "hybrid";
-    stages: { name: string; type: EventStage["type"]; offsetDays: number }[];
+    stages: { name: Txt; type: EventStage["type"]; offsetDays: number }[];
     criteria: Omit<JudgingCriterion, "id">[];
-    tasks: string[];
+    tasks: Txt[];
   };
 }
 

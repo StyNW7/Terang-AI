@@ -11,9 +11,12 @@ import { ChartFrame, ChartTooltip, AXIS_PROPS, SERIES } from "@/components/chart
 import { formatDate, formatNumber, formatPercent } from "@/lib/formatters";
 import { DEMO_TODAY, EventStatusBadge } from "./shared";
 import { safeDivide } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void }) {
+  const { t, tx } = useI18n();
   const events = useEventsStore((s) => s.events);
+  const weekly = WEEKLY_ACTIVITY.map((w) => ({ ...w, week: t(w.week) }));
   const totals = useMemo(() => {
     const registered = events.reduce((a, e) => a + e.registered, 0);
     const submissions = events.reduce((a, e) => a + e.submissions, 0);
@@ -32,10 +35,10 @@ export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <KpiCard label="Total event" value={events.length} icon={<CalendarDays className="h-4 w-4" />} tone="sky" />
-        <KpiCard label="Peserta terdaftar" value={totals.registered} icon={<Users className="h-4 w-4" />} tone="sky" delta={0.18} deltaLabel="vs bulan lalu" />
-        <KpiCard label="Submisi masuk" value={totals.submissions} icon={<FileText className="h-4 w-4" />} tone="brand" />
-        <KpiCard label="Nilai registrasi (simulasi)" value={totals.revenue} format="idrCompact" icon={<Wallet className="h-4 w-4" />} tone="navy" />
+        <KpiCard label={tx("Total _event_", "Total events")} value={events.length} icon={<CalendarDays className="h-4 w-4" />} tone="sky" />
+        <KpiCard label={t("Peserta terdaftar", "Registered participants")} value={totals.registered} icon={<Users className="h-4 w-4" />} tone="sky" delta={0.18} deltaLabel={t("vs bulan lalu", "vs last month")} />
+        <KpiCard label={t("Submisi masuk", "Submissions received")} value={totals.submissions} icon={<FileText className="h-4 w-4" />} tone="brand" />
+        <KpiCard label={t("Nilai registrasi (simulasi)", "Registration value (simulated)")} value={totals.revenue} format="idrCompact" icon={<Wallet className="h-4 w-4" />} tone="navy" />
       </div>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
         {totals.byStatus.map((s) => (
@@ -47,23 +50,23 @@ export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void 
           >
             <EventStatusBadge status={s.status} />
             <p className="tabular mt-3 font-display text-2xl font-semibold text-ink">{s.n}</p>
-            <p className="text-xs text-muted">event</p>
+            <p className="text-xs text-muted">{t("_event_", "events")}</p>
           </button>
         ))}
       </div>
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.6fr_1fr]">
         <ChartFrame
-          title="Kinerja event — 7 minggu terakhir"
-          description="Registrasi & submisi mingguan di seluruh event."
+          title={tx("Kinerja _event_ — 7 minggu terakhir", "Event performance — last 7 weeks")}
+          description={tx("Registrasi & submisi mingguan di seluruh _event_.", "Weekly registrations & submissions across all events.")}
           legend={[
-            { label: "Registrasi", color: SERIES.events },
-            { label: "Submisi", color: SERIES.interview },
+            { label: t("Registrasi", "Registrations"), color: SERIES.events },
+            { label: t("Submisi", "Submissions"), color: SERIES.interview },
           ]}
-          table={{ columns: ["Minggu", "Registrasi", "Submisi"], rows: WEEKLY_ACTIVITY.map((w) => [w.week, w.registrasi, w.submisi]) }}
+          table={{ columns: [t("Minggu", "Week"), t("Registrasi", "Registrations"), t("Submisi", "Submissions")], rows: weekly.map((w) => [w.week, w.registrasi, w.submisi]) }}
           height={250}
         >
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={WEEKLY_ACTIVITY} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
+            <AreaChart data={weekly} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
               <defs>
                 <linearGradient id="evReg" x1="0" x2="0" y1="0" y2="1">
                   <stop offset="0%" stopColor={SERIES.events} stopOpacity={0.35} />
@@ -78,14 +81,14 @@ export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void 
               <XAxis dataKey="week" {...AXIS_PROPS} />
               <YAxis {...AXIS_PROPS} />
               <Tooltip content={(p) => <ChartTooltip {...p} />} />
-              <Area type="monotone" dataKey="registrasi" name="Registrasi" stroke={SERIES.events} strokeWidth={2} fill="url(#evReg)" />
-              <Area type="monotone" dataKey="submisi" name="Submisi" stroke={SERIES.interview} strokeWidth={2} fill="url(#evSub)" />
+              <Area type="monotone" dataKey="registrasi" name={t("Registrasi", "Registrations")} stroke={SERIES.events} strokeWidth={2} fill="url(#evReg)" />
+              <Area type="monotone" dataKey="submisi" name={t("Submisi", "Submissions")} stroke={SERIES.interview} strokeWidth={2} fill="url(#evSub)" />
             </AreaChart>
           </ResponsiveContainer>
         </ChartFrame>
         <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
           <p className="flex items-center gap-2 text-[15px] font-semibold text-ink">
-            <CalendarClock className="h-4 w-4 text-sky-ink" /> Tenggat terdekat
+            <CalendarClock className="h-4 w-4 text-sky-ink" /> {t("Tenggat terdekat", "Upcoming deadlines")}
           </p>
           <ul className="mt-4 space-y-2.5">
             {totals.deadlines.map((d) => (
@@ -95,8 +98,8 @@ export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void 
                   <span className="text-base font-semibold leading-none text-ink">{formatDate(d.date).split(" ")[0]}</span>
                 </span>
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold leading-snug text-ink">{d.name}</p>
-                  <p className="text-xs leading-snug text-muted">{d.event}</p>
+                  <p className="text-sm font-semibold leading-snug text-ink">{tx(d.name)}</p>
+                  <p className="text-xs leading-snug text-muted">{t(d.event)}</p>
                 </div>
               </li>
             ))}
@@ -105,19 +108,19 @@ export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void 
       </div>
       <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
         <p className="flex items-center gap-2 text-[15px] font-semibold text-ink">
-          <Trophy className="h-4 w-4 text-sky-ink" /> Progres registrasi & submisi
+          <Trophy className="h-4 w-4 text-sky-ink" /> {t("Progres registrasi & submisi", "Registration & submission progress")}
         </p>
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
           {activeWithSubs.map((e) => (
             <div key={e.id} className="rounded-xl bg-surface p-4 ring-1 ring-line">
               <div className="flex items-start justify-between gap-3">
-                <p className="text-sm font-semibold text-ink">{e.name}</p>
+                <p className="text-sm font-semibold text-ink">{t(e.name)}</p>
                 <EventStatusBadge status={e.status} />
               </div>
               <div className="mt-3 space-y-2 text-xs">
                 <div>
                   <div className="flex justify-between text-muted-strong">
-                    <span>Kuota terisi</span>
+                    <span>{t("Kuota terisi", "Quota filled")}</span>
                     <span className="tabular font-semibold text-ink">
                       {formatNumber(e.registered)} / {formatNumber(e.quota)}
                     </span>
@@ -127,7 +130,7 @@ export function OrganizerDashboard({ onOpenEvents }: { onOpenEvents: () => void 
                 {e.submissions > 0 && (
                   <div>
                     <div className="flex justify-between text-muted-strong">
-                      <span>Submisi</span>
+                      <span>{t("Submisi", "Submissions")}</span>
                       <span className="tabular font-semibold text-ink">{formatPercent(safeDivide(e.submissions, e.registered))}</span>
                     </div>
                     <Progress value={safeDivide(e.submissions, e.registered)} tone="brand" className="mt-1" />

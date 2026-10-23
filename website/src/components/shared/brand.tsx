@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { L, useI18n, type Txt } from "@/lib/i18n";
 
 export type MascotName =
   | "wave"
@@ -13,16 +16,16 @@ export type MascotName =
   | "chart"
   | "question";
 
-const MASCOT_ALT: Record<MascotName, string> = {
-  wave: "Maskot Terang AI melambaikan tangan",
-  sparkle: "Maskot Terang AI memperkenalkan ide",
-  think: "Maskot Terang AI menganalisis dengan kaca pembesar",
-  events: "Maskot Terang AI membawa trofi dan kalender",
-  interview: "Maskot Terang AI dengan headset dan papan klip",
-  target: "Maskot Terang AI menunjuk target",
-  puzzle: "Maskot Terang AI menyatukan dua kepingan puzzle",
-  chart: "Maskot Terang AI mempresentasikan grafik pertumbuhan",
-  question: "Maskot Terang AI bertanya",
+const MASCOT_ALT: Record<MascotName, Txt> = {
+  wave: L("Maskot Terang AI melambaikan tangan", "Terang AI mascot waving"),
+  sparkle: L("Maskot Terang AI memperkenalkan ide", "Terang AI mascot presenting an idea"),
+  think: L("Maskot Terang AI menganalisis dengan kaca pembesar", "Terang AI mascot analysing with a magnifying glass"),
+  events: L("Maskot Terang AI membawa trofi dan kalender", "Terang AI mascot holding a trophy and a calendar"),
+  interview: L("Maskot Terang AI dengan headset dan papan klip", "Terang AI mascot with a headset and clipboard"),
+  target: L("Maskot Terang AI menunjuk target", "Terang AI mascot pointing at a target"),
+  puzzle: L("Maskot Terang AI menyatukan dua kepingan puzzle", "Terang AI mascot joining two puzzle pieces"),
+  chart: L("Maskot Terang AI mempresentasikan grafik pertumbuhan", "Terang AI mascot presenting a growth chart"),
+  question: L("Maskot Terang AI bertanya", "Terang AI mascot asking a question"),
 };
 
 export function Mascot({
@@ -38,10 +41,11 @@ export function Mascot({
   float?: boolean;
   preload?: boolean;
 }) {
+  const { t } = useI18n();
   return (
     <Image
       src={`/mascot/${name}.png`}
-      alt={MASCOT_ALT[name]}
+      alt={t(MASCOT_ALT[name])}
       width={size}
       height={size}
       preload={preload}
@@ -77,6 +81,7 @@ export function Logo({
   className?: string;
   preload?: boolean;
 }) {
+  const { t } = useI18n();
   const width = Math.round((height * 992) / 235);
   const img = (
     <Image
@@ -91,7 +96,7 @@ export function Logo({
   );
   if (!href) return img;
   return (
-    <Link href={href} aria-label="Terang AI — Beranda" className="inline-flex shrink-0 items-center">
+    <Link href={href} aria-label={t("Terang AI — Beranda", "Terang AI — Home")} className="inline-flex shrink-0 items-center">
       {img}
     </Link>
   );

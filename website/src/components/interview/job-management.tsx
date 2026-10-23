@@ -14,33 +14,36 @@ import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/misc";
 import { formatDate } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
+import { useI18n, type Txt } from "@/lib/i18n";
+import { JOB_STATUS_LABEL } from "./shared";
 
 interface Draft {
   title: string;
   role: RoleKey;
-  department: string;
+  department: Txt;
   location: string;
   description: string;
   competencies: { id: string; weight: number }[];
   durationMinutes: number;
 }
 
-const fromRole = (role: RoleKey): Draft => ({
+const fromRole = (role: RoleKey, t: (v: Txt) => string): Draft => ({
   title: ROLE_TEMPLATES[role].label,
   role,
   department: ROLE_TEMPLATES[role].department,
   location: "Jakarta",
-  description: ROLE_TEMPLATES[role].description,
+  description: t(ROLE_TEMPLATES[role].description),
   competencies: ROLE_TEMPLATES[role].competencies.map((c) => ({ ...c })),
   durationMinutes: 20,
 });
 
 export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void }) {
+  const { t, tx } = useI18n();
   const jobs = useInterviewStore((s) => s.jobs);
   const candidates = useInterviewStore((s) => s.candidates);
   const addJob = useInterviewStore((s) => s.addJob);
   const [open, setOpen] = useState(false);
-  const [draft, setDraft] = useState<Draft>(fromRole("customer-service"));
+  const [draft, setDraft] = useState<Draft>(() => fromRole("customer-service", t));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const weightTotal = draft.competencies.reduce((a, c) => a + c.weight, 0);
 
@@ -49,7 +52,7 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
       const has = d.competencies.some((c) => c.id === id);
       if (has) return { ...d, competencies: d.competencies.filter((c) => c.id !== id) };
       if (d.competencies.length >= 5) {
-        toast.warning("Maksimal 5 kompetensi agar wawancara tetap fokus.");
+        toast.warning(t("Maksimal 5 kompetensi agar wawancara tetap fokus.", "At most 5 competencies, to keep the interview focused."));
         return d;
       }
       return { ...d, competencies: [...d.competencies, { id, weight: 10 }] };
@@ -57,10 +60,10 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
 
   const save = () => {
     const e: Record<string, string> = {};
-    if (draft.title.trim().length < 4) e.title = "Judul jabatan minimal 4 karakter.";
-    if (draft.description.trim().length < 20) e.description = "Deskripsi minimal 20 karakter.";
-    if (draft.competencies.length < 2) e.competencies = "Pilih minimal 2 kompetensi.";
-    else if (weightTotal !== 100) e.competencies = `Total bobot kompetensi harus 100% (saat ini ${weightTotal}%).`;
+    if (draft.title.trim().length < 4) e.title = t("Judul jabatan minimal 4 karakter.", "Job title must be at least 4 characters.");
+    if (draft.description.trim().length < 20) e.description = t("Deskripsi minimal 20 karakter.", "Description must be at least 20 characters.");
+    if (draft.competencies.length < 2) e.competencies = t("Pilih minimal 2 kompetensi.", "Choose at least 2 competencies.");
+    else if (weightTotal !== 100) e.competencies = t(`Total bobot kompetensi harus 100% (saat ini ${weightTotal}%).`, `Competency weights must total 100% (currently ${weightTotal}%).`);
     setErrors(e);
     if (Object.keys(e).length) return;
     const job = addJob({
@@ -68,13 +71,14 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
       role: draft.role,
       department: draft.department,
       location: draft.location,
-      description: draft.description.trim(),
+      // Keep the bilingual template description unless the recruiter edited it.
+      description: draft.description.trim() === t(ROLE_TEMPLATES[draft.role].description) ? ROLE_TEMPLATES[draft.role].description : draft.description.trim(),
       competencies: draft.competencies,
       durationMinutes: draft.durationMinutes,
       questions: generateQuestions(draft.competencies, 0),
       status: "draft",
     });
-    toast.success("Lowongan dibuat sebagai draft.", { description: "Tinjau saran pertanyaan sebelum dipublikasikan." });
+    toast.success(t("Lowongan dibuat sebagai _draft_.", "Vacancy created as a draft."), { description: t("Tinjau saran pertanyaan sebelum dipublikasikan.", "Review the suggested questions before publishing.") });
     setOpen(false);
     onBuild(job.id);
   };
@@ -83,17 +87,20 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted-strong">
-          <span className="font-semibold text-ink">{jobs.length} posisi</span> · kompetensi berbobot menjadi dasar rubrik penilaian.
+          <span className="font-semibold text-ink">
+            {jobs.length} {t("posisi", jobs.length === 1 ? "position" : "positions")}
+          </span>{" "}
+          · {t("kompetensi berbobot menjadi dasar rubrik penilaian.", "weighted competencies form the basis of the assessment rubric.")}
         </p>
         <Button
           variant="one"
           onClick={() => {
-            setDraft(fromRole("customer-service"));
+            setDraft(fromRole("customer-service", t));
             setErrors({});
             setOpen(true);
           }}
         >
-          <Plus className="h-4 w-4" /> Buat lowongan
+          <Plus className="h-4 w-4" /> {t("Buat lowongan", "Create vacancy")}
         </Button>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -105,19 +112,19 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-soft text-one-ink">
                   <Briefcase className="h-5 w-5" />
                 </span>
-                <Badge tone={j.status === "aktif" ? "success" : j.status === "draft" ? "warning" : "neutral"}>{j.status}</Badge>
+                <Badge tone={j.status === "aktif" ? "success" : j.status === "draft" ? "warning" : "neutral"}>{tx(JOB_STATUS_LABEL[j.status])}</Badge>
               </div>
               <p className="mt-3 font-semibold text-ink">{j.title}</p>
               <p className="flex flex-wrap items-center gap-x-3 text-xs text-muted">
-                <span>{j.department}</span>
+                <span>{t(j.department)}</span>
                 <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {j.location}</span>
-                <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {j.durationMinutes} mnt</span>
+                <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {j.durationMinutes} {t("mnt", "min")}</span>
               </p>
               <div className="mt-4 space-y-2">
                 {j.competencies.map((c) => (
                   <div key={c.id}>
                     <div className="flex justify-between text-xs">
-                      <span className="text-ink">{COMPETENCY_MAP[c.id]?.name}</span>
+                      <span className="text-ink">{t(COMPETENCY_MAP[c.id]?.name ?? c.id)}</span>
                       <span className="tabular font-semibold text-one-ink">{c.weight}%</span>
                     </div>
                     <Progress value={c.weight / 100} tone="one" height="h-1.5" className="mt-1" />
@@ -125,7 +132,9 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
                 ))}
               </div>
               <div className="mt-auto flex items-center justify-between gap-2 border-t border-line pt-4">
-                <span className="text-xs text-muted">{count} kandidat · dibuat {formatDate(j.createdAt)}</span>
+                <span className="text-xs text-muted">
+                  {count} {t("kandidat", "candidates")} · {t("dibuat", "created")} {formatDate(j.createdAt)}
+                </span>
                 <Button size="sm" variant="soft" onClick={() => onBuild(j.id)}>
                   <Wand2 className="h-3.5 w-3.5" /> Builder
                 </Button>
@@ -138,29 +147,29 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
       <Modal
         open={open}
         onClose={() => setOpen(false)}
-        title="Buat lowongan baru"
-        description="Mulai dari template jabatan, lalu sesuaikan kompetensi & bobot."
+        title={t("Buat lowongan baru", "Create a new vacancy")}
+        description={tx("Mulai dari _template_ jabatan, lalu sesuaikan kompetensi & bobot.", "Start from a role template, then adjust competencies & weights.")}
         size="lg"
         footer={
           <>
             <Button variant="secondary" onClick={() => setOpen(false)}>
-              Batal
+              {t("Batal", "Cancel")}
             </Button>
             <Button variant="one" onClick={save}>
-              Simpan & buka builder
+              {tx("Simpan & buka _builder_", "Save & open builder")}
             </Button>
           </>
         }
       >
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field className="sm:col-span-2">
-            <Label>Template jabatan</Label>
+            <Label>{tx("_Template_ jabatan", "Role template")}</Label>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               {(Object.keys(ROLE_TEMPLATES) as RoleKey[]).map((r) => (
                 <button
                   key={r}
                   type="button"
-                  onClick={() => setDraft(fromRole(r))}
+                  onClick={() => setDraft(fromRole(r, t))}
                   className={cn(
                     "rounded-xl border p-3 text-left text-sm font-semibold transition",
                     draft.role === r ? "border-one bg-one-soft text-one-ink" : "border-line text-muted-strong hover:border-one/40",
@@ -172,12 +181,14 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
             </div>
           </Field>
           <Field>
-            <Label htmlFor="job-title" required>Judul jabatan</Label>
+            <Label htmlFor="job-title" required>
+              {t("Judul jabatan", "Job title")}
+            </Label>
             <Input id="job-title" value={draft.title} aria-invalid={!!errors.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
             <FieldError message={errors.title} />
           </Field>
           <Field>
-            <Label htmlFor="job-loc">Lokasi</Label>
+            <Label htmlFor="job-loc">{t("Lokasi", "Location")}</Label>
             <Select id="job-loc" value={draft.location} onChange={(e) => setDraft({ ...draft, location: e.target.value })}>
               {["Jakarta", "Surabaya", "Bandung", "Medan", "Makassar", "Remote"].map((l) => (
                 <option key={l}>{l}</option>
@@ -185,13 +196,15 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
             </Select>
           </Field>
           <Field className="sm:col-span-2">
-            <Label htmlFor="job-desc" required>Deskripsi pekerjaan</Label>
+            <Label htmlFor="job-desc" required>
+              {t("Deskripsi pekerjaan", "Job description")}
+            </Label>
             <Textarea id="job-desc" value={draft.description} aria-invalid={!!errors.description} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
             <FieldError message={errors.description} />
           </Field>
           <Field className="sm:col-span-2">
             <Label required hint={<span className={weightTotal === 100 ? "font-semibold text-success-ink" : "font-semibold text-warning-ink"}>Total {weightTotal}%</span>}>
-              Kompetensi wajib & bobot
+              {t("Kompetensi wajib & bobot", "Required competencies & weights")}
             </Label>
             <div className="flex flex-wrap gap-1.5">
               {COMPETENCIES.map((c) => {
@@ -207,7 +220,7 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
                     )}
                     aria-pressed={on}
                   >
-                    {c.name}
+                    {t(c.name)}
                   </button>
                 );
               })}
@@ -216,7 +229,7 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
               {draft.competencies.map((c) => (
                 <Slider
                   key={c.id}
-                  label={COMPETENCY_MAP[c.id]?.name}
+                  label={t(COMPETENCY_MAP[c.id]?.name ?? c.id)}
                   value={c.weight}
                   min={5}
                   max={60}
@@ -230,7 +243,14 @@ export function JobManagement({ onBuild }: { onBuild: (jobId: string) => void })
             <FieldError message={errors.competencies} />
           </Field>
           <Field className="sm:col-span-2">
-            <Slider label="Durasi wawancara" value={draft.durationMinutes} min={10} max={45} step={5} color="#2251c9" display={`${draft.durationMinutes} menit`} onChange={(v) => setDraft({ ...draft, durationMinutes: v })} />
+            <Slider
+              label={t("Durasi wawancara", "Interview duration")}
+              value={draft.durationMinutes}
+              min={10}
+              max={45}
+              step={5}
+              color="#2251c9"
+              display={`${draft.durationMinutes} ${t("menit", "minutes")}`} onChange={(v) => setDraft({ ...draft, durationMinutes: v })} />
           </Field>
         </div>
       </Modal>

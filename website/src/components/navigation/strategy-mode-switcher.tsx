@@ -7,6 +7,7 @@ import type { StrategyMode } from "@/types/common";
 import { MODE_META, useStrategyMode } from "@/hooks/use-strategy-mode";
 import { useStrategyStore } from "@/store/strategy-store";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 const ITEMS: { id: StrategyMode; icon: typeof Compass }[] = [
   { id: "overview", icon: Compass },
@@ -16,11 +17,12 @@ const ITEMS: { id: StrategyMode; icon: typeof Compass }[] = [
 
 export function StrategyModeSwitcher({ className, dark, compact }: { className?: string; dark?: boolean; compact?: boolean }) {
   const { mode, setMode } = useStrategyMode();
+  const { t } = useI18n();
   const uid = useId();
   return (
     <div
       role="radiogroup"
-      aria-label="Mode strategi global"
+      aria-label={t("Mode strategi global", "Global strategy mode")}
       className={cn(
         "relative inline-flex items-center gap-1 rounded-2xl p-1",
         dark ? "bg-white/10 ring-1 ring-white/15" : "bg-card/90 ring-1 ring-line",
@@ -53,7 +55,7 @@ export function StrategyModeSwitcher({ className, dark, compact }: { className?:
             )}
             <span className="relative z-10 flex items-center gap-1.5">
               <Icon className="h-3.5 w-3.5" />
-              {compact ? meta.short : meta.label}
+              {t(compact ? meta.short : meta.label)}
             </span>
           </button>
         );
@@ -68,6 +70,7 @@ export function ModeTransition() {
   const mode = useStrategyStore((s) => s.mode);
   const [visible, setVisible] = useState<{ key: number; mode: StrategyMode } | null>(null);
   const first = useRef(true);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (first.current) {
@@ -109,9 +112,9 @@ export function ModeTransition() {
             className="rounded-3xl px-8 py-5 text-center text-white shadow-lift"
             style={{ backgroundImage: MODE_META[visible.mode].gradient }}
           >
-            <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-white/75">Mode strategi</p>
-            <p className="font-display text-2xl font-semibold">{MODE_META[visible.mode].label}</p>
-            <p className="mt-1 max-w-xs text-xs text-white/80">{MODE_META[visible.mode].description}</p>
+            <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-white/75">{t("Mode strategi", "Strategy mode")}</p>
+            <p className="font-display text-2xl font-semibold">{t(MODE_META[visible.mode].label)}</p>
+            <p className="mt-1 max-w-xs text-xs text-white/80">{t(MODE_META[visible.mode].description)}</p>
           </motion.div>
         </motion.div>
       )}

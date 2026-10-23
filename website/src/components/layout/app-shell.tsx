@@ -10,6 +10,7 @@ import { WORKSPACES, activeLink, workspaceFor, type Workspace } from "@/data/nav
 import { Logo, LogoMark } from "@/components/shared/brand";
 import { NavIcon } from "@/components/navigation/nav-icon";
 import { ThemeToggle } from "@/components/navigation/theme-toggle";
+import { LanguageToggle } from "@/components/navigation/language-toggle";
 import { CommandTrigger } from "@/components/navigation/command-palette";
 import { Tooltip } from "@/components/ui/tooltip";
 import { MODE_META, useStrategyMode } from "@/hooks/use-strategy-mode";
@@ -19,6 +20,7 @@ import { useInterviewStore } from "@/store/interview-store";
 import { useOperationsStore } from "@/store/operations-store";
 import { useScenarioStore } from "@/store/scenario-store";
 import { cn } from "@/lib/utils";
+import { keyOf, useI18n } from "@/lib/i18n";
 
 const TAG_STYLE: Record<string, string> = {
   ONE: "bg-one-soft text-one-ink",
@@ -33,6 +35,7 @@ const TAG_STYLE: Record<string, string> = {
 function WorkspaceSwitcher({ current, onNavigate, compact }: { current: Workspace; onNavigate?: () => void; compact: boolean }) {
   const [open, setOpen] = useState(false);
   const { collapsed } = useSidebarCollapsed();
+  const { t, tx } = useI18n();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -91,7 +94,7 @@ function WorkspaceSwitcher({ current, onNavigate, compact }: { current: Workspac
               compact && "sidebar-collapsed:left-[calc(100%+10px)] sidebar-collapsed:top-0",
             )}
           >
-            <p className="px-2.5 pb-1 pt-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-muted">Pilih dashboard</p>
+            <p className="px-2.5 pb-1 pt-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-muted">{t("Pilih dashboard", "Choose a dashboard")}</p>
             {WORKSPACES.map((ws) => {
               const active = ws.id === current.id;
               return (
@@ -110,7 +113,7 @@ function WorkspaceSwitcher({ current, onNavigate, compact }: { current: Workspac
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-sm font-semibold text-ink">{ws.label}</span>
-                    <span className="block truncate text-xs text-muted">{ws.description}</span>
+                    <span className="block truncate text-xs text-muted">{tx(ws.description)}</span>
                   </span>
                   {active && <Check className="h-4 w-4 shrink-0 text-brand-ink" />}
                 </Link>
@@ -131,12 +134,13 @@ function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; o
   const current = activeLink(pathname, ws);
   const { mode } = useStrategyMode();
   const { toggle, collapsed } = useSidebarCollapsed();
+  const { t, tx } = useI18n();
   const hide = compact ? "sidebar-collapsed:hidden" : "";
 
   return (
     <div className="flex h-full flex-col">
       <div className={cn("flex h-16 shrink-0 items-center justify-between gap-2 px-4", compact && "sidebar-collapsed:justify-center sidebar-collapsed:px-0")}>
-        <Link href="/" onClick={onNavigate} aria-label="Terang AI — Beranda" className="flex items-center">
+        <Link href="/" onClick={onNavigate} aria-label={t("Terang AI — Beranda", "Terang AI — Home")} className="flex items-center">
           <span className={hide}>
             <Logo height={22} href={null} />
           </span>
@@ -151,8 +155,8 @@ function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; o
             type="button"
             onClick={toggle}
             className="grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-neutral-soft hover:text-ink sidebar-collapsed:hidden"
-            aria-label="Kecilkan sidebar"
-            title="Kecilkan sidebar  ["
+            aria-label={t("Kecilkan _sidebar_", "Collapse sidebar")}
+            title={`${t("Kecilkan _sidebar_", "Collapse sidebar")}  [`}
           >
             <PanelLeftClose className="h-[18px] w-[18px]" />
           </button>
@@ -163,10 +167,10 @@ function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; o
         <WorkspaceSwitcher current={ws} onNavigate={onNavigate} compact={compact} />
       </div>
 
-      <nav aria-label={`Navigasi ${ws.label}`} data-lenis-prevent className={cn("scrollbar-thin mt-4 flex-1 space-y-5 overflow-y-auto overflow-x-hidden px-3 pb-4", compact && "sidebar-collapsed:px-2")}>
+      <nav aria-label={`${t("Navigasi", "Navigation")} ${ws.label}`} data-lenis-prevent className={cn("scrollbar-thin mt-4 flex-1 space-y-5 overflow-y-auto overflow-x-hidden px-3 pb-4", compact && "sidebar-collapsed:px-2")}>
         {ws.groups.map((group) => (
-          <div key={group.group}>
-            <p className={cn("mb-1.5 px-2.5 text-[11px] font-medium uppercase tracking-[0.1em] text-muted", hide)}>{group.group}</p>
+          <div key={keyOf(group.group)}>
+            <p className={cn("mb-1.5 px-2.5 text-[11px] font-medium uppercase tracking-[0.1em] text-muted", hide)}>{tx(group.group)}</p>
             {compact && <div className="mx-auto mb-2 hidden h-px w-6 bg-line sidebar-collapsed:block" />}
             <div className="space-y-0.5">
               {group.links.map((link) => {
@@ -190,12 +194,12 @@ function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; o
                       />
                     )}
                     <NavIcon name={link.icon} className={cn("h-[18px] w-[18px] shrink-0", active ? "text-brand-ink" : "text-muted group-hover:text-ink")} />
-                    <span className={cn("min-w-0 flex-1 truncate", hide)}>{link.label}</span>
+                    <span className={cn("min-w-0 flex-1 truncate", hide)}>{tx(link.label)}</span>
                     {link.tag && <span className={cn("rounded-full px-1.5 py-0.5 text-[11px] font-semibold leading-none", TAG_STYLE[link.tag], hide)}>{link.tag}</span>}
                   </Link>
                 );
                 return compact ? (
-                  <Tooltip key={link.href} content={link.label} side="right" className="flex w-full" disabled={!collapsed}>
+                  <Tooltip key={link.href} content={tx(link.label)} side="right" className="flex w-full" disabled={!collapsed}>
                     {item}
                   </Tooltip>
                 ) : (
@@ -216,14 +220,14 @@ function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; o
             compact && "sidebar-collapsed:justify-center sidebar-collapsed:p-2",
           )}
           style={{ backgroundImage: MODE_META[mode].gradient }}
-          title={compact && collapsed ? `Mode strategi: ${MODE_META[mode].label}` : undefined}
+          title={compact && collapsed ? `${t("Mode strategi", "Strategy mode")}: ${t(MODE_META[mode].label)}` : undefined}
         >
           <span className="relative grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/15 ring-1 ring-white/25">
             <span className="h-2 w-2 rounded-full bg-white" />
           </span>
           <span className={cn("min-w-0 flex-1", hide)}>
-            <span className="block text-[11px] font-medium uppercase tracking-[0.1em] text-white/75">Mode strategi</span>
-            <span className="block truncate text-sm font-semibold">{MODE_META[mode].label}</span>
+            <span className="block text-[11px] font-medium uppercase tracking-[0.1em] text-white/75">{t("Mode strategi", "Strategy mode")}</span>
+            <span className="block truncate text-sm font-semibold">{t(MODE_META[mode].label)}</span>
           </span>
           <ChevronRight className={cn("h-4 w-4 shrink-0 text-white/80 transition group-hover:translate-x-0.5", hide)} />
         </Link>
@@ -232,8 +236,8 @@ function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; o
             type="button"
             onClick={toggle}
             className="hidden w-full place-items-center rounded-xl py-2 text-muted transition hover:bg-neutral-soft hover:text-ink sidebar-collapsed:grid"
-            aria-label="Perbesar sidebar"
-            title="Perbesar sidebar  ["
+            aria-label={t("Perbesar _sidebar_", "Expand sidebar")}
+            title={`${t("Perbesar _sidebar_", "Expand sidebar")}  [`}
           >
             <PanelLeftOpen className="h-[18px] w-[18px]" />
           </button>
@@ -249,6 +253,7 @@ function SidebarContent({ pathname, onNavigate, compact }: { pathname: string; o
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() ?? "";
   const { toggle: toggleSidebar } = useSidebarCollapsed();
+  const { t, tx } = useI18n();
 
   // "[" toggles the sidebar (ignored while typing).
   useEffect(() => {
@@ -283,7 +288,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       resetOps();
       resetScenario();
     }
-    toast.success(`Data demo ${ws.label} dikembalikan ke kondisi awal.`);
+    toast.success(t(`Data demo ${ws.label} dikembalikan ke kondisi awal.`, `${ws.label} demo data restored to its initial state.`));
   };
 
   return (
@@ -309,7 +314,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 type="button"
                 onClick={() => setMobileOpen(false)}
                 className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-xl text-muted hover:bg-neutral-soft"
-                aria-label="Tutup navigasi"
+                aria-label={t("Tutup navigasi", "Close navigation")}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -327,7 +332,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 type="button"
                 onClick={() => setMobileOpen(true)}
                 className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-card text-ink lg:hidden"
-                aria-label="Buka navigasi"
+                aria-label={t("Buka navigasi", "Open navigation")}
               >
                 <Menu className="h-5 w-5" />
               </button>
@@ -336,45 +341,46 @@ export function AppShell({ children }: { children: ReactNode }) {
                   {ws.label}
                 </Link>
                 <ChevronRight className="hidden h-3.5 w-3.5 shrink-0 text-muted sm:block" />
-                <span className="truncate font-semibold text-ink">{current?.label ?? "Ringkasan"}</span>
+                <span className="truncate font-semibold text-ink">{tx(current?.label ?? { id: "Ringkasan", en: "Overview" })}</span>
               </nav>
             </div>
             <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
               <CommandTrigger className="hidden lg:inline-flex" />
               <CommandTrigger compact className="lg:hidden" />
-              <Tooltip content="Mode strategi aktif — ubah di Kontrol Strategi (Super Admin)" side="bottom">
+              <Tooltip content={t("Mode strategi aktif — ubah di Kontrol Strategi (Super Admin)", "Active strategy mode — change it in Strategy Control (Super Admin)")} side="bottom">
                 <Link
                   href="/dashboard/strategy"
                   className="hidden items-center gap-2 rounded-xl border border-line bg-card px-3 py-1.5 text-xs font-medium text-muted-strong shadow-soft transition hover:border-brand/40 hover:text-ink md:inline-flex"
                 >
                   <span className="h-2 w-2 rounded-full" style={{ background: MODE_META[mode].color }} />
-                  Mode: <span className="font-semibold text-ink">{MODE_META[mode].short}</span>
+                  Mode: <span className="font-semibold text-ink">{t(MODE_META[mode].short)}</span>
                 </Link>
               </Tooltip>
-              <Tooltip content="Kembalikan data demo dashboard ini ke kondisi awal" side="bottom">
+              <Tooltip content={t("Kembalikan data demo _dashboard_ ini ke kondisi awal", "Restore this dashboard's demo data to its initial state")} side="bottom">
                 <button
                   type="button"
                   onClick={resetDemo}
                   className="inline-flex h-9 items-center gap-1.5 rounded-xl px-2.5 text-[13px] font-medium text-muted-strong transition hover:bg-neutral-soft hover:text-ink"
                 >
-                  <RotateCcw className="h-4 w-4" /> <span className="hidden xl:inline">Reset demo</span>
+                  <RotateCcw className="h-4 w-4" /> <span className="hidden xl:inline">{t("Reset demo", "Reset demo")}</span>
                 </button>
               </Tooltip>
-              <Tooltip content="Mode presentasi" side="bottom">
+              <Tooltip content={t("Mode presentasi", "Presentation mode")} side="bottom">
                 <Link
                   href="/presentation"
                   className="hidden h-9 w-9 place-items-center rounded-xl text-muted-strong transition hover:bg-neutral-soft hover:text-ink sm:grid"
-                  aria-label="Mode presentasi"
+                  aria-label={t("Mode presentasi", "Presentation mode")}
                 >
                   <Presentation className="h-[18px] w-[18px]" />
                 </Link>
               </Tooltip>
+              <LanguageToggle className="hidden sm:flex" layoutId="lang-pill-app" />
               <ThemeToggle />
               <Link
                 href="/"
                 className="hidden h-9 items-center gap-1.5 rounded-xl border border-line bg-card px-3 text-[13px] font-medium text-ink shadow-soft transition hover:border-brand/40 sm:inline-flex"
               >
-                <Globe className="h-4 w-4 text-muted" /> Situs <ArrowUpRight className="h-3.5 w-3.5 text-muted" />
+                <Globe className="h-4 w-4 text-muted" /> {t("Situs", "Site")} <ArrowUpRight className="h-3.5 w-3.5 text-muted" />
               </Link>
             </div>
           </div>

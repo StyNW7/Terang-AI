@@ -9,7 +9,8 @@ import { useScenarioStore } from "@/store/scenario-store";
 import { Mascot } from "@/components/shared/brand";
 import { Kbd } from "@/components/ui/misc";
 import { cn } from "@/lib/utils";
-import { SLIDES } from "./slides";
+import { useI18n } from "@/lib/i18n";
+import { SECTION_LABEL, SLIDES } from "./slides";
 
 const ACCENT_BG = {
   brand: "radial-gradient(120% 120% at 0% 0%, #1f4f84 0%, #17395e 40%, #0b1d36 100%)",
@@ -31,6 +32,7 @@ export function PresentationMode() {
   const [notes, setNotes] = useState(false);
   const [grid, setGrid] = useState(false);
   const slide = SLIDES[index];
+  const { t, tx } = useI18n();
 
   const goTo = useCallback(
     (i: number, dir = 1) => {
@@ -39,8 +41,8 @@ export function PresentationMode() {
       setStoredIndex(next);
       setStep(0);
       const s = SLIDES[next];
-      if (s.section === "ONE · PRO") setMode("one");
-      else if (s.section === "ACE · KONTRA") setMode("ace");
+      if (s.section === "one") setMode("one");
+      else if (s.section === "ace") setMode("ace");
     },
     [setStoredIndex, setMode],
   );
@@ -96,21 +98,21 @@ export function PresentationMode() {
       {/* Top bar */}
       <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 px-5 py-4 sm:px-8">
         <div className="flex min-w-0 items-center gap-3">
-          <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-sky ring-1 ring-white/15">{slide.section}</span>
-          <span className="hidden truncate text-sm text-white/60 sm:block">{slide.title}</span>
+          <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-sky ring-1 ring-white/15">{t(SECTION_LABEL[slide.section])}</span>
+          <span className="hidden truncate text-sm text-white/60 sm:block">{t(slide.title)}</span>
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={() => goTo(ONE_START, 1)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold ring-1 transition", slide.section === "ONE · PRO" ? "bg-white text-one-ink ring-white" : "bg-white/10 text-white ring-white/15 hover:bg-white/20")}>
+          <button type="button" onClick={() => goTo(ONE_START, 1)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold ring-1 transition", slide.section === "one" ? "bg-white text-one-ink ring-white" : "bg-white/10 text-white ring-white/15 hover:bg-white/20")}>
             <Target className="h-3.5 w-3.5" /> PRO · ONE
           </button>
-          <button type="button" onClick={() => goTo(ACE_START, 1)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold ring-1 transition", slide.section === "ACE · KONTRA" ? "bg-white text-ace-ink ring-white" : "bg-white/10 text-white ring-white/15 hover:bg-white/20")}>
-            <Layers className="h-3.5 w-3.5" /> KONTRA · ACE
+          <button type="button" onClick={() => goTo(ACE_START, 1)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold ring-1 transition", slide.section === "ace" ? "bg-white text-ace-ink ring-white" : "bg-white/10 text-white ring-white/15 hover:bg-white/20")}>
+            <Layers className="h-3.5 w-3.5" /> {t("KONTRA · ACE", "CONTRA · ACE")}
           </button>
-          <button type="button" onClick={fullscreen} className="hidden h-9 w-9 place-items-center rounded-xl bg-white/10 ring-1 ring-white/15 hover:bg-white/20 sm:grid" aria-label="Layar penuh">
+          <button type="button" onClick={fullscreen} className="hidden h-9 w-9 place-items-center rounded-xl bg-white/10 ring-1 ring-white/15 hover:bg-white/20 sm:grid" aria-label={t("Layar penuh", "Full screen")}>
             <Expand className="h-4 w-4" />
           </button>
-          <Link href="/" className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-semibold ring-1 ring-white/15 hover:bg-white/20" aria-label="Keluar dari mode presentasi">
-            <X className="h-3.5 w-3.5" /> Keluar
+          <Link href="/" className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-semibold ring-1 ring-white/15 hover:bg-white/20" aria-label={t("Keluar dari mode presentasi", "Exit presentation mode")}>
+            <X className="h-3.5 w-3.5" /> {t("Keluar", "Exit")}
           </Link>
         </div>
       </div>
@@ -127,7 +129,7 @@ export function PresentationMode() {
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="scrollbar-thin relative mx-auto max-h-full w-full max-w-7xl overflow-y-auto"
           >
-            {slide.render(step, assumptions)}
+            {slide.render(step, assumptions, { t, tx })}
           </motion.div>
         </AnimatePresence>
         {slide.mascot && (
@@ -144,17 +146,17 @@ export function PresentationMode() {
         </div>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <button type="button" onClick={prev} className="grid h-11 w-11 place-items-center rounded-xl bg-white/10 ring-1 ring-white/15 hover:bg-white/20" aria-label="Sebelumnya">
+            <button type="button" onClick={prev} className="grid h-11 w-11 place-items-center rounded-xl bg-white/10 ring-1 ring-white/15 hover:bg-white/20" aria-label={t("Sebelumnya", "Previous")}>
               <ChevronLeft className="h-5 w-5" />
             </button>
-            <button type="button" onClick={next} className="grid h-11 w-11 place-items-center rounded-xl bg-white text-navy hover:bg-soft" aria-label="Berikutnya">
+            <button type="button" onClick={next} className="grid h-11 w-11 place-items-center rounded-xl bg-white text-navy hover:bg-soft" aria-label={t("Berikutnya", "Next")}>
               <ChevronRight className="h-5 w-5" />
             </button>
             <span className="tabular ml-2 text-sm font-semibold text-white/80">
               {index + 1} / {SLIDES.length}
             </span>
             {slide.steps > 0 && (
-              <span className="ml-2 flex gap-1" aria-label={`Langkah ${step} dari ${slide.steps}`}>
+              <span className="ml-2 flex gap-1" aria-label={t(`Langkah ${step} dari ${slide.steps}`, `Step ${step} of ${slide.steps}`)}>
                 {Array.from({ length: slide.steps }).map((_, i) => (
                   <span key={i} className={cn("h-1.5 w-4 rounded-full", i < step ? "bg-sky" : "bg-white/20")} />
                 ))}
@@ -164,19 +166,20 @@ export function PresentationMode() {
           <div className="flex items-center gap-2">
             {slide.link && (
               <Link href={slide.link.href} className="hidden items-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-xs font-semibold ring-1 ring-white/15 hover:bg-white/20 sm:flex">
-                Buka {slide.link.label} <ArrowUpRight className="h-3.5 w-3.5" />
+                {t("Buka", "Open")} {tx(slide.link.label)} <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             )}
             <button type="button" onClick={() => setGrid((v) => !v)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold ring-1", grid ? "bg-white text-navy ring-white" : "bg-white/10 ring-white/15 hover:bg-white/20")}>
-              <LayoutGrid className="h-3.5 w-3.5" /> Semua slide
+              <LayoutGrid className="h-3.5 w-3.5" /> {t("Semua slide", "All slides")}
             </button>
             <button type="button" onClick={() => setNotes((v) => !v)} className={cn("flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold ring-1", notes ? "bg-white text-navy ring-white" : "bg-white/10 ring-white/15 hover:bg-white/20")}>
-              <NotebookPen className="h-3.5 w-3.5" /> Catatan
+              <NotebookPen className="h-3.5 w-3.5" /> {t("Catatan", "Notes")}
             </button>
           </div>
         </div>
         <p className="mt-2 hidden items-center gap-2 text-[11px] text-white/45 lg:flex">
-          <Kbd>←</Kbd> <Kbd>→</Kbd> navigasi · <Kbd>N</Kbd> catatan · <Kbd>G</Kbd> semua slide · <Kbd>1</Kbd> ONE · <Kbd>2</Kbd> ACE · klik area slide untuk lanjut
+          <Kbd>←</Kbd> <Kbd>→</Kbd> {t("navigasi", "navigate")} · <Kbd>N</Kbd> {t("catatan", "notes")} · <Kbd>G</Kbd> {t("semua slide", "all slides")} · <Kbd>1</Kbd> ONE · <Kbd>2</Kbd> ACE ·{" "}
+          {t("klik area slide untuk lanjut", "click the slide to continue")}
         </p>
       </div>
 
@@ -192,20 +195,20 @@ export function PresentationMode() {
           >
             <div className="flex items-center justify-between">
               <p className="flex items-center gap-2 font-semibold">
-                <NotebookPen className="h-4 w-4 text-brand-ink" /> Catatan pembicara
+                <NotebookPen className="h-4 w-4 text-brand-ink" /> {t("Catatan pembicara", "Speaker notes")}
               </p>
-              <button type="button" onClick={() => setNotes(false)} className="grid h-9 w-9 place-items-center rounded-xl hover:bg-soft" aria-label="Tutup catatan">
+              <button type="button" onClick={() => setNotes(false)} className="grid h-9 w-9 place-items-center rounded-xl hover:bg-soft" aria-label={t("Tutup catatan", "Close notes")}>
                 <X className="h-5 w-5" />
               </button>
             </div>
             <p className="mt-1 text-xs text-muted">
-              Slide {index + 1}: {slide.title}
+              Slide {index + 1}: {tx(slide.title)}
             </p>
-            <p className="mt-5 text-[15px] leading-relaxed text-ink">{slide.notes}</p>
+            <p className="mt-5 text-[15px] leading-relaxed text-ink">{tx(slide.notes)}</p>
             {index < SLIDES.length - 1 && (
               <div className="mt-6 rounded-xl bg-surface p-4 ring-1 ring-line">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Berikutnya</p>
-                <p className="mt-1 font-semibold">{SLIDES[index + 1].title}</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">{t("Berikutnya", "Up next")}</p>
+                <p className="mt-1 font-semibold">{tx(SLIDES[index + 1].title)}</p>
               </div>
             )}
           </motion.aside>
@@ -218,8 +221,8 @@ export function PresentationMode() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-40 overflow-y-auto bg-navy-deep/95 p-8 backdrop-blur">
             <div className="mx-auto max-w-6xl">
               <div className="mb-6 flex items-center justify-between">
-                <p className="text-xl font-semibold">Semua slide</p>
-                <button type="button" onClick={() => setGrid(false)} className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 hover:bg-white/20" aria-label="Tutup">
+                <p className="text-xl font-semibold">{t("Semua slide", "All slides")}</p>
+                <button type="button" onClick={() => setGrid(false)} className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 hover:bg-white/20" aria-label={t("Tutup", "Close")}>
                   <X className="h-5 w-5" />
                 </button>
               </div>
@@ -235,9 +238,9 @@ export function PresentationMode() {
                     className={cn("rounded-2xl p-4 text-left ring-1 transition hover:-translate-y-0.5", i === index ? "bg-white text-navy ring-white" : "bg-white/[0.06] ring-white/12 hover:bg-white/10")}
                   >
                     <p className={cn("text-[11px] font-semibold uppercase tracking-[0.12em]", i === index ? "text-brand-ink" : "text-sky")}>
-                      {String(i + 1).padStart(2, "0")} · {s.section}
+                      {String(i + 1).padStart(2, "0")} · {t(SECTION_LABEL[s.section])}
                     </p>
-                    <p className="mt-1 font-semibold">{s.title}</p>
+                    <p className="mt-1 font-semibold">{tx(s.title)}</p>
                   </button>
                 ))}
               </div>

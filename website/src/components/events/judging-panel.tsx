@@ -13,13 +13,19 @@ import { Select } from "@/components/ui/form";
 import { Slider } from "@/components/ui/slider";
 import { EmptyState, Progress } from "@/components/ui/misc";
 import { formatDate } from "@/lib/formatters";
-import { weightedScore } from "./shared";
+import { SUBMISSION_STATUS_LABEL, weightedScore } from "./shared";
+import { keyOf, L, useI18n, type Txt } from "@/lib/i18n";
 
-const REVIEWERS = ["Dr. Ratna Wibisono (fiktif)", "Andi Kurniawan, MBA (fiktif)", "Sari Dewanti (fiktif)", "Bima Prakoso (fiktif)"];
+const REVIEWERS = [
+  L("Dr. Ratna Wibisono (fiktif)", "Dr. Ratna Wibisono (fictional)"),
+  L("Andi Kurniawan, MBA (fiktif)", "Andi Kurniawan, MBA (fictional)"),
+  L("Sari Dewanti (fiktif)", "Sari Dewanti (fictional)"),
+  L("Bima Prakoso (fiktif)", "Bima Prakoso (fictional)"),
+];
 const STATUS_TONE = { "belum-dinilai": "neutral", dinilai: "brand", final: "success" } as const;
-const STATUS_LABEL = { "belum-dinilai": "Belum dinilai", dinilai: "Dinilai", final: "Final" } as const;
 
 export function JudgingPanel() {
+  const { t, tx } = useI18n();
   const events = useEventsStore((s) => s.events);
   const submissions = useEventsStore((s) => s.submissions);
   const score = useEventsStore((s) => s.scoreSubmission);
@@ -37,24 +43,24 @@ export function JudgingPanel() {
   const current = rows.find((r) => r.id === scoring);
   const progress = rows.length ? rows.filter((r) => r.status !== "belum-dinilai").length / rows.length : 0;
 
-  if (!event) return <EmptyState title="Belum ada event dengan penjurian" />;
+  if (!event) return <EmptyState title={t("Belum ada _event_ dengan penjurian", "No events with judging yet")} />;
 
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_1.6fr]">
         <div className="space-y-4">
           <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
-            <p className="text-sm font-semibold text-ink">Event</p>
-            <Select className="mt-2" value={event.id} onChange={(e) => setEventId(e.target.value)} aria-label="Pilih event penjurian">
+            <p className="text-sm font-semibold text-ink">{tx("_Event_", "Event")}</p>
+            <Select className="mt-2" value={event.id} onChange={(e) => setEventId(e.target.value)} aria-label={t("Pilih _event_ penjurian", "Choose the event to judge")}>
               {judged.map((e) => (
                 <option key={e.id} value={e.id}>
-                  {e.name}
+                  {t(e.name)}
                 </option>
               ))}
             </Select>
             <div className="mt-4">
               <div className="flex justify-between text-xs">
-                <span className="text-muted-strong">Progres penilaian</span>
+                <span className="text-muted-strong">{t("Progres penilaian", "Scoring progress")}</span>
                 <span className="tabular font-semibold text-ink">{Math.round(progress * 100)}%</span>
               </div>
               <Progress value={progress} tone="sky" className="mt-1" />
@@ -62,16 +68,16 @@ export function JudgingPanel() {
           </div>
           <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
             <p className="flex items-center gap-2 text-sm font-semibold text-ink">
-              <Scale className="h-4 w-4 text-sky-ink" /> Rubrik berbobot
+              <Scale className="h-4 w-4 text-sky-ink" /> {t("Rubrik berbobot", "Weighted rubric")}
             </p>
             <div className="mt-3 space-y-3">
               {event.criteria.map((c) => (
                 <div key={c.id}>
                   <div className="flex justify-between text-sm">
-                    <span className="font-semibold text-ink">{c.name}</span>
+                    <span className="font-semibold text-ink">{tx(c.name)}</span>
                     <span className="tabular font-semibold text-sky-ink">{c.weight}%</span>
                   </div>
-                  <p className="text-xs text-muted">{c.description}</p>
+                  <p className="text-xs text-muted">{tx(c.description)}</p>
                   <Progress value={c.weight / 100} tone="sky" className="mt-1" height="h-1.5" />
                 </div>
               ))}
@@ -81,12 +87,18 @@ export function JudgingPanel() {
         <div className="overflow-hidden rounded-2xl border border-line bg-card shadow-soft">
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
             <p className="flex items-center gap-2 font-semibold text-ink">
-              <Gavel className="h-4 w-4 text-sky-ink" /> Submisi & peringkat
+              <Gavel className="h-4 w-4 text-sky-ink" /> {t("Submisi & peringkat", "Submissions & ranking")}
             </p>
-            <span className="text-xs text-muted">{rows.length} submisi</span>
+            <span className="text-xs text-muted">
+              {rows.length} {t("submisi", rows.length === 1 ? "submission" : "submissions")}
+            </span>
           </div>
           {rows.length === 0 ? (
-            <EmptyState className="m-5" title="Belum ada submisi" description="Submisi akan muncul saat peserta mengunggah karya." />
+            <EmptyState
+              className="m-5"
+              title={t("Belum ada submisi", "No submissions yet")}
+              description={t("Submisi akan muncul saat peserta mengunggah karya.", "Submissions will appear once participants upload their work.")}
+            />
           ) : (
             <ul className="divide-y divide-line">
               {rows.map((r, i) => (
@@ -97,33 +109,36 @@ export function JudgingPanel() {
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-semibold text-ink">{r.team}</p>
-                      <Badge tone={STATUS_TONE[r.status]}>{STATUS_LABEL[r.status]}</Badge>
+                      <Badge tone={STATUS_TONE[r.status]}>{t(SUBMISSION_STATUS_LABEL[r.status])}</Badge>
                     </div>
-                    <p className="text-sm leading-snug text-muted-strong">{r.title}</p>
+                    <p className="text-sm leading-snug text-muted-strong">{t(r.title)}</p>
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       <Select
-                        value={r.reviewer}
+                        value={keyOf(r.reviewer)}
                         onChange={(e) => {
-                          assign(r.id, e.target.value);
-                          toast.success(`Reviewer ${r.team} diperbarui.`);
+                          const reviewer: Txt = REVIEWERS.find((rv) => rv.id === e.target.value) ?? e.target.value;
+                          assign(r.id, reviewer);
+                          toast.success(t(`_Reviewer_ ${r.team} diperbarui.`, `Reviewer for ${r.team} updated.`));
                         }}
                         className="h-8 w-60 text-xs"
-                        aria-label={`Reviewer untuk ${r.team}`}
+                        aria-label={t(`_Reviewer_ untuk ${r.team}`, `Reviewer for ${r.team}`)}
                       >
                         {REVIEWERS.map((rv) => (
-                          <option key={rv} value={rv}>
-                            {rv}
+                          <option key={rv.id} value={rv.id}>
+                            {t(rv)}
                           </option>
                         ))}
                       </Select>
-                      <span className="text-[11px] text-muted">Dikirim {formatDate(r.submittedAt)}</span>
+                      <span className="text-[11px] text-muted">
+                        {t("Dikirim", "Submitted")} {formatDate(r.submittedAt)}
+                      </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 md:flex-col md:items-end">
                     <p className="tabular font-display text-2xl font-semibold text-ink">{r.total ? r.total.toFixed(1) : "—"}</p>
                     <div className="flex gap-1.5">
                       <Button size="sm" variant="soft" onClick={() => setScoring(r.id)} disabled={r.status === "final"}>
-                        Nilai
+                        {t("Nilai", "Score")}
                       </Button>
                       {r.status === "dinilai" && (
                         <Button
@@ -131,15 +146,15 @@ export function JudgingPanel() {
                           variant="secondary"
                           onClick={() => {
                             setStatus(r.id, "final");
-                            toast.success(`Nilai ${r.team} difinalkan.`);
+                            toast.success(t(`Nilai ${r.team} difinalkan.`, `Scores for ${r.team} finalised.`));
                           }}
                         >
-                          Finalkan
+                          {t("Finalkan", "Finalise")}
                         </Button>
                       )}
                       {r.status === "final" && (
                         <Button size="sm" variant="ghost" onClick={() => setStatus(r.id, "dinilai")}>
-                          Buka
+                          {t("Buka", "Reopen")}
                         </Button>
                       )}
                     </div>
@@ -154,9 +169,18 @@ export function JudgingPanel() {
       <Modal
         open={!!current}
         onClose={() => setScoring(null)}
-        title={current ? `Penilaian — ${current.team}` : ""}
-        description={current?.title}
-        footer={<Button onClick={() => { setScoring(null); toast.success("Nilai tersimpan."); }}>Simpan nilai</Button>}
+        title={current ? `${t("Penilaian", "Scoring")} — ${current.team}` : ""}
+        description={current ? t(current.title) : undefined}
+        footer={
+          <Button
+            onClick={() => {
+              setScoring(null);
+              toast.success(t("Nilai tersimpan.", "Scores saved."));
+            }}
+          >
+            {t("Simpan nilai", "Save scores")}
+          </Button>
+        }
       >
         {current && <ScoreForm submission={current} criteria={event.criteria} onScore={(cid, v) => score(current.id, cid, v)} />}
       </Modal>
@@ -170,26 +194,27 @@ function ScoreForm({
   onScore,
 }: {
   submission: Submission & { total: number };
-  criteria: { id: string; name: string; weight: number; description: string }[];
+  criteria: { id: string; name: Txt; weight: number; description: Txt }[];
   onScore: (criterionId: string, value: number) => void;
 }) {
+  const { t, tx } = useI18n();
   return (
     <div className="space-y-5">
       {criteria.map((c) => (
         <Slider
           key={c.id}
-          label={`${c.name} (${c.weight}%)`}
+          label={`${t(c.name)} (${c.weight}%)`}
           value={submission.scores[c.id] ?? 0}
           min={0}
           max={100}
           onChange={(v) => onScore(c.id, v)}
           display={`${submission.scores[c.id] ?? 0}/100`}
           color="#0c9fd8"
-          hint={c.description}
+          hint={tx(c.description)}
         />
       ))}
       <div className="flex items-center justify-between rounded-xl bg-ace-soft p-4">
-        <span className="text-sm font-semibold text-ace-ink">Skor berbobot otomatis</span>
+        <span className="text-sm font-semibold text-ace-ink">{t("Skor berbobot otomatis", "Automatic weighted score")}</span>
         <span className="tabular font-display text-2xl font-semibold text-ink">{weightedScore(submission.scores, criteria).toFixed(1)}</span>
       </div>
     </div>

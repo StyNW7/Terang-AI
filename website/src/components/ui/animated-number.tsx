@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { animate, useInView, useReducedMotion } from "motion/react";
 import { formatDecimal, formatIDR, formatIDRCompact, formatNumber, formatPercent } from "@/lib/formatters";
+import { getActiveLocale } from "@/lib/i18n-core";
+import { useI18n } from "@/lib/i18n";
 
 export type NumberFormat = "idr" | "idrCompact" | "number" | "decimal" | "percent" | "percent1" | "hours";
 
@@ -19,7 +21,7 @@ export function formatValue(value: number, format: NumberFormat) {
     case "percent1":
       return formatPercent(value, 1);
     case "hours":
-      return `${formatNumber(value)} jam`;
+      return `${formatNumber(value)} ${getActiveLocale() === "en" ? "hrs" : "jam"}`;
     default:
       return formatNumber(value);
   }
@@ -39,6 +41,7 @@ export function AnimatedNumber({
   prefix?: string;
   suffix?: string;
 }) {
+  useI18n(); // re-render (and re-format) when the language changes
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const reduce = useReducedMotion();

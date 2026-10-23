@@ -1,6 +1,7 @@
 import type { ComponentProps, ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { T } from "@/lib/i18n";
 
 export function Container({ className, ...props }: ComponentProps<"div">) {
   return <div className={cn("mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8", className)} {...props} />;
@@ -11,7 +12,7 @@ export function Section({ className, ...props }: ComponentProps<"section">) {
 }
 
 /** "Scroll for details" cue at the bottom of a full-height hero. */
-export function ScrollCue({ href = "#detail", label = "Gulir untuk detail", dark }: { href?: string; label?: string; dark?: boolean }) {
+export function ScrollCue({ href = "#detail", label, dark }: { href?: string; label?: ReactNode; dark?: boolean }) {
   return (
     <a
       href={href}
@@ -24,7 +25,7 @@ export function ScrollCue({ href = "#detail", label = "Gulir untuk detail", dark
         <span className={cn("h-2 w-1 rounded-full animate-scroll-cue", dark ? "bg-white" : "bg-brand")} />
       </span>
       <span className="flex items-center gap-1">
-        {label} <ChevronDown className="h-3.5 w-3.5 transition group-hover:translate-y-0.5" />
+        {label ?? <T id="Gulir untuk detail" en="Scroll for details" />} <ChevronDown className="h-3.5 w-3.5 transition group-hover:translate-y-0.5" />
       </span>
     </a>
   );

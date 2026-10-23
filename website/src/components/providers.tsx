@@ -12,6 +12,7 @@ import { ModeTransition } from "@/components/navigation/strategy-mode-switcher";
 import { useTheme } from "@/lib/theme";
 import { CommandPalette } from "@/components/navigation/command-palette";
 import { SpotlightTracker } from "@/components/ui/spotlight";
+import { LocaleSync } from "@/lib/i18n";
 
 /** Rehydrate persisted demo stores after mount to keep SSR markup identical. */
 function StoreHydrator() {
@@ -42,6 +43,7 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <MotionConfig reducedMotion="user">
       <StoreHydrator />
+      <LocaleSync />
       {children}
       <ModeTransition />
       <CommandPalette />

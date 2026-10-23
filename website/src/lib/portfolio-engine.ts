@@ -1,4 +1,5 @@
 import type { ProductKey } from "@/types/common";
+import { L, type Bilingual } from "@/lib/i18n-core";
 
 export type PortfolioDecision = "scale" | "optimize" | "limit" | "pause";
 
@@ -17,9 +18,9 @@ export interface ProductKpiInput {
 
 export interface Criterion {
   id: string;
-  label: string;
-  value: string;
-  target: string;
+  label: Bilingual;
+  value: string | Bilingual;
+  target: string | Bilingual;
   pass: boolean;
   hard?: boolean;
 }
@@ -27,7 +28,7 @@ export interface Criterion {
 export interface DecisionResult {
   decision: PortfolioDecision;
   criteria: Criterion[];
-  reasons: string[];
+  reasons: Bilingual[];
   passed: number;
   total: number;
 }
@@ -41,29 +42,31 @@ const pct = (v: number) => `${Math.round(v * 100)}%`;
 
 export function evaluateProduct(input: ProductKpiInput): DecisionResult {
   const t = THRESHOLDS[input.product];
-  const convLabel = input.product === "interview" ? "Konversi pilot → berbayar" : "Aktivasi organizer";
-  const retLabel = input.product === "interview" ? "Renewal perusahaan" : "Organizer berulang";
+  const convLabel = input.product === "interview" ? L("Konversi _pilot_ → berbayar", "Pilot → paid conversion") : L("Aktivasi _organizer_", "Organizer activation");
+  const retLabel = input.product === "interview" ? L("_Renewal_ perusahaan", "Company renewals") : L("_Organizer_ berulang", "Repeat organizers");
+  const pass = (ok: boolean) => (ok ? L("Lulus", "Pass") : L("Gagal", "Fail"));
+  const mustPass = L("Wajib lulus", "Must pass");
 
   const commercial: Criterion[] = [
-    { id: "quality", label: "Skor kualitas produk", value: `${Math.round(input.qualityScore)}`, target: `≥ ${t.quality}`, pass: input.qualityScore >= t.quality },
+    { id: "quality", label: L("Skor kualitas produk", "Product quality score"), value: `${Math.round(input.qualityScore)}`, target: `≥ ${t.quality}`, pass: input.qualityScore >= t.quality },
     { id: "conversion", label: convLabel, value: pct(input.conversion), target: `≥ ${pct(t.conversion)}`, pass: input.conversion >= t.conversion },
     { id: "retention", label: retLabel, value: pct(input.retention), target: `≥ ${pct(t.retention)}`, pass: input.retention >= t.retention },
-    { id: "margin", label: "Contribution margin", value: pct(input.contributionMargin), target: `≥ ${pct(t.margin)}`, pass: input.contributionMargin >= t.margin },
-    { id: "capacity", label: "Utilisasi kapasitas", value: pct(input.capacityUtilization), target: `≤ ${pct(t.capacity)}`, pass: input.capacityUtilization <= t.capacity },
+    { id: "margin", label: L("_Contribution margin_", "Contribution margin"), value: pct(input.contributionMargin), target: `≥ ${pct(t.margin)}`, pass: input.contributionMargin >= t.margin },
+    { id: "capacity", label: L("Utilisasi kapasitas", "Capacity utilisation"), value: pct(input.capacityUtilization), target: `≤ ${pct(t.capacity)}`, pass: input.capacityUtilization <= t.capacity },
   ];
 
   const hard: Criterion[] =
     input.product === "interview"
       ? [
-          { id: "privacy", label: "Privasi & perlindungan data", value: input.privacyPass ? "Lulus" : "Gagal", target: "Wajib lulus", pass: input.privacyPass, hard: true },
-          { id: "safety", label: "Keamanan & tinjauan manusia", value: input.safetyPass ? "Lulus" : "Gagal", target: "Wajib lulus", pass: input.safetyPass, hard: true },
-          { id: "validity", label: "Validitas rubrik penilaian", value: input.validityPass ? "Lulus" : "Gagal", target: "Wajib lulus", pass: input.validityPass, hard: true },
+          { id: "privacy", label: L("Privasi & perlindungan data", "Privacy & data protection"), value: pass(input.privacyPass), target: mustPass, pass: input.privacyPass, hard: true },
+          { id: "safety", label: L("Keamanan & tinjauan manusia", "Safety & human review"), value: pass(input.safetyPass), target: mustPass, pass: input.safetyPass, hard: true },
+          { id: "validity", label: L("Validitas rubrik penilaian", "Assessment-rubric validity"), value: pass(input.validityPass), target: mustPass, pass: input.validityPass, hard: true },
         ]
-      : [{ id: "reliability", label: "Keandalan layanan event", value: input.safetyPass ? "Lulus" : "Gagal", target: "Wajib lulus", pass: input.safetyPass, hard: true }];
+      : [{ id: "reliability", label: L("Keandalan layanan _event_", "Event-service reliability"), value: pass(input.safetyPass), target: mustPass, pass: input.safetyPass, hard: true }];
 
   const milestone: Criterion = {
     id: "milestone",
-    label: "Milestone terlewat berturut-turut",
+    label: L("_Milestone_ terlewat berturut-turut", "Consecutive missed milestones"),
     value: `${input.milestoneMisses}`,
     target: "< 3",
     pass: input.milestoneMisses < 3,
@@ -71,35 +74,52 @@ export function evaluateProduct(input: ProductKpiInput): DecisionResult {
 
   const criteria = [...hard, ...commercial, milestone];
   const passed = commercial.filter((c) => c.pass).length;
-  const reasons: string[] = [];
+  const reasons: Bilingual[] = [];
+  const lower = (c: Criterion) => ({ id: c.label.id.toLowerCase(), en: c.label.en.toLowerCase() });
 
   const failedHard = hard.filter((c) => !c.pass);
   let decision: PortfolioDecision;
   if (failedHard.length > 0) {
     decision = "pause";
-    reasons.push(`Hard gate gagal: ${failedHard.map((c) => c.label).join(", ")}. Kinerja komersial tidak dapat mengompensasi.`);
+    reasons.push(
+      L(
+        `_Hard gate_ gagal: ${failedHard.map((c) => c.label.id).join(", ")}. Kinerja komersial tidak dapat mengompensasi.`,
+        `Hard gate failed: ${failedHard.map((c) => c.label.en).join(", ")}. Commercial performance cannot compensate.`,
+      ),
+    );
   } else if (!milestone.pass) {
     decision = "pause";
-    reasons.push("Milestone terlewat 3 kali atau lebih secara berturut-turut.");
+    reasons.push(L("_Milestone_ terlewat 3 kali atau lebih secara berturut-turut.", "Milestones missed 3 or more times in a row."));
   } else if (passed === commercial.length) {
     decision = "scale";
-    reasons.push("Seluruh kriteria kualitas, komersial, ekonomi, dan kapasitas terpenuhi.");
+    reasons.push(L("Seluruh kriteria kualitas, komersial, ekonomi, dan kapasitas terpenuhi.", "All quality, commercial, economic and capacity criteria are met."));
   } else if (passed >= 3) {
     decision = "optimize";
-    reasons.push(`${passed} dari ${commercial.length} kriteria terpenuhi — perbaiki: ${commercial.filter((c) => !c.pass).map((c) => c.label.toLowerCase()).join(", ")}.`);
+    const failing = commercial.filter((c) => !c.pass).map(lower);
+    reasons.push(
+      L(
+        `${passed} dari ${commercial.length} kriteria terpenuhi — perbaiki: ${failing.map((f) => f.id).join(", ")}.`,
+        `${passed} of ${commercial.length} criteria met — improve: ${failing.map((f) => f.en).join(", ")}.`,
+      ),
+    );
   } else if (passed >= 1) {
     decision = "limit";
-    reasons.push(`Hanya ${passed} dari ${commercial.length} kriteria terpenuhi — intensitas pengembangan belum dibenarkan.`);
+    reasons.push(
+      L(
+        `Hanya ${passed} dari ${commercial.length} kriteria terpenuhi — intensitas pengembangan belum dibenarkan.`,
+        `Only ${passed} of ${commercial.length} criteria met — the current development intensity is not yet justified.`,
+      ),
+    );
   } else {
     decision = "pause";
-    reasons.push("Tidak ada kriteria komersial yang terpenuhi.");
+    reasons.push(L("Tidak ada kriteria komersial yang terpenuhi.", "No commercial criteria are met."));
   }
   return { decision, criteria, reasons, passed, total: commercial.length };
 }
 
-export const DECISION_META: Record<PortfolioDecision, { label: string; one: string; ace: string; description: string; tone: "success" | "brand" | "warning" | "danger" }> = {
-  scale: { label: "Scale", one: "Scale", ace: "Invest more", description: "Kinerja kuat; kualitas, ekonomi, dan kapasitas memadai.", tone: "success" },
-  optimize: { label: "Optimize", one: "Improve", ace: "Improve", description: "Produk menjanjikan dengan masalah yang dapat diperbaiki.", tone: "brand" },
-  limit: { label: "Limit", one: "Improve", ace: "Reduce scope", description: "Kinerja belum membenarkan intensitas pengembangan saat ini.", tone: "warning" },
-  pause: { label: "Pause / Reassess", one: "Pause / Revalidate", ace: "Pause investment", description: "Milestone gagal berulang atau risiko kritis belum terselesaikan.", tone: "danger" },
+export const DECISION_META: Record<PortfolioDecision, { label: string; one: string; ace: string; description: Bilingual; tone: "success" | "brand" | "warning" | "danger" }> = {
+  scale: { label: "Scale", one: "Scale", ace: "Invest more", description: L("Kinerja kuat; kualitas, ekonomi, dan kapasitas memadai.", "Strong performance; quality, economics and capacity are adequate."), tone: "success" },
+  optimize: { label: "Optimize", one: "Improve", ace: "Improve", description: L("Produk menjanjikan dengan masalah yang dapat diperbaiki.", "A promising product with fixable issues."), tone: "brand" },
+  limit: { label: "Limit", one: "Improve", ace: "Reduce scope", description: L("Kinerja belum membenarkan intensitas pengembangan saat ini.", "Performance does not yet justify the current development intensity."), tone: "warning" },
+  pause: { label: "Pause / Reassess", one: "Pause / Revalidate", ace: "Pause investment", description: L("_Milestone_ gagal berulang atau risiko kritis belum terselesaikan.", "Repeated milestone failures or unresolved critical risks."), tone: "danger" },
 };

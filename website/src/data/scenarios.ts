@@ -1,4 +1,5 @@
 import type { Assumptions, ScenarioPreset } from "@/types/finance";
+import { L, type Bilingual } from "@/lib/i18n-core";
 
 /**
  * ILLUSTRATIVE ACADEMIC ASSUMPTIONS — not verified Terang AI figures.
@@ -50,10 +51,13 @@ export const BASE_ASSUMPTIONS: Assumptions = {
   },
 };
 
-export const SCENARIO_PRESETS: Record<ScenarioPreset, { label: string; description: string; assumptions: Assumptions }> = {
+export const SCENARIO_PRESETS: Record<ScenarioPreset, { label: Bilingual; description: Bilingual; assumptions: Assumptions }> = {
   conservative: {
-    label: "Konservatif",
-    description: "Validasi AI Candidate Interview lebih lambat (konversi & volume rendah); permintaan Events sedikit melemah.",
+    label: L("Konservatif", "Conservative"),
+    description: L(
+      "Validasi AI Candidate Interview lebih lambat (konversi & volume rendah); permintaan Events sedikit melemah.",
+      "Slower AI Candidate Interview validation (low conversion & volume); Events demand softens slightly.",
+    ),
     assumptions: {
       ...BASE_ASSUMPTIONS,
       shared: { ...BASE_ASSUMPTIONS.shared, rampFactor: 0.45, salesCapacityPilots: 36, salesCapacityOrganizers: 48 },
@@ -68,13 +72,13 @@ export const SCENARIO_PRESETS: Record<ScenarioPreset, { label: string; descripti
     },
   },
   base: {
-    label: "Base Case",
-    description: "Asumsi tengah yang dipakai sebagai titik awal diskusi.",
+    label: L("_Base Case_", "Base Case"),
+    description: L("Asumsi tengah yang dipakai sebagai titik awal diskusi.", "Middle-of-the-road assumptions used as the starting point for discussion."),
     assumptions: BASE_ASSUMPTIONS,
   },
   optimistic: {
-    label: "Optimis",
-    description: "Permintaan rekrutmen B2B kuat (konversi & volume tinggi); Events tumbuh moderat.",
+    label: L("Optimis", "Optimistic"),
+    description: L("Permintaan rekrutmen B2B kuat (konversi & volume tinggi); Events tumbuh moderat.", "Strong B2B hiring demand (high conversion & volume); Events grows moderately."),
     assumptions: {
       ...BASE_ASSUMPTIONS,
       shared: { ...BASE_ASSUMPTIONS.shared, rampFactor: 0.62, salesCapacityPilots: 48, salesCapacityOrganizers: 66 },

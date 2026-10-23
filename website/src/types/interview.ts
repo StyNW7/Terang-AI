@@ -1,18 +1,20 @@
+import type { Txt } from "@/lib/i18n-core";
+
 export type RoleKey = "customer-service" | "sales-associate" | "operations-assistant";
 
 export interface Competency {
   id: string;
-  name: string;
-  description: string;
-  rubric: { level: 1 | 2 | 3 | 4; label: string; descriptor: string }[];
-  keywords: string[]; // deterministic evidence matching
+  name: Txt;
+  description: Txt;
+  rubric: { level: 1 | 2 | 3 | 4; label: Txt; descriptor: Txt }[];
+  keywords: string[]; // deterministic evidence matching (ID + EN stems)
 }
 
 export interface InterviewQuestion {
   id: string;
   competencyId: string;
-  text: string;
-  followUp: string;
+  text: Txt;
+  followUp: Txt;
   edited?: boolean;
 }
 
@@ -20,9 +22,9 @@ export interface JobPosition {
   id: string;
   title: string;
   role: RoleKey;
-  department: string;
+  department: Txt;
   location: string;
-  description: string;
+  description: Txt;
   competencies: { id: string; weight: number }[];
   durationMinutes: number;
   questions: InterviewQuestion[];
@@ -36,14 +38,14 @@ export interface EvidenceItem {
   competencyId: string;
   level: 1 | 2 | 3 | 4;
   excerpt: string;
-  rationale: string;
+  rationale: Txt;
   confidence: "rendah" | "sedang" | "tinggi";
 }
 
 export interface ReviewNote {
   id: string;
   author: string;
-  text: string;
+  text: Txt;
   at: string;
 }
 
@@ -57,7 +59,7 @@ export interface Candidate {
   status: CandidateStatus;
   flagged: boolean;
   evidence: EvidenceItem[];
-  transcript: { questionId: string; question: string; answer: string }[];
+  transcript: { questionId: string; question: Txt; answer: Txt }[];
   notes: ReviewNote[];
   overrides: Record<string, 1 | 2 | 3 | 4>;
 }
@@ -65,7 +67,7 @@ export interface Candidate {
 export interface AuditEntry {
   id: string;
   at: string;
-  actor: string;
-  action: string;
-  target: string;
+  actor: Txt;
+  action: Txt;
+  target: Txt;
 }

@@ -5,10 +5,12 @@ import { BookOpenCheck, Briefcase, GitBranch, MessagesSquare } from "lucide-reac
 import { EVOLUTION } from "@/data/company";
 import { SourceLabel } from "@/components/shared/source-label";
 import { cn } from "@/lib/utils";
+import { keyOf, useI18n } from "@/lib/i18n";
 
 const ICONS = [BookOpenCheck, MessagesSquare, Briefcase, GitBranch];
 
 export function EvolutionTimeline({ variant = "horizontal" }: { variant?: "horizontal" | "vertical" }) {
+  const { tx } = useI18n();
   if (variant === "vertical") {
     return (
       <ol className="relative space-y-6 border-l-2 border-dashed border-line-strong pl-8">
@@ -35,25 +37,25 @@ export function EvolutionTimeline({ variant = "horizontal" }: { variant?: "horiz
               <div className={cn("rounded-2xl border p-5", last ? "border-transparent bg-navy-gradient text-white" : "border-line bg-card shadow-soft")}>
                 <div className="flex flex-wrap items-center gap-2">
                   <span className={cn("text-xs font-semibold uppercase tracking-[0.12em]", last ? "text-sky" : "text-brand-ink")}>
-                    {step.phase} · {step.period}
+                    {step.phase} · {tx(step.period)}
                   </span>
                   <span className={cn("rounded-full px-2 py-0.5 text-[11px] font-semibold", last ? "bg-white/10 text-white" : "bg-soft text-brand-ink")}>
-                    {step.segment}
+                    {tx(step.segment)}
                   </span>
                   <SourceLabel type={step.evidence} compact dark={last} />
                 </div>
                 <h3 className={cn("mt-2 text-lg font-semibold", last ? "text-white" : "text-ink")}>{step.title}</h3>
-                <p className={cn("mt-1 text-sm leading-relaxed", last ? "text-white/75" : "text-muted-strong")}>{step.description}</p>
+                <p className={cn("mt-1 text-sm leading-relaxed", last ? "text-white/75" : "text-muted-strong")}>{tx(step.description)}</p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {step.items.map((it) => (
                     <span
-                      key={it}
+                      key={keyOf(it)}
                       className={cn(
                         "rounded-lg px-2 py-1 text-xs font-semibold",
                         last ? "bg-white/10 text-white ring-1 ring-white/15" : "bg-surface text-ink ring-1 ring-line",
                       )}
                     >
-                      {it}
+                      {tx(it)}
                     </span>
                   ))}
                 </div>
@@ -104,13 +106,13 @@ export function EvolutionTimeline({ variant = "horizontal" }: { variant?: "horiz
                 )}
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className={cn("text-xs font-semibold uppercase tracking-[0.12em]", last ? "text-sky" : "text-brand-ink")}>{step.period}</span>
+                  <span className={cn("text-xs font-semibold uppercase tracking-[0.12em]", last ? "text-sky" : "text-brand-ink")}>{tx(step.period)}</span>
                   <span className={cn("rounded-full px-2 py-0.5 text-[11px] font-semibold", last ? "bg-white/10" : "bg-soft text-brand-ink")}>
-                    {step.segment}
+                    {tx(step.segment)}
                   </span>
                 </div>
                 <h3 className={cn("mt-3 text-[17px] font-semibold leading-snug", last ? "text-white" : "text-ink")}>{step.title}</h3>
-                <p className={cn("mt-2 text-[13.5px] leading-relaxed", last ? "text-white/75" : "text-muted-strong")}>{step.description}</p>
+                <p className={cn("mt-2 text-[13.5px] leading-relaxed", last ? "text-white/75" : "text-muted-strong")}>{tx(step.description)}</p>
               </div>
             </motion.li>
           );

@@ -4,6 +4,8 @@ import { Mascot } from "@/components/shared/brand";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { SourceLabel } from "@/components/shared/source-label";
+import { T } from "@/lib/i18n";
+import { keyOf } from "@/lib/i18n-core";
 
 export function ProductCards() {
   const cards = [
@@ -42,27 +44,33 @@ export function ProductCards() {
                 </div>
                 <h3 className="mt-4 text-2xl font-semibold text-ink">{c.p.name}</h3>
                 <p className="mt-1 text-sm font-semibold text-brand-ink">{c.p.categoryLong}</p>
-                <p className="mt-3 max-w-sm text-[15px] leading-relaxed text-muted-strong">{c.p.tagline}</p>
+                <p className="mt-3 max-w-sm text-[15px] leading-relaxed text-muted-strong">
+                  <T v={c.p.tagline} />
+                </p>
               </div>
               <Mascot name={c.mascot} size={128} className="-mr-2 -mt-2 hidden shrink-0 sm:block" />
             </div>
             <div className="relative mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Pelanggan</p>
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+                  <T id="Pelanggan" en="Customers" />
+                </p>
                 <ul className="space-y-1.5">
                   {c.p.targetCustomers.slice(0, 3).map((t) => (
-                    <li key={t} className="flex items-start gap-2 text-[13px] text-ink">
-                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success" /> {t}
+                    <li key={keyOf(t)} className="flex items-start gap-2 text-[13px] text-ink">
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success" /> <T v={t} />
                     </li>
                   ))}
                 </ul>
               </div>
               <div>
-                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Fondasi publik</p>
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+                  <T id="Fondasi publik" en="Public foundation" />
+                </p>
                 <ul className="space-y-1.5">
                   {c.p.existing.slice(0, 3).map((t) => (
-                    <li key={t} className="flex items-start gap-2 text-[13px] text-ink">
-                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" /> {t}
+                    <li key={keyOf(t)} className="flex items-start gap-2 text-[13px] text-ink">
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" /> <T v={t} />
                     </li>
                   ))}
                 </ul>
@@ -72,10 +80,10 @@ export function ProductCards() {
               <SourceLabel type="public-source" compact />
               <div className="flex gap-2">
                 <Button href={c.overview} variant="secondary" size="sm">
-                  Detail produk <ArrowRight className="h-3.5 w-3.5" />
+                  <T id="Detail produk" en="Product details" /> <ArrowRight className="h-3.5 w-3.5" />
                 </Button>
                 <Button href={c.demo} size="sm">
-                  <Play className="h-3.5 w-3.5" /> Coba Simulasi Produk
+                  <Play className="h-3.5 w-3.5" /> <T id="Coba Simulasi Produk" en="Try the Product Simulation" />
                 </Button>
               </div>
             </div>
