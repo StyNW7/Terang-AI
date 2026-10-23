@@ -85,7 +85,7 @@ export function ReportViewer({ candidateId, onSelect }: { candidateId?: string; 
                 kelayakan atau rekomendasi terima/tolak.
               </InfoTip>
             </div>
-            <p className="tabular mt-2 font-display text-5xl font-bold">{summary.toFixed(1)}<span className="text-xl text-white/70"> / 4</span></p>
+            <p className="tabular mt-2 font-display text-5xl font-semibold">{summary.toFixed(1)}<span className="text-xl text-white/70"> / 4</span></p>
             <p className="mt-1 text-sm text-white/85">≈ {LEVEL_LABEL[Math.round(summary)] ?? "—"}</p>
             <p className="mt-4 rounded-xl bg-white/12 p-3 text-xs leading-relaxed ring-1 ring-white/20">
               Tidak ada keputusan otomatis. Keputusan lanjut/tidak tetap dibuat manusia melalui proses rekrutmen perusahaan.

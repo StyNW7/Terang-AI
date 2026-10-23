@@ -33,7 +33,7 @@ export function StrategyHero({
             <p className="eyebrow inline-flex items-center gap-2 rounded-full bg-white/12 px-3 py-1.5 ring-1 ring-white/20">
               {eyebrow}
             </p>
-            <h1 className="mt-5 text-5xl font-bold leading-[1.02] md:text-6xl lg:text-7xl">{title}</h1>
+            <h1 className="mt-5 text-5xl font-semibold leading-[1.02] md:text-6xl lg:text-7xl">{title}</h1>
             <p className="mt-3 font-display text-2xl font-medium text-white/90 md:text-3xl">{tagline}</p>
             <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-white/80">{thesis}</p>
             {children && <div className="mt-8">{children}</div>}

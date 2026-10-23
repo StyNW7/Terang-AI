@@ -88,7 +88,7 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/80">
               {isOne ? <Target className="h-4 w-4" /> : <Layers className="h-4 w-4" />} {isOne ? "PRO" : "KONTRA"}
             </p>
-            <p className="font-display text-3xl font-bold">{isOne ? "ONE Strategy" : "ACE Strategy"}</p>
+            <p className="font-display text-3xl font-semibold">{isOne ? "ONE Strategy" : "ACE Strategy"}</p>
           </div>
           <Mascot name={isOne ? "target" : "puzzle"} size={76} float={false} className="-mr-2 -mt-2" />
         </div>
@@ -100,7 +100,7 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
               tidak dihitung.
             </InfoTip>
           </p>
-          <p className="tabular font-display text-3xl font-bold">
+          <p className="tabular font-display text-3xl font-semibold">
             <AnimatedNumber value={r.operatingResult} format="idrCompact" />
           </p>
           <p className="text-xs text-white/75">{r.operatingResult >= other.operatingResult ? "Lebih tinggi pada asumsi ini" : "Lebih rendah pada asumsi ini"}</p>

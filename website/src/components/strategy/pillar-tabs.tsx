@@ -51,7 +51,7 @@ export function PillarTabs({
               <span className="relative z-10 flex items-start gap-4">
                 <span
                   className={cn(
-                    "grid h-14 w-14 shrink-0 place-items-center rounded-2xl font-display text-3xl font-bold",
+                    "grid h-14 w-14 shrink-0 place-items-center rounded-2xl font-display text-3xl font-semibold",
                     isActive ? "bg-white/15 text-white ring-1 ring-white/25" : cn(gradient, "text-white"),
                   )}
                 >

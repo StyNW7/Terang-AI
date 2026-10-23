@@ -120,7 +120,7 @@ export function CandidateExperience({ onViewAsRecruiter }: { onViewAsRecruiter: 
               <div className="grid grid-cols-1 items-center gap-6 bg-one-gradient p-8 text-white md:grid-cols-[1fr_auto]">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/75">{RECRUITER_COMPANY}</p>
-                  <h3 className="mt-2 text-3xl font-bold">Selamat datang di wawancara terstruktur</h3>
+                  <h3 className="mt-2 text-3xl font-semibold">Selamat datang di wawancara terstruktur</h3>
                   <p className="mt-2 text-white/85">Wawancara ini membantu recruiter memahami pengalaman Anda. Keputusan akhir selalu dibuat oleh manusia.</p>
                 </div>
                 <Mascot name="interview" size={150} className="mx-auto" />

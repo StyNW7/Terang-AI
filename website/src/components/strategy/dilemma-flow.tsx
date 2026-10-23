@@ -108,7 +108,7 @@ function StagePanel({ id }: { id: StageId }) {
       ].map((s) => (
         <div key={s.k} className={cn("rounded-2xl p-5 text-white", s.g)}>
           <s.icon className="h-6 w-6" />
-          <p className="mt-3 font-display text-3xl font-bold">{s.k}</p>
+          <p className="mt-3 font-display text-3xl font-semibold">{s.k}</p>
           <p className="font-semibold">{s.t}</p>
           <p className="mt-1 text-sm text-white/85">{s.d}</p>
         </div>

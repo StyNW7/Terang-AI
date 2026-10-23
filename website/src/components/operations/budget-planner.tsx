@@ -55,7 +55,7 @@ export function BudgetPlanner() {
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/75">
               <Wallet className="h-4 w-4" /> Sisa anggaran
             </p>
-            <p className="tabular mt-1 font-display text-3xl font-bold">{formatIDRCompact(remaining)}</p>
+            <p className="tabular mt-1 font-display text-3xl font-semibold">{formatIDRCompact(remaining)}</p>
             <p className="text-sm text-white/80">
               Terpakai {formatIDRCompact(total)} ({formatPercent(safeDivide(total, MONTHLY_DISCRETIONARY_BUDGET))})
             </p>

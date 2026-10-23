@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, LayoutDashboard, Play } from "lucide-react";
 import { Logo, Mascot } from "@/components/shared/brand";
 import { ThemeToggle } from "@/components/navigation/theme-toggle";
-import { BackToTop } from "@/components/layout/smooth-scroll";
 import { COMPANY } from "@/data/company";
 
 const COLUMNS = [
@@ -37,7 +36,7 @@ const COLUMNS = [
 
 export function SiteFooter() {
   return (
-    <footer className="relative isolate mt-28 overflow-hidden bg-[#06101f] text-white">
+    <footer className="relative isolate mt-8 overflow-hidden bg-[#06101f] text-white">
       {/* Ambient light */}
       <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-sky/50 to-transparent" />
       <div className="absolute left-1/2 top-0 -z-10 h-[420px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(57,183,255,0.18),transparent)]" />
@@ -48,7 +47,7 @@ export function SiteFooter() {
         <div className="relative flex flex-col items-start justify-between gap-8 border-b border-white/10 py-16 md:flex-row md:items-center">
           <div className="max-w-xl">
             <p className="eyebrow text-sky">Strategic Growth Experience</p>
-            <h2 className="mt-3 text-3xl font-bold leading-tight sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
               Satu perusahaan, dua peluang — <span className="text-gradient-light">temukan jalur tumbuhnya.</span>
             </h2>
           </div>
@@ -69,7 +68,7 @@ export function SiteFooter() {
         </div>
 
         {/* Links */}
-        <div className="grid grid-cols-1 gap-12 py-14 lg:grid-cols-[1.2fr_2fr]">
+        <div className="grid grid-cols-1 gap-12 pb-6 pt-14 lg:grid-cols-[1.2fr_2fr]">
           <div>
             <Logo height={30} />
             <p className="mt-6 max-w-sm text-[15px] leading-relaxed text-white/65">{COMPANY.idea}</p>
@@ -104,8 +103,8 @@ export function SiteFooter() {
       </div>
 
       {/* Wordmark */}
-      <div aria-hidden className="pointer-events-none select-none overflow-hidden">
-        <p className="wordmark-fill mx-auto max-w-7xl translate-y-[22%] px-4 text-center font-display text-[19vw] font-bold leading-none tracking-[-0.06em] lg:text-[15rem]">
+      <div aria-hidden className="pointer-events-none -mt-2 select-none overflow-hidden lg:-mt-14">
+        <p className="wordmark-fill mx-auto max-w-7xl translate-y-[22%] px-4 text-center font-display text-[19vw] font-semibold leading-none tracking-[-0.06em] lg:text-[15rem]">
           terang.ai
         </p>
       </div>
@@ -114,9 +113,12 @@ export function SiteFooter() {
       <div className="relative border-t border-white/10 bg-[#06101f]/80 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-5 text-[13px] text-white/50 sm:flex-row sm:px-6 lg:px-8">
           <p>© 2026 Terang Strategic Growth Experience · BCDC 2026</p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
+            <Link href="/references" className="transition hover:text-white">
+              Sumber &amp; asumsi
+            </Link>
+            <span className="h-4 w-px bg-white/15" />
             <ThemeToggle tone="glass" />
-            <BackToTop />
           </div>
         </div>
       </div>

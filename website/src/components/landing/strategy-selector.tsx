@@ -23,13 +23,13 @@ export function StrategySelector() {
             key={key}
             whileHover={{ y: -4 }}
             className={cn(
-              "relative overflow-hidden rounded-[28px] p-[1.5px] transition-shadow",
+              "relative h-full overflow-hidden rounded-[28px] p-[1.5px] transition-shadow",
               selected ? "shadow-lift" : "shadow-card",
             )}
             style={{ backgroundImage: selected ? "linear-gradient(135deg,#39b7ff,#2251c9)" : "linear-gradient(135deg,var(--color-line),var(--color-line))" }}
           >
-            <div className="relative h-full overflow-hidden rounded-[27px] bg-card">
-              <div className={cn("relative overflow-hidden p-7 text-white", gradient)}>
+            <div className="relative flex h-full flex-col overflow-hidden rounded-[27px] bg-card">
+              <div className={cn("relative overflow-hidden p-7 text-white sm:min-h-[236px]", gradient)}>
                 <div className="bg-grid-dark absolute inset-0 opacity-50" />
                 <div className="relative flex items-start justify-between gap-4">
                   <div>
@@ -41,14 +41,14 @@ export function StrategySelector() {
                         {key === "one" ? "PRO" : "KONTRA"}
                       </span>
                     </div>
-                    <h3 className="mt-4 font-display text-4xl font-bold tracking-tight">{key.toUpperCase()}</h3>
+                    <h3 className="mt-4 font-display text-4xl font-semibold tracking-tight">{key.toUpperCase()}</h3>
                     <p className="mt-1 text-sm font-semibold text-white/85">{subtitle}</p>
                     <p className="mt-3 text-lg font-semibold">“{s.tagline}”</p>
                   </div>
                   <Mascot name={mascot} size={120} className="-mr-3 -mt-2 hidden shrink-0 sm:block" />
                 </div>
               </div>
-              <div className="p-7">
+              <div className="flex flex-1 flex-col p-7">
                 <p className="text-sm leading-relaxed text-muted-strong">{s.thesis}</p>
                 <div className="mt-5 grid gap-2">
                   {s.pillars.map((p) => (
@@ -61,7 +61,7 @@ export function StrategySelector() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 flex flex-wrap items-center gap-2">
+                <div className="mt-auto flex flex-wrap items-center gap-2 pt-6">
                   <Button variant={selected ? "secondary" : key} onClick={() => setMode(key)} size="sm">
                     {selected ? (
                       <>

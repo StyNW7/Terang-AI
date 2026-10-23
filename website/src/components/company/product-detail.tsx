@@ -135,7 +135,7 @@ export function ProductDetail({ product }: { product: ProductKey }) {
             {WORKFLOWS[product].map((w, i) => (
               <Reveal key={w.step} delay={i * 0.06}>
                 <div className="relative h-full rounded-2xl border border-line bg-surface p-4">
-                  <span className="font-display text-3xl font-bold text-gradient">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-display text-3xl font-semibold text-gradient">{String(i + 1).padStart(2, "0")}</span>
                   <p className="mt-2 font-semibold text-ink">{w.step}</p>
                   <p className="mt-1 text-xs leading-relaxed text-muted-strong">{w.detail}</p>
                   <div className="mt-3">

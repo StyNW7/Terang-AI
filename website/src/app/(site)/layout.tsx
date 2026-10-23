@@ -1,6 +1,7 @@
 import { PrototypeBanner } from "@/components/layout/prototype-banner";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { JourneyNav } from "@/components/layout/journey-nav";
 import { ScrollChrome, SmoothScroll } from "@/components/layout/smooth-scroll";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -11,6 +12,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <PrototypeBanner />
       <SiteHeader />
       <main className="flex-1">{children}</main>
+      <JourneyNav />
       <SiteFooter />
     </div>
   );

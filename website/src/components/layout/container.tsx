@@ -59,7 +59,7 @@ export function PageHero({
               <span className="h-1.5 w-1.5 rounded-full bg-sky" />
               {eyebrow}
             </div>
-            <h1 className="text-[2.4rem] font-bold leading-[1.08] text-ink sm:text-5xl lg:text-[3.5rem]">{title}</h1>
+            <h1 className="text-[2.4rem] font-semibold leading-[1.08] text-ink sm:text-5xl lg:text-[3.5rem]">{title}</h1>
             {description && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-strong">{description}</p>}
             {children && <div className="mt-8">{children}</div>}
           </div>

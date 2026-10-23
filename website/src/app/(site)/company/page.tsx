@@ -76,7 +76,7 @@ export default function CompanyPage() {
               <div className="flex items-start gap-4">
                 <Quote className="h-8 w-8 shrink-0 opacity-70" />
                 <div>
-                  <p className="font-display text-2xl font-bold md:text-3xl">{COMPANY.tagline}</p>
+                  <p className="font-display text-2xl font-semibold md:text-3xl">{COMPANY.tagline}</p>
                   <p className="mt-1 text-sm text-white/85">{COMPANY.taglineNote}</p>
                 </div>
               </div>

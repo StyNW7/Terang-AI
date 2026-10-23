@@ -238,7 +238,7 @@ export function Hero() {
           <motion.h1
             custom={1}
             variants={fadeUp}
-            className="mt-6 text-[2.75rem] font-bold leading-[1.03] tracking-[-0.035em] text-ink sm:text-6xl lg:text-[4.25rem]"
+            className="mt-6 text-[2.75rem] font-semibold leading-[1.03] tracking-[-0.035em] text-ink sm:text-6xl lg:text-[4.25rem]"
           >
             Smarter Solutions,
             <br />

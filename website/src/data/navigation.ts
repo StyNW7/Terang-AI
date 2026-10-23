@@ -161,10 +161,16 @@ export function activeLink(pathname: string, ws: Workspace): NavLink | undefined
 }
 
 export const GUIDED_FLOW = [
-  { href: "/company", label: "Perusahaan" },
-  { href: "/products", label: "Dua Produk" },
-  { href: "/strategy-lab", label: "Dilema" },
-  { href: "/strategies/one", label: "ONE" },
-  { href: "/strategies/ace", label: "ACE" },
-  { href: "/dashboard/simulator", label: "Simulasi" },
+  { href: "/company", label: "Perusahaan", title: "Kenali Terang AI", description: "Profil, perjalanan bisnis & positioning", icon: "compass" },
+  { href: "/products", label: "Dua Produk", title: "Dua produk B2B", description: "Terang Events & AI Candidate Interview", icon: "boxes" },
+  { href: "/strategy-lab", label: "Dilema", title: "Dilema strategis", description: "Tiga tantangan & pertanyaan kunci", icon: "scale" },
+  { href: "/strategies/one", label: "ONE", title: "ONE Strategy", description: "Fokus penuh pada satu produk", icon: "target" },
+  { href: "/strategies/ace", label: "ACE", title: "ACE Strategy", description: "Dua produk, satu mesin koordinasi", icon: "layers" },
+  { href: "/dashboard/simulator", label: "Simulasi", title: "Simulator ONE vs ACE", description: "Uji dampak finansial dengan asumsi sama", icon: "chart" },
 ];
+
+/** Index of the guided-flow step a page belongs to (product sub-pages count as "Dua Produk"). */
+export function guidedStepFor(pathname: string): number {
+  if (pathname.startsWith("/products")) return 1;
+  return GUIDED_FLOW.findIndex((s) => s.href === pathname);
+}

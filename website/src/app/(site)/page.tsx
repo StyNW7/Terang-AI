@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  ArrowUpRight,
   Brain,
   Building2,
   CalendarDays,
@@ -232,8 +231,8 @@ export default function HomePage() {
           <Reveal>
             <SectionHeading
               eyebrow="Coba Langsung"
-              title="Tiga dashboard, masing-masing dengan fokusnya."
-              description="Super Admin mengendalikan strategi; setiap produk punya dashboard sendiri yang lengkap."
+              title="Tiga dashboard, tiga fokus kerja."
+              description="Super Admin mengendalikan strategi ONE vs ACE; setiap produk punya dashboard sendiri yang lengkap. Semua data demo bisa langsung dicoba."
             />
           </Reveal>
           <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -244,21 +243,22 @@ export default function HomePage() {
                   data-spotlight
                   className="group flex h-full flex-col rounded-3xl border border-line bg-card p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-lift"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className={`grid h-12 w-12 place-items-center rounded-2xl text-white shadow-soft ${d.accent}`}>
-                      <d.icon className="h-6 w-6" />
-                    </span>
-                    <ArrowUpRight className="h-5 w-5 text-muted transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand-ink" />
-                  </div>
+                  <span className={`grid h-12 w-12 place-items-center rounded-2xl text-white shadow-soft ${d.accent}`}>
+                    <d.icon className="h-6 w-6" />
+                  </span>
                   <h3 className="mt-5 text-xl font-semibold text-ink">{d.title}</h3>
                   <p className="mt-1.5 text-[15px] leading-relaxed text-muted-strong">{d.text}</p>
-                  <ul className="mt-5 flex flex-wrap gap-1.5">
+                  <ul className="mb-6 mt-5 space-y-2">
                     {d.points.map((p) => (
-                      <li key={p} className="rounded-full bg-neutral-soft px-2.5 py-1 text-xs font-medium text-muted-strong">
+                      <li key={p} className="flex items-center gap-2 text-sm text-ink">
+                        <span className="h-1.5 w-1.5 rounded-full bg-brand" />
                         {p}
                       </li>
                     ))}
                   </ul>
+                  <span className="mt-auto flex items-center gap-1.5 border-t border-line pt-4 text-sm font-medium text-brand-ink">
+                    Buka dashboard <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+                  </span>
                 </Link>
               </Reveal>
             ))}
@@ -278,7 +278,7 @@ export default function HomePage() {
                   <p className="eyebrow inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-sky ring-1 ring-white/15">
                     <Sparkles className="h-3.5 w-3.5" /> Guided Experience
                   </p>
-                  <h2 className="mt-4 text-3xl font-bold leading-tight md:text-[2.5rem]">
+                  <h2 className="mt-4 text-3xl font-semibold leading-tight md:text-[2.5rem]">
                     Ikuti ceritanya, <span className="text-gradient-light">langkah demi langkah.</span>
                   </h2>
                   <p className="mt-4 max-w-xl text-white/75">15 slide interaktif dengan catatan pembicara dan navigasi keyboard — siap untuk sesi juri.</p>

@@ -246,7 +246,7 @@ function EventDetail({ event, registered, onBack, onRegister, onWorkspace }: { e
             <ArrowLeft className="h-4 w-4" /> Kembali
           </button>
           <Badge tone="navy">{CATEGORY_LABEL[event.category]}</Badge>
-          <h3 className="mt-3 text-3xl font-bold">{event.name}</h3>
+          <h3 className="mt-3 text-3xl font-semibold">{event.name}</h3>
           <p className="mt-1 text-white/85">{event.organizer}</p>
         </div>
       </div>
@@ -451,7 +451,7 @@ function Workspace({ event, onBack }: { event: EventItem; onBack: () => void }) 
             <div className="flex justify-center"><LogoMark size={44} /></div>
             <p className="mt-3 text-xs font-semibold uppercase tracking-[0.3em] text-brand-ink">Sertifikat Partisipasi</p>
             <p className="mt-4 text-sm text-muted-strong">Diberikan kepada</p>
-            <p className="mt-1 font-display text-3xl font-bold text-ink">{reg?.name ?? "Peserta Demo"}</p>
+            <p className="mt-1 font-display text-3xl font-semibold text-ink">{reg?.name ?? "Peserta Demo"}</p>
             <p className="mt-3 text-sm text-muted-strong">atas partisipasi dalam</p>
             <p className="mt-1 text-lg font-semibold text-ink">{event.name}</p>
             <p className="mt-1 text-sm text-muted">{formatDate(event.startDate)} · {event.organizer}</p>

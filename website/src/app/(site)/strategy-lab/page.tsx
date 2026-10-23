@@ -32,7 +32,7 @@ export default function StrategyLabPage() {
         }
       />
 
-      <Section className="pt-4">
+      <Section className="pb-16 pt-4 md:pb-20">
         <Container>
           <DilemmaFlow />
         </Container>
@@ -132,7 +132,7 @@ export default function StrategyLabPage() {
                       <Icon className="h-6 w-6" />
                       <span className="rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold ring-1 ring-white/25">{s.position.split(" — ")[0]}</span>
                     </div>
-                    <p className="mt-5 font-display text-5xl font-bold">{key}</p>
+                    <p className="mt-5 font-display text-5xl font-semibold">{key}</p>
                     <p className="text-xl font-semibold">{s.shortTitle}</p>
                     <p className="mt-3 text-sm leading-relaxed text-white/85">{s.thesis}</p>
                     <div className="mt-5 flex flex-wrap gap-2">

@@ -91,7 +91,7 @@ export function DecisionGate({
                 <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/75">
                   {lens === "one" ? "ONE Expansion Gate" : "ACE Portfolio Decision"} · {result.passed}/{result.total} kriteria komersial
                 </p>
-                <p className="font-display text-3xl font-bold">{lens === "one" ? meta.one : meta.ace}</p>
+                <p className="font-display text-3xl font-semibold">{lens === "one" ? meta.one : meta.ace}</p>
                 <p className="mt-1 text-sm text-white/85">{meta.description}</p>
               </div>
             </div>
