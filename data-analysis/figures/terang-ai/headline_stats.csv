@@ -1,0 +1,36 @@
+Blok,Metrik,Nilai
+Profil,Total responden,113.0
+Profil,% usia 17–29,69.03
+Profil,% mahasiswa,41.59
+Profil,% mahasiswa + fresh graduate,57.52
+AI Interview,% pernah menyiapkan wawancara,91.15
+AI Interview,% wawancara penting (4–5),74.34
+AI Interview,% tantangan: sulit mendapat feedback,43.36
+AI Interview,% tantangan: kurang percaya diri,44.25
+AI Interview,% berlatih sendiri,36.28
+AI Interview,% sudah pakai AI untuk latihan,13.27
+AI Interview,% butuh fitur feedback & evaluasi,73.45
+AI Interview,% pertimbangan feedback objektif,30.09
+AI Interview,% pertimbangan harga murah/gratis,23.01
+AI Interview,% manfaat (4–5),71.68
+AI Interview,% minat mencoba (4–5),67.26
+AI Interview,Early adopter penuh (orang),41.0
+Events,% pernah terlibat acara,92.04
+Events,% pernah jadi panitia/penyelenggara,62.83
+Events,% info acara dari medsos/WA,75.22
+Events,% pengelola masih pakai tools manual,80.0
+Events,% tantangan: pendaftaran & data peserta,33.63
+Events,% butuh pendaftaran online,86.73
+Events,% manfaat (4–5),69.91
+Events,% minat menggunakan (4–5),69.03
+Events,Early adopter penuh (orang),54.0
+Strategi,% keduanya sama relevan,39.82
+Strategi,% keduanya sama penting (prioritas),38.94
+Strategi,% pilih Terang Events (relevan),31.86
+Strategi,% pilih AI Interview (relevan),24.78
+Strategi,% pilih Terang Events (prioritas),29.2
+Strategi,% pilih AI Interview (prioritas),24.78
+Strategi,% minat KEDUA produk (4–5),51.33
+Strategi,% punya pengalaman wawancara & acara,83.19
+Strategi,p-value binomial Events vs AI (relevan),0.38
+Strategi,Spearman ρ indeks AI vs Events,0.23
