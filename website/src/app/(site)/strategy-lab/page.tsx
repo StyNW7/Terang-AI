@@ -3,6 +3,7 @@ import { ArrowRight, Brain, CalendarDays, HelpCircle, Layers, Quote, Scale, Targ
 import { Container, PageHero, Section } from "@/components/layout/container";
 import { DilemmaFlow } from "@/components/strategy/dilemma-flow";
 import { ChallengeCards } from "@/components/strategy/challenge-cards";
+import { SurveyEvidence } from "@/components/strategy/survey-evidence";
 import { SectionHeading } from "@/components/ui/misc";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
@@ -101,6 +102,26 @@ export default function StrategyLabPage() {
       </Section>
 
       {/* Product comparison */}
+      <Section className="border-y border-line bg-subtle">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              eyebrow={<T id="Bukti Pasar" en="Market Evidence" />}
+              title={<T id="Apa kata 113 responden survei?" en="What did 113 survey respondents say?" />}
+              description={
+                <T
+                  id="Survei independen tim untuk menguji kebutuhan kedua produk. Hasilnya mendukung kedua sisi argumen — bukan menentukan pemenang."
+                  en="The team's independent survey tests the need for both products. The results support both sides of the argument — they do not pick a winner."
+                />
+              }
+            />
+          </Reveal>
+          <div className="mt-10">
+            <SurveyEvidence />
+          </div>
+        </Container>
+      </Section>
+
       <Section>
         <Container>
           <Reveal>

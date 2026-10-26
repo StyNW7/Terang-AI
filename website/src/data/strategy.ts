@@ -150,10 +150,10 @@ export const ONE_STRATEGY = {
       program: "Pilot-to-Paid Growth Engine",
       highlights: [
         L("_Outreach_ B2B via komunitas HR & LinkedIn", "B2B outreach via HR communities & LinkedIn"),
-        L("Webinar HR Efficiency Clinic", "HR Efficiency Clinic webinars"),
-        L("Demo produk _enterprise_", "Enterprise product demos"),
-        L("_Pilot_ HR terbatas & evaluasi ROI", "Limited HR pilots & ROI evaluation"),
-        L("Konversi kontrak berbayar & _renewal_", "Paid-contract conversion & renewals"),
+        "HR Efficiency Clinic",
+        "Terang Pilot Challenge",
+        "Verified Impact Stories",
+        L("Paket Starter · Growth · Enterprise", "Starter · Growth · Enterprise plans"),
       ],
       cta: { label: L("Lihat _Funnel_ Pilot-to-Paid", "See the Pilot-to-Paid Funnel"), href: "/strategies/one?pillar=navigate" },
     },
@@ -207,9 +207,9 @@ export const ACE_STRATEGY = {
       highlights: [
         "Smart Event Templates",
         "Repeat Event Planner",
-        "Organizer Growth Insights",
+        "Organizer Insight Dashboard",
         "Interview Builder & Evidence-Linked Assessment",
-        L("Batas WIP: 1 inisiatif besar per produk", "WIP limit: 1 major initiative per product"),
+        L("Batas WIP: maks. 2 inisiatif besar (1 per produk)", "WIP limit: max. 2 major initiatives (1 per product)"),
       ],
       cta: { label: L("Lihat _Backlog_ Ganda", "See the Dual Backlog"), href: "/strategies/ace?pillar=agile" },
     },
@@ -226,6 +226,7 @@ export const ACE_STRATEGY = {
         L("Kampanye “Host Smarter with Terang”", "“Host Smarter with Terang” campaign"),
         L("Kampanye “Hire Smarter with Terang”", "“Hire Smarter with Terang” campaign"),
         L("Eksperimen _career fair_ institusional", "Institutional career-fair experiment"),
+        "Event Platform Fee · Managed Event Boost · Organizer Pro",
         "ACE Command Center",
       ],
       cta: { label: L("Buka ACE Command Center", "Open the ACE Command Center"), href: "/dashboard/operations" },
@@ -243,7 +244,7 @@ export const ACE_STRATEGY = {
         L("KPI per produk", "KPIs per product"),
         L("KPI portofolio", "Portfolio KPIs"),
         L("Simulator realokasi", "Reallocation simulator"),
-        "Invest · Improve · Reduce · Pause",
+        "Invest More · Optimize · Limit Scope · Pause",
       ],
       cta: { label: L("Lihat Hasil Evaluasi", "See Evaluation Results"), href: "/dashboard/portfolio" },
     },
@@ -278,23 +279,86 @@ export const COMPARISON_ROWS: { label: Txt; one: Txt; ace: Txt }[] = [
   },
   {
     label: L("Syarat _scale_", "Conditions to scale"),
-    one: L("Expansion Gate: kualitas, traksi, ekonomi, kapasitas, Responsible AI", "Expansion Gate: quality, traction, economics, capacity, Responsible AI"),
-    ace: L("_Portfolio review_: _invest / improve / reduce / pause_ per produk", "Portfolio review: invest / improve / reduce / pause per product"),
+    one: L("Expansion Gate (Scale · Improve · Hold): kualitas, traksi, ekonomi, kapasitas, Responsible AI", "Expansion Gate (Scale · Improve · Hold): quality, traction, economics, capacity, Responsible AI"),
+    ace: L("_Portfolio review_: _Invest More / Optimize / Limit Scope / Pause_ per produk", "Portfolio review: Invest More / Optimize / Limit Scope / Pause per product"),
   },
 ];
 
-export const ROADMAP: Record<"one" | "ace", { quarter: string; items: Txt[]; product: "interview" | "both" }[]> = {
+export interface RoadmapPhase {
+  quarter: string;
+  months: string;
+  name: string;
+  items: Txt[];
+}
+
+/**
+ * Initial implementation periods from the proposal: ONE runs 12 months (4 phases),
+ * ACE runs 18 months (6 phases). Operations continue after these periods.
+ */
+export const ROADMAP: Record<"one" | "ace", RoadmapPhase[]> = {
   one: [
-    { quarter: "Q1", items: [L("Interview Builder & rubrik", "Interview Builder & rubrics"), "Responsible AI baseline", L("Rekrut 8–10 _pilot_", "Recruit 8–10 pilots")], product: "interview" },
-    { quarter: "Q2", items: ["Evidence-Linked Assessment", "Recruiter Dashboard", L("Konversi _pilot_ → berbayar", "Pilot → paid conversion")], product: "interview" },
-    { quarter: "Q3", items: [L("_Audit trail_ & retensi", "Audit trail & retention"), L("Paket per _interview_", "Per-interview package"), "Expansion Gate review #1"], product: "interview" },
-    { quarter: "Q4", items: [L("_Scale_ ke agensi rekrutmen", "Scale to recruitment agencies"), L("Program _renewal_", "Renewal programme"), "Expansion Gate review #2"], product: "interview" },
+    {
+      quarter: "Q1",
+      months: "M1–M3",
+      name: "Build & Validate",
+      items: [L("Interview Builder & rubrik", "Interview Builder & rubrics"), "Responsible AI baseline", L("HR Efficiency Clinic & rekrut _pilot_", "HR Efficiency Clinic & pilot recruitment")],
+    },
+    {
+      quarter: "Q2",
+      months: "M4–M6",
+      name: "Pilot & Improve",
+      items: ["Terang Pilot Challenge", "Evidence-Linked Assessment", "Recruiter Review Dashboard"],
+    },
+    {
+      quarter: "Q3",
+      months: "M7–M9",
+      name: "Convert & Monetize",
+      items: [L("Konversi _pilot_ → paket berbayar", "Pilot → paid plan conversion"), "Verified Impact Stories", L("_Audit trail_ & retensi data", "Audit trail & data retention")],
+    },
+    {
+      quarter: "Q4",
+      months: "M10–M12",
+      name: "Evaluate & Scale",
+      items: [L("_Scale_ ke agensi rekrutmen", "Scale to recruitment agencies"), L("Program _renewal_", "Renewal programme"), "Expansion Gate: Scale · Improve · Hold"],
+    },
   ],
   ace: [
-    { quarter: "Q1", items: ["Smart Event Templates", L("Interview Builder & rubrik", "Interview Builder & rubrics")], product: "both" },
-    { quarter: "Q2", items: ["Repeat Event Planner", "Evidence-Linked Assessment"], product: "both" },
-    { quarter: "Q3", items: ["Organizer Growth Insights", "Recruiter Dashboard", "Portfolio review #1"], product: "both" },
-    { quarter: "Q4", items: [L("Eksperimen _career fair_", "Career-fair experiment"), "Responsible AI Controls", "Portfolio review #2"], product: "both" },
+    {
+      quarter: "Q1",
+      months: "M1–M3",
+      name: "Align & Build",
+      items: ["Smart Event Templates", L("Interview Builder & rubrik", "Interview Builder & rubrics"), "ACE Resource Control"],
+    },
+    {
+      quarter: "Q2",
+      months: "M4–M6",
+      name: "Pilot & Activate",
+      items: ["Repeat Event Planner", "Evidence-Linked Assessment", L("_Pilot_ HR & aktivasi _organizer_", "HR pilots & organizer activation")],
+    },
+    {
+      quarter: "Q3",
+      months: "M7–M9",
+      name: "Acquire & Optimize",
+      items: ["Organizer Insight Dashboard", "Recruiter Review Dashboard", "Portfolio review #1"],
+    },
+    {
+      quarter: "Q4",
+      months: "M10–M12",
+      name: "Expand Selectively",
+      items: [L("Eksperimen _career fair_", "Career-fair experiment"), "Responsible AI Controls", "Portfolio review #2"],
+    },
+    {
+      quarter: "Q5",
+      months: "M13–M15",
+      name: "Improve Portfolio",
+      items: ["Managed Event Boost & Organizer Pro", L("Konversi & _renewal_ Interview", "Interview conversion & renewals"), "Portfolio review #3"],
+    },
+    {
+      quarter: "Q6",
+      months: "M16–M18",
+      name: "Evaluate & Evolve",
+      items: [L("AI Event Assistant (bila kapasitas cukup)", "AI Event Assistant (if capacity allows)"), L("Evaluasi target M18", "M18 target review"), "Invest More · Optimize · Limit Scope · Pause"],
+    },
   ],
 };
 
@@ -336,7 +400,7 @@ export const STRATEGY_GLOSSARY: { term: string; meaning: Txt }[] = [
     ),
   },
   { term: "Context switching", meaning: L("Tambahan jam kerja akibat berpindah fokus antara dua _roadmap_ produk.", "Extra working hours caused by switching focus between two product roadmaps.") },
-  { term: "Expansion Gate", meaning: L("Titik keputusan ONE: Scale, Improve, atau Pause/Revalidate berdasarkan ambang KPI.", "ONE's decision point: Scale, Improve or Pause/Revalidate based on KPI thresholds.") },
+  { term: "Expansion Gate", meaning: L("Titik keputusan ONE: _Scale_, _Improve_, atau _Hold_ berdasarkan ambang KPI.", "ONE's decision point: Scale, Improve or Hold based on KPI thresholds.") },
   {
     term: "Hard gate",
     meaning: L(

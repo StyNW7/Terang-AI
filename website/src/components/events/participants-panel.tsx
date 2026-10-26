@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Mail, School, Search, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight, Mail, School, Search, Users } from "lucide-react";
 import { toast } from "sonner";
 import type { Participant } from "@/types/events";
 import { useEventsStore } from "@/store/events-store";
@@ -15,6 +15,8 @@ import type { Tone } from "@/types/common";
 import { SOURCE_LABEL } from "@/data/events.mock";
 import { useI18n } from "@/lib/i18n";
 import { REGISTRATION_STATUS_LABEL } from "./shared";
+
+const PAGE_SIZE = 15;
 
 const STATUS: Record<Participant["status"], { label: (typeof REGISTRATION_STATUS_LABEL)[Participant["status"]]; tone: Tone }> = {
   lunas: { label: REGISTRATION_STATUS_LABEL.lunas, tone: "success" },
@@ -32,6 +34,7 @@ export function ParticipantsPanel() {
   const [eventId, setEventId] = useState("all");
   const [status, setStatusFilter] = useState<"all" | Participant["status"]>("all");
   const [selected, setSelected] = useState<Participant | null>(null);
+  const [page, setPage] = useState(0);
 
   const eventName = (id: string) => {
     const ev = events.find((e) => e.id === id);
@@ -47,6 +50,9 @@ export function ParticipantsPanel() {
       ),
     [participants, eventId, status, query],
   );
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, pageCount - 1);
+  const visible = filtered.slice(safePage * PAGE_SIZE, (safePage + 1) * PAGE_SIZE);
   const counts = (Object.keys(STATUS) as Participant["status"][]).map((s) => ({ s, n: participants.filter((p) => p.status === s).length }));
   const current = selected ? participants.find((p) => p.id === selected.id) ?? selected : null;
 
@@ -57,7 +63,10 @@ export function ParticipantsPanel() {
           <button
             key={s}
             type="button"
-            onClick={() => setStatusFilter(status === s ? "all" : s)}
+            onClick={() => {
+              setStatusFilter(status === s ? "all" : s);
+              setPage(0);
+            }}
             className={`rounded-2xl border bg-card p-4 text-left shadow-soft transition hover:shadow-card ${status === s ? "border-brand ring-2 ring-brand/20" : "border-line"}`}
           >
             <Badge tone={STATUS[s].tone} dot>
@@ -70,9 +79,15 @@ export function ParticipantsPanel() {
       <div className="flex flex-col gap-2 rounded-2xl border border-line bg-card p-4 shadow-soft sm:flex-row">
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-          <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t("Cari nama atau institusi…", "Search name or institution…")} className="pl-9" aria-label={t("Cari peserta", "Search participants")} />
+          <Input value={query} onChange={(e) => {
+              setQuery(e.target.value);
+              setPage(0);
+            }} placeholder={t("Cari nama atau institusi…", "Search name or institution…")} className="pl-9" aria-label={t("Cari peserta", "Search participants")} />
         </div>
-        <Select value={eventId} onChange={(e) => setEventId(e.target.value)} className="sm:w-72" aria-label={t("Filter _event_", "Filter by event")}>
+        <Select value={eventId} onChange={(e) => {
+          setEventId(e.target.value);
+          setPage(0);
+        }} className="sm:w-72" aria-label={t("Filter _event_", "Filter by event")}>
           <option value="all">{t("Semua _event_", "All events")}</option>
           {events.map((e) => (
             <option key={e.id} value={e.id}>
@@ -80,7 +95,10 @@ export function ParticipantsPanel() {
             </option>
           ))}
         </Select>
-        <Select value={status} onChange={(e) => setStatusFilter(e.target.value as typeof status)} className="sm:w-52" aria-label={t("Filter status", "Filter by status")}>
+        <Select value={status} onChange={(e) => {
+          setStatusFilter(e.target.value as typeof status);
+          setPage(0);
+        }} className="sm:w-52" aria-label={t("Filter status", "Filter by status")}>
           <option value="all">{t("Semua status", "All statuses")}</option>
           {(Object.keys(STATUS) as Participant["status"][]).map((s) => (
             <option key={s} value={s}>
@@ -109,7 +127,7 @@ export function ParticipantsPanel() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
-                {filtered.map((p) => (
+                {visible.map((p) => (
                   <tr
                     key={p.id}
                     tabIndex={0}
@@ -137,9 +155,27 @@ export function ParticipantsPanel() {
               </tbody>
             </table>
           </div>
-          <p className="border-t border-line px-4 py-2.5 text-xs text-muted">
-            {t(`${filtered.length} peserta · klik baris untuk detail`, `${filtered.length} participants · click a row for details`)}
-          </p>
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line px-4 py-2.5">
+            <p className="text-xs text-muted">
+              {t(
+                `Menampilkan ${safePage * PAGE_SIZE + 1}–${safePage * PAGE_SIZE + visible.length} dari ${filtered.length} peserta · klik baris untuk detail`,
+                `Showing ${safePage * PAGE_SIZE + 1}–${safePage * PAGE_SIZE + visible.length} of ${filtered.length} participants · click a row for details`,
+              )}
+            </p>
+            {pageCount > 1 && (
+              <div className="flex items-center gap-2">
+                <Button size="sm" variant="secondary" onClick={() => setPage(safePage - 1)} disabled={safePage === 0} aria-label={t("Halaman sebelumnya", "Previous page")}>
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <span className="tabular text-xs font-semibold text-muted-strong">
+                  {safePage + 1} / {pageCount}
+                </span>
+                <Button size="sm" variant="secondary" onClick={() => setPage(safePage + 1)} disabled={safePage >= pageCount - 1} aria-label={t("Halaman berikutnya", "Next page")}>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       )}
       <Modal open={!!current} onClose={() => setSelected(null)} title={current?.name ?? ""} description={t("Detail peserta (data fiktif)", "Participant details (fictional data)")} size="sm">

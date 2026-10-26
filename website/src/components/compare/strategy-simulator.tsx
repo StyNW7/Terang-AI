@@ -136,7 +136,7 @@ function StrategyCard({ r, other, variant }: { r: StrategyResult; other: Strateg
         <p className="mt-1 text-[13px] text-muted-strong">
           {isOne
             ? t("Expansion Gate lulus: kualitas, traksi, ekonomi, kapasitas & Responsible AI.", "Pass the Expansion Gate: quality, traction, economics, capacity & Responsible AI.")
-            : tx("_Portfolio review_ per produk: _invest / improve / reduce / pause_ berdasarkan KPI.", "Per-product portfolio review: invest / improve / reduce / pause based on KPIs.")}
+            : tx("_Portfolio review_ per produk: _Invest More / Optimize / Limit Scope / Pause_ berdasarkan KPI.", "Per-product portfolio review: Invest More / Optimize / Limit Scope / Pause based on KPIs.")}
         </p>
       </div>
     </div>
@@ -167,6 +167,7 @@ export function StrategySimulator() {
 
   const leader = one.operatingResult === ace.operatingResult ? null : one.operatingResult > ace.operatingResult ? "ONE" : "ACE";
   const gap = Math.abs(one.operatingResult - ace.operatingResult);
+  const bothNegative = one.operatingResult < 0 && ace.operatingResult < 0;
 
   const compareData = [
     { metric: t("Pendapatan", "Revenue"), one: one.revenue, ace: ace.revenue },
@@ -225,8 +226,8 @@ export function StrategySimulator() {
         eyebrow={<SourceLabel type="illustrative-assumption" compact />}
         title={t("Simulator ONE vs ACE", "ONE vs ACE Simulator")}
         description={t(
-          "Ubah asumsi dan lihat kapan ONE atau ACE lebih menarik. Semua angka adalah asumsi akademik ilustratif.",
-          "Change the assumptions and see when ONE or ACE is more attractive. Every figure is an illustrative academic assumption.",
+          "Model sederhana untuk menguji asumsi: ubah satu angka dan lihat kapan ONE atau ACE lebih menarik. Semua angka ilustratif; proyeksi jangka panjang proposal ada di bagian bawah.",
+          "A simple model to test assumptions: change one number and see when ONE or ACE looks better. Every figure is illustrative; the proposal's long-term projection is at the bottom.",
         )}
       />
 
@@ -298,18 +299,31 @@ export function StrategySimulator() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col gap-2 rounded-2xl border border-line bg-card p-5 shadow-soft sm:flex-row sm:items-center sm:justify-between"
           >
-            <p className="text-sm text-ink">
-              {leader ? (
-                <>
-                  {t("Pada asumsi saat ini,", "Under the current assumptions,")} <strong className={leader === "ONE" ? "text-one-ink" : "text-ace-ink"}>{leader}</strong>{" "}
-                  {t("unggul", "leads by")} <strong className="tabular">{formatIDRCompact(gap)}</strong>{" "}
-                  {t(`pada hasil operasional ${assumptions.shared.horizonMonths} bulan.`, `in ${assumptions.shared.horizonMonths}-month operating result.`)}
-                </>
-              ) : (
-                t("Kedua strategi menghasilkan hasil operasional yang setara pada asumsi ini.", "Both strategies produce the same operating result under these assumptions.")
-              )}{" "}
-              <span className="text-muted-strong">{t("Ini bukan kesimpulan final — ubah asumsi untuk menguji kondisinya.", "This is not a final conclusion — change the assumptions to test the conditions.")}</span>
-            </p>
+            <div className="text-sm text-ink">
+              <p>
+                {leader ? (
+                  <>
+                    {t("Pada asumsi saat ini,", "Under the current assumptions,")} <strong className={leader === "ONE" ? "text-one-ink" : "text-ace-ink"}>{leader}</strong>{" "}
+                    {bothNegative ? t("rugi lebih kecil", "loses less, by") : t("unggul", "leads by")} <strong className="tabular">{formatIDRCompact(gap)}</strong>{" "}
+                    {t(`pada hasil operasional ${assumptions.shared.horizonMonths} bulan.`, `in ${assumptions.shared.horizonMonths}-month operating result.`)}
+                  </>
+                ) : (
+                  t("Kedua strategi menghasilkan hasil operasional yang setara pada asumsi ini.", "Both strategies produce the same operating result under these assumptions.")
+                )}{" "}
+                <span className="text-muted-strong">{t("Ini bukan kesimpulan final — ubah asumsi untuk menguji kondisinya.", "This is not a final conclusion — change the assumptions to test the conditions.")}</span>
+              </p>
+              {bothNegative && (
+                <p className="mt-2 flex items-start gap-2 rounded-xl bg-warning-soft px-3 py-2 text-[13px] text-warning-ink">
+                  <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" />
+                  <span>
+                    {t(
+                      `Kedua hasil negatif itu wajar: dalam ${assumptions.shared.horizonMonths} bulan pertama strategi masih di fase investasi karena pelanggan datang bertahap. Proposal memproyeksikan balik modal ONE ±28,7 bulan dan ACE ±41,3 bulan — coba horizon 24 bulan.`,
+                      `Both results being negative is expected: in the first ${assumptions.shared.horizonMonths} months each strategy is still investing because customers arrive gradually. The proposal projects payback at ~28.7 months for ONE and ~41.3 months for ACE — try the 24-month horizon.`,
+                    )}
+                  </span>
+                </p>
+              )}
+            </div>
             <SourceLabel type="illustrative-assumption" compact />
           </motion.div>
 
@@ -432,13 +446,13 @@ export function StrategySimulator() {
                 </p>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[520px] text-sm">
+                <table className="w-full text-sm">
                   <thead className="bg-surface text-xs text-muted">
                     <tr>
-                      <th className="px-4 py-2.5 text-left font-semibold">{t("Skenario", "Scenario")}</th>
-                      <th className="px-4 py-2.5 text-right font-semibold">ONE · {t("hasil op.", "op. result")}</th>
-                      <th className="px-4 py-2.5 text-right font-semibold">ACE · {t("hasil op.", "op. result")}</th>
-                      <th className="px-4 py-2.5 text-right font-semibold">{t("Unggul", "Leader")}</th>
+                      <th className="px-3 py-2.5 text-left font-semibold">{t("Skenario", "Scenario")}</th>
+                      <th className="whitespace-nowrap px-3 py-2.5 text-right font-semibold">ONE · {t("hasil op.", "op. result")}</th>
+                      <th className="whitespace-nowrap px-3 py-2.5 text-right font-semibold">ACE · {t("hasil op.", "op. result")}</th>
+                      <th className="px-3 py-2.5 text-right font-semibold">{t("Unggul", "Leader")}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-line">
@@ -446,15 +460,15 @@ export function StrategySimulator() {
                       const win = row.one.operatingResult >= row.ace.operatingResult ? "ONE" : "ACE";
                       return (
                         <tr key={row.key} className={cn(preset === row.key && "bg-soft/50")}>
-                          <td className="px-4 py-2.5">
+                          <td className="px-3 py-2.5">
                             <p className="font-semibold text-ink">{tx(row.label)}</p>
                             <p className="text-[11px] text-muted">
                               {t("Pendapatan", "Revenue")} ONE {formatIDRCompact(row.one.revenue)} · ACE {formatIDRCompact(row.ace.revenue)}
                             </p>
                           </td>
-                          <td className="tabular px-4 py-2.5 text-right font-semibold text-ink">{formatIDRCompact(row.one.operatingResult)}</td>
-                          <td className="tabular px-4 py-2.5 text-right font-semibold text-ink">{formatIDRCompact(row.ace.operatingResult)}</td>
-                          <td className="px-4 py-2.5 text-right">
+                          <td className="tabular whitespace-nowrap px-3 py-2.5 text-right font-semibold text-ink">{formatIDRCompact(row.one.operatingResult)}</td>
+                          <td className="tabular whitespace-nowrap px-3 py-2.5 text-right font-semibold text-ink">{formatIDRCompact(row.ace.operatingResult)}</td>
+                          <td className="px-3 py-2.5 text-right">
                             <Badge tone={win === "ONE" ? "one" : "ace"}>{win}</Badge>
                           </td>
                         </tr>

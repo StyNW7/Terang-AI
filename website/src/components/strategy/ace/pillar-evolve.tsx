@@ -301,7 +301,7 @@ export function AcePillarEvolve() {
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">{t("Hasil keputusan", "Decision outcomes")}</p>
-            <h3 className="text-2xl font-semibold text-ink">Invest more · Improve · Reduce scope · Pause</h3>
+            <h3 className="text-2xl font-semibold text-ink">Invest More · Optimize · Limit Scope · Pause Investment</h3>
           </div>
           <Segmented
             value={gateProduct}

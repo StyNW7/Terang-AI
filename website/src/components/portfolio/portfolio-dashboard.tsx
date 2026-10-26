@@ -24,7 +24,7 @@ import { useStrategyMode } from "@/hooks/use-strategy-mode";
 import { computeStrategy, computeInterview, computeEvents } from "@/lib/finance";
 import { DECISION_META, evaluateProduct, type PortfolioDecision } from "@/lib/portfolio-engine";
 import { SCENARIO_PRESETS } from "@/data/scenarios";
-import { ROADMAP } from "@/data/strategy";
+import { PhaseRoadmap } from "@/components/strategy/phase-roadmap";
 import { formatIDRCompact, formatNumber, formatPercent } from "@/lib/formatters";
 import { KpiCard } from "@/components/ui/kpi-card";
 import { Segmented } from "@/components/ui/tabs";
@@ -36,7 +36,7 @@ import { Funnel } from "@/components/strategy/funnel";
 import { SourceLabel } from "@/components/shared/source-label";
 import { DecisionGate } from "./decision-gate";
 import { cn, safeDivide } from "@/lib/utils";
-import { keyOf, useI18n } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 
 const DECISIONS: PortfolioDecision[] = ["scale", "optimize", "limit", "pause"];
 const DECISION_BG: Record<PortfolioDecision, string> = {
@@ -321,28 +321,15 @@ export function PortfolioDashboard() {
 
       <div className="rounded-2xl border border-line bg-card p-5 shadow-soft">
         <p className="text-[15px] font-semibold text-ink">
-          {tx("_Roadmap_ kuartalan · lensa", "Quarterly roadmap ·")} {lens.toUpperCase()} {t("", "lens")}
+          {lens === "one" ? tx("_Roadmap_ implementasi · ONE (12 bulan)", "Implementation roadmap · ONE (12 months)") : tx("_Roadmap_ implementasi · ACE (18 bulan)", "Implementation roadmap · ACE (18 months)")}
         </p>
-        <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-4">
-          {ROADMAP[lens].map((q) => (
-            <div key={q.quarter} className="rounded-xl bg-surface p-4 ring-1 ring-line">
-              <span className={cn("grid h-8 w-8 place-items-center rounded-lg text-xs font-semibold text-white", lens === "one" ? "bg-one-gradient" : "bg-ace-gradient")}>{q.quarter}</span>
-              <ul className="mt-3 space-y-1">
-                {q.items.map((it) => (
-                  <li key={keyOf(it)} className="text-[13px] text-ink">
-                    • {tx(it)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <PhaseRoadmap key={lens} strategy={lens} className="mt-4" />
       </div>
 
       <section>
         <div className="mb-4">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-ink">{tx("_Portfolio Decision Matrix_", "Portfolio Decision Matrix")}</p>
-          <h3 className="text-2xl font-semibold text-ink">Scale · Optimize · Limit · Pause / Reassess</h3>
+          <h3 className="text-2xl font-semibold text-ink">Scale · Optimize · Limit · Hold / Pause</h3>
           <p className="text-sm text-muted-strong">
             {t("Posisi produk berdasarkan KPI simulasi saat ini. Klik produk untuk memeriksa kriterianya di bawah.", "Each product's position based on the current simulated KPIs. Click a product to inspect its criteria below.")}
           </p>

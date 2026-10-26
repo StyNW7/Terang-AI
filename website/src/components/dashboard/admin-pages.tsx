@@ -35,6 +35,7 @@ import { Mascot } from "@/components/shared/brand";
 import { cn } from "@/lib/utils";
 import { L, useI18n, type Bilingual } from "@/lib/i18n";
 import { PageHeader } from "./page-header";
+import { ProposalSnapshot } from "@/components/strategy/proposal-targets";
 
 const MODE_ICON = { overview: Compass, one: Target, ace: Layers } as const;
 
@@ -86,8 +87,10 @@ function StrategySnapshot({ className }: { className?: string }) {
           {leader ? (
             <>
               {t("Pada asumsi ini", "Under these assumptions")}{" "}
-              <strong className={leader === "one" ? "text-one-ink" : "text-ace-ink"}>{leader.toUpperCase()}</strong> {t("unggul", "leads by")}{" "}
-              <span className="tabular font-semibold text-ink">{formatIDRCompact(Math.abs(one.operatingResult - ace.operatingResult))}</span>.
+              <strong className={leader === "one" ? "text-one-ink" : "text-ace-ink"}>{leader.toUpperCase()}</strong>{" "}
+              {one.operatingResult < 0 && ace.operatingResult < 0 ? t("rugi lebih kecil", "loses less, by") : t("unggul", "leads by")}{" "}
+              <span className="tabular font-semibold text-ink">{formatIDRCompact(Math.abs(one.operatingResult - ace.operatingResult))}</span>.{" "}
+              {one.operatingResult < 0 && ace.operatingResult < 0 && t("Tahun pertama masih fase investasi.", "Year one is still an investment phase.")}
             </>
           ) : (
             t("Kedua strategi setara pada asumsi ini.", "Both strategies are level under these assumptions.")
@@ -234,6 +237,8 @@ export function AdminOverviewPage() {
           </div>
         ))}
       </div>
+
+      <ProposalSnapshot className="mt-6" />
 
       <div className="mt-6 grid grid-cols-1 gap-5 xl:grid-cols-[1.25fr_1fr]">
         <StrategySnapshot />

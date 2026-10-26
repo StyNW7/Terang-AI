@@ -48,22 +48,30 @@ export const ALLOCATION_LABELS: Record<string, Txt> = {
 };
 
 export const ALLOCATION_PRESETS: Record<"one" | "ace" | "split", { label: Bilingual; description: Bilingual; allocation: CapacityAllocation }> = {
+  // ≈ 5.6 FTE Interview (80%) · ≈ 1.4 FTE shared operations & Events maintenance (20%).
   one: {
     label: L("_Preset_ ONE", "ONE preset"),
-    description: L("Fokus Interview; Events hanya _maintenance_.", "Interview focus; Events on maintenance only."),
+    description: L(
+      "≈80% kapasitas untuk AI Candidate Interview; ≈20% operasional bersama & _maintenance_ Events.",
+      "≈80% of capacity on AI Candidate Interview; ≈20% on shared operations & Events maintenance.",
+    ),
     allocation: {
-      leadership: { interview: 70, events: 5, governance: 25 },
-      product: { interview: 62, events: 0, qa: 13, maintenance: 10, buffer: 15 },
-      ops: { interview: 70, events: 10, coordination: 5, buffer: 15 },
+      leadership: { interview: 82, events: 0, governance: 18 },
+      product: { interview: 75, events: 0, qa: 10, maintenance: 5, buffer: 10 },
+      ops: { interview: 85, events: 5, coordination: 0, buffer: 10 },
     },
   },
+  // Exactly 3.15 FTE Interview · 2.65 FTE Events (incl. maintenance) · 1.20 FTE shared.
   ace: {
     label: L("_Preset_ ACE", "ACE preset"),
-    description: L("Alokasi terkendali 60:40 dengan QA, koordinasi & _buffer_ wajib.", "Controlled 60:40 allocation with mandatory QA, coordination & buffer."),
+    description: L(
+      "3,15 FTE Interview · 2,65 FTE Events · 1,20 FTE operasional bersama.",
+      "3.15 FTE Interview · 2.65 FTE Events · 1.20 FTE shared operations.",
+    ),
     allocation: {
-      leadership: { interview: 45, events: 30, governance: 25 },
-      product: { interview: 37, events: 25, qa: 13, maintenance: 10, buffer: 15 },
-      ops: { interview: 40, events: 30, coordination: 15, buffer: 15 },
+      leadership: { interview: 50, events: 40, governance: 10 },
+      product: { interview: 45, events: 30, qa: 10, maintenance: 5, buffer: 10 },
+      ops: { interview: 40, events: 40, coordination: 10, buffer: 10 },
     },
   },
   split: {
@@ -83,7 +91,7 @@ export const SPRINT_TASKS: SprintTask[] = [
   { id: "t3", title: L("Rubrik kompetensi _Customer Service_", "Customer Service competency rubric"), product: "interview", column: "review", major: false, points: 3, owner: "P3" },
   { id: "t4", title: "Repeat Event Planner", product: "events", column: "planned", major: true, points: 8, owner: "P2" },
   { id: "t5", title: "Evidence-Linked Assessment", product: "interview", column: "planned", major: true, points: 13, owner: "P1" },
-  { id: "t6", title: "Organizer Growth Insights", product: "events", column: "backlog", major: true, points: 8, owner: "P2" },
+  { id: "t6", title: "Organizer Insight Dashboard", product: "events", column: "backlog", major: true, points: 8, owner: "P2" },
   { id: "t7", title: L("_Audit trail_ & retensi data", "Audit trail & data retention"), product: "interview", column: "backlog", major: false, points: 5, owner: "P1" },
   { id: "t8", title: L("_Regression test_ pembayaran Events", "Events payment regression test"), product: "shared", column: "in-progress", major: false, points: 3, owner: "P3" },
   { id: "t9", title: L("_Design system_ komponen bersama", "Shared component design system"), product: "shared", column: "done", major: false, points: 5, owner: "P3" },

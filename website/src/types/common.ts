@@ -2,6 +2,8 @@ export type EvidenceClassification =
   | "public-source"
   | "internal-restricted-context"
   | "strategic-proposal"
+  | "proposal-projection"
+  | "survey-data"
   | "illustrative-assumption"
   | "synthetic-demo";
 

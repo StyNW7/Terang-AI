@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
-import { Building2, CalendarClock, Clock, Globe, Heart, MessageCircle, Repeat2, Send, ThumbsUp, Users, Video, Wallet } from "lucide-react";
+import { BadgeCheck, Building2, CalendarClock, Clock, FlaskConical, Globe, Heart, MessageCircle, Repeat2, Send, Stethoscope, ThumbsUp, Users, Video, Wallet } from "lucide-react";
 import { useScenarioStore } from "@/store/scenario-store";
 import { Funnel } from "@/components/strategy/funnel";
 import { Slider } from "@/components/ui/slider";
@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { InfoTip } from "@/components/ui/tooltip";
 import { SourceLabel } from "@/components/shared/source-label";
 import { LogoMark } from "@/components/shared/brand";
+import { Segmented } from "@/components/ui/tabs";
+import { ONE_GROWTH_INITIATIVES, PRICING_TIERS, type PricingTier } from "@/data/proposal";
 import { formatIDR, formatIDRCompact, formatNumber, formatPercent } from "@/lib/formatters";
 import { cn, safeDivide } from "@/lib/utils";
 import { L, useI18n, type Bilingual } from "@/lib/i18n";
@@ -46,10 +48,8 @@ export function OnePillarNavigate() {
   const [minutesSaved, setMinutesSaved] = useState(25);
   const [convertMoney, setConvertMoney] = useState(false);
   const [hourlyCost, setHourlyCost] = useState(75_000);
-  const [pricePerInterview, setPricePerInterview] = useState(assumptions.interview.netRevenuePerInterview);
-
-  // Pricing explorer
-  const [volume, setVolume] = useState(120);
+  const [tierId, setTierId] = useState<PricingTier["id"]>("growth");
+  const tier = PRICING_TIERS.find((p) => p.id === tierId) ?? PRICING_TIERS[1];
 
   const funnel = useMemo(() => {
     const pilots = assumptions.shared.salesCapacityPilots;
@@ -71,33 +71,7 @@ export function OnePillarNavigate() {
 
   const hoursSaved = (interviews * minutesSaved) / 60;
   const moneyEquivalent = hoursSaved * hourlyCost;
-  const toolCost = interviews * pricePerInterview;
-
-  const tiers = [
-    {
-      id: "pilot",
-      name: t("_Pilot_ Terbatas", "Limited Pilot"),
-      desc: t("1 bulan · s.d. 60 _interview_ · _onboarding_", "1 month · up to 60 interviews · onboarding"),
-      cost: () => 4_500_000,
-      note: t("Biaya tetap untuk validasi", "Fixed fee for validation"),
-    },
-    {
-      id: "per-interview",
-      name: t("Paket per _Interview_", "Per-Interview Package"),
-      desc: t("Bayar sesuai pemakaian", "Pay as you go"),
-      cost: (v: number) => v * 75_000,
-      note: `${formatIDR(75_000)} / interview`,
-    },
-    {
-      id: "subscription",
-      name: t("Langganan Perusahaan", "Company Subscription"),
-      desc: t("Hingga 300 _interview_ / bulan", "Up to 300 interviews / month"),
-      cost: (v: number) => (v <= 300 ? 9_500_000 : 9_500_000 + (v - 300) * 45_000),
-      note: `${formatIDRCompact(9_500_000)} / ${t("bulan", "month")}`,
-    },
-  ];
-  const tierCosts = tiers.map((tier) => ({ ...tier, value: tier.id === "pilot" && volume > 60 ? Infinity : tier.cost(volume) }));
-  const best = tierCosts.reduce((a, b) => (b.value < a.value ? b : a));
+  const toolCost = tier.monthly;
 
   const pipeline = PIPELINE.filter((p) => stageFilter === "all" || p.stage === stageFilter);
 
@@ -202,6 +176,38 @@ export function OnePillarNavigate() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Acquisition initiatives */}
+      <div>
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-one-ink">{t("Tiga inisiatif akuisisi", "Three acquisition initiatives")}</p>
+            <h3 className="text-xl font-semibold text-ink">{t("Dari masalah HR ke bukti yang terverifikasi", "From HR pain points to verified proof")}</h3>
+          </div>
+          <SourceLabel type="strategic-proposal" />
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {ONE_GROWTH_INITIATIVES.map((item, i) => {
+            const Icon = [Stethoscope, FlaskConical, BadgeCheck][i];
+            return (
+              <div key={item.name} className="relative rounded-2xl border border-line bg-card p-5 shadow-soft">
+                <span className="absolute right-5 top-5 tabular text-xs font-semibold text-muted">0{i + 1}</span>
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-one-soft text-one-ink">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <p className="mt-3 font-semibold text-ink">{item.name}</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-strong">{tx(item.description)}</p>
+              </div>
+            );
+          })}
+        </div>
+        <p className="mt-3 text-xs text-muted">
+          {t(
+            "Kanal: LinkedIn, webinar & komunitas HR, kemitraan B2B, dan demo langsung. Target pasar: perusahaan dengan rekrutmen entry-level berulang (customer service, sales, operasional) & penyedia jasa rekrutmen.",
+            "Channels: LinkedIn, HR webinars & communities, B2B partnerships and direct demos. Target market: companies with repeated entry-level hiring (customer service, sales, operations) & recruitment providers.",
+          )}
+        </p>
       </div>
 
       {/* Funnel */}
@@ -346,7 +352,10 @@ export function OnePillarNavigate() {
           <div className="mt-5 space-y-4">
             <Slider label={tx("_Interview_ per bulan", "Interviews per month")} value={interviews} min={20} max={500} step={10} onChange={setInterviews} display={formatNumber(interviews)} color="#2251c9" />
             <Slider label={tx("Menit admin dihemat / _interview_", "Admin minutes saved / interview")} value={minutesSaved} min={5} max={60} onChange={setMinutesSaved} display={`${minutesSaved} ${t("menit", "min")}`} color="#2251c9" />
-            <Slider label={tx("Harga per _interview_ (ilustratif)", "Price per interview (illustrative)")} value={pricePerInterview} min={20_000} max={150_000} step={5_000} onChange={setPricePerInterview} display={formatIDR(pricePerInterview)} color="#2251c9" />
+            <div>
+              <p className="mb-2 text-sm font-medium text-ink">{t("Paket langganan (usulan)", "Subscription plan (proposed)")}</p>
+              <Segmented size="sm" value={tierId} onChange={setTierId} items={PRICING_TIERS.map((p) => ({ id: p.id, label: p.name }))} />
+            </div>
           </div>
           <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-one-soft p-4">
@@ -359,7 +368,9 @@ export function OnePillarNavigate() {
             <div className="rounded-2xl bg-surface p-4 ring-1 ring-line">
               <p className="flex items-center gap-1.5 text-xs font-semibold text-muted-strong"><Wallet className="h-3.5 w-3.5" /> {t("Biaya layanan / bulan", "Service cost / month")}</p>
               <p className="tabular font-display text-2xl font-semibold text-ink">{formatIDRCompact(toolCost)}</p>
-              <p className="text-[11px] text-muted">{formatNumber(interviews)} × {formatIDR(pricePerInterview)}</p>
+              <p className="text-[11px] text-muted">
+                {tier.name} · ≈ {formatIDR(safeDivide(tier.monthly, interviews))} / interview
+              </p>
             </div>
           </div>
           <div className="mt-4 rounded-2xl border border-dashed border-line p-4">
@@ -386,46 +397,53 @@ export function OnePillarNavigate() {
         <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <h3 className="text-lg font-semibold text-ink">{t("Eksplorasi model harga", "Pricing model explorer")}</h3>
+              <h3 className="text-lg font-semibold text-ink">{t("Paket harga usulan", "Proposed pricing plans")}</h3>
               <p className="text-sm text-muted-strong">
-                {tx("Bukan harga resmi Terang AI — format usulan untuk diuji saat _pilot_.", "Not Terang AI's official pricing — proposed formats to test during pilots.")}
+                {tx(
+                  "Asumsi pemodelan proposal, bukan harga resmi Terang AI. Paket yang sama dipakai di ONE dan ACE agar perbandingan adil.",
+                  "Proposal modelling assumptions, not Terang AI's official prices. The same plans are used in ONE and ACE for a fair comparison.",
+                )}
               </p>
             </div>
-            <SourceLabel type="illustrative-assumption" compact />
+            <SourceLabel type="proposal-projection" compact />
           </div>
-          <Slider className="mt-5" label={tx("Volume _interview_ per bulan", "Interview volume per month")} value={volume} min={20} max={600} step={10} onChange={setVolume} display={formatNumber(volume)} color="#2251c9" />
-          <div className="mt-5 space-y-3">
-            {tierCosts.map((tier) => {
-              const isBest = tier.id === best.id;
-              const available = Number.isFinite(tier.value);
+          <div className="mt-5 flex items-center gap-3 rounded-2xl border border-dashed border-line p-4">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-one-soft text-one-ink">
+              <FlaskConical className="h-4 w-4" />
+            </span>
+            <p className="text-[13px] leading-snug text-muted-strong">
+              <strong className="text-ink">{t("Mulai dari Terang Pilot Challenge.", "Start with the Terang Pilot Challenge.")}</strong>{" "}
+              {tx("_Pilot_ terbatas membuktikan nilai sebelum perusahaan memilih paket berlangganan.", "A limited pilot proves value before the company picks a subscription plan.")}
+            </p>
+          </div>
+          <div className="mt-3 space-y-3">
+            {PRICING_TIERS.map((p) => {
+              const active = p.id === tierId;
               return (
-                <motion.div
-                  layout
-                  key={tier.id}
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => setTierId(p.id)}
+                  aria-pressed={active}
                   className={cn(
-                    "flex items-center justify-between gap-3 rounded-2xl p-4 ring-1 transition",
-                    isBest ? "bg-one-gradient text-white ring-transparent shadow-card" : "bg-surface ring-line",
-                    !available && "opacity-60",
+                    "flex w-full items-center justify-between gap-3 rounded-2xl p-4 text-left ring-1 transition",
+                    active ? "bg-one-gradient text-white ring-transparent shadow-card" : "bg-surface ring-line hover:ring-one/40",
                   )}
                 >
-                  <div>
-                    <p className="font-semibold">{tier.name}</p>
-                    <p className={cn("text-xs", isBest ? "text-white/80" : "text-muted-strong")}>
-                      {tier.desc} · {tier.note}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="tabular font-display text-lg font-semibold">{available ? formatIDRCompact(tier.value) : "—"}</p>
-                    <p className={cn("text-[11px]", isBest ? "text-white/80" : "text-muted")}>
-                      {available ? `${formatIDR(tier.value / volume)} / interview` : t("melebihi kuota _pilot_", "exceeds the pilot quota")}
-                    </p>
-                  </div>
-                </motion.div>
+                  <span>
+                    <span className="block font-semibold">{p.name}</span>
+                    <span className={cn("block text-xs", active ? "text-white/80" : "text-muted-strong")}>{tx(p.fit)}</span>
+                  </span>
+                  <span className="shrink-0 text-right">
+                    <span className="tabular block font-display text-lg font-semibold">{formatIDRCompact(p.monthly)}</span>
+                    <span className={cn("block text-[11px]", active ? "text-white/80" : "text-muted")}>/ {t("bulan", "month")}</span>
+                  </span>
+                </button>
               );
             })}
           </div>
           <p className="mt-4 text-xs text-muted">
-            {tx("Opsi tersorot = biaya per _interview_ terendah pada volume yang dipilih.", "Highlighted option = the lowest cost per interview at the selected volume.")}
+            {t("Pilih paket untuk melihat biaya layanannya di estimator ROI.", "Pick a plan to see its service cost in the ROI estimator.")}
           </p>
         </div>
       </div>

@@ -118,8 +118,8 @@ export function evaluateProduct(input: ProductKpiInput): DecisionResult {
 }
 
 export const DECISION_META: Record<PortfolioDecision, { label: string; one: string; ace: string; description: Bilingual; tone: "success" | "brand" | "warning" | "danger" }> = {
-  scale: { label: "Scale", one: "Scale", ace: "Invest more", description: L("Kinerja kuat; kualitas, ekonomi, dan kapasitas memadai.", "Strong performance; quality, economics and capacity are adequate."), tone: "success" },
-  optimize: { label: "Optimize", one: "Improve", ace: "Improve", description: L("Produk menjanjikan dengan masalah yang dapat diperbaiki.", "A promising product with fixable issues."), tone: "brand" },
-  limit: { label: "Limit", one: "Improve", ace: "Reduce scope", description: L("Kinerja belum membenarkan intensitas pengembangan saat ini.", "Performance does not yet justify the current development intensity."), tone: "warning" },
-  pause: { label: "Pause / Reassess", one: "Pause / Revalidate", ace: "Pause investment", description: L("_Milestone_ gagal berulang atau risiko kritis belum terselesaikan.", "Repeated milestone failures or unresolved critical risks."), tone: "danger" },
+  scale: { label: "Scale", one: "Scale", ace: "Invest More", description: L("Kinerja kuat; kualitas, ekonomi, dan kapasitas memadai.", "Strong performance; quality, economics and capacity are adequate."), tone: "success" },
+  optimize: { label: "Optimize", one: "Improve", ace: "Optimize", description: L("Produk menjanjikan dengan masalah yang dapat diperbaiki.", "A promising product with fixable issues."), tone: "brand" },
+  limit: { label: "Limit", one: "Improve", ace: "Limit Scope", description: L("Kinerja belum membenarkan intensitas pengembangan saat ini.", "Performance does not yet justify the current development intensity."), tone: "warning" },
+  pause: { label: "Hold / Pause", one: "Hold", ace: "Pause Investment", description: L("_Milestone_ gagal berulang atau risiko kritis belum terselesaikan.", "Repeated milestone failures or unresolved critical risks."), tone: "danger" },
 };

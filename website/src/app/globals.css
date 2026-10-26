@@ -286,6 +286,10 @@ html.lenis {
   p {
     text-wrap: pretty;
   }
+  /* Italic terms lean right and visually swallow the following space; give them a hair of room. */
+  em {
+    padding-inline-end: 0.08em;
+  }
 
   ::selection {
     background: rgb(57 183 255 / 0.28);

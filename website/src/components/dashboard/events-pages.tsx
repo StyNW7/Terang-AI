@@ -204,10 +204,10 @@ export function EventsAnalyticsPage() {
             {DEMO}
           </>
         }
-        title="Organizer Growth Insights"
+        title="Organizer Insight Dashboard"
         description={<T id="_Funnel_ registrasi, sumber konversi, aktivitas peserta, dan perbandingan _event_ berulang." en="Registration funnel, conversion sources, participant activity and recurring-event comparison." />}
       />
-      <AceOnlyNotice feature="Organizer Growth Insights" className="mb-5" />
+      <AceOnlyNotice feature="Organizer Insight Dashboard" className="mb-5" />
       <AnalyticsPanel />
     </>
   );

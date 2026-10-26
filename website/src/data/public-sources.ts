@@ -83,6 +83,22 @@ export const EVIDENCE_META: Record<
     short: L("Usulan", "Proposed"),
     description: L("Fitur atau program yang diusulkan tim melalui ONE atau ACE Strategy — belum tentu ada pada produk resmi.", "A feature or programme proposed by the team through the ONE or ACE Strategy — not necessarily part of the official product."),
   },
+  "proposal-projection": {
+    label: L("Proyeksi proposal", "Proposal projection"),
+    short: L("Proyeksi", "Projection"),
+    description: L(
+      "Target dan angka finansial dari model proposal ONE / ACE. Proyeksi berbasis asumsi — bukan kinerja aktual, harga resmi, atau komitmen Terang AI.",
+      "Targets and financial figures from the ONE / ACE proposal model. Assumption-based projections — not actual performance, official prices or Terang AI commitments.",
+    ),
+  },
+  "survey-data": {
+    label: L("Data survei tim", "Team survey data"),
+    short: L("Survei", "Survey"),
+    description: L(
+      "Survei independen tim via Google Form (n = 113, 24 Okt 2026), mayoritas mahasiswa & _fresh graduate_. Mengukur kebutuhan & minat pengguna akhir, bukan kemauan membayar B2B.",
+      "Independent team survey via Google Form (n = 113, 24 Oct 2026), mostly students & fresh graduates. Measures end-user needs & interest, not B2B willingness to pay.",
+    ),
+  },
   "illustrative-assumption": {
     label: L("Skenario ilustratif", "Illustrative scenario"),
     short: L("Ilustratif", "Illustrative"),

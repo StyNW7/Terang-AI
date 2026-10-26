@@ -50,6 +50,11 @@ export function formatDecimal(value: number) {
   return decimal().format(value);
 }
 
+/** Full-time equivalents: 3.15 → 3,15 · 3.15 (up to two decimals). */
+export function formatFte(value: number) {
+  return numberFmt({ maximumFractionDigits: 2 }).format(Math.round(value * 100) / 100);
+}
+
 /** 0.352 → 35,2% · 35.2% */
 export function formatPercent(value: number, digits = 0) {
   return `${numberFmt({ maximumFractionDigits: digits, minimumFractionDigits: digits }).format(value * 100)}%`;

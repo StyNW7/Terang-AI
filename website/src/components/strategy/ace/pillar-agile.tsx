@@ -28,7 +28,7 @@ interface BacklogItem {
 const INITIAL: BacklogItem[] = [
   { id: "e1", product: "events", name: "Smart Event Templates", reach: 8, impact: 3, confidence: 0.8, effort: 3, status: "simulated", demo: "/dashboard/events" },
   { id: "e2", product: "events", name: "Repeat Event Planner", reach: 7, impact: 2, confidence: 0.8, effort: 2, status: "simulated", demo: "/dashboard/events" },
-  { id: "e3", product: "events", name: "Organizer Growth Insights", reach: 6, impact: 2, confidence: 0.7, effort: 3, status: "proposed" },
+  { id: "e3", product: "events", name: "Organizer Insight Dashboard", reach: 6, impact: 2, confidence: 0.7, effort: 3, status: "proposed" },
   { id: "e4", product: "events", name: "AI Event Assistant", reach: 6, impact: 2, confidence: 0.5, effort: 5, status: "later" },
   { id: "i1", product: "interview", name: "Role-Based Interview Builder", reach: 7, impact: 3, confidence: 0.7, effort: 4, status: "simulated", demo: "/dashboard/interview" },
   { id: "i2", product: "interview", name: "Evidence-Linked Assessment", reach: 7, impact: 3, confidence: 0.6, effort: 5, status: "simulated", demo: "/dashboard/interview" },

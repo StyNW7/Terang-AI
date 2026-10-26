@@ -121,7 +121,7 @@ export function OnePillarEvaluate() {
       <div>
         <div className="mb-4">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-one-ink">{tx("_Decision Gate_ Interaktif", "Interactive Decision Gate")}</p>
-          <h3 className="text-2xl font-semibold text-ink">Scale · Improve · Pause / Revalidate</h3>
+          <h3 className="text-2xl font-semibold text-ink">Scale · Improve · Hold</h3>
           <p className="mt-1 text-sm text-muted-strong">
             {tx(
               "Nilai awal diambil dari simulasi saat ini. Ekspansi di ONE berarti membawa AI Candidate Interview ke akun & _use case_ B2B tambahan.",

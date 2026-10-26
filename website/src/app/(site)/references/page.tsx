@@ -86,10 +86,16 @@ export default function ReferencesPage() {
           <Reveal>
             <SectionHeading
               eyebrow={<T id="Klasifikasi Bukti" en="Evidence Classification" />}
-              title={<T id="Lima label sumber yang dipakai di seluruh _website_" en="Five source labels used across the website" />}
+              title={<T id="Tujuh label sumber yang dipakai di seluruh _website_" en="Seven source labels used across the website" />}
+              description={
+                <T
+                  id="Setiap angka dan fitur diberi label agar jelas mana fakta publik, mana usulan tim, dan mana simulasi."
+                  en="Every figure and feature is labelled so it is clear what is public fact, what is the team's proposal and what is simulated."
+                />
+              }
             />
           </Reveal>
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {(Object.keys(EVIDENCE_META) as EvidenceClassification[]).map((k, i) => (
               <Reveal key={k} delay={i * 0.05}>
                 <div className="h-full rounded-2xl border border-line bg-card p-5 shadow-soft">

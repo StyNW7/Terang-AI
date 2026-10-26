@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/misc";
 import { Segmented } from "@/components/ui/tabs";
 import { SourceLabel } from "@/components/shared/source-label";
+import { ACE_EVENTS_REVENUE, PRICING_TIERS } from "@/data/proposal";
 import type { PoolKey } from "@/types/operations";
 import { cn, safeDivide } from "@/lib/utils";
 import { keyOf, L, useI18n, type Bilingual } from "@/lib/i18n";
@@ -161,6 +162,48 @@ export function AcePillarCoordinate() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Revenue model */}
+      <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">{t("Model pendapatan usulan", "Proposed revenue model")}</p>
+            <h3 className="text-xl font-semibold text-ink">{t("Dua pasar, sumber pendapatan yang berbeda", "Two markets, different revenue sources")}</h3>
+          </div>
+          <SourceLabel type="proposal-projection" />
+        </div>
+        <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-[1.5fr_1fr]">
+          <div>
+            <p className="flex items-center gap-2 text-sm font-semibold text-ink">
+              <CalendarDays className="h-4 w-4 text-sky-ink" /> Terang Events
+            </p>
+            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {ACE_EVENTS_REVENUE.map((item) => (
+                <div key={item.name} className="rounded-2xl bg-surface p-4 ring-1 ring-line">
+                  <p className="text-sm font-semibold text-ink">{item.name}</p>
+                  <p className="mt-1 text-[12.5px] leading-relaxed text-muted-strong">{tx(item.description)}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="flex items-center gap-2 text-sm font-semibold text-ink">
+              <Brain className="h-4 w-4 text-one-ink" /> AI Candidate Interview
+            </p>
+            <div className="mt-3 space-y-2">
+              {PRICING_TIERS.map((p) => (
+                <div key={p.id} className="flex items-center justify-between rounded-xl bg-surface px-4 py-2.5 ring-1 ring-line">
+                  <span className="text-sm font-semibold text-ink">{p.name}</span>
+                  <span className="tabular text-sm font-semibold text-ink">
+                    {formatIDRCompact(p.monthly)} <span className="text-xs font-normal text-muted">/ {t("bln", "mo")}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-muted">{t("Paket sama dengan ONE agar perbandingan adil.", "Same plans as ONE for a fair comparison.")}</p>
+          </div>
+        </div>
       </div>
 
       {/* Shared CRM + joint experiment */}

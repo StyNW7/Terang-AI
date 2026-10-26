@@ -504,8 +504,10 @@ Keputusan portofolio: **Invest More / Optimize / Limit Scope / Pause Investment*
 | Fitur | Kegunaan | Status |
 |---|---|---|
 | Pengalih mode strategi (Overview / ONE / ACE) | Mengubah prioritas produk di seluruh situs | `Prototyped` |
+| Roadmap, target KPI & proyeksi finansial (halaman ONE / ACE) | Membaca proposal per fase lengkap dengan target, pembagian FTE, dan proyeksi jangka panjang | `Prototyped` |
+| Bukti pasar (Strategy Lab) | Hasil survei (n = 113) untuk kedua produk dan artinya bagi ONE vs ACE | `Prototyped` |
 | Simulator finansial ONE vs ACE | Membandingkan strategi dengan asumsi yang sama, preset & sensitivitas, ekspor JSON | `Prototyped` |
-| Kapasitas & Operasional (ACE Resource Control) | Merencanakan alokasi waktu 7 orang, anggaran, *sprint board* dengan batas WIP | `Prototyped` |
+| Kapasitas & Operasional (ACE Resource Control) | Merencanakan alokasi waktu 7 orang terhadap target FTE proposal, anggaran, *sprint board* dengan batas WIP, *timeline* 18 bulan | `Prototyped` |
 | Portofolio & Decision Gate | KPI produk & portofolio dengan rekomendasi keputusan | `Prototyped` |
 | Mode presentasi | 15 *slide*, catatan pembicara, navigasi *keyboard* | `Prototyped` |
 | *Command palette* (Ctrl/⌘ + K), tema terang/gelap, bahasa ID/EN | Navigasi cepat dan aksesibilitas | `Prototyped` |
@@ -545,7 +547,7 @@ gantt
     Q6 Evaluate & Evolve     :a6, after a5, 91d
 ```
 
-<sub>Tanggal mulai Januari 2027 hanya ilustrasi. 12 dan 18 bulan adalah <b>periode implementasi awal</b>, bukan seluruh siklus hidup bisnis — operasional, retensi, dan <i>scaling</i> tetap berlanjut setelahnya. Tampilan <i>roadmap</i> di prototipe saat ini memvisualisasikan empat kuartal pertama dari tiap strategi.</sub>
+<sub>Tanggal mulai Januari 2027 hanya ilustrasi. 12 dan 18 bulan adalah <b>periode implementasi awal</b>, bukan seluruh siklus hidup bisnis — operasional, retensi, dan <i>scaling</i> tetap berlanjut setelahnya. Prototipe menampilkan kedua <i>roadmap</i> per fase di halaman strategi, plus <i>timeline</i> Gantt 18 bulan di ACE Command Center.</sub>
 
 ---
 
@@ -603,7 +605,7 @@ gantt
 - Hasil bergantung pada harga, akuisisi *enterprise*, retensi, volume acara berbayar, permintaan layanan promosi, dan efisiensi operasional. **Profitabilitas tidak dijamin.**
 
 > [!NOTE]
-> **Simulator ONE vs ACE** di dalam aplikasi adalah model pembelajaran 12 bulan yang terpisah dan disederhanakan (`website/src/data/scenarios.ts`, `website/src/lib/finance.ts`) dengan asumsi ilustratif yang dapat diubah. Pada *base case*, kedua strategi menunjukkan hasil operasional negatif dalam 12 bulan pertama — sejalan dengan *payback* multi-tahun di atas — sehingga keluarannya tidak boleh dibaca sebagai proyeksi proposal.
+> **Simulator ONE vs ACE** di dalam aplikasi adalah model pembelajaran 12 bulan yang terpisah dan disederhanakan (`website/src/data/scenarios.ts`, `website/src/lib/finance.ts`) dengan asumsi ilustratif yang dapat diubah. Pada *base case*, kedua strategi menunjukkan hasil operasional negatif dalam 12 bulan pertama — sejalan dengan *payback* multi-tahun di atas — sehingga keluarannya tidak boleh dibaca sebagai proyeksi proposal. Halaman simulator menjelaskan hal ini saat kedua hasil negatif dan menampilkan proyeksi jangka panjang proposal di bawahnya. Porsi kapasitas Interview pada ACE bawaannya 55%, langkah *slider* terdekat dengan pembagian 3,15 : 2,65 FTE di proposal.
 
 ---
 

@@ -36,7 +36,7 @@ const WORKFLOWS: Record<ProductKey, { step: Bilingual; detail: Bilingual; status
 const FEATURE_HREF: Record<string, string> = {
   "Smart Event Templates": "/dashboard/events/templates",
   "Repeat Event Planner": "/dashboard/events/repeat",
-  "Organizer Growth Insights": "/dashboard/events/analytics",
+  "Organizer Insight Dashboard": "/dashboard/events/analytics",
   "Role-Based Interview Builder": "/dashboard/interview/builder",
   "Adaptive Structured Interview": "/dashboard/interview/portal",
   "Evidence-Linked Assessment": "/dashboard/interview/reports",

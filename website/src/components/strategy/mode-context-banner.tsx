@@ -32,8 +32,8 @@ const COPY: Record<ProductKey | "portfolio", Record<"overview" | "one" | "ace", 
     ace: {
       title: L("ACE: Terang Events dikembangkan selektif", "ACE: Terang Events developed selectively"),
       text: L(
-        "Smart Event Templates, Repeat Event Planner & Organizer Growth Insights dengan batas WIP 1 inisiatif besar.",
-        "Smart Event Templates, Repeat Event Planner & Organizer Growth Insights, under a WIP limit of 1 major initiative.",
+        "Smart Event Templates, Repeat Event Planner & Organizer Insight Dashboard dengan batas WIP 1 inisiatif besar.",
+        "Smart Event Templates, Repeat Event Planner & Organizer Insight Dashboard, under a WIP limit of 1 major initiative.",
       ),
       href: "/strategies/ace",
       cta: EXPLORE_ACE,

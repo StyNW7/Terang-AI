@@ -5,7 +5,6 @@ import { motion } from "motion/react";
 import { ArrowRight, Check, ClipboardList, FileSearch, LayoutDashboard, RefreshCw, ShieldCheck, Shuffle, Wand2, X } from "lucide-react";
 import type { RoleKey } from "@/types/interview";
 import { PRODUCTS } from "@/data/company";
-import { ROADMAP } from "@/data/strategy";
 import { ROLE_TEMPLATES, generateQuestions, COMPETENCY_MAP } from "@/data/candidates.mock";
 import { assessAnswer } from "@/lib/assessment";
 import { EvidenceCard } from "@/components/interview/evidence-card";
@@ -196,26 +195,7 @@ export function OnePillarOptimize() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
-        {/* Roadmap */}
-        <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
-          <h3 className="text-lg font-semibold text-ink">{tx("_Roadmap_ produk (usulan, 4 kuartal)", "Product roadmap (proposed, 4 quarters)")}</h3>
-          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-4">
-            {ROADMAP.one.map((q, i) => (
-              <div key={q.quarter} className="relative rounded-2xl bg-surface p-4 ring-1 ring-line">
-                <span className="grid h-8 w-8 place-items-center rounded-lg bg-one-gradient text-xs font-semibold text-white">{q.quarter}</span>
-                <ul className="mt-3 space-y-1.5">
-                  {q.items.map((it) => (
-                    <li key={keyOf(it)} className="text-[12.5px] leading-snug text-ink">
-                      • {tx(it)}
-                    </li>
-                  ))}
-                </ul>
-                {i < 3 && <ArrowRight className="absolute -right-3 top-5 z-10 hidden h-5 w-5 rounded-full bg-card p-0.5 text-one-ink shadow-soft sm:block" />}
-              </div>
-            ))}
-          </div>
-        </div>
+      <div>
         {/* Readiness checklist */}
         <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
           <div className="flex items-center justify-between">
@@ -227,7 +207,7 @@ export function OnePillarOptimize() {
             </span>
           </div>
           <Progress value={checked.length / CHECKLIST.length} tone="one" className="mt-3" />
-          <div className="mt-4 space-y-1.5">
+          <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-1.5 md:grid-cols-2">
             {CHECKLIST.map((c) => {
               const on = checked.includes(c.id);
               return (

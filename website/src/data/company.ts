@@ -159,7 +159,7 @@ export const PRODUCTS = {
         ),
       },
       {
-        name: "Organizer Growth Insights",
+        name: "Organizer Insight Dashboard",
         status: "proposed",
         description: L(
           "Pengembangan analitik: _funnel_ registrasi, aktivitas peserta & tren _event_ berulang.",
@@ -175,7 +175,7 @@ export const PRODUCTS = {
         ),
       },
     ] satisfies ProductProposal[],
-    revenueModel: L("Biaya platform per _event_ / per transaksi registrasi", "Platform fee per event / per registration transaction"),
+    revenueModel: L("Event Platform Fee · Managed Event Boost · Organizer Pro Subscription (usulan)", "Event Platform Fee · Managed Event Boost · Organizer Pro Subscription (proposed)"),
     cycle: L("Episodik — mengikuti kalender akademik & acara", "Episodic — follows the academic & event calendar"),
   },
   interview: {
@@ -249,7 +249,7 @@ export const PRODUCTS = {
         ),
       },
     ] satisfies ProductProposal[],
-    revenueModel: L("Paket _pilot_ · paket per _interview_ · langganan perusahaan", "Pilot package · per-interview package · company subscription"),
+    revenueModel: L("Terang Pilot Challenge → langganan Starter · Growth · Enterprise (usulan)", "Terang Pilot Challenge → Starter · Growth · Enterprise subscriptions (proposed)"),
     cycle: L("Berulang — mengikuti siklus rekrutmen perusahaan", "Recurring — follows companies' hiring cycles"),
   },
 };
@@ -282,8 +282,8 @@ export const POSITIONING: { label: Txt; events: Txt; interview: Txt }[] = [
   },
   {
     label: L("Model pendapatan", "Revenue model"),
-    events: L("Biaya per _event_ / transaksi", "Fee per event / transaction"),
-    interview: L("_Pilot_, paket _interview_, langganan", "Pilots, interview packages, subscriptions"),
+    events: L("Biaya platform per acara/transaksi, promosi terkelola, langganan _organizer_", "Platform fee per event/transaction, managed promotion, organizer subscription"),
+    interview: L("_Pilot_, lalu langganan bulanan bertingkat", "Pilots, then tiered monthly subscriptions"),
   },
   {
     label: L("Pertimbangan risiko", "Risk considerations"),

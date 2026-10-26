@@ -42,7 +42,8 @@ export const BASE_ASSUMPTIONS: Assumptions = {
     focusedCampaignCost: 150_000_000,
   },
   ace: {
-    interviewShare: 0.6,
+    // Proposal split 3.15 : 2.65 FTE ≈ 54 : 46, rounded to the 5% slider step.
+    interviewShare: 0.55,
     coordinationCostPerMonth: 5_000_000,
     incrementalMarketingOverhead: 25_000_000,
     interviewCampaignCost: 110_000_000,

@@ -8,7 +8,7 @@ export const MIN_BUFFER = 10;
 export const MIN_QA = 10;
 export const MIN_MAINTENANCE = 5;
 export const ACE_MIN_PRODUCT_SHARE = 15;
-export const MIN_GOVERNANCE = 15;
+export const MIN_GOVERNANCE = 10;
 export const MIN_COORDINATION = 10;
 
 export function poolTotal(allocation: CapacityAllocation, pool: PoolKey) {
@@ -28,6 +28,24 @@ export function productHours(allocation: CapacityAllocation, hoursPerPerson: num
     interview: { product: productPool * share("product", "interview"), ops: opsPool * share("ops", "interview") },
     events: { product: productPool * share("product", "events"), ops: opsPool * share("ops", "events") },
   };
+}
+
+/**
+ * Full-time equivalents across all 7 people. Events maintenance counts toward Events;
+ * QA, buffers, governance and coordination are shared. FTE is time, not headcount.
+ */
+export function fteSummary(allocation: CapacityAllocation) {
+  const fte = { interview: 0, events: 0, shared: 0 };
+  (Object.keys(POOLS) as PoolKey[]).forEach((pool) => {
+    const people = POOLS[pool].headcount;
+    Object.entries(allocation[pool] ?? {}).forEach(([key, value]) => {
+      const share = ((value ?? 0) / 100) * people;
+      if (key === "interview") fte.interview += share;
+      else if (key === "events" || key === "maintenance") fte.events += share;
+      else fte.shared += share;
+    });
+  });
+  return fte;
 }
 
 export function validateAllocation(allocation: CapacityAllocation, mode: StrategyMode): CapacityIssue[] {

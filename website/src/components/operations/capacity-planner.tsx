@@ -8,13 +8,14 @@ import type { StrategyMode } from "@/types/common";
 import { useOperationsStore } from "@/store/operations-store";
 import { useScenarioStore } from "@/store/scenario-store";
 import { ALLOCATION_LABELS, ALLOCATION_PRESETS, POOLS, TEAM } from "@/data/team";
-import { poolHours, poolTotal, validateAllocation, productHours } from "@/lib/resource-planner";
+import { fteSummary, poolHours, poolTotal, validateAllocation, productHours } from "@/lib/resource-planner";
+import { FTE_TARGET } from "@/data/proposal";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Segmented } from "@/components/ui/tabs";
 import { SourceLabel } from "@/components/shared/source-label";
-import { formatNumber } from "@/lib/formatters";
+import { formatFte, formatNumber } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 import { keyOf, useI18n } from "@/lib/i18n";
 
@@ -102,6 +103,8 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
   const hours = useScenarioStore((s) => s.assumptions.shared.productiveHoursPerPerson);
   const issues = useMemo(() => validateAllocation(allocation, rules), [allocation, rules]);
   const ph = productHours(allocation, hours);
+  const fte = fteSummary(allocation);
+  const target = FTE_TARGET[rules];
 
   return (
     <div className="rounded-2xl border border-line bg-card p-6 shadow-soft">
@@ -121,7 +124,10 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
         {(Object.keys(ALLOCATION_PRESETS) as ("one" | "ace" | "split")[]).map((p) => (
-          <Button key={p} size="sm" variant={preset === p ? "dark" : "secondary"} onClick={() => applyPreset(p)} title={t(ALLOCATION_PRESETS[p].description)}>
+          <Button key={p} size="sm" variant={preset === p ? "dark" : "secondary"} onClick={() => {
+              applyPreset(p);
+              if (p !== "split") onRulesChange(p);
+            }} title={t(ALLOCATION_PRESETS[p].description)}>
             {tx(ALLOCATION_PRESETS[p].label)}
           </Button>
         ))}
@@ -163,7 +169,38 @@ export function CapacityPlanner({ rules, onRulesChange }: { rules: "one" | "ace"
 
       <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1.4fr]">
         <div className="rounded-2xl bg-navy-gradient p-5 text-white">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">{t("Hasil alokasi per produk (jam/bulan)", "Allocation by product (hours/month)")}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sky">{t("Pembagian waktu 7 personel (FTE)", "Time split across 7 people (FTE)")}</p>
+          <div className={cn("mt-3 grid gap-2", rules === "one" ? "grid-cols-2" : "grid-cols-3")}>
+            {(rules === "one"
+              ? [
+                  { key: "interview", label: "AI Interview", value: fte.interview, target: target.interview },
+                  { key: "rest", label: t("Bersama & maintenance", "Shared & maintenance"), value: fte.events + fte.shared, target: target.events + target.shared },
+                ]
+              : [
+                  { key: "interview", label: "Interview", value: fte.interview, target: target.interview },
+                  { key: "events", label: "Events", value: fte.events, target: target.events },
+                  { key: "shared", label: t("Bersama", "Shared"), value: fte.shared, target: target.shared },
+                ]
+            ).map((row) => {
+              const onTarget = Math.abs(row.value - row.target) <= 0.15;
+              return (
+                <div key={row.key} className="rounded-xl bg-white/[0.07] p-2.5 ring-1 ring-white/12">
+                  <p className="text-[11px] text-white/65">{row.label}</p>
+                  <p className="tabular font-display text-lg font-semibold">{formatFte(row.value)}</p>
+                  <p className={cn("tabular text-[10.5px]", onTarget ? "text-[#7be0bf]" : "text-white/55")}>
+                    {onTarget ? "✓ " : ""}
+                    {t("usulan", "proposal")} {formatFte(row.target)}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-2 text-[11.5px] leading-relaxed text-white/60">
+            {t(`Target ${rules.toUpperCase()}: `, `${rules.toUpperCase()} target: `)}
+            {tx(target.note)} {t("_Maintenance_ Events dihitung ke Events.", "Events maintenance counts toward Events.")}
+          </p>
+
+          <p className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-sky">{t("Hasil alokasi per produk (jam/bulan)", "Allocation by product (hours/month)")}</p>
           {(["interview", "events"] as const).map((p) => {
             const h = ph[p];
             const total = h.product + h.ops;

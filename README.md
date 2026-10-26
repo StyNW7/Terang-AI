@@ -504,8 +504,10 @@ Portfolio decisions: **Invest More / Optimize / Limit Scope / Pause Investment**
 | Feature | What it lets you do | Status |
 |---|---|---|
 | Strategy mode switcher (Overview / ONE / ACE) | Re-prioritise products across the whole site | `Prototyped` |
+| Roadmap, KPI targets & financial projection (ONE / ACE pages) | Read the proposal phase by phase with targets, FTE split and long-term projections | `Prototyped` |
+| Market evidence (Strategy Lab) | Survey results (n = 113) for both products and what they mean for ONE vs ACE | `Prototyped` |
 | ONE vs ACE financial simulator | Compare strategies under the same assumptions, presets & sensitivity, export JSON | `Prototyped` |
-| Capacity & Operations (ACE Resource Control) | Plan 7-person time allocation, budget, sprint board with WIP limits | `Prototyped` |
+| Capacity & Operations (ACE Resource Control) | Plan 7-person time allocation against the proposal's FTE targets, budget, sprint board with WIP limits, 18-month timeline | `Prototyped` |
 | Portfolio & Decision Gate | Product & portfolio KPIs with decision recommendations | `Prototyped` |
 | Presentation mode | 15 slides, speaker notes, keyboard navigation | `Prototyped` |
 | Command palette (Ctrl/⌘ + K), light/dark theme, ID/EN language | Fast navigation and accessibility | `Prototyped` |
@@ -545,7 +547,7 @@ gantt
     Q6 Evaluate & Evolve     :a6, after a5, 91d
 ```
 
-<sub>The January 2027 start date is illustrative only. 12 and 18 months are the <b>initial implementation periods</b>, not the full business lifecycle — operations, retention and scaling continue afterwards. The prototype's roadmap view currently visualises the first four quarters of each strategy.</sub>
+<sub>The January 2027 start date is illustrative only. 12 and 18 months are the <b>initial implementation periods</b>, not the full business lifecycle — operations, retention and scaling continue afterwards. The prototype shows both roadmaps phase by phase on the strategy pages, plus an 18-month Gantt timeline in the ACE Command Center.</sub>
 
 ---
 
@@ -601,7 +603,7 @@ gantt
 - Results are conditional on pricing, enterprise acquisition, retention, paid-event volume, promotion-service demand and operating efficiency. **Profitability is not guaranteed.**
 
 > [!NOTE]
-> The in-app **ONE vs ACE Simulator** is a separate, simplified 12-month teaching model (`website/src/data/scenarios.ts`, `website/src/lib/finance.ts`) with editable illustrative assumptions. Under its base case both strategies show a negative operating result within the first 12 months — consistent with the multi-year payback above — so its outputs should not be read as the proposal's projections.
+> The in-app **ONE vs ACE Simulator** is a separate, simplified 12-month teaching model (`website/src/data/scenarios.ts`, `website/src/lib/finance.ts`) with editable illustrative assumptions. Under its base case both strategies show a negative operating result within the first 12 months — consistent with the multi-year payback above — so its outputs should not be read as the proposal's projections. The simulator page explains this when both results are negative and shows the proposal's long-term projection underneath. Its ACE capacity share defaults to 55%, the nearest slider step to the proposal's 3.15 : 2.65 FTE split.
 
 ---
 

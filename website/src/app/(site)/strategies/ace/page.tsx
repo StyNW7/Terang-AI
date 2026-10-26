@@ -8,6 +8,8 @@ import { ModeActivator } from "@/components/strategy/mode-activator";
 import { AcePillarAgile } from "@/components/strategy/ace/pillar-agile";
 import { AcePillarCoordinate } from "@/components/strategy/ace/pillar-coordinate";
 import { AcePillarEvolve } from "@/components/strategy/ace/pillar-evolve";
+import { PhaseRoadmap } from "@/components/strategy/phase-roadmap";
+import { FinancialProjection, ProposalTargets } from "@/components/strategy/proposal-targets";
 import { Button } from "@/components/ui/button";
 import { SectionHeading, Callout } from "@/components/ui/misc";
 import { Reveal } from "@/components/ui/reveal";
@@ -106,6 +108,33 @@ export default function AceStrategyPage() {
                 }}
               />
             </Suspense>
+          </div>
+        </Container>
+      </Section>
+
+      <Section className="pt-0">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              eyebrow={<T id="Rencana Implementasi" en="Implementation Plan" />}
+              title={<T id="Roadmap, target & kelayakan ACE" en="ACE roadmap, targets & feasibility" />}
+              description={
+                <T
+                  id="18 bulan implementasi awal dibagi per fase. Target dan angka finansial adalah proyeksi proposal, bukan hasil aktual."
+                  en="A 18-month initial implementation, phase by phase. Targets and financial figures are proposal projections, not actual results."
+                />
+              }
+            />
+          </Reveal>
+          <div className="mt-10 space-y-6">
+            <div className="rounded-3xl border border-line bg-card p-6 shadow-soft">
+              <h3 className="text-lg font-semibold text-ink">
+                <T id="_Roadmap_ implementasi (18 bulan)" en="Implementation roadmap (18 months)" />
+              </h3>
+              <PhaseRoadmap strategy="ace" className="mt-5" />
+            </div>
+            <ProposalTargets strategy="ace" />
+            <FinancialProjection focus="ace" />
           </div>
         </Container>
       </Section>

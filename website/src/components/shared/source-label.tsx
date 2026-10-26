@@ -1,4 +1,4 @@
-import { BadgeCheck, FlaskConical, Lightbulb, Lock, MousePointerClick } from "lucide-react";
+import { BadgeCheck, ClipboardList, FlaskConical, Lightbulb, Lock, MousePointerClick, TrendingUp } from "lucide-react";
 import type { EvidenceClassification } from "@/types/common";
 import { EVIDENCE_META } from "@/data/public-sources";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -9,6 +9,8 @@ const STYLES: Record<EvidenceClassification, { className: string; Icon: typeof B
   "public-source": { className: "bg-success-soft text-success-ink ring-current/15", Icon: BadgeCheck },
   "internal-restricted-context": { className: "bg-violet-soft text-violet-ink ring-current/15", Icon: Lock },
   "strategic-proposal": { className: "bg-soft text-brand-ink ring-current/15", Icon: Lightbulb },
+  "proposal-projection": { className: "bg-one-soft text-one-ink ring-current/15", Icon: TrendingUp },
+  "survey-data": { className: "bg-sky-soft text-sky-ink ring-current/15", Icon: ClipboardList },
   "illustrative-assumption": { className: "bg-warning-soft text-warning-ink ring-current/15", Icon: FlaskConical },
   "synthetic-demo": { className: "bg-neutral-soft text-muted-strong ring-line", Icon: MousePointerClick },
 };

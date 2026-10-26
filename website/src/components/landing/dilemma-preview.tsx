@@ -42,7 +42,7 @@ function describe(share: number) {
 }
 
 export function DilemmaPreview() {
-  const [share, setShare] = useState(60);
+  const [share, setShare] = useState(55);
   const { t, tx } = useI18n();
   const result = useMemo(() => {
     const a = { ...BASE_ASSUMPTIONS, ace: { ...BASE_ASSUMPTIONS.ace, interviewShare: share / 100 } };

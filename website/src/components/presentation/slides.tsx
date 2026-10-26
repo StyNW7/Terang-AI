@@ -23,6 +23,7 @@ import {
 import type { Assumptions } from "@/types/finance";
 import { computeBoth, computeInterview } from "@/lib/finance";
 import { SCENARIO_PRESETS } from "@/data/scenarios";
+import { FINANCIAL_PROJECTION } from "@/data/proposal";
 import { ACE_STRATEGY, CHALLENGES, KEY_QUESTION, ONE_STRATEGY } from "@/data/strategy";
 import { COMPANY, PRODUCTS } from "@/data/company";
 import { TEAM } from "@/data/team";
@@ -311,8 +312,8 @@ export const SLIDES: SlideDef[] = [
     accent: "one",
     link: { href: "/strategies/one?pillar=navigate", label: L("_Funnel_ Pilot-to-Paid", "Pilot-to-Paid funnel") },
     notes: L(
-      "Pilot-to-Paid Growth Engine: komunitas HR, LinkedIn, _webinar_ HR Efficiency Clinic, demo _enterprise_, _pilot_ terbatas, evaluasi ROI, konversi & _renewal_. Angka _funnel_ mengikuti asumsi simulator saat ini.",
-      "Pilot-to-Paid Growth Engine: HR communities, LinkedIn, HR Efficiency Clinic webinars, enterprise demos, limited pilots, ROI evaluation, conversion & renewal. Funnel numbers follow the current simulator assumptions.",
+      "Pilot-to-Paid Growth Engine: komunitas HR, LinkedIn, demo _enterprise_. Tiga inisiatif: HR Efficiency Clinic, Terang Pilot Challenge, Verified Impact Stories. Paket usulan Starter Rp3,9 jt · Growth Rp9,9 jt · Enterprise Rp20,9 jt per bulan. Target M12: 24 _pilot_, 20 kontrak, 18 akun berbayar aktif. Angka _funnel_ di _slide_ mengikuti asumsi simulator.",
+      "Pilot-to-Paid Growth Engine: HR communities, LinkedIn, enterprise demos. Three initiatives: HR Efficiency Clinic, Terang Pilot Challenge, Verified Impact Stories. Proposed plans Starter Rp3.9M · Growth Rp9.9M · Enterprise Rp20.9M per month. M12 targets: 24 pilots, 20 contracts, 18 active paying accounts. Funnel numbers on the slide follow the simulator assumptions.",
     ),
     render: (step, a, { t }) => {
       const iv = computeInterview("one", a);
@@ -355,8 +356,8 @@ export const SLIDES: SlideDef[] = [
     accent: "one",
     link: { href: "/strategies/one?pillar=evaluate", label: "Expansion Gate" },
     notes: L(
-      "Expansion Gate: _Scale_ jika kualitas, permintaan, ekonomi, kapasitas & keamanan lulus. _Improve_ jika ada target meleset tapi bisa diperbaiki. _Pause/Revalidate_ jika privasi, kualitas, atau kelayakan komersial gagal. Privasi & validitas adalah _hard gate_.",
-      "Expansion Gate: Scale if quality, demand, economics, capacity & safety pass. Improve if some targets are missed but fixable. Pause/Revalidate if privacy, quality or commercial viability fails. Privacy & validity are hard gates.",
+      "Expansion Gate: _Scale_ jika kualitas, permintaan, ekonomi, kapasitas & keamanan lulus. _Improve_ jika ada target meleset tapi bisa diperbaiki. _Hold_ (tahan ekspansi & validasi ulang) jika privasi, kualitas, atau kelayakan komersial gagal. Privasi & validitas adalah _hard gate_.",
+      "Expansion Gate: Scale if quality, demand, economics, capacity & safety pass. Improve if some targets are missed but fixable. Hold (pause expansion & revalidate) if privacy, quality or commercial viability fails. Privacy & validity are hard gates.",
     ),
     render: (step, _a, { t }) => (
       <div>
@@ -365,7 +366,7 @@ export const SLIDES: SlideDef[] = [
           {[
             { icon: Rocket, title: "Scale", d: t("Kualitas, permintaan, ekonomi, kapasitas & keamanan lulus.", "Quality, demand, economics, capacity & safety all pass."), c: "from-[#12a37a] to-[#0b7a5a]" },
             { icon: Wrench, title: "Improve", d: t("Beberapa target meleset, perbaikan masih layak.", "Some targets are missed, but improvement is still viable."), c: "from-[#4a90e2] to-[#2251c9]" },
-            { icon: Pause, title: "Pause / Revalidate", d: t("Kualitas, privasi, atau kelayakan komersial gagal.", "Quality, privacy or commercial viability fails."), c: "from-[#e0484d] to-[#a82025]" },
+            { icon: Pause, title: "Hold", d: t("Kualitas, privasi, atau kelayakan komersial gagal — tahan ekspansi & validasi ulang.", "Quality, privacy or commercial viability fails — pause expansion & revalidate."), c: "from-[#e0484d] to-[#a82025]" },
           ].map((g, i) => (
             <Step key={g.title} at={i + 1} step={step} className={cn("rounded-3xl bg-gradient-to-br p-6", g.c)}>
               <g.icon className="h-9 w-9" />
@@ -498,18 +499,18 @@ export const SLIDES: SlideDef[] = [
     accent: "ace",
     link: { href: "/dashboard/portfolio", label: "Portfolio Intelligence" },
     notes: L(
-      "Evaluasi per produk dan per portofolio. Empat keputusan: _Invest more_, _Improve_, _Reduce scope_, _Pause_. ACE tidak menjanjikan mempertahankan dua produk dengan segala cara — ada kondisi _exit_ yang transparan.",
-      "Evaluate per product and per portfolio. Four decisions: Invest more, Improve, Reduce scope, Pause. ACE does not promise to keep both products at all costs — there are transparent exit conditions.",
+      "Evaluasi per produk dan per portofolio. Empat keputusan: _Invest More_, _Optimize_, _Limit Scope_, _Pause Investment_. ACE tidak menjanjikan mempertahankan dua produk dengan segala cara — ada kondisi _exit_ yang transparan.",
+      "Evaluate per product and per portfolio. Four decisions: Invest More, Optimize, Limit Scope, Pause Investment. ACE does not promise to keep both products at all costs — there are transparent exit conditions.",
     ),
     render: (step, _a, { t }) => (
       <div>
         <h2 className="text-5xl font-semibold">Evaluate & Evolve Portfolio</h2>
         <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-4">
           {[
-            { icon: Rocket, title: "Invest more", d: t("Traksi kuat & ekonomi berkelanjutan", "Strong traction & sustainable economics"), c: "from-[#12a37a] to-[#0b7a5a]" },
-            { icon: Wrench, title: "Improve", d: t("Potensi ada, KPI tertentu perlu diperbaiki", "Potential is there; certain KPIs need work"), c: "from-[#4a90e2] to-[#2251c9]" },
-            { icon: Minimize2, title: "Reduce scope", d: t("Bukti belum cukup untuk intensitas saat ini", "Not enough evidence for the current intensity"), c: "from-[#f0a92c] to-[#c97a06]" },
-            { icon: Pause, title: "Pause", d: t("_Milestone_ gagal berulang / risiko kritis", "Repeated missed milestones / critical risk"), c: "from-[#e0484d] to-[#a82025]" },
+            { icon: Rocket, title: "Invest More", d: t("Traksi kuat & ekonomi berkelanjutan", "Strong traction & sustainable economics"), c: "from-[#12a37a] to-[#0b7a5a]" },
+            { icon: Wrench, title: "Optimize", d: t("Potensi ada, KPI tertentu perlu diperbaiki", "Potential is there; certain KPIs need work"), c: "from-[#4a90e2] to-[#2251c9]" },
+            { icon: Minimize2, title: "Limit Scope", d: t("Bukti belum cukup untuk intensitas saat ini", "Not enough evidence for the current intensity"), c: "from-[#f0a92c] to-[#c97a06]" },
+            { icon: Pause, title: "Pause Investment", d: t("_Milestone_ gagal berulang / risiko kritis", "Repeated missed milestones / critical risk"), c: "from-[#e0484d] to-[#a82025]" },
           ].map((g, i) => (
             <Step key={g.title} at={i + 1} step={step} className={cn("rounded-3xl bg-gradient-to-br p-6", g.c)}>
               <g.icon className="h-8 w-8" />
@@ -525,13 +526,13 @@ export const SLIDES: SlideDef[] = [
     id: "compare",
     section: "compare",
     title: "ONE vs ACE",
-    steps: 2,
+    steps: 3,
     accent: "brand",
     mascot: "chart",
     link: { href: "/dashboard/simulator", label: L("Simulator Strategi", "Strategy Simulator") },
     notes: L(
-      "Gunakan simulator untuk tanya-jawab juri. Angka di _slide_ ini mengikuti asumsi simulator saat ini. Tunjukkan bahwa hasil bisa berbalik bergantung asumsi (lihat tabel tiga _preset_).",
-      "Use the simulator for the judges' Q&A. Figures on this slide follow the current simulator assumptions. Show that the result can flip depending on assumptions (see the three-preset table).",
+      "Gunakan simulator untuk tanya-jawab juri. Kartu atas mengikuti asumsi simulator 12 bulan; hasil bisa berbalik bergantung asumsi (lihat tiga _preset_). Langkah terakhir menampilkan proyeksi jangka panjang proposal — horizon berbeda (36 vs 48 bulan), jadi bandingkan secara indikatif.",
+      "Use the simulator for the judges' Q&A. The top cards follow the 12-month simulator assumptions; the result can flip depending on assumptions (see the three presets). The last step shows the proposal's long-term projection — horizons differ (36 vs 48 months), so compare indicatively.",
     ),
     render: (step, a, { t }) => {
       const { one, ace } = computeBoth(a);
@@ -574,6 +575,24 @@ export const SLIDES: SlideDef[] = [
                 {p.label}: <strong>{p.win}</strong> {t("unggul", "leads")}
               </span>
             ))}
+          </Step>
+          <Step at={3} step={step} className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+            {FINANCIAL_PROJECTION.filter((row) => row.key === "npv" || row.key === "irr" || row.key === "payback").map((row) => (
+              <div key={row.key} className="rounded-2xl bg-white/[0.07] p-4 ring-1 ring-white/15">
+                <p className="text-sm text-white/65">{t(row.label)}</p>
+                <p className="mt-1 text-lg">
+                  ONE <strong className="font-display">{t(row.one)}</strong>
+                  <span className="mx-2 text-white/40">·</span>
+                  ACE <strong className="font-display">{t(row.ace)}</strong>
+                </p>
+              </div>
+            ))}
+            <p className="text-sm text-white/55 md:col-span-3">
+              {t(
+                "Proyeksi proposal: ONE 36 bulan, ACE 48 bulan — berbasis asumsi, bukan hasil aktual.",
+                "Proposal projections: ONE 36 months, ACE 48 months — assumption-based, not actual results.",
+              )}
+            </p>
           </Step>
         </div>
       );
@@ -621,7 +640,7 @@ export const SLIDES: SlideDef[] = [
                 L("Validasi Interview lambat — diversifikasi mengurangi risiko", "Interview validation is slow — diversification reduces risk"),
                 L("Events punya margin & permintaan _organizer_ yang solid", "Events has solid margins & organizer demand"),
                 L("_Overhead_ koordinasi tetap rendah & WIP disiplin", "Coordination overhead stays low & WIP is disciplined"),
-                L("Ada mekanisme _reduce/pause_ yang tegas", "There is a firm reduce/pause mechanism"),
+                L("Ada mekanisme _Limit Scope / Pause_ yang tegas", "There is a firm Limit Scope / Pause mechanism"),
               ].map((x) => (
                 <li key={x.id} className="flex gap-2">
                   <BadgeCheck className="mt-1 h-5 w-5 shrink-0" /> <span>{tx(x)}</span>

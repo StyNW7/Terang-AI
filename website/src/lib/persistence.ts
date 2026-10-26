@@ -5,7 +5,8 @@ import { createJSONStorage, type StateStorage } from "zustand/middleware";
  * Never store real personal data or confidential case information here.
  */
 // v2: demo content became bilingual (ID/EN) — older saved demo data is discarded.
-export const STORAGE_VERSION = 2;
+// v3: allocation presets and the ACE interview share follow the final proposal (FTE split).
+export const STORAGE_VERSION = 3;
 export const STORAGE_PREFIX = "terang-sge";
 
 export const storageKey = (name: string) => `${STORAGE_PREFIX}:${name}:v${STORAGE_VERSION}`;

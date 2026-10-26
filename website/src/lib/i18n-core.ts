@@ -1,4 +1,4 @@
-import { createElement, Fragment, type ReactNode } from "react";
+import { createElement, type ReactNode } from "react";
 
 /**
  * Bilingual (Indonesian / English) primitives shared by server and client code.
@@ -45,13 +45,17 @@ export function plain(text: string): string {
   return text.includes("_") ? text.replace(MARK, "$1") : text;
 }
 
-/** Renders italic markers as <em>: "Buka _dashboard_" → Buka <em>dashboard</em>. */
+/**
+ * Renders italic markers as <em>: "Buka _dashboard_" → Buka <em>dashboard</em>.
+ * The result is wrapped in one <span> so that, inside a flex or grid parent, the
+ * sentence stays a single item instead of splitting into one column per fragment.
+ */
 export function rich(text: string): ReactNode {
   if (!text.includes("_")) return text;
   const parts = text.split(MARK);
   if (parts.length === 1) return text;
   return createElement(
-    Fragment,
+    "span",
     null,
     ...parts.map((part, i) => (i % 2 ? createElement("em", { key: i }, part) : part)),
   );

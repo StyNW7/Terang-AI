@@ -98,7 +98,7 @@ const ACE: Def<"ace">[] = [
     max: 0.9,
     step: 0.05,
     fmt: "pct",
-    hint: L("Sisanya untuk Terang Events. Tidak harus 50:50.", "The rest goes to Terang Events. It need not be 50:50."),
+    hint: L("Sisanya untuk Terang Events. Usulan ACE ≈ 55% (3,15 : 2,65 FTE) — tidak harus 50:50.", "The rest goes to Terang Events. The ACE proposal is ≈ 55% (3.15 : 2.65 FTE) — it need not be 50:50."),
   },
   { key: "coordinationCostPerMonth", label: L("Biaya koordinasi bersama / bln", "Shared coordination cost / month"), min: 0, max: 20_000_000, step: 500_000, fmt: "idrc" },
   { key: "incrementalMarketingOverhead", label: L("_Overhead_ pemasaran tambahan", "Additional marketing overhead"), min: 0, max: 150_000_000, step: 5_000_000, fmt: "idrc" },

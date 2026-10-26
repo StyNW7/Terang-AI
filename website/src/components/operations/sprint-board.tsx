@@ -81,7 +81,7 @@ export function SprintBoard() {
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ace-ink">{tx("Langkah 4 · _Sprint board_", "Step 4 · Sprint board")}</p>
           <h3 className="text-xl font-semibold text-ink">Sprint Board</h3>
           <p className="text-sm text-muted-strong">
-            {t("Seret kartu antar kolom atau gunakan tombol panah. Batas WIP: 1 inisiatif besar per produk.", "Drag cards between columns or use the arrow buttons. WIP limit: 1 major initiative per product.")}
+            {t("Seret kartu antar kolom atau gunakan tombol panah. Batas WIP: 1 inisiatif besar per produk (maks. 2 bersamaan).", "Drag cards between columns or use the arrow buttons. WIP limit: 1 major initiative per product (max. 2 at once).")}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -106,7 +106,7 @@ export function SprintBoard() {
         </p>
       )}
       <LayoutGroup>
-        <div className="scrollbar-thin mt-5 grid auto-cols-[minmax(220px,1fr)] grid-flow-col gap-3 overflow-x-auto pb-2">
+        <div className="scrollbar-thin mt-5 grid auto-cols-[minmax(196px,1fr)] grid-flow-col gap-3 overflow-x-auto pb-2">
           {COLUMNS.map((col) => {
             const list = tasks.filter((task) => task.column === col.id);
             return (
@@ -183,38 +183,49 @@ export function SprintBoard() {
   );
 }
 
-const TIMELINE: { name: Bilingual | string; product: "events" | "interview" | "shared"; start: number; len: number }[] = [
-  { name: "Smart Event Templates", product: "events" as const, start: 0, len: 3 },
-  { name: "Repeat Event Planner", product: "events" as const, start: 3, len: 3 },
-  { name: "Organizer Growth Insights", product: "events" as const, start: 6, len: 3 },
-  { name: L("Eksperimen _career fair_", "Career-fair experiment"), product: "events" as const, start: 9, len: 2 },
-  { name: "Interview Builder", product: "interview" as const, start: 0, len: 3 },
-  { name: "Evidence-Linked Assessment", product: "interview" as const, start: 3, len: 3 },
-  { name: "Recruiter Dashboard", product: "interview" as const, start: 6, len: 3 },
-  { name: "Responsible AI Controls", product: "interview" as const, start: 9, len: 3 },
-  { name: "Portfolio review", product: "shared" as const, start: 5, len: 1 },
-  { name: "Portfolio review", product: "shared" as const, start: 11, len: 1 },
+const MONTHS = 18;
+type Bar = { start: number; len: number };
+const TIMELINE: { name: Bilingual | string; product: "events" | "interview" | "shared"; bars: Bar[] }[] = [
+  { name: "Smart Event Templates", product: "events", bars: [{ start: 0, len: 3 }] },
+  { name: "Repeat Event Planner", product: "events", bars: [{ start: 3, len: 3 }] },
+  { name: "Organizer Insight Dashboard", product: "events", bars: [{ start: 6, len: 3 }] },
+  { name: L("Eksperimen _career fair_", "Career-fair experiment"), product: "events", bars: [{ start: 9, len: 3 }] },
+  { name: "Managed Event Boost & Organizer Pro", product: "events", bars: [{ start: 12, len: 3 }] },
+  { name: L("AI Event Assistant (bila kapasitas cukup)", "AI Event Assistant (if capacity allows)"), product: "events", bars: [{ start: 15, len: 3 }] },
+  { name: "Interview Builder", product: "interview", bars: [{ start: 0, len: 3 }] },
+  { name: "Evidence-Linked Assessment", product: "interview", bars: [{ start: 3, len: 3 }] },
+  { name: "Recruiter Review Dashboard", product: "interview", bars: [{ start: 6, len: 3 }] },
+  { name: "Responsible AI Controls", product: "interview", bars: [{ start: 9, len: 3 }] },
+  { name: L("Konversi & _renewal_ Interview", "Interview conversion & renewals"), product: "interview", bars: [{ start: 12, len: 6 }] },
+  {
+    name: L("_Decision gate_ portofolio (kuartalan)", "Portfolio decision gate (quarterly)"),
+    product: "shared",
+    bars: [2, 5, 8, 11, 14, 17].map((start) => ({ start, len: 1 })),
+  },
 ];
-const MONTHS: Record<"id" | "en", string[]> = {
-  id: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
-  en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-};
 const BAR = { events: "bg-[linear-gradient(90deg,#7fd3ff,#39b7ff)]", interview: "bg-[linear-gradient(90deg,#6f9cff,#2f66e0)]", shared: "bg-navy" };
+const COLS = "grid-cols-[210px_repeat(18,minmax(0,1fr))]";
 
 export function RoadmapTimeline() {
-  const { t, tx, locale } = useI18n();
-  const months = MONTHS[locale];
+  const { t, tx } = useI18n();
+  const months = Array.from({ length: MONTHS }, (_, i) => `M${i + 1}`);
   return (
     <div className="rounded-2xl border border-line bg-card p-6 shadow-soft">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 className="text-lg font-semibold text-ink">{tx("_Timeline_ 12 bulan (Gantt ringan)", "12-month timeline (light Gantt)")}</h3>
-        <p className="text-xs text-muted">
-          {t("Kuartal", "Quarters")}: {ROADMAP.ace.map((q) => q.quarter).join(" · ")}
-        </p>
+        <h3 className="text-lg font-semibold text-ink">{tx("_Timeline_ implementasi ACE · 18 bulan", "ACE implementation timeline · 18 months")}</h3>
+        <p className="text-xs text-muted">{t("6 fase × 3 bulan · usulan", "6 phases × 3 months · proposed")}</p>
       </div>
       <div className="scrollbar-thin mt-4 overflow-x-auto">
-        <div className="min-w-[760px]">
-          <div className="grid grid-cols-[200px_repeat(12,1fr)] text-[11px] font-semibold text-muted">
+        <div className="min-w-[1060px]">
+          <div className={cn("grid text-[11px] font-semibold", COLS)}>
+            <span />
+            {ROADMAP.ace.map((q) => (
+              <span key={q.quarter} className="col-span-3 mr-1 truncate rounded-md bg-ace-soft px-2 py-1 text-ace-ink" title={`${q.quarter} · ${q.name}`}>
+                {q.quarter} · {q.name}
+              </span>
+            ))}
+          </div>
+          <div className={cn("mt-1 grid text-[10.5px] font-semibold text-muted", COLS)}>
             <span />
             {months.map((m) => (
               <span key={m} className="border-l border-line px-1 py-1">
@@ -223,23 +234,26 @@ export function RoadmapTimeline() {
             ))}
           </div>
           {TIMELINE.map((row, i) => (
-            <div key={keyOf(row.name) + i} className="grid grid-cols-[200px_repeat(12,1fr)] items-center border-t border-line/70">
+            <div key={keyOf(row.name)} className={cn("grid items-center border-t border-line/70", COLS)}>
               <span className="py-2 pr-2 text-[13px] leading-snug text-ink">{tx(row.name)}</span>
-              <div className="relative col-span-12 h-8">
-                <div className="absolute inset-0 grid grid-cols-12">
+              <div className="relative col-span-18 h-8">
+                <div className="absolute inset-0 grid grid-cols-18">
                   {months.map((m) => (
                     <span key={m} className="border-l border-line/60" />
                   ))}
                 </div>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05, duration: 0.5 }}
-                  className={cn("absolute top-1.5 h-5 origin-left rounded-md shadow-soft", BAR[row.product])}
-                  style={{ left: `${(row.start / 12) * 100}%`, width: `${(row.len / 12) * 100}%` }}
-                  title={`${t(row.name)}: ${months[row.start]}–${months[row.start + row.len - 1]}`}
-                />
+                {row.bars.map((bar) => (
+                  <motion.div
+                    key={bar.start}
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.04, duration: 0.5 }}
+                    className={cn("absolute top-1.5 h-5 origin-left rounded-md shadow-soft", BAR[row.product])}
+                    style={{ left: `calc(${(bar.start / MONTHS) * 100}% + 2px)`, width: `calc(${(bar.len / MONTHS) * 100}% - 4px)` }}
+                    title={`${t(row.name)}: ${months[bar.start]}–${months[bar.start + bar.len - 1]}`}
+                  />
+                ))}
               </div>
             </div>
           ))}
